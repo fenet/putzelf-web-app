@@ -1,0 +1,29 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Booking {
+  id             Int      @id @default(autoincrement())
+  location       String
+  date           String
+  time           String
+  duration       Int
+  typeOfCleaning String
+  renegotiate    Boolean  @default(false)
+  price          Float
+
+  // Customer info (nullable until confirmed)
+  name        String?
+  email       String?
+  address     String?
+  phone       String?
+  gdprConsent Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+}
+
