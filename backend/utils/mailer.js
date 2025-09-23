@@ -22,6 +22,7 @@ export async function sendBookingConfirmation(booking) {
   const htmlContent = `
   <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+      
       <!-- Header -->
       <div style="background: linear-gradient(90deg, #5be3e3, #0097b2); padding: 20px; text-align: center; color: #fff;">
         <h1 style="margin: 0; font-size: 24px;">Booking Confirmation</h1>
@@ -77,8 +78,31 @@ export async function sendBookingConfirmation(booking) {
       </div>
 
       <!-- Footer -->
-      <div style="background: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #666;">
-        © ${new Date().getFullYear()} PutzELF. All rights reserved.
+      <div style="background: #f1f1f1; padding: 20px; text-align: center; font-size: 13px; color: #666;">
+        <!-- Links -->
+        <div style="margin-bottom: 15px;">
+          <a href="https://your-domain.com/terms" style="margin: 0 10px; color: #666; text-decoration: none;">Terms & Conditions</a> |
+          <a href="https://your-domain.com/privacy" style="margin: 0 10px; color: #666; text-decoration: none;">Privacy Policy</a> |
+          <a href="https://your-domain.com/imprint" style="margin: 0 10px; color: #666; text-decoration: none;">Imprint</a>
+        </div>
+
+        <!-- Social icons -->
+        <div style="margin-bottom: 15px;">
+          <a href="https://instagram.com" style="margin: 0 8px;" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" style="width: 24px; height: 24px;" />
+          </a>
+          <a href="https://facebook.com" style="margin: 0 8px;" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" style="width: 24px; height: 24px;" />
+          </a>
+          <a href="https://linkedin.com" style="margin: 0 8px;" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn" style="width: 24px; height: 24px;" />
+          </a>
+        </div>
+
+        <!-- Copyright -->
+        <div>
+          © ${new Date().getFullYear()} PutzELF. All rights reserved.
+        </div>
       </div>
     </div>
   </div>
@@ -97,4 +121,3 @@ export async function sendBookingConfirmation(booking) {
     console.error("❌ Error sending email:", err);
   }
 }
-

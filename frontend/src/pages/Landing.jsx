@@ -49,11 +49,11 @@ export default function Landing() {
 
             {/* Call us */}
             <a
-              href="tel:+436603100725"
+              href="tel:+436673302277"
               className="flex flex-col items-center text-[#0097b2] font-semibold hover:underline"
             >
               <Phone size={32} className="mb-1" />
-              <span className="text-base text-gray-700">+43 660 3100725</span>
+              <span className="text-base text-gray-700">+43 667 3302277</span>
             </a>
 
             {/* Email us */}

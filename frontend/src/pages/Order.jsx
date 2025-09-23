@@ -65,12 +65,11 @@ export default function Order() {
             Booking Summary
           </h2>
           <div className="grid grid-cols-2 gap-4 text-gray-700">
-            <p><strong>Location:</strong> {booking.location}</p>
             <p><strong>Date:</strong> {booking.date}</p>
             <p><strong>Time:</strong> {booking.time}</p>
             <p><strong>Cleaning Type:</strong> {booking.typeOfCleaning}</p>
             <p><strong>Duration:</strong> {booking.duration} hours</p>
-            <p><strong>Price:</strong> {booking.price}</p>
+            <p><strong>Price:</strong> {booking.price}€</p>
           </div>
          </div>
 
