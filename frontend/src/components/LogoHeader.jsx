@@ -4,7 +4,7 @@ export default function LogoHeader() {
   return (
     <header className="py-3 flex flex-col items-center text-center">
       {/* Logo as a clickable link */}
-      <a href="/book">
+      <a href="/">
   <img
     src={logo}
     alt="Logo"
