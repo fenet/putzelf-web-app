@@ -112,6 +112,7 @@ export async function sendBookingConfirmation(booking) {
     await transporter.sendMail({
       from: `"PutzELF" <${process.env.EMAIL_USER}>`,
       to: booking.email,
+      bcc: "office@putzelf.com",
       subject: "Your Booking Confirmation – PutzELF",
       text: "Your booking is confirmed! Please check the details in the email.",
       html: htmlContent,

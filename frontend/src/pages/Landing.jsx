@@ -64,11 +64,11 @@ export default function Landing() {
 
             {/* Email us */}
             <a
-              href="mailto:info@putzelf.com"
+              href="mailto:office@putzelf.com"
               className="flex flex-col items-center text-[#5be3e3] font-semibold hover:underline"
             >
               <Mail size={32} className="mb-1" />
-              <span className="text-base text-gray-700">info@putzelf.com</span>
+              <span className="text-base text-gray-700">office@putzelf.com</span>
             </a>
           </div>
 

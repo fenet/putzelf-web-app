@@ -7,7 +7,7 @@ const resources = {
       nav: {
         bookNow: "Book an Appointment Now",
         phone: "+43 667 3302277",
-        email: "info@putzelf.com"
+        email: "office@putzelf.com"
       },
       hero: {
         title: "Professional Cleaning at Your Fingertips",
@@ -107,7 +107,7 @@ const resources = {
       nav: {
         bookNow: "Jetzt Termin buchen",
         phone: "+43 667 3302277",
-        email: "info@putzelf.com"
+        email: "office@putzelf.com"
       },
       hero: {
         title: "Professionelle Reinigung auf Knopfdruck",
