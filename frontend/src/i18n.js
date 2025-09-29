@@ -19,6 +19,7 @@ const resources = {
         deep: { title: "Deep Cleaning", desc: "Detailed cleaning for every corner." },
         office: { title: "Office Cleaning", desc: "Professional cleaning for your office spaces." },
         reliable: "Reliable",
+        reliableLine: "Our cleaners are vetted and trusted by hundreds of customers.",
         pricing: "Transparent Pricing",
         easy: "Easy Booking",
         priceLine: "Just €36/hour, no hidden costs.",
@@ -29,6 +30,11 @@ const resources = {
         officeTitle: "Office Cleaning",
         officeDesc: "A spotless office means a productive day for your team. We keep your workspaces clean, hygienic, and professional.",
         officeCta: "Book Office Cleaning"
+      },
+      alt: {
+        logo: "putzELF Logo",
+        homeCleaning: "Home Cleaning",
+        officeCleaning: "Office Cleaning"
       },
       footer: {
         employee: "Employee",
@@ -47,6 +53,52 @@ const resources = {
         privacyPolicy: "Privacy Policy",
         decline: "Decline",
         accept: "Accept"
+      },
+      home: {
+        title: "Book Your Cleaning",
+        selectType: "Select Cleaning Type",
+        types: {
+          standard: "Standard Cleaning",
+          window: "Window Cleaning",
+          office: "Office Cleaning",
+          spring: "Spring Cleaning",
+          moving: "Moving Cleaning",
+          intensive: "Intensive Cleaning",
+          apartment: "Apartment Cleaning"
+        },
+        durationHelp: "Minimum booking is 3 hours.",
+        estimated: "Estimated Price",
+        rate: "Rate: €{{rate}}/hour",
+        submit: "Let's Go",
+        alerts: {
+          missing: "Please fill location, date, time and select a cleaning type.",
+          createError: "Error creating booking: {{msg}}"
+        }
+      },
+      order: {
+        loading: "Loading booking...",
+        confirmTitle: "Confirm Your Booking",
+        summary: "Booking Summary",
+        date: "Date",
+        time: "Time",
+        cleaningType: "Cleaning Type",
+        duration: "Duration",
+        durationUnit: "hours",
+        price: "Price",
+        enterDetails: "Enter your details to confirm",
+        placeholders: {
+          name: "Full name",
+          email: "Email",
+          address: "Street & House No.",
+          phone: "Phone"
+        },
+        gdprPrefix: "I agree to the processing of my personal data in accordance with the ",
+        gdprLink: "Privacy Policy (GDPR)",
+        confirming: "Confirming...",
+        confirmBtn: "Confirm Booking",
+        confirmedTitle: "Booking confirmed ✅",
+        confirmedMsg: "A confirmation email has been sent to {{email}}.",
+        errorPrefix: ""
       }
     }
   },
@@ -67,6 +119,7 @@ const resources = {
         deep: { title: "Grundreinigung", desc: "Gründliche Reinigung bis in jede Ecke." },
         office: { title: "Büroreinigung", desc: "Professionelle Reinigung für Ihre Büroräume." },
         reliable: "Zuverlässig",
+        reliableLine: "Unsere Reinigungskräfte sind geprüft und von Hunderten Kund:innen vertrauenswürdig.",
         pricing: "Transparente Preise",
         easy: "Einfache Buchung",
         priceLine: "Nur €36/Stunde, keine versteckten Kosten.",
@@ -77,6 +130,11 @@ const resources = {
         officeTitle: "Büroreinigung",
         officeDesc: "Ein sauberes Büro bedeutet einen produktiven Tag. Wir halten Ihre Arbeitsräume sauber, hygienisch und professionell.",
         officeCta: "Büroreinigung buchen"
+      },
+      alt: {
+        logo: "putzELF Logo",
+        homeCleaning: "Haushaltsreinigung",
+        officeCleaning: "Büroreinigung"
       },
       footer: {
         employee: "Mitarbeiter",
@@ -95,6 +153,52 @@ const resources = {
         privacyPolicy: "Datenschutzerklärung",
         decline: "Ablehnen",
         accept: "Akzeptieren"
+      },
+      home: {
+        title: "Reinigung buchen",
+        selectType: "Reinigungsart auswählen",
+        types: {
+          standard: "Standardreinigung",
+          window: "Fensterreinigung",
+          office: "Büroreinigung",
+          spring: "Frühjahrsputz",
+          moving: "Umzugsreinigung",
+          intensive: "Intensivreinigung",
+          apartment: "Wohnungsreinigung"
+        },
+        durationHelp: "Mindestbuchung ist 3 Stunden.",
+        estimated: "Geschätzter Preis",
+        rate: "Preis: €{{rate}}/Stunde",
+        submit: "Los geht's",
+        alerts: {
+          missing: "Bitte Ort, Datum, Uhrzeit ausfüllen und eine Reinigungsart wählen.",
+          createError: "Fehler bei der Erstellung der Buchung: {{msg}}"
+        }
+      },
+      order: {
+        loading: "Buchung wird geladen...",
+        confirmTitle: "Buchung bestätigen",
+        summary: "Buchungsübersicht",
+        date: "Datum",
+        time: "Uhrzeit",
+        cleaningType: "Reinigungsart",
+        duration: "Dauer",
+        durationUnit: "Stunden",
+        price: "Preis",
+        enterDetails: "Daten eingeben und bestätigen",
+        placeholders: {
+          name: "Vollständiger Name",
+          email: "E-Mail",
+          address: "Straße & Hausnummer",
+          phone: "Telefon"
+        },
+        gdprPrefix: "Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäß ",
+        gdprLink: "Datenschutzerklärung (DSGVO)",
+        confirming: "Wird bestätigt...",
+        confirmBtn: "Buchung bestätigen",
+        confirmedTitle: "Buchung bestätigt ✅",
+        confirmedMsg: "Eine Bestätigungs-E-Mail wurde an {{email}} gesendet.",
+        errorPrefix: ""
       }
     }
   }
@@ -102,7 +206,7 @@ const resources = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: "en",
+  lng: "de",
   fallbackLng: "en",
   interpolation: {
     escapeValue: false

@@ -33,12 +33,14 @@ export default function Landing() {
     localStorage.setItem("cookieConsent", "true");
     localStorage.setItem("cookieConsentTime", Date.now().toString());
     setShowBanner(false);
+    window.dispatchEvent(new CustomEvent('consentChanged', { detail: { consent: true } }));
   };
 
   const declineCookies = () => {
     localStorage.setItem("cookieConsent", "false");
     localStorage.setItem("cookieConsentTime", Date.now().toString());
     setShowBanner(false);
+    window.dispatchEvent(new CustomEvent('consentChanged', { detail: { consent: false } }));
   };
 
   return (
@@ -49,7 +51,7 @@ export default function Landing() {
           {/* Left side: Contact */}
           <div className="flex items-center space-x-6">
             {/* Logo */}
-            <img src={logo} alt="putzELF Logo" className="h-20 w-auto" />
+            <img src={logo} alt={t('alt.logo')} className="h-20 w-auto" />
 
             {/* Call us */}
             <a
@@ -157,10 +159,7 @@ export default function Landing() {
           <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition flex flex-col items-center">
             <UserCheck size={48} className="text-[#5be3e3] mb-4" />
             <h3 className="text-xl font-bold text-[#000000] mb-2">{t('services.reliable')}</h3>
-            <p className="text-gray-600">
-              {/* Keeping English sentence since not in resources; optional to move later */}
-              Our cleaners are vetted and trusted by hundreds of customers.
-            </p>
+            <p className="text-gray-600">{t('services.reliableLine')}</p>
           </div>
           <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition flex flex-col items-center">
             <DollarSign size={48} className="text-[#0097b2] mb-4" />
@@ -189,7 +188,7 @@ export default function Landing() {
     <div className="overflow-hidden rounded-2xl shadow-lg">
       <img
         src={homeImg}
-        alt="Home Cleaning"
+        alt={t('alt.homeCleaning')}
         className="w-full h-[400px] object-cover transition-transform duration-500 hover:scale-105"
       />
     </div>
@@ -227,7 +226,7 @@ export default function Landing() {
     <div className="overflow-hidden rounded-2xl shadow-lg order-1 md:order-2">
       <img
         src={officeImg}
-        alt="Office Cleaning"
+        alt={t('alt.officeCleaning')}
         className="w-full h-[400px] object-cover transition-transform duration-500 hover:scale-105"
       />
     </div>

@@ -1,5 +1,7 @@
 // App.jsx
 import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { trackPageview } from "./lib/analytics";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Order from "./pages/Order";
@@ -25,6 +27,12 @@ function Layout({ children }) {
 }
 
 export default function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageview(location.pathname);
+  }, [location.pathname]);
+
   return (
     <Routes>
       {/* Landing page (full-width, with its own navbar/footer) */}

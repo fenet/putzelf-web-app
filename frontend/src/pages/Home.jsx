@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -22,13 +24,13 @@ export default function Home() {
   const [calculatedPrice, setCalculatedPrice] = useState(getHourlyRate(form.typeOfCleaning) * 3);
 
   const cleaningTypes = [
-    { label: "Standard Cleaning", emoji: "✨" },
-    { label: "Window Cleaning", emoji: "🪟" },
-    { label: "Office Cleaning", emoji: "🏢" },
-    { label: "Spring Cleaning", emoji: "🌸" },
-    { label: "Moving Cleaning", emoji: "🚚" },
-    { label: "Intensive Cleaning", emoji: "🔥" },
-    { label: "Apartment Cleaning", emoji: "🏠" },
+    { key: "standard", emoji: "✨" },
+    { key: "window", emoji: "🪟" },
+    { key: "office", emoji: "🏢" },
+    { key: "spring", emoji: "🌸" },
+    { key: "moving", emoji: "🚚" },
+    { key: "intensive", emoji: "🔥" },
+    { key: "apartment", emoji: "🏠" },
   ];
 
   const handleChange = (e) => {
@@ -58,7 +60,7 @@ export default function Home() {
     e.preventDefault();
 
     if (!form.date || !form.time || !form.typeOfCleaning) {
-      alert("Please fill location, date, time and select a cleaning type.");
+      alert(t('home.alerts.missing'));
       return;
     }
 
@@ -73,7 +75,7 @@ export default function Home() {
       navigate(`/order/${data.id}`);
     } catch (err) {
       console.error(err);
-      alert("Error creating booking: " + (err.message || "unknown"));
+      alert(t('home.alerts.createError', { msg: err.message || 'unknown' }));
     }
   };
 
@@ -81,19 +83,20 @@ export default function Home() {
     <div className="flex flex-col items-center py-1 px-4">
       <div className="w-full max-w-2xl">
         <h2 className="text-center text-3xl font-bold mb-6" style={{ color: "#000000" }}>
-          Book Your Cleaning
+          {t('home.title')}
         </h2>
 
         <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow-md space-y-6">
           
            <div>
-            <h3 className="text-lg font-medium mb-3">Select Cleaning Type</h3>
+            <h3 className="text-lg font-medium mb-3">{t('home.selectType')}</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {cleaningTypes.map(({ label, emoji }) => {
+              {cleaningTypes.map(({ key, emoji }) => {
+                const label = t(`home.types.${key}`);
                 const selected = form.typeOfCleaning === label;
                 return (
                   <button
-                    key={label}
+                    key={key}
                     type="button"
                     onClick={() => chooseType(label)}
                     className={`flex flex-col items-center justify-center p-5 rounded-xl border transition-shadow ${
@@ -118,9 +121,7 @@ export default function Home() {
               onChange={handleChange}
               className="w-full p-3 border rounded-lg"
             />
-            <p className="text-sm text-gray-600 mt-1">
-              Minimum booking is <span className="font-semibold">3 hours</span>.
-            </p>
+            <p className="text-sm text-gray-600 mt-1">{t('home.durationHelp')}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -153,11 +154,11 @@ export default function Home() {
           </label>
 
           <div className="p-6 rounded-xl text-center shadow-md" style={{ backgroundColor: "#f8fdfd" }}>
-            <p className="text-sm text-gray-700 mb-2">Estimated Price</p>
+            <p className="text-sm text-gray-700 mb-2">{t('home.estimated')}</p>
             <p className="font-extrabold text-4xl md:text-6xl" style={{ color: "#0097b2" }}>
               €{(calculatedPrice || 0).toFixed(2)}
             </p>
-            <p className="text-xs text-gray-500 mt-2">Rate: €{getHourlyRate(form.typeOfCleaning)}/hour</p>
+            <p className="text-xs text-gray-500 mt-2">{t('home.rate', { rate: getHourlyRate(form.typeOfCleaning) })}</p>
           </div>
 
           <button
@@ -165,7 +166,7 @@ export default function Home() {
             className="w-full py-3 text-lg font-semibold text-black rounded-lg"
             style={{ backgroundColor: "#5be3e3" }}
           >
-            Let's Go
+            {t('home.submit')}
           </button>
         </form>
       </div>
