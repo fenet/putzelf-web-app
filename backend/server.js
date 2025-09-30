@@ -125,7 +125,12 @@ app.put("/api/bookings/:id/confirm", async (req, res) => {
       data: { name, email, address, phone, gdprConsent: true, price },
     });
 
-    await sendBookingConfirmation(booking);
+    //await sendBookingConfirmation(booking);
+    
+    await sendBookingConfirmation(
+    [booking.email, "office@putzelf.com"], // customer + office copy
+    booking
+    );
 
     res.json({ message: "Booking confirmed and email sent", booking });
   } catch (err) {

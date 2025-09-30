@@ -3,11 +3,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// Hetzner SMTP transporter
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "mail.your-server.de", // <- leave this exactly as given in konsoleH
+  port: 587,                   // use 465 with secure: true if you prefer SSL
+  secure: false,               // true = port 465, false = port 587
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.SMTP_USER, // e.g. office@putzelf.com
+    pass: process.env.SMTP_PASS, // mailbox password from konsoleH
   },
 });
 
@@ -16,7 +19,7 @@ export const sendBookingConfirmation = async (to, bookingDetails) => {
   try {
     await transporter.sendMail({
       from: `"PutzELF" <${process.env.EMAIL_USER}>`,
-      to,
+      to: Array.isArray(to) ? to.join(", ") : to,
       subject: "Booking Confirmation - PutzELF",
       html: `
         <h2>Thank you for your booking!</h2>
@@ -25,7 +28,7 @@ export const sendBookingConfirmation = async (to, bookingDetails) => {
           <li><b>Date:</b> ${bookingDetails.date}</li>
           <li><b>Time:</b> ${bookingDetails.time}</li>
           <li><b>Duration:</b> ${bookingDetails.duration} hours</li>
-          <li><b>Type of Cleaning:</b> ${bookingDetails.cleaningType}</li>
+          <li><b>Type of Cleaning:</b> ${bookingDetails.typeOfCleaning}</li>
           <li><b>Price:</b> €${bookingDetails.price}</li>
         </ul>
         <p>We’ll be in touch shortly. If you have any questions, just reply to this email.</p>
@@ -38,4 +41,5 @@ export const sendBookingConfirmation = async (to, bookingDetails) => {
     throw error;
   }
 };
+
 
