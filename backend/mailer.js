@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 export const sendBookingConfirmation = async (to, bookingDetails) => {
   try {
     await transporter.sendMail({
-      from: `"PutzELF" <${process.env.EMAIL_USER}>`,
+      from: `"PutzELF" <${process.env.SMTP_FROM}>`,
       to: Array.isArray(to) ? to.join(", ") : to,
       subject: "Booking Confirmation - PutzELF",
       html: `
