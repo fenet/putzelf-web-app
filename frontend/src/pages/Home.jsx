@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { apiFetch } from "../lib/api";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -48,6 +49,34 @@ export default function Home() {
     setForm((prev) => ({ ...prev, [name]: updatedValue }));
   };
 
+  const decrementDuration = () => {
+    setForm((prev) => {
+      const next = Math.max(3, Number(prev.duration || 0) - 1);
+      const rate = getHourlyRate(prev.typeOfCleaning);
+      setCalculatedPrice(next * rate);
+      return { ...prev, duration: next };
+    });
+  };
+
+  const incrementDuration = () => {
+    setForm((prev) => {
+      const next = Number(prev.duration || 0) + 1;
+      const rate = getHourlyRate(prev.typeOfCleaning);
+      setCalculatedPrice(next * rate);
+      return { ...prev, duration: next };
+    });
+  };
+
+  const handleDurationKeyDown = (e) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      incrementDuration();
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      decrementDuration();
+    }
+  };
+
   const chooseType = (label) => {
     setForm((prev) => {
       const rate = getHourlyRate(label);
@@ -65,7 +94,7 @@ export default function Home() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/bookings", {
+      const res = await apiFetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -113,32 +142,54 @@ export default function Home() {
           </div>
 
           <div>
-            <input
-              name="duration"
-              type="number"
-              min="3"
-              value={form.duration}
-              onChange={handleChange}
-              className="w-full p-3 border rounded-lg"
-            />
-            <p className="text-sm text-gray-600 mt-1">{t('home.durationHelp')}</p>
+            <label htmlFor="duration" className="block text-sm font-medium mb-1">{t('home.durationLabel') || 'Hours (min 3)'}</label>
+            <div className="flex items-stretch">
+              <button type="button" onClick={decrementDuration} aria-label="Decrease hours" title={t('home.durationMinTip') || 'Minimum is 3 hours'} className="px-3 rounded-l-lg border bg-gray-50 hover:bg-gray-100">−</button>
+              <input
+                id="duration"
+                name="duration"
+                type="number"
+                inputMode="numeric"
+                step="1"
+                min="3"
+                placeholder={t('home.durationPlaceholder') || '3+'}
+                value={form.duration}
+                onChange={handleChange}
+                onKeyDown={handleDurationKeyDown}
+                aria-describedby="duration-help"
+                title={t('home.durationMinTip') || 'Minimum is 3 hours'}
+                className="w-full p-3 border-t border-b text-center"
+              />
+              <button type="button" onClick={incrementDuration} aria-label="Increase hours" title={t('home.durationMinTip') || 'Minimum is 3 hours'} className="px-3 rounded-r-lg border bg-gray-50 hover:bg-gray-100">+</button>
+            </div>
+            <p id="duration-help" className="text-sm text-gray-600 mt-1">{t('home.durationHelp')}</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <input
-              name="date"
-              type="date"
-              value={form.date}
-              onChange={handleChange}
-              className="p-3 border rounded-lg"
-            />
-            <input
-              name="time"
-              type="time"
-              value={form.time}
-              onChange={handleChange}
-              className="p-3 border rounded-lg"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="date" className="block text-sm font-medium mb-1">{t('home.dateLabel') || 'Date'}</label>
+              <input
+                id="date"
+                name="date"
+                type="date"
+                placeholder={t('home.datePlaceholder') || 'Select date'}
+                value={form.date}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg"
+              />
+            </div>
+            <div>
+              <label htmlFor="time" className="block text-sm font-medium mb-1">{t('home.timeLabel') || 'Time'}</label>
+              <input
+                id="time"
+                name="time"
+                type="time"
+                placeholder={t('home.timePlaceholder') || 'Select time'}
+                value={form.time}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg"
+              />
+            </div>
           </div>
 
 

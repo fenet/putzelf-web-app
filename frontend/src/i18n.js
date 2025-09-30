@@ -71,7 +71,7 @@ const resources = {
         rate: "Rate: €{{rate}}/hour",
         submit: "Let's Go",
         alerts: {
-          missing: "Please fill location, date, time and select a cleaning type.",
+          missing: "Please fill date, time and select a cleaning type.",
           createError: "Error creating booking: {{msg}}"
         }
       },
@@ -171,7 +171,7 @@ const resources = {
         rate: "Preis: €{{rate}}/Stunde",
         submit: "Los geht's",
         alerts: {
-          missing: "Bitte Ort, Datum, Uhrzeit ausfüllen und eine Reinigungsart wählen.",
+          missing: "Bitte Datum, Uhrzeit ausfüllen und eine Reinigungsart wählen.",
           createError: "Fehler bei der Erstellung der Buchung: {{msg}}"
         }
       },

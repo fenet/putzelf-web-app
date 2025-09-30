@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { apiFetch } from "../lib/api";
 
 export default function Order() {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export default function Order() {
   const [confirmed, setConfirmed] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/bookings/${id}`)
+    apiFetch(`/api/bookings/${id}`)
       .then((r) => r.json())
       .then(setBooking)
       .catch(console.error);
@@ -33,7 +34,7 @@ export default function Order() {
     setError(null);
     setLoadingConfirm(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/bookings/${id}/confirm`, {
+      const res = await apiFetch(`/api/bookings/${id}/confirm`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(customer),

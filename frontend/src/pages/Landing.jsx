@@ -47,36 +47,38 @@ export default function Landing() {
     <div className="flex flex-col min-h-screen">
       {/* Navbar */}
       <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex flex-wrap justify-between items-center gap-2">
           {/* Left side: Contact */}
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-3 md:space-x-6 min-w-0">
             {/* Logo */}
-            <img src={logo} alt={t('alt.logo')} className="h-20 w-auto" />
+            <img src={logo} alt={t('alt.logo')} className="h-12 md:h-20 w-auto shrink-0" />
 
             {/* Call us */}
             <a
               href="tel:+436673302277"
               className="flex flex-col items-center text-[#0097b2] font-semibold hover:underline"
+              aria-label="Call us"
             >
-              <Phone size={32} className="mb-1" />
-              <span className="text-base text-gray-700">+43 667 3302277</span>
+              <Phone size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
+              <span className="hidden md:inline text-base text-gray-700">+43 667 3302277</span>
             </a>
 
             {/* Email us */}
             <a
               href="mailto:office@putzelf.com"
               className="flex flex-col items-center text-[#5be3e3] font-semibold hover:underline"
+              aria-label="Email us"
             >
-              <Mail size={32} className="mb-1" />
-              <span className="text-base text-gray-700">office@putzelf.com</span>
+              <Mail size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
+              <span className="hidden md:inline text-base text-gray-700">office@putzelf.com</span>
             </a>
           </div>
 
           {/* Right side: CTA + Language */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3 shrink-0">
             <Link
               to="/book"
-              className="bg-[#0097b2] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md animate-pulse-button"
+              className="bg-[#0097b2] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-lg font-semibold shadow-md animate-pulse-button whitespace-nowrap"
             >
               {t('nav.bookNow')}
             </Link>
@@ -84,7 +86,7 @@ export default function Landing() {
               onClick={() => i18n.changeLanguage('en')}
               title="English"
               aria-label="Switch to English"
-              className={`w-9 h-9 flex items-center justify-center rounded-full border text-base hover:bg-gray-50 ${i18n.language && i18n.language.startsWith('en') ? 'ring-2 ring-[#0097b2]' : ''}`}
+              className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border text-sm md:text-base hover:bg-gray-50 ${i18n.language && i18n.language.startsWith('en') ? 'ring-2 ring-[#0097b2]' : ''}`}
             >
               <span role="img" aria-label="English flag">🇬🇧</span>
             </button>
@@ -92,7 +94,7 @@ export default function Landing() {
               onClick={() => i18n.changeLanguage('de')}
               title="Deutsch"
               aria-label="Auf Deutsch umschalten"
-              className={`w-9 h-9 flex items-center justify-center rounded-full border text-base hover:bg-gray-50 ${i18n.language && i18n.language.startsWith('de') ? 'ring-2 ring-[#0097b2]' : ''}`}
+              className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border text-sm md:text-base hover:bg-gray-50 ${i18n.language && i18n.language.startsWith('de') ? 'ring-2 ring-[#0097b2]' : ''}`}
             >
               <span role="img" aria-label="German flag">🇩🇪</span>
             </button>
@@ -101,7 +103,7 @@ export default function Landing() {
       </nav>
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center text-center px-6 pt-40 pb-24 bg-gray-50">
+      <section className="flex flex-col items-center justify-center text-center px-6 pt-32 md:pt-40 pb-24 bg-gray-50">
         <h1 className="text-4xl md:text-6xl font-bold text-[#000000] mb-6">
           {t('hero.title')}
         </h1>
