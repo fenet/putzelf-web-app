@@ -102,32 +102,20 @@ function getTransporter() {
  */
 export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
   // Backwards compatibility: handle single-arg booking object
-  let to, booking;
+  let to = toOrBooking;
+  let booking = maybeBooking;
 
-  if (typeof maybeBooking === "undefined") {
-    // single-arg: booking
+  if (!booking && toOrBooking && typeof toOrBooking === "object") {
+    // called as sendBookingConfirmation(booking)
     booking = toOrBooking;
-    to = booking && booking.email;
-  } else {
-    // two args provided
-    if (typeof toOrBooking === "object" && typeof maybeBooking === "string") {
-      // probably sendBookingConfirmation(booking, to)
-      booking = toOrBooking;
-      to = maybeBooking;
-    } else if (typeof toOrBooking === "string") {
-      // normal: sendBookingConfirmation(to, booking)
-      to = toOrBooking;
-      booking = maybeBooking;
-    } else {
-      // fallback: try best effort
-      to = toOrBooking;
-      booking = maybeBooking;
-    }
+    to = booking.email;
   }
 
-  // Optional: remove debug logs in production
-  console.log("DEBUG sendBookingConfirmation called. to:", to);
-  console.log("DEBUG booking keys:", booking ? Object.keys(booking) : "undefined");
+  // DEBUG logs
+  try {
+    console.log("DEBUG sendBookingConfirmation called. to:", to);
+    console.log("DEBUG booking keys:", booking ? Object.keys(booking) : "undefined");
+  } catch (e) {}
 
   // Basic validation
   if (!to || (Array.isArray(to) && to.length === 0)) {
