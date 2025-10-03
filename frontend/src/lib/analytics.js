@@ -73,6 +73,19 @@ export function trackPageview(pathname) {
   } catch (_) {}
 }
 
+export function trackEvent(eventName, params = {}) {
+  if (!eventName) return;
+  try {
+    if (window.gtag && gaId) {
+      window.gtag('event', eventName, params || {});
+    }
+    if (window.fbq && fbId) {
+      window.fbq('trackCustom', eventName, params || {});
+    }
+  } catch (_) {}
+}
+
+
 
 
 

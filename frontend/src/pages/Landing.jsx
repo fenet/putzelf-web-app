@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { trackEvent } from "../lib/analytics";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Phone, Mail } from "lucide-react";
@@ -79,6 +80,7 @@ export default function Landing() {
       <Link
         to="/book"
         className="hidden md:block bg-[#0097b2] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-lg font-semibold shadow-md animate-pulse-button whitespace-nowrap"
+        onClick={() => trackEvent('Navbar_Book_Click', { source: 'navbar_desktop' })}
       >
         {t('nav.bookNow')}
       </Link>
@@ -104,6 +106,7 @@ export default function Landing() {
       <Link
         to="/book"
         className="bg-[#0097b2] text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md animate-pulse-button whitespace-nowrap"
+        onClick={() => trackEvent('Navbar_Book_Click', { source: 'navbar_mobile' })}
       >
         {t('nav.bookNow')}
       </Link>
@@ -123,6 +126,7 @@ export default function Landing() {
         <Link
           to="/book"
           className="bg-[#0097b2] text-white px-10 py-4 rounded-xl text-xl font-semibold hover:shadow-lg hover:scale-105 transition"
+          onClick={() => trackEvent('Landing_CTA_Click', { cta: 'hero_book_here' })}
         >
           {t('hero.cta')}
         </Link>

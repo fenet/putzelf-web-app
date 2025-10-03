@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { trackEvent } from "../lib/analytics";
 import { apiFetch } from "../lib/api";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -83,6 +84,7 @@ export default function Home() {
       setCalculatedPrice(prev.duration * rate);
       return { ...prev, typeOfCleaning: label };
     });
+    try { trackEvent('Home_Type_Selected', { type: label }); } catch (_) {}
   };
 
   const handleSubmit = async (e) => {
@@ -94,6 +96,7 @@ export default function Home() {
     }
 
     try {
+      try { trackEvent('Home_Submit_Click', { type: form.typeOfCleaning, duration: form.duration }); } catch (_) {}
       const res = await apiFetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -101,6 +104,7 @@ export default function Home() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create booking");
+      try { trackEvent('Home_Submit_Success', { bookingId: data.id }); } catch (_) {}
       navigate(`/order/${data.id}`);
     } catch (err) {
       console.error(err);

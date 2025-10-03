@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { apiFetch } from "../lib/api";
+import { trackEvent } from "../lib/analytics";
 
 export default function Order() {
   const { t } = useTranslation();
@@ -34,6 +35,7 @@ export default function Order() {
     setError(null);
     setLoadingConfirm(true);
     try {
+      try { trackEvent('Order_Confirm_Click', { bookingId: id }); } catch (_) {}
       const res = await apiFetch(`/api/bookings/${id}/confirm`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -43,6 +45,7 @@ export default function Order() {
       if (!res.ok) throw new Error(data.error || "Failed to confirm booking");
       setConfirmed(true);
       setBooking(data.booking || booking);
+      try { trackEvent('Order_Confirm_Success', { bookingId: id }); } catch (_) {}
     } catch (err) {
       setError(err.message);
     } finally {
