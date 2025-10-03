@@ -78,7 +78,7 @@ export default function Landing() {
           <div className="flex items-center gap-2 md:gap-3 shrink-0">
             <Link
               to="/book"
-              className="hidden md:block bg-[#0097b2] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-lg font-semibold shadow-md animate-pulse-button whitespace-nowrap"
+              className="bg-[#0097b2] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-lg font-semibold shadow-md animate-pulse-button whitespace-nowrap fixed bottom-4 left-1/2 -translate-x-1/2 z-50 md:static md:bottom-auto md:left-auto md:translate-x-0"
             >
               {t('nav.bookNow')}
             </Link>
@@ -102,13 +102,7 @@ export default function Landing() {
         </div>
       </nav>
 
-      {/* Mobile bottom-centered CTA */}
-      <Link
-        to="/book"
-        className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[#0097b2] text-white px-6 py-3 rounded-lg text-base font-semibold shadow-lg whitespace-nowrap"
-      >
-        {t('nav.bookNow')}
-      </Link>
+      
 
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center text-center px-6 pt-32 md:pt-40 pb-24 bg-gray-50">
