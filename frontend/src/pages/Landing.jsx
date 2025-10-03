@@ -47,61 +47,69 @@ export default function Landing() {
     <div className="flex flex-col min-h-screen pb-24 md:pb-0">
       {/* Navbar */}
       <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex flex-nowrap md:flex-wrap justify-between items-center gap-2">
-          {/* Left side: Contact */}
-          <div className="flex items-center space-x-3 md:space-x-6 min-w-0">
-            {/* Logo */}
-            <img src={logo} alt={t('alt.logo')} className="h-12 md:h-20 w-auto shrink-0" />
+  <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex flex-wrap justify-between items-center gap-2">
+    {/* Left side: Contact */}
+    <div className="flex items-center space-x-3 md:space-x-6 min-w-0">
+      {/* Logo */}
+      <img src={logo} alt={t('alt.logo')} className="h-12 md:h-20 w-auto shrink-0" />
 
-            {/* Call us */}
-            <a
-              href="tel:+436673302277"
-              className="flex flex-col items-center text-[#0097b2] font-semibold hover:underline"
-              aria-label="Call us"
-            >
-              <Phone size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
-              <span className="hidden md:inline text-base text-gray-700">+43 667 3302277</span>
-            </a>
+      {/* Call us */}
+      <a
+        href="tel:+436673302277"
+        className="flex flex-col items-center text-[#0097b2] font-semibold hover:underline"
+        aria-label="Call us"
+      >
+        <Phone size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
+        <span className="hidden md:inline text-base text-gray-700">+43 667 3302277</span>
+      </a>
 
-            {/* Email us */}
-            <a
-              href="mailto:office@putzelf.com"
-              className="flex flex-col items-center text-[#5be3e3] font-semibold hover:underline"
-              aria-label="Email us"
-            >
-              <Mail size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
-              <span className="hidden md:inline text-base text-gray-700">office@putzelf.com</span>
-            </a>
-          </div>
+      {/* Email us */}
+      <a
+        href="mailto:office@putzelf.com"
+        className="flex flex-col items-center text-[#5be3e3] font-semibold hover:underline"
+        aria-label="Email us"
+      >
+        <Mail size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
+        <span className="hidden md:inline text-base text-gray-700">office@putzelf.com</span>
+      </a>
+    </div>
 
-          {/* Right side: CTA + Language */}
-          <div className="flex items-center gap-2 md:gap-3 shrink-0">
-            <Link
-              to="/book"
-              className="bg-[#0097b2] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-lg font-semibold shadow-md animate-pulse-button whitespace-nowrap fixed bottom-4 left-1/2 -translate-x-1/2 z-50 md:static md:bottom-auto md:left-auto md:translate-x-0"
-            >
-              {t('nav.bookNow')}
-            </Link>
-            <button
-              onClick={() => i18n.changeLanguage('en')}
-              title="English"
-              aria-label="Switch to English"
-              className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border text-sm md:text-base hover:bg-gray-50 ${i18n.language && i18n.language.startsWith('en') ? 'ring-2 ring-[#0097b2]' : ''}`}
-            >
-              <span role="img" aria-label="English flag">🇬🇧</span>
-            </button>
-            <button
-              onClick={() => i18n.changeLanguage('de')}
-              title="Deutsch"
-              aria-label="Auf Deutsch umschalten"
-              className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border text-sm md:text-base hover:bg-gray-50 ${i18n.language && i18n.language.startsWith('de') ? 'ring-2 ring-[#0097b2]' : ''}`}
-            >
-              <span role="img" aria-label="German flag">🇩🇪</span>
-            </button>
-          </div>
-        </div>
-      </nav>
-
+    {/* Right side: CTA + Language */}
+    <div className="flex items-center gap-2 md:gap-3 shrink-0">
+      <Link
+        to="/book"
+        className="hidden md:block bg-[#0097b2] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-lg font-semibold shadow-md animate-pulse-button whitespace-nowrap"
+      >
+        {t('nav.bookNow')}
+      </Link>
+      <button
+        onClick={() => i18n.changeLanguage('en')}
+        title="English"
+        aria-label="Switch to English"
+        className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border text-sm md:text-base hover:bg-gray-50 ${i18n.language && i18n.language.startsWith('en') ? 'ring-2 ring-[#0097b2]' : ''}`}
+      >
+        <span role="img" aria-label="English flag">🇬🇧</span>
+      </button>
+      <button
+        onClick={() => i18n.changeLanguage('de')}
+        title="Deutsch"
+        aria-label="Auf Deutsch umschalten"
+        className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border text-sm md:text-base hover:bg-gray-50 ${i18n.language && i18n.language.startsWith('de') ? 'ring-2 ring-[#0097b2]' : ''}`}
+      >
+        <span role="img" aria-label="German flag">🇩🇪</span>
+      </button>
+    </div>
+    {/* Mobile CTA centered within nav, slightly lower */}
+    <div className="w-full flex justify-center mt-2 md:hidden">
+      <Link
+        to="/book"
+        className="bg-[#0097b2] text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md animate-pulse-button whitespace-nowrap"
+      >
+        {t('nav.bookNow')}
+      </Link>
+    </div>
+  </div>
+</nav>
       
 
       {/* Hero Section */}
