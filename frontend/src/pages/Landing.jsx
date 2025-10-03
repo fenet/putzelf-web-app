@@ -44,10 +44,10 @@ export default function Landing() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen pb-24 md:pb-0">
       {/* Navbar */}
       <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex flex-wrap justify-between items-center gap-2">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex flex-nowrap md:flex-wrap justify-between items-center gap-2">
           {/* Left side: Contact */}
           <div className="flex items-center space-x-3 md:space-x-6 min-w-0">
             {/* Logo */}
@@ -78,7 +78,7 @@ export default function Landing() {
           <div className="flex items-center gap-2 md:gap-3 shrink-0">
             <Link
               to="/book"
-              className="bg-[#0097b2] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-lg font-semibold shadow-md animate-pulse-button whitespace-nowrap"
+              className="bg-[#0097b2] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-lg font-semibold shadow-md animate-pulse-button whitespace-nowrap fixed bottom-4 left-1/2 -translate-x-1/2 z-50 md:static md:bottom-auto md:left-auto md:translate-x-0"
             >
               {t('nav.bookNow')}
             </Link>
@@ -101,6 +101,8 @@ export default function Landing() {
           </div>
         </div>
       </nav>
+
+      
 
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center text-center px-6 pt-32 md:pt-40 pb-24 bg-gray-50">
