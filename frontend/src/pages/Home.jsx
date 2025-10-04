@@ -205,7 +205,7 @@ export default function Home() {
               onChange={handleChange}
               className="w-4 h-4"
             />
-            <span>Willing to renegotiate if job takes longer</span>
+            <span>{t('home.renegotiate')}</span>
           </label>
 
           <div className="p-6 rounded-xl text-center shadow-md" style={{ backgroundColor: "#f8fdfd" }}>

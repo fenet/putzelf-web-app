@@ -66,6 +66,10 @@ const resources = {
           intensive: "Intensive Cleaning",
           apartment: "Apartment Cleaning"
         },
+        durationLabel: "Hours (min 3)",
+        dateLabel: "Date",
+        timeLabel: "Time",
+        renegotiate: "Willing to renegotiate if job takes longer",
         durationHelp: "Minimum booking is 3 hours.",
         estimated: "Estimated Price",
         rate: "Rate: €{{rate}}/hour",
@@ -166,10 +170,14 @@ const resources = {
           intensive: "Intensivreinigung",
           apartment: "Wohnungsreinigung"
         },
+        durationLabel: "Stunden (min 3)",
+        dateLabel: "Datum",
+        timeLabel: "Uhrzeit",
+        renegotiate: "Bereit zur Neuverhandlung, falls die Arbeit länger dauert",
         durationHelp: "Mindestbuchung ist 3 Stunden.",
         estimated: "Geschätzter Preis",
         rate: "Preis: €{{rate}}/Stunde",
-        submit: "Los geht's",
+        submit: "Jetzt anfragen",
         alerts: {
           missing: "Bitte Datum, Uhrzeit ausfüllen und eine Reinigungsart wählen.",
           createError: "Fehler bei der Erstellung der Buchung: {{msg}}"
