@@ -84,7 +84,7 @@ export default function Home() {
       setCalculatedPrice(prev.duration * rate);
       return { ...prev, typeOfCleaning: label };
     });
-    try { trackEvent('Home_Type_Selected', { type: label }); } catch (_) {}
+    try { trackEvent('Service_Type_Selected', { service_type: label, source: 'booking_form' }); } catch (_) {}
   };
 
   const handleSubmit = async (e) => {
@@ -96,7 +96,7 @@ export default function Home() {
     }
 
     try {
-      try { trackEvent('Home_Submit_Click', { type: form.typeOfCleaning, duration: form.duration }); } catch (_) {}
+      try { trackEvent('Booking_Form_Submit', { service_type: form.typeOfCleaning, duration: form.duration, price: calculatedPrice }); } catch (_) {}
       const res = await apiFetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -104,7 +104,7 @@ export default function Home() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create booking");
-      try { trackEvent('Home_Submit_Success', { bookingId: data.id }); } catch (_) {}
+      try { trackEvent('Booking_Created', { bookingId: data.id, service_type: form.typeOfCleaning, price: calculatedPrice }); } catch (_) {}
       navigate(`/order/${data.id}`);
     } catch (err) {
       console.error(err);

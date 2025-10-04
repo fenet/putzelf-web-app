@@ -80,9 +80,84 @@ export function trackEvent(eventName, params = {}) {
       window.gtag('event', eventName, params || {});
     }
     if (window.fbq && fbId) {
-      window.fbq('trackCustom', eventName, params || {});
+      // Use Meta's recommended event names for better tracking
+      const metaEventName = getMetaEventName(eventName);
+      const metaParams = getMetaParams(eventName, params);
+      window.fbq('track', metaEventName, metaParams);
+      
+      // Debug logging for development
+      if (import.meta.env.DEV) {
+        console.log('Meta Event Tracked:', {
+          eventName: metaEventName,
+          params: metaParams,
+          originalEvent: eventName,
+          pixelId: fbId
+        });
+      }
+    } else if (import.meta.env.DEV) {
+      console.warn('Meta Pixel not loaded. Check VITE_FB_PIXEL_ID environment variable.');
     }
-  } catch (_) {}
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.error('Error tracking event:', error);
+    }
+  }
+}
+
+// Map custom events to Meta's standard events for better tracking
+function getMetaEventName(eventName) {
+  const eventMap = {
+    // Lead events for booking actions
+    'Navbar_Book_Click': 'Lead',
+    'Landing_CTA_Click': 'Lead',
+    'Service_Standard_Click': 'Lead',
+    'Service_Deep_Click': 'Lead',
+    'Service_Office_Click': 'Lead',
+    'Service_Office_Premium_Click': 'Lead',
+    'Service_Home_Click': 'Lead',
+    'Service_Type_Selected': 'Lead',
+    'Booking_Form_Submit': 'Lead',
+    'Booking_Created': 'Lead',
+    'Order_Submit_Click': 'Lead',
+    'Confirmation_View': 'Lead',
+    // Contact events
+    'Contact_Phone_Click': 'Contact',
+    'Contact_Email_Click': 'Contact',
+    // Social media events
+    'Social_Instagram_Click': 'ViewContent',
+    'Social_Facebook_Click': 'ViewContent',
+    'Social_LinkedIn_Click': 'ViewContent',
+    // Cookie events
+    'Cookie_Accept_Click': 'CompleteRegistration',
+    'Cookie_Decline_Click': 'ViewContent'
+  };
+  
+  return eventMap[eventName] || 'ViewContent';
+}
+
+// Format parameters for Meta events
+function getMetaParams(eventName, params) {
+  const baseParams = {
+    content_name: eventName,
+    content_category: 'cleaning_services',
+    ...params
+  };
+
+  // Add specific Meta parameters for Lead events
+  if (eventName.includes('Service_') || eventName.includes('Book_') || eventName.includes('Order_') || eventName.includes('Confirmation_')) {
+    baseParams.value = 0; // You can set actual service values here
+    baseParams.currency = 'EUR';
+    baseParams.content_type = 'service_booking';
+    baseParams.lead_type = 'cleaning_service_inquiry';
+  }
+
+  // Add Lead-specific parameters
+  if (eventName.includes('Lead') || eventName.includes('Service_') || eventName.includes('Book_')) {
+    baseParams.lead_source = 'website';
+    baseParams.lead_quality = 'high_intent';
+  }
+
+  return baseParams;
 }
 
 

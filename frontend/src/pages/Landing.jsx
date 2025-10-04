@@ -59,6 +59,7 @@ export default function Landing() {
         href="tel:+436673302277"
         className="flex flex-col items-center text-[#0097b2] font-semibold hover:underline"
         aria-label="Call us"
+        onClick={() => trackEvent('Contact_Phone_Click', { contact_method: 'phone', source: 'navbar' })}
       >
         <Phone size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
         <span className="hidden md:inline text-base text-gray-700">+43 667 3302277</span>
@@ -69,6 +70,7 @@ export default function Landing() {
         href="mailto:office@putzelf.com"
         className="flex flex-col items-center text-[#5be3e3] font-semibold hover:underline"
         aria-label="Email us"
+        onClick={() => trackEvent('Contact_Email_Click', { contact_method: 'email', source: 'navbar' })}
       >
         <Mail size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
         <span className="hidden md:inline text-base text-gray-700">office@putzelf.com</span>
@@ -148,6 +150,7 @@ export default function Landing() {
           <Link
             to="/book?type=Standard"
             className="bg-gradient-to-r from-[#5be3e3] to-[#0097b2] text-black font-semibold rounded-2xl p-8 text-center hover:scale-105 hover:shadow-xl transition"
+            onClick={() => trackEvent('Service_Standard_Click', { service_type: 'Standard', source: 'landing_grid' })}
           >
             <h4 className="text-2xl font-bold mb-2">{t('services.standard.title')}</h4>
             <p>{t('services.standard.desc')}</p>
@@ -156,6 +159,7 @@ export default function Landing() {
           <Link
             to="/book?type=Deep"
             className="bg-gradient-to-r from-[#48c6ef] to-[#006994] text-white font-semibold rounded-2xl p-8 text-center hover:scale-105 hover:shadow-xl transition"
+            onClick={() => trackEvent('Service_Deep_Click', { service_type: 'Deep', source: 'landing_grid' })}
           >
             <h4 className="text-2xl font-bold mb-2">{t('services.deep.title')}</h4>
             <p>{t('services.deep.desc')}</p>
@@ -164,6 +168,7 @@ export default function Landing() {
           <Link
             to="/book?type=Office"
             className="bg-gradient-to-r from-[#3acfd5] to-[#3a7bd5] text-black font-semibold rounded-2xl p-8 text-center hover:scale-105 hover:shadow-xl transition"
+            onClick={() => trackEvent('Service_Office_Click', { service_type: 'Office', source: 'landing_grid' })}
           >
             <h4 className="text-2xl font-bold mb-2">{t('services.office.title')}</h4>
             <p>{t('services.office.desc')}</p>
@@ -217,6 +222,7 @@ export default function Landing() {
       <Link
         to="/book?type=Home"
         className="inline-block bg-[#0097b2] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:scale-105 transition"
+        onClick={() => trackEvent('Service_Home_Click', { service_type: 'Home', source: 'premium_section' })}
       >
         {t('services.homeCta')}
       </Link>
@@ -234,6 +240,7 @@ export default function Landing() {
       <Link
         to="/book?type=Office"
         className="inline-block bg-[#5be3e3] text-black px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:scale-105 transition"
+        onClick={() => trackEvent('Service_Office_Premium_Click', { service_type: 'Office', source: 'premium_section' })}
       >
         {t('services.officeCta')}
       </Link>
@@ -312,13 +319,13 @@ export default function Landing() {
         Connect
       </h4>
       <div className="flex space-x-4 mb-6">
-        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors" onClick={() => trackEvent('Social_Instagram_Click', { platform: 'Instagram', source: 'footer' })}>
           <Instagram className="w-5 h-5" />
         </a>
-        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors" onClick={() => trackEvent('Social_Facebook_Click', { platform: 'Facebook', source: 'footer' })}>
           <Facebook className="w-5 h-5" />
         </a>
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors" onClick={() => trackEvent('Social_LinkedIn_Click', { platform: 'LinkedIn', source: 'footer' })}>
           <Linkedin className="w-5 h-5" />
         </a>
       </div>
@@ -351,13 +358,19 @@ export default function Landing() {
             </p>
             <div className="flex justify-center gap-4">
               <button
-                onClick={declineCookies}
+                onClick={() => {
+                  declineCookies();
+                  trackEvent('Cookie_Decline_Click', { consent: false, source: 'banner' });
+                }}
                 className="bg-gray-300 text-black px-6 py-2 rounded-md font-semibold hover:opacity-90 transition"
               >
                 {t('cookies.decline')}
               </button>
               <button
-                onClick={acceptCookies}
+                onClick={() => {
+                  acceptCookies();
+                  trackEvent('Cookie_Accept_Click', { consent: true, source: 'banner' });
+                }}
                 className="bg-[#5be3e3] text-black px-6 py-2 rounded-md font-semibold hover:opacity-90 transition"
               >
                 {t('cookies.accept')}

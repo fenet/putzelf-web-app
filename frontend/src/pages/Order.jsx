@@ -35,7 +35,7 @@ export default function Order() {
     setError(null);
     setLoadingConfirm(true);
     try {
-      try { trackEvent('Order_Confirm_Click', { bookingId: id }); } catch (_) {}
+      try { trackEvent('Order_Submit_Click', { bookingId: id, service_type: booking?.typeOfCleaning }); } catch (_) {}
       const res = await apiFetch(`/api/bookings/${id}/confirm`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -45,7 +45,7 @@ export default function Order() {
       if (!res.ok) throw new Error(data.error || "Failed to confirm booking");
       setConfirmed(true);
       setBooking(data.booking || booking);
-      try { trackEvent('Order_Confirm_Success', { bookingId: id }); } catch (_) {}
+      try { trackEvent('Confirmation_View', { bookingId: id, service_type: booking?.typeOfCleaning, price: booking?.price }); } catch (_) {}
     } catch (err) {
       setError(err.message);
     } finally {
