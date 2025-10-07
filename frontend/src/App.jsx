@@ -6,6 +6,7 @@ import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Order from "./pages/Order";
 import Search from "./pages/Search";
+import Imprint from "./pages/Imprint";
 import Footer from "./components/Footer";
 import LogoHeader from "./components/LogoHeader";
 
@@ -61,6 +62,13 @@ export default function App() {
           <Layout>
             <Search />
           </Layout>
+        }
+      />
+      <Route
+        path="/imprint"
+        element={
+          // Imprint should look like Landing with its own header/footer
+          <Imprint />
         }
       />
     </Routes>

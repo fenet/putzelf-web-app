@@ -9,11 +9,36 @@ const resources = {
         phone: "+43 667 3302277",
         email: "office@putzelf.com"
       },
+      imprint: {
+        title: "Imprint",
+        companyNameTitle: "Company name",
+        companyNameLine1: "Sebastijan Aleksandar Kerculj",
+        companyNameLine2: "Putzelf",
+        founderTitle: "Founder and owner",
+        founderName: "Sebastijan Aleksandar Kerculj",
+        purposeTitle: "Corporate purpose",
+        purposeBody: "Exceptional Cleaning Services.",
+        vatTitle: "VAT number",
+        vatValue: "ATU78448967",
+        regNoTitle: "Company registration number",
+        regNoValue: "-",
+        courtTitle: "Commercial Register Court",
+        courtValue: "Vienna Commercial Court, Marxergasse 1a, A-1030 Vienna",
+        hqTitle: "Company headquarters",
+        hqValue: "Simmeringer Hauptstraße 24, 1110 Vienna",
+        contactTitle: "Contact details",
+        phoneLabel: "Phone",
+        phoneValue: "+43 (0)676 6300167",
+        emailLabel: "Email",
+        emailValue: "info@putzelf.com",
+        membership: "Member of the Vienna Economic Chamber, Vienna Commercial Service Providers Section"
+      },
       hero: {
         title: "Professional Cleaning at Your Fingertips",
         subtitle: "Book reliable and affordable cleaning services in just a few clicks.",
         cta: "BOOK HERE"
       },
+      
       services: {
         standard: { title: "Standard Cleaning", desc: "Quick and efficient regular cleaning." },
         deep: { title: "Deep Cleaning", desc: "Detailed cleaning for every corner." },
@@ -112,6 +137,30 @@ const resources = {
         bookNow: "Jetzt Termin buchen",
         phone: "+43 667 3302277",
         email: "office@putzelf.com"
+      },
+      imprint: {
+        title: "Impressum",
+        companyNameTitle: "Firmenname",
+        companyNameLine1: "Sebastijan Aleksandar Kerculj",
+        companyNameLine2: "Putzelf",
+        founderTitle: "Gründer und Eigentümer",
+        founderName: "Sebastijan Aleksandar Kerculj",
+        purposeTitle: "Unternehmensgegenstand",
+        purposeBody: "Außergewöhnliche Reinigungsdienste.",
+        vatTitle: "USt-IdNr.",
+        vatValue: "ATU78448967",
+        regNoTitle: "Firmenbuchnummer",
+        regNoValue: "-",
+        courtTitle: "Firmenbuchgericht",
+        courtValue: "Handelsgericht Wien, Marxergasse 1a, A-1030 Wien",
+        hqTitle: "Firmensitz",
+        hqValue: "Simmeringer Hauptstraße 24, 1110 Wien",
+        contactTitle: "Kontaktdaten",
+        phoneLabel: "Telefon",
+        phoneValue: "+43 (0)676 6300167",
+        emailLabel: "E-Mail",
+        emailValue: "info@putzelf.com",
+        membership: "Mitglied der Wirtschaftskammer Wien, Fachgruppe Gewerbliche Dienstleister"
       },
       hero: {
         title: "Professionelle Reinigung auf Knopfdruck",

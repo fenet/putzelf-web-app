@@ -67,20 +67,31 @@ export default function Footer() {
         Connect
       </h4>
       <div className="flex space-x-4 mb-6">
-        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+        <a href="https://www.instagram.com/putzelf11/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
           <Instagram className="w-5 h-5" />
         </a>
-        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+        <a href="https://www.facebook.com/profile.php?id=61580613673114" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
           <Facebook className="w-5 h-5" />
         </a>
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+        <a href="https://www.linkedin.com/in/putz-elf-wien1110/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
           <Linkedin className="w-5 h-5" />
         </a>
       </div>
 
       <div className="flex flex-col space-y-2 text-sm">
-        <Link to="/terms" className="hover:text-gray-900 transition-colors">AGB</Link>
-        <Link to="/privacy" className="hover:text-gray-900 transition-colors">Datenschutz</Link>
+        <ul className="space-y-2 text-sm">
+        <li>
+          <a href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf" download className="hover:text-gray-900 transition-colors">
+            AGB
+          </a>
+        </li>
+        <li>
+          <a href="/files/Datenschutzbestimmungen.pdf" download className="hover:text-gray-900 transition-colors">
+            Datenschutz
+          </a>
+        </li>
+        </ul>
+        
         <Link to="/imprint" className="hover:text-gray-900 transition-colors">Impressum</Link>
       </div>
     </div>
