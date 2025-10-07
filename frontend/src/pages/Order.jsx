@@ -66,11 +66,11 @@ export default function Order() {
         {/* Order Summary */}
         <div className="bg-white p-8 rounded-2xl shadow-lg border border-[#e0f7f7]">
           <h2 className="text-2xl font-bold text-[#5be3e3] mb-6">{t('order.summary')}</h2>
-          <div className="grid grid-cols-2 gap-4 text-gray-700">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 break-words">
             <p><strong>{t('order.date')}:</strong> {booking.date}</p>
             <p><strong>{t('order.time')}:</strong> {booking.time}</p>
-            <p><strong>{t('order.cleaningType')}:</strong> {booking.typeOfCleaning}</p>
-            <p><strong>{t('order.duration')}:</strong> {booking.duration} {t('order.durationUnit')}</p>
+            <p className="min-w-0"><strong>{t('order.cleaningType')}:</strong> <span className="break-words whitespace-normal">{booking.typeOfCleaning}</span></p>
+            <p className="min-w-0"><strong>{t('order.duration')}:</strong> <span className="break-words whitespace-normal">{booking.duration} {t('order.durationUnit')}</span></p>
             <p><strong>{t('order.price')}:</strong> {booking.price}€</p>
           </div>
          </div>

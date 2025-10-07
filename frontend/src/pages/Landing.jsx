@@ -268,7 +268,7 @@ export default function Landing() {
       <ul className="space-y-2 text-sm">
         <li>
           <a href="/files/Datenschutzblat.pdf" download className="hover:text-gray-900 transition-colors">
-            Datenschutzblat
+            Datenschutzblatt
           </a>
         </li>
         <li>

@@ -203,7 +203,7 @@ const resources = {
         gdprPrefix: "Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäß ",
         gdprLink: "Datenschutzerklärung (DSGVO)",
         confirming: "Wird bestätigt...",
-        confirmBtn: "Buchung bestätigen",
+        confirmBtn: "Buchung anfragen",
         confirmedTitle: "Buchung bestätigt ✅",
         confirmedMsg: "Eine Bestätigungs-E-Mail wurde an {{email}} gesendet.",
         errorPrefix: ""
