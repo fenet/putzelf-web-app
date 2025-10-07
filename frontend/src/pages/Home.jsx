@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { trackEvent } from "../lib/analytics";
-import { apiFetch } from "../lib/api";
+import { apiFetch, parseJsonSafe } from "../lib/api";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -19,20 +19,16 @@ export default function Home() {
 
   // Helper to get hourly rate based on cleaning type
   const getHourlyRate = (typeOfCleaning) => {
-    const premiumTypes = ["Intensive Cleaning", "Window Cleaning", "Moving Cleaning"];
-    return premiumTypes.includes(typeOfCleaning) ? 42 : 36;
+    // Single base rate
+    return 30;
   };
 
   const [calculatedPrice, setCalculatedPrice] = useState(getHourlyRate(form.typeOfCleaning) * 3);
 
   const cleaningTypes = [
     { key: "standard", emoji: "✨" },
-    { key: "window", emoji: "🪟" },
     { key: "office", emoji: "🏢" },
-    { key: "spring", emoji: "🌸" },
-    { key: "moving", emoji: "🚚" },
-    { key: "intensive", emoji: "🔥" },
-    { key: "apartment", emoji: "🏠" },
+    { key: "apartmentHotel", emoji: "🏨" },
   ];
 
   const handleChange = (e) => {
@@ -102,10 +98,10 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to create booking");
-      try { trackEvent('Booking_Created', { bookingId: data.id, service_type: form.typeOfCleaning, price: calculatedPrice }); } catch (_) {}
-      navigate(`/order/${data.id}`);
+      const data = await parseJsonSafe(res);
+      if (!res.ok) throw new Error((data && data.error) || "Failed to create booking");
+      try { trackEvent('Booking_Created', { bookingId: data?.id, service_type: form.typeOfCleaning, price: calculatedPrice }); } catch (_) {}
+      navigate(`/order/${data?.id}`);
     } catch (err) {
       console.error(err);
       alert(t('home.alerts.createError', { msg: err.message || 'unknown' }));
@@ -143,6 +139,15 @@ export default function Home() {
                 );
               })}
             </div>
+            {/* Selected service description */}
+            {(() => {
+              const selectedEntry = cleaningTypes.find(({ key }) => t(`home.types.${key}`) === form.typeOfCleaning);
+              if (!selectedEntry) return null;
+              const description = t(`home.descriptions.${selectedEntry.key}`);
+              return (
+                <p className="mt-3 text-sm text-gray-700">{description}</p>
+              );
+            })()}
           </div>
 
           <div>
@@ -213,7 +218,7 @@ export default function Home() {
             <p className="font-extrabold text-4xl md:text-6xl" style={{ color: "#0097b2" }}>
               €{(calculatedPrice || 0).toFixed(2)}
             </p>
-            <p className="text-xs text-gray-500 mt-2">{t('home.rate', { rate: getHourlyRate(form.typeOfCleaning) })}</p>
+            <p className="text-xs text-gray-500 mt-2">Rate: €25/hour + 20% tax</p>
           </div>
 
           <button

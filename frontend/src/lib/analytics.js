@@ -82,7 +82,7 @@ export function trackEvent(eventName, params = {}) {
     if (window.fbq && fbId) {
       // Use Meta's recommended event names for better tracking
       const metaEventName = getMetaEventName(eventName);
-      const metaParams = getMetaParams(eventName, params);
+      const metaParams = getMetaParams(metaEventName, eventName, params);
       window.fbq('track', metaEventName, metaParams);
       
       // Debug logging for development
@@ -107,19 +107,21 @@ export function trackEvent(eventName, params = {}) {
 // Map custom events to Meta's standard events for better tracking
 function getMetaEventName(eventName) {
   const eventMap = {
-    // Lead events for booking actions
-    'Navbar_Book_Click': 'Lead',
-    'Landing_CTA_Click': 'Lead',
-    'Service_Standard_Click': 'Lead',
-    'Service_Deep_Click': 'Lead',
-    'Service_Office_Click': 'Lead',
-    'Service_Office_Premium_Click': 'Lead',
-    'Service_Home_Click': 'Lead',
-    'Service_Type_Selected': 'Lead',
-    'Booking_Form_Submit': 'Lead',
-    'Booking_Created': 'Lead',
+    // Only fire Meta Lead on the final confirm booking action
     'Order_Submit_Click': 'Lead',
-    'Confirmation_View': 'Lead',
+
+    // Non-lead events map to generic content views
+    'Navbar_Book_Click': 'ViewContent',
+    'Landing_CTA_Click': 'ViewContent',
+    'Service_Standard_Click': 'ViewContent',
+    'Service_Deep_Click': 'ViewContent',
+    'Service_Office_Click': 'ViewContent',
+    'Service_Office_Premium_Click': 'ViewContent',
+    'Service_Home_Click': 'ViewContent',
+    'Service_Type_Selected': 'ViewContent',
+    'Booking_Form_Submit': 'ViewContent',
+    'Booking_Created': 'ViewContent',
+    'Confirmation_View': 'ViewContent',
     // Contact events
     'Contact_Phone_Click': 'Contact',
     'Contact_Email_Click': 'Contact',
@@ -135,24 +137,19 @@ function getMetaEventName(eventName) {
   return eventMap[eventName] || 'ViewContent';
 }
 
-// Format parameters for Meta events
-function getMetaParams(eventName, params) {
+// Format parameters for Meta events; only add lead fields when metaEventName is 'Lead'
+function getMetaParams(metaEventName, eventName, params) {
   const baseParams = {
     content_name: eventName,
     content_category: 'cleaning_services',
     ...params
   };
 
-  // Add specific Meta parameters for Lead events
-  if (eventName.includes('Service_') || eventName.includes('Book_') || eventName.includes('Order_') || eventName.includes('Confirmation_')) {
-    baseParams.value = 0; // You can set actual service values here
+  if (metaEventName === 'Lead') {
+    baseParams.value = 0; // Optionally set actual value
     baseParams.currency = 'EUR';
     baseParams.content_type = 'service_booking';
     baseParams.lead_type = 'cleaning_service_inquiry';
-  }
-
-  // Add Lead-specific parameters
-  if (eventName.includes('Lead') || eventName.includes('Service_') || eventName.includes('Book_')) {
     baseParams.lead_source = 'website';
     baseParams.lead_quality = 'high_intent';
   }

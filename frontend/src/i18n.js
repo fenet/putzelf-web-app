@@ -83,13 +83,14 @@ const resources = {
         title: "Book Your Cleaning",
         selectType: "Select Cleaning Type",
         types: {
-          standard: "Standard Cleaning",
-          window: "Window Cleaning",
+          standard: "House Cleaning",
           office: "Office Cleaning",
-          spring: "Spring Cleaning",
-          moving: "Moving Cleaning",
-          intensive: "Intensive Cleaning",
-          apartment: "Apartment Cleaning"
+          apartmentHotel: "Apartment / Hotel"
+        },
+        descriptions: {
+          standard: "Regular maintenance clean for homes; surfaces, bathrooms, and floors.",
+          office: "Professional office cleaning tailored to workspaces and common areas.",
+          apartmentHotel: "Detailed clean for apartments and hotel rooms between stays."
         },
         durationLabel: "Hours (min 3)",
         dateLabel: "Date",
@@ -211,18 +212,19 @@ const resources = {
         title: "Reinigung buchen",
         selectType: "Reinigungsart auswählen",
         types: {
-          standard: "Standardreinigung",
-          window: "Fensterreinigung",
+          standard: "Hausreinigung",
           office: "Büroreinigung",
-          spring: "Frühjahrsputz",
-          moving: "Umzugsreinigung",
-          intensive: "Intensivreinigung",
-          apartment: "Wohnungsreinigung"
+          apartmentHotel: "Wohnung / Hotel"
+        },
+        descriptions: {
+          standard: "Regelmäßige Unterhaltsreinigung: Oberflächen, Bäder, Küche, Böden etc",
+          office: "Professionelle Büroreinigung für Arbeitsplätze, Küche, Gemeinschaftsflächen etc",
+          apartmentHotel: "Gruendliche Reinigung nach Check-out und des oeffentlichen Berreiches"
         },
         durationLabel: "Stunden (min 3)",
         dateLabel: "Datum",
         timeLabel: "Uhrzeit",
-        renegotiate: "Bereit zur Neuverhandlung, falls die Arbeit länger dauert",
+        renegotiate: "Wir nehmen zur Kenntniss, dass die Dienstleistung nach tatsächlicher Arbeitszeit verrechnet wird",
         durationHelp: "Mindestbuchung ist 3 Stunden.",
         estimated: "Geschätzter Preis",
         rate: "Preis: €{{rate}}/Stunde",

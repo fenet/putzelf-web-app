@@ -16,8 +16,8 @@ app.use(bodyParser.json());
 
 // Helper: determine hourly rate based on cleaning type
 function getHourlyRate(typeOfCleaning) {
-  const premiumTypes = ["Intensive Cleaning", "Window Cleaning", "Moving Cleaning"];
-  return premiumTypes.includes(typeOfCleaning) ? 42 : 36;
+  // Single base rate across services
+  return 30;
 }
 
 // Health
@@ -49,8 +49,8 @@ app.post("/api/bookings", async (req, res) => {
 
     return res.status(201).json(booking);
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: "Failed to create booking" });
+    console.error('Create booking error:', err && (err.stack || err.message || err));
+    return res.status(500).json({ error: err?.message || "Failed to create booking" });
   }
 });
 

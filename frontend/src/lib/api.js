@@ -20,4 +20,14 @@ export async function apiFetch(path, options = {}) {
   return fetch(url, options);
 }
 
+export async function parseJsonSafe(response) {
+  try {
+    const text = await response.text();
+    if (!text) return null;
+    return JSON.parse(text);
+  } catch (_) {
+    return null;
+  }
+}
+
 
