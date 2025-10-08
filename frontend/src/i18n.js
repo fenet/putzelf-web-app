@@ -87,6 +87,11 @@ const resources = {
           office: "Office Cleaning",
           apartmentHotel: "Apartment / Hotel"
         },
+        subcategories: {
+          title: "Choose Subcategory",
+          intensive: "Intensive",
+          window: "Window"
+        },
         descriptions: {
           standard: "Regular maintenance clean for homes; surfaces, bathrooms, and floors.",
           office: "Professional office cleaning tailored to workspaces and common areas.",
@@ -214,7 +219,12 @@ const resources = {
         types: {
           standard: "Hausreinigung",
           office: "Büroreinigung",
-          apartmentHotel: "Wohnung / Hotel"
+          apartmentHotel: "Apartment / Hotel"
+        },
+        subcategories: {
+          title: "Unterkategorie wählen",
+          intensive: "Intensiv",
+          window: "Fenster"
         },
         descriptions: {
           standard: "Regelmäßige Unterhaltsreinigung: Oberflächen, Bäder, Küche, Böden etc",

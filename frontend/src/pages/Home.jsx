@@ -14,22 +14,45 @@ export default function Home() {
     time: "",
     duration: 3,
     typeOfCleaning: "Standard Cleaning",
+    subcategories: [],
     renegotiate: false,
   });
 
-  // Helper to get hourly rate based on cleaning type
-  const getHourlyRate = (typeOfCleaning) => {
-    // Single base rate
-    return 30;
+  // Helper to get hourly rate based on type and subcategories
+  const getHourlyRate = (typeOfCleaning, subcategories) => {
+    const isHouseCleaning = typeOfCleaning === t('home.types.standard');
+    const isApartmentHotel = typeOfCleaning === t('home.types.apartmentHotel');
+    const isEligible = isHouseCleaning || isApartmentHotel;
+    const count = Array.isArray(subcategories) ? subcategories.length : 0;
+    if (!isEligible || count === 0) return 30; // none
+    if (count === 1) return 42; // one selected
+    return 48; // both selected
   };
 
-  const [calculatedPrice, setCalculatedPrice] = useState(getHourlyRate(form.typeOfCleaning) * 3);
+  const [calculatedPrice, setCalculatedPrice] = useState(getHourlyRate(form.typeOfCleaning, []) * 3);
 
   const cleaningTypes = [
     { key: "standard", emoji: "✨" },
     { key: "office", emoji: "🏢" },
     { key: "apartmentHotel", emoji: "🏨" },
   ];
+
+  // Subcategories available for specific services
+  const premiumSubcategories = [
+    { key: 'intensive', emoji: '🧹' },
+    { key: 'window', emoji: '🪟' },
+  ];
+
+  const shouldShowSubcategories = (() => {
+    const selectedType = form.typeOfCleaning;
+    return selectedType === t('home.types.standard') || selectedType === t('home.types.apartmentHotel');
+  })();
+
+  const getDisplayRate = () => {
+    // For premium subcategories we show €35/hour in the rate text; otherwise €25/hour
+    const hasPremium = shouldShowSubcategories && Array.isArray(form.subcategories) && form.subcategories.length > 0;
+    return hasPremium ? 35 : 25;
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -39,7 +62,7 @@ export default function Home() {
       let hours = Number(updatedValue) || 0;
       if (hours < 3) hours = 3;
       updatedValue = hours;
-      const rate = getHourlyRate(form.typeOfCleaning);
+      const rate = getHourlyRate(form.typeOfCleaning, form.subcategories);
       setCalculatedPrice(hours * rate);
     }
 
@@ -49,7 +72,7 @@ export default function Home() {
   const decrementDuration = () => {
     setForm((prev) => {
       const next = Math.max(3, Number(prev.duration || 0) - 1);
-      const rate = getHourlyRate(prev.typeOfCleaning);
+      const rate = getHourlyRate(prev.typeOfCleaning, prev.subcategories);
       setCalculatedPrice(next * rate);
       return { ...prev, duration: next };
     });
@@ -58,7 +81,7 @@ export default function Home() {
   const incrementDuration = () => {
     setForm((prev) => {
       const next = Number(prev.duration || 0) + 1;
-      const rate = getHourlyRate(prev.typeOfCleaning);
+      const rate = getHourlyRate(prev.typeOfCleaning, prev.subcategories);
       setCalculatedPrice(next * rate);
       return { ...prev, duration: next };
     });
@@ -76,11 +99,25 @@ export default function Home() {
 
   const chooseType = (label) => {
     setForm((prev) => {
-      const rate = getHourlyRate(label);
+      // Reset subcategories on type change
+      const nextSubs = [];
+      const rate = getHourlyRate(label, nextSubs);
       setCalculatedPrice(prev.duration * rate);
-      return { ...prev, typeOfCleaning: label };
+      return { ...prev, typeOfCleaning: label, subcategories: nextSubs };
     });
     try { trackEvent('Service_Type_Selected', { service_type: label, source: 'booking_form' }); } catch (_) {}
+  };
+
+  const chooseSubcategory = (subKey) => {
+    setForm((prev) => {
+      const current = Array.isArray(prev.subcategories) ? prev.subcategories : [];
+      const exists = current.includes(subKey);
+      const nextSubs = exists ? current.filter((k) => k !== subKey) : [...current, subKey];
+      const rate = getHourlyRate(prev.typeOfCleaning, nextSubs);
+      setCalculatedPrice(prev.duration * rate);
+      return { ...prev, subcategories: nextSubs };
+    });
+    try { trackEvent('Service_Subcategory_Toggled', { subcategory: subKey, service_type: form.typeOfCleaning, source: 'booking_form' }); } catch (_) {}
   };
 
   const handleSubmit = async (e) => {
@@ -149,6 +186,30 @@ export default function Home() {
               );
             })()}
           </div>
+          {shouldShowSubcategories && (
+            <div>
+              <h4 className="text-md font-medium mb-2">{t('home.subcategories.title')}</h4>
+              <div className="grid grid-cols-2 gap-3">
+                {premiumSubcategories.map(({ key, emoji }) => {
+                  const selected = Array.isArray(form.subcategories) && form.subcategories.includes(key);
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => chooseSubcategory(key)}
+                      className={`flex items-center justify-center p-3 rounded-lg border transition-shadow ${
+                        selected ? "bg-[#5be3e3] shadow-lg" : "bg-gray-50 hover:shadow"
+                      }`}
+                      aria-pressed={selected}
+                    >
+                      <span className="mr-2" aria-hidden>{emoji}</span>
+                      <span className={`text-sm font-medium ${selected ? "text-black" : "text-gray-800"}`}>{t(`home.subcategories.${key}`)}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           <div>
             <label htmlFor="duration" className="block text-sm font-medium mb-1">{t('home.durationLabel') || 'Hours (min 3)'}</label>
@@ -218,7 +279,7 @@ export default function Home() {
             <p className="font-extrabold text-4xl md:text-6xl" style={{ color: "#0097b2" }}>
               €{(calculatedPrice || 0).toFixed(2)}
             </p>
-            <p className="text-xs text-gray-500 mt-2">Rate: €25/hour + 20% tax</p>
+            <p className="text-xs text-gray-500 mt-2">{t('home.rate', { rate: getDisplayRate() })} + 20% tax</p>
           </div>
 
           <button
