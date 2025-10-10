@@ -231,7 +231,7 @@ const resources = {
           office: "Professionelle Büroreinigung für Arbeitsplätze, Küche, Gemeinschaftsflächen etc",
           apartmentHotel: "Gruendliche Reinigung nach Check-out und des oeffentlichen Berreiches"
         },
-        durationLabel: "Stunden (min 3)",
+        durationLabel: "Geschätzte Arbeitszeit",
         dateLabel: "Datum",
         timeLabel: "Uhrzeit",
         renegotiate: "Wir nehmen zur Kenntniss, dass die Dienstleistung nach tatsächlicher Arbeitszeit verrechnet wird",

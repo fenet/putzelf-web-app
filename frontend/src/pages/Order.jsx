@@ -71,7 +71,7 @@ export default function Order() {
             <p><strong>{t('order.time')}:</strong> {booking.time}</p>
             <p className="min-w-0"><strong>{t('order.cleaningType')}:</strong> <span className="break-words whitespace-normal">{booking.typeOfCleaning}</span></p>
             <p className="min-w-0"><strong>{t('order.duration')}:</strong> <span className="break-words whitespace-normal">{booking.duration} {t('order.durationUnit')}</span></p>
-            <p><strong>{t('order.price')}:</strong> {booking.price}€</p>
+            {/* <p><strong>{t('order.price')}:</strong> {booking.price}€</p> */}
           </div>
          </div>
 

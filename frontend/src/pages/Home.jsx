@@ -3,9 +3,10 @@ import { trackEvent } from "../lib/analytics";
 import { apiFetch, parseJsonSafe } from "../lib/api";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { Gift } from "lucide-react";
 
 export default function Home() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -17,6 +18,8 @@ export default function Home() {
     subcategories: [],
     renegotiate: false,
   });
+
+  const [rewardImageError, setRewardImageError] = useState(false);
 
   // Helper to get hourly rate based on type and subcategories
   const getHourlyRate = (typeOfCleaning, subcategories) => {
@@ -274,12 +277,50 @@ export default function Home() {
             <span>{t('home.renegotiate')}</span>
           </label>
 
-          <div className="p-6 rounded-xl text-center shadow-md" style={{ backgroundColor: "#f8fdfd" }}>
+          <div className="relative">
+            <button
+              type="submit"
+              className="group w-full focus:outline-none"
+              aria-label={(i18n?.language || '').toLowerCase().startsWith('de') ? 'Belohnungsbox öffnen' : 'Open reward box'}
+            >
+              <div className="p-[2px] rounded-2xl bg-gradient-to-r from-[#5be3e3] via-[#48c9c9] to-[#00b3c1] shadow-lg transition-transform duration-200 group-hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-[#5be3e3]/50">
+                <div className="rounded-2xl bg-white text-center px-6 py-8 md:py-10">
+            {/*
             <p className="text-sm text-gray-700 mb-2">{t('home.estimated')}</p>
             <p className="font-extrabold text-4xl md:text-6xl" style={{ color: "#0097b2" }}>
               €{(calculatedPrice || 0).toFixed(2)}
             </p>
             <p className="text-xs text-gray-500 mt-2">{t('home.rate', { rate: getDisplayRate() })} + 20% tax</p>
+            */}
+
+            {(() => {
+              const isGerman = (i18n?.language || '').toLowerCase().startsWith('de');
+              const headline = isGerman
+                ? 'Öffne deine Belohnung, indem du deinen Termin buchst'
+                : 'Open your reward by booking your appointment';
+              const sub = isGerman
+                ? 'Bestätige deine Buchung, um einen besonderen Vorteil freizuschalten.'
+                : 'Confirm your booking to reveal a special perk.';
+              return (
+                <div className="flex flex-col items-center max-w-[34rem] mx-auto">
+                 
+                  <div className="my-4 flex justify-center">
+  <Gift
+    className="h-24 sm:h-28 md:h-36 w-24 sm:w-28 md:w-36 text-[#00b3c1] animate-bounce drop-shadow-lg"
+    strokeWidth={2.5}
+  />
+</div>
+                 <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900">
+                    {headline}
+                  </h3>
+                  
+                 
+                </div>
+              );
+            })()}
+                </div>
+              </div>
+            </button>
           </div>
 
           <button
