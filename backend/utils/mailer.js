@@ -141,11 +141,13 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
           Below are your booking details:
         </p>
         <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Location</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.location || "N/A"}</td></tr>
+          <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Location</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.address || booking.location || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📅 Date</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.date || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏰ Time</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🧹 Cleaning Type</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.typeOfCleaning || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏳ Duration</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} hours</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Phone</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>💬 Renegotiate if longer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.renegotiate ? "Yes" : "No"}</td></tr>
           <tr><td style="padding: 8px;"><strong>💶 Price</strong></td><td style="padding: 8px;">€${(typeof booking.price === "number" ? booking.price.toFixed(2) : booking.price) || "0.00"}</td></tr>
         </table>
