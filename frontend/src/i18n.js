@@ -36,9 +36,31 @@ const resources = {
       hero: {
         title: "Professional Cleaning at Your Fingertips",
         subtitle: "Book reliable and affordable cleaning services in just a few clicks.",
-        cta: "BOOK HERE"
+        cta: "BOOK HERE",
+        jobCta: "Looking for a Job?",
+        jobModalTitle: "Join the Putzelf team",
+        jobModalBody: "Please email us your contact details and application to {{email}}. We’ll get back to you shortly.",
+        jobModalEmailCta: "Send email",
+        jobModalClose: "Close"
       },
-      
+      profile: {
+        title: "Choose your favorite worker",
+        subtitle: "Review our trusted professionals and pick the cleaner who fits your booking best.",
+        choose: "Choose me",
+        rating: "{{rating}} rating · {{reviews}} reviews",
+        workers: {
+          amelia: "Amelia K.",
+          markus: "Markus L.",
+          selin: "Selin A.",
+          leon: "Leon M.",
+          maria: "Maria S.",
+          yusuf: "Yusuf T.",
+          sofia: "Sofia P.",
+          jakob: "Jakob R.",
+          noemi: "Noemi F.",
+          anna: "Anna D."
+        }
+      },
       services: {
         standard: { title: "Standard Cleaning", desc: "Quick and efficient regular cleaning." },
         deep: { title: "Deep Cleaning", desc: "Detailed cleaning for every corner." },
@@ -168,10 +190,33 @@ const resources = {
         emailValue: "info@putzelf.com",
         membership: "Mitglied der Wirtschaftskammer Wien, Fachgruppe Gewerbliche Dienstleister"
       },
+      profile: {
+        title: "Wählen Sie Ihren Lieblingsmitarbeiter",
+        subtitle: "Überprüfen Sie unsere vertrauenswürdigen Fachkräfte und wählen Sie die Reinigungskraft, die am besten zu Ihrer Buchung passt.",
+        choose: "Wähle mich",
+        rating: "{{rating}} Bewertung · {{reviews}} Bewertungen",
+        workers: {
+        amelia: "Amelia K.",
+        markus: "Markus L.",
+        selin: "Selin A.",
+        leon: "Leon M.",
+        maria: "Maria S.",
+        yusuf: "Yusuf T.",
+        sofia: "Sofia P.",
+        jakob: "Jakob R.",
+        noemi: "Noemi F.",
+        anna: "Anna D."
+        }
+      },
       hero: {
         title: "Professionelle Reinigung auf Knopfdruck",
         subtitle: "Buchen Sie zuverlässige und preiswerte Reinigungen in wenigen Klicks.",
-        cta: "JETZT BUCHEN"
+        cta: "JETZT BUCHEN",
+        jobCta: "Auf Jobsuche?",
+        jobModalTitle: "Werde Teil des Putzelf-Teams",
+        jobModalBody: "Bitte senden Sie uns Ihre Kontaktdaten und Bewerbung an {{email}}. Wir melden uns in Kürze.",
+        jobModalEmailCta: "E-Mail senden",
+        jobModalClose: "Schließen"
       },
       services: {
         standard: { title: "Standardreinigung", desc: "Schnelle und effiziente Regelreinigung." },

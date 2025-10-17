@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Order from "./pages/Order";
 import Search from "./pages/Search";
 import Imprint from "./pages/Imprint";
+import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
 import LogoHeader from "./components/LogoHeader";
 
@@ -61,6 +62,14 @@ export default function App() {
         element={
           <Layout>
             <Search />
+          </Layout>
+        }
+      />
+      <Route
+        path="/profile/:orderId"
+        element={
+          <Layout>
+            <Profile />
           </Layout>
         }
       />

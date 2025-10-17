@@ -141,7 +141,7 @@ export default function Home() {
       const data = await parseJsonSafe(res);
       if (!res.ok) throw new Error((data && data.error) || "Failed to create booking");
       try { trackEvent('Booking_Created', { bookingId: data?.id, service_type: form.typeOfCleaning, price: calculatedPrice }); } catch (_) {}
-      navigate(`/order/${data?.id}`);
+      navigate(`/profile/${data?.id}`);
     } catch (err) {
       console.error(err);
       alert(t('home.alerts.createError', { msg: err.message || 'unknown' }));
