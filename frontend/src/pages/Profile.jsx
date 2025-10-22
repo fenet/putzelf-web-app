@@ -51,10 +51,10 @@ export default function Profile() {
 
   const workers = [
     { id: "agnesC", name: "Agnes C.", rating: 4.96, reviews: 182 },
-    { id: "kaldesalC", name: "Kaldesal C.", rating: 4.9, reviews: 128 },
+    { id: "kaldesalC", name: "Kalderal C.", rating: 4.9, reviews: 128 },
     { id: "dobrilaN", name: "Dobrila N.", rating: 4.85, reviews: 97 },
     { id: "chirstyM", name: "Chirsty M.", rating: 4.93, reviews: 175 },
-    { id: "eojleceT", name: "Eojlece T.", rating: 4.92, reviews: 143 },
+    { id: "eojleceT", name: "Erika T.", rating: 4.92, reviews: 143 },
   ];
 
   return (
