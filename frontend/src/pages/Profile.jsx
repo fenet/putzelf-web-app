@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { trackEvent } from "../lib/analytics";
-import { Phone, Mail, Star, Instagram, Facebook, Linkedin } from "lucide-react";
+import { Phone, Mail, Star } from "lucide-react";
 import logo from "../assets/logo.png";
 
 export default function Profile() {
@@ -50,16 +50,11 @@ export default function Profile() {
   };
 
   const workers = [
-    { id: "amelia", rating: 4.9, reviews: 128 },
-    { id: "markus", rating: 4.8, reviews: 102 },
-    { id: "selin", rating: 4.95, reviews: 156 },
-    { id: "leon", rating: 4.7, reviews: 88 },
-    { id: "maria", rating: 4.92, reviews: 143 },
-    { id: "yusuf", rating: 4.85, reviews: 97 },
-    { id: "sofia", rating: 4.93, reviews: 175 },
-    { id: "jakob", rating: 4.78, reviews: 64 },
-    { id: "noemi", rating: 4.9, reviews: 119 },
-    { id: "anna", rating: 4.96, reviews: 182 },
+    { id: "agnesC", name: "Agnes C.", rating: 4.96, reviews: 182 },
+    { id: "kaldesalC", name: "Kaldesal C.", rating: 4.9, reviews: 128 },
+    { id: "dobrilaN", name: "Dobrila N.", rating: 4.85, reviews: 97 },
+    { id: "chirstyM", name: "Chirsty M.", rating: 4.93, reviews: 175 },
+    { id: "eojleceT", name: "Eojlece T.", rating: 4.92, reviews: 143 },
   ];
 
   return (
@@ -180,8 +175,9 @@ export default function Profile() {
             >
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-semibold text-[#000000]">
-                  {t(`profile.workers.${worker.id}`)}
+                  {worker.name.toUpperCase()}
                 </h2>
+                
                 <span className="flex items-center text-[#facc15] font-semibold">
                   <Star size={20} className="fill-[#facc15] text-[#facc15] mr-1" />
                   {worker.rating.toFixed(2)}
@@ -204,152 +200,6 @@ export default function Profile() {
           ))}
         </section>
       </main>
-
-      <footer className="bg-white text-gray-700 mt-auto border-t border-gray-200">
-        <div className="container mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              Mitarbeiter
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href="/files/Datenschutzblat.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  Datenschutzblatt
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/files/Dienstliste.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  Dienstliste
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/files/Stammdatenblatt.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  Stammdatenblatt
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/files/Urlaubsschein_Zeitausgleich.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  Urlaubsschein / Zeitausgleich
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              Partner
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href="/files/Partnerantrag.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  Partnerantrag
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/files/Dienstleistungsvertrag.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  Dienstleistungsvertrag
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/files/Subvertrag.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  Subvertrag
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              Connect
-            </h4>
-            <div className="flex space-x-4 mb-6">
-              <a
-                href="https://www.instagram.com/putzelf11/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-900 transition-colors"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://www.facebook.com/profile.php?id=61580613673114"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-900 transition-colors"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/putz-elf-wien1110/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-900 transition-colors"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-            </div>
-
-            <div className="flex flex-col space-y-2 text-sm">
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a
-                    href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf"
-                    download
-                    className="hover:text-gray-900 transition-colors"
-                  >
-                    AGB
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/files/Datenschutzbestimmungen.pdf"
-                    download
-                    className="hover:text-gray-900 transition-colors"
-                  >
-                    Datenschutz
-                  </a>
-                </li>
-              </ul>
-
-              <Link to="/imprint" className="hover:text-gray-900 transition-colors">
-                Impressum
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-200 mt-8 py-4 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} Putzelf — Alle Rechte vorbehalten.
-        </div>
-      </footer>
 
       {showBanner && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
