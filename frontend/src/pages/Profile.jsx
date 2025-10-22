@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { trackEvent } from "../lib/analytics";
 import { Phone, Mail, Star, Instagram, Facebook, Linkedin } from "lucide-react";
 import logo from "../assets/logo.png";
@@ -8,12 +8,7 @@ import logo from "../assets/logo.png";
 export default function Profile() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const { orderId } = useParams();
   const [showBanner, setShowBanner] = useState(false);
-
-  useEffect(() => {
-    if (!orderId) navigate("/book", { replace: true });
-  }, [orderId, navigate]);
 
   useEffect(() => {
     const storedConsent = localStorage.getItem("cookieConsent");
@@ -35,14 +30,23 @@ export default function Profile() {
     localStorage.setItem("cookieConsent", "true");
     localStorage.setItem("cookieConsentTime", Date.now().toString());
     setShowBanner(false);
-    window.dispatchEvent(new CustomEvent("consentChanged", { detail: { consent: true } }));
+    window.dispatchEvent(
+      new CustomEvent("consentChanged", { detail: { consent: true } })
+    );
   };
 
   const declineCookies = () => {
     localStorage.setItem("cookieConsent", "false");
     localStorage.setItem("cookieConsentTime", Date.now().toString());
     setShowBanner(false);
-    window.dispatchEvent(new CustomEvent("consentChanged", { detail: { consent: false } }));
+    window.dispatchEvent(
+      new CustomEvent("consentChanged", { detail: { consent: false } })
+    );
+  };
+
+  const handleSelectWorker = (workerId) => {
+    trackEvent("Profile_Select_Worker", { workerId });
+    navigate(`/book?worker=${workerId}`);
   };
 
   const workers = [
@@ -55,7 +59,7 @@ export default function Profile() {
     { id: "sofia", rating: 4.93, reviews: 175 },
     { id: "jakob", rating: 4.78, reviews: 64 },
     { id: "noemi", rating: 4.9, reviews: 119 },
-    { id: "anna", rating: 4.96, reviews: 182 }
+    { id: "anna", rating: 4.96, reviews: 182 },
   ];
 
   return (
@@ -63,50 +67,84 @@ export default function Profile() {
       <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center space-x-3 md:space-x-6 min-w-0">
-                        <Link to="/" className="shrink-0" aria-label={t("nav.home")}>
+            <Link
+              to="/"
+              className="shrink-0"
+              aria-label={t("nav.home", { defaultValue: "Home" })}
+            >
               <img src={logo} alt={t("alt.logo")} className="h-12 md:h-20 w-auto" />
             </Link>
             <a
               href="tel:+436673302277"
               className="flex flex-col items-center text-[#0097b2] font-semibold hover:underline"
               aria-label="Call us"
-              onClick={() => trackEvent("Contact_Phone_Click", { contact_method: "phone", source: "navbar" })}
+              onClick={() =>
+                trackEvent("Contact_Phone_Click", {
+                  contact_method: "phone",
+                  source: "navbar",
+                })
+              }
             >
               <Phone size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
-              <span className="hidden md:inline text-base text-gray-700">+43 667 3302277</span>
+              <span className="hidden md:inline text-base text-gray-700">
+                +43 667 3302277
+              </span>
             </a>
             <a
               href="mailto:office@putzelf.com"
               className="flex flex-col items-center text-[#5be3e3] font-semibold hover:underline"
               aria-label="Email us"
-              onClick={() => trackEvent("Contact_Email_Click", { contact_method: "email", source: "navbar" })}
+              onClick={() =>
+                trackEvent("Contact_Email_Click", {
+                  contact_method: "email",
+                  source: "navbar",
+                })
+              }
             >
               <Mail size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
-              <span className="hidden md:inline text-base text-gray-700">office@putzelf.com</span>
+              <span className="hidden md:inline text-base text-gray-700">
+                office@putzelf.com
+              </span>
             </a>
           </div>
 
           <div className="flex items-center gap-2 md:gap-3 shrink-0">
-           
+            <Link
+              to="/book"
+              className="hidden md:block bg-[#0097b2] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-lg font-semibold shadow-md animate-pulse-button whitespace-nowrap"
+              onClick={() =>
+                trackEvent("Navbar_Book_Click", { source: "navbar_desktop" })
+              }
+            >
+              {t("nav.bookNow")}
+            </Link>
             <button
               onClick={() => i18n.changeLanguage("en")}
               title="English"
               aria-label="Switch to English"
               className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border text-sm md:text-base hover:bg-gray-50 ${
-                i18n.language && i18n.language.startsWith("en") ? "ring-2 ring-[#0097b2]" : ""
+                i18n.language && i18n.language.startsWith("en")
+                  ? "ring-2 ring-[#0097b2]"
+                  : ""
               }`}
             >
-              <span role="img" aria-label="English flag">🇬🇧</span>
+              <span role="img" aria-label="English flag">
+                🇬🇧
+              </span>
             </button>
             <button
               onClick={() => i18n.changeLanguage("de")}
               title="Deutsch"
               aria-label="Auf Deutsch umschalten"
               className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border text-sm md:text-base hover:bg-gray-50 ${
-                i18n.language && i18n.language.startsWith("de") ? "ring-2 ring-[#0097b2]" : ""
+                i18n.language && i18n.language.startsWith("de")
+                  ? "ring-2 ring-[#0097b2]"
+                  : ""
               }`}
             >
-              <span role="img" aria-label="German flag">🇩🇪</span>
+              <span role="img" aria-label="German flag">
+                🇩🇪
+              </span>
             </button>
           </div>
 
@@ -114,7 +152,9 @@ export default function Profile() {
             <Link
               to="/book"
               className="bg-[#0097b2] text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md animate-pulse-button whitespace-nowrap"
-              onClick={() => trackEvent("Navbar_Book_Click", { source: "navbar_mobile" })}
+              onClick={() =>
+                trackEvent("Navbar_Book_Click", { source: "navbar_mobile" })
+              }
             >
               {t("nav.bookNow")}
             </Link>
@@ -124,7 +164,9 @@ export default function Profile() {
 
       <main className="max-w-6xl mx-auto px-6 pt-32 md:pt-20 pb-16 flex-1 w-full">
         <header className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-[#000000]">{t("profile.title")}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-[#000000]">
+            {t("profile.title")}
+          </h1>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
             {t("profile.subtitle")}
           </p>
@@ -146,14 +188,14 @@ export default function Profile() {
                 </span>
               </div>
               <p className="text-sm text-gray-500">
-                {t("profile.rating", { rating: worker.rating.toFixed(2), reviews: worker.reviews })}
+                {t("profile.rating", {
+                  rating: worker.rating.toFixed(2),
+                  reviews: worker.reviews,
+                })}
               </p>
               <button
                 type="button"
-                onClick={() => {
-                  trackEvent("Profile_Select_Worker", { workerId: worker.id, orderId });
-                  navigate(`/order/${orderId}`);
-                }}
+                onClick={() => handleSelectWorker(worker.id)}
                 className="mt-auto inline-flex items-center justify-center bg-gradient-to-r from-[#5be3e3] via-[#0097b2] to-[#48c6ef] text-white font-semibold px-4 py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition"
               >
                 {t("profile.choose")}
@@ -171,22 +213,38 @@ export default function Profile() {
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/files/Datenschutzblat.pdf" download className="hover:text-gray-900 transition-colors">
+                <a
+                  href="/files/Datenschutzblat.pdf"
+                  download
+                  className="hover:text-gray-900 transition-colors"
+                >
                   Datenschutzblatt
                 </a>
               </li>
               <li>
-                <a href="/files/Dienstliste.pdf" download className="hover:text-gray-900 transition-colors">
+                <a
+                  href="/files/Dienstliste.pdf"
+                  download
+                  className="hover:text-gray-900 transition-colors"
+                >
                   Dienstliste
                 </a>
               </li>
               <li>
-                <a href="/files/Stammdatenblatt.pdf" download className="hover:text-gray-900 transition-colors">
+                <a
+                  href="/files/Stammdatenblatt.pdf"
+                  download
+                  className="hover:text-gray-900 transition-colors"
+                >
                   Stammdatenblatt
                 </a>
               </li>
               <li>
-                <a href="/files/Urlaubsschein_Zeitausgleich.pdf" download className="hover:text-gray-900 transition-colors">
+                <a
+                  href="/files/Urlaubsschein_Zeitausgleich.pdf"
+                  download
+                  className="hover:text-gray-900 transition-colors"
+                >
                   Urlaubsschein / Zeitausgleich
                 </a>
               </li>
@@ -199,17 +257,29 @@ export default function Profile() {
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/files/Partnerantrag.pdf" download className="hover:text-gray-900 transition-colors">
+                <a
+                  href="/files/Partnerantrag.pdf"
+                  download
+                  className="hover:text-gray-900 transition-colors"
+                >
                   Partnerantrag
                 </a>
               </li>
               <li>
-                <a href="/files/Dienstleistungsvertrag.pdf" download className="hover:text-gray-900 transition-colors">
+                <a
+                  href="/files/Dienstleistungsvertrag.pdf"
+                  download
+                  className="hover:text-gray-900 transition-colors"
+                >
                   Dienstleistungsvertrag
                 </a>
               </li>
               <li>
-                <a href="/files/Subvertrag.pdf" download className="hover:text-gray-900 transition-colors">
+                <a
+                  href="/files/Subvertrag.pdf"
+                  download
+                  className="hover:text-gray-900 transition-colors"
+                >
                   Subvertrag
                 </a>
               </li>
@@ -221,13 +291,28 @@ export default function Profile() {
               Connect
             </h4>
             <div className="flex space-x-4 mb-6">
-              <a href="https://www.instagram.com/putzelf11/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+              <a
+                href="https://www.instagram.com/putzelf11/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-900 transition-colors"
+              >
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://www.facebook.com/profile.php?id=61580613673114" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+              <a
+                href="https://www.facebook.com/profile.php?id=61580613673114"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-900 transition-colors"
+              >
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://www.linkedin.com/in/putz-elf-wien1110/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+              <a
+                href="https://www.linkedin.com/in/putz-elf-wien1110/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-900 transition-colors"
+              >
                 <Linkedin className="w-5 h-5" />
               </a>
             </div>
@@ -235,18 +320,28 @@ export default function Profile() {
             <div className="flex flex-col space-y-2 text-sm">
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf" download className="hover:text-gray-900 transition-colors">
+                  <a
+                    href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf"
+                    download
+                    className="hover:text-gray-900 transition-colors"
+                  >
                     AGB
                   </a>
                 </li>
                 <li>
-                  <a href="/files/Datenschutzbestimmungen.pdf" download className="hover:text-gray-900 transition-colors">
+                  <a
+                    href="/files/Datenschutzbestimmungen.pdf"
+                    download
+                    className="hover:text-gray-900 transition-colors"
+                  >
                     Datenschutz
                   </a>
                 </li>
               </ul>
 
-              <Link to="/imprint" className="hover:text-gray-900 transition-colors">Impressum</Link>
+              <Link to="/imprint" className="hover:text-gray-900 transition-colors">
+                Impressum
+              </Link>
             </div>
           </div>
         </div>
@@ -270,7 +365,10 @@ export default function Profile() {
               <button
                 onClick={() => {
                   declineCookies();
-                  trackEvent("Cookie_Decline_Click", { consent: false, source: "banner" });
+                  trackEvent("Cookie_Decline_Click", {
+                    consent: false,
+                    source: "banner",
+                  });
                 }}
                 className="bg-gray-300 text-black px-6 py-2 rounded-md font-semibold hover:opacity-90 transition"
               >
@@ -279,7 +377,10 @@ export default function Profile() {
               <button
                 onClick={() => {
                   acceptCookies();
-                  trackEvent("Cookie_Accept_Click", { consent: true, source: "banner" });
+                  trackEvent("Cookie_Accept_Click", {
+                    consent: true,
+                    source: "banner",
+                  });
                 }}
                 className="bg-[#5be3e3] text-black px-6 py-2 rounded-md font-semibold hover:opacity-90 transition"
               >

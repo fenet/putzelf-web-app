@@ -130,6 +130,18 @@ const resources = {
         alerts: {
           missing: "Please fill date, time and select a cleaning type.",
           createError: "Error creating booking: {{msg}}"
+        },
+        alerts: {
+          missing: "Please fill date, time and select a cleaning type.",
+          createError: "Error creating booking: {{msg}}",
+          noWorker: "Please choose your cleaner before completing the booking."
+        },
+        selectedWorker: {
+          label: "Your cleaner",
+          selected: "{{name}} is ready to help.",
+          change: "Choose a different cleaner",
+          missing: "You haven't selected a cleaner yet.",
+          choose: "Select your cleaner"
         }
       },
       order: {
@@ -287,6 +299,18 @@ const resources = {
         alerts: {
           missing: "Bitte Datum, Uhrzeit ausfüllen und eine Reinigungsart wählen.",
           createError: "Fehler bei der Erstellung der Buchung: {{msg}}"
+        },
+        alerts: {
+          missing: "Bitte Datum, Uhrzeit ausfüllen und eine Reinigungsart wählen.",
+          createError: "Fehler bei der Erstellung der Buchung: {{msg}}",
+          noWorker: "Bitte wähle deine Reinigungskraft, bevor du die Buchung abschließt."
+        },
+        selectedWorker: {
+          label: "Deine Reinigungskraft",
+          selected: "{{name}} ist bereit zu helfen.",
+          change: "Andere Reinigungskraft wählen",
+          missing: "Du hast noch keine Reinigungskraft ausgewählt.",
+          choose: "Reinigungskraft auswählen"
         }
       },
       order: {

@@ -65,14 +65,14 @@ export default function App() {
           </Layout>
         }
       />
-      <Route
-        path="/profile/:orderId"
-        element={
-          <Layout>
-            <Profile />
-          </Layout>
+      <Route 
+      path="/profile" 
+      element={
+        <Layout>
+          <Profile />
+        </Layout>
         }
-      />
+      /> 
       <Route
         path="/imprint"
         element={
