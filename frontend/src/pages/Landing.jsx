@@ -56,7 +56,7 @@ export default function Landing() {
               onClick={() => trackEvent("Contact_Phone_Click", { contact_method: "phone", source: "navbar" })}
             >
               <Phone size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
-              <span className="hidden md:inline text-base text-gray-700">+43 667 3302277</span>
+              <span className="hidden md:inline text-base text-gray-700">+43 676 6300167</span>
             </a>
             <a
               href="mailto:office@putzelf.com"

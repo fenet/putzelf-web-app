@@ -54,7 +54,7 @@ export default function Imprint() {
               onClick={() => trackEvent('Contact_Phone_Click', { contact_method: 'phone', source: 'navbar' })}
             >
               <Phone size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
-              <span className="hidden md:inline text-base text-gray-700">+43 667 3302277</span>
+              <span className="hidden md:inline text-base text-gray-700">+43 676 6300167</span>
             </a>
 
             <a
@@ -158,31 +158,31 @@ export default function Imprint() {
       </main>
 
       {/* Footer copied from Landing */}
-      <footer className="bg-white text-gray-700 mt-auto border-t border-gray-200">
-        <div className="container mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+             <footer className="bg-white text-gray-700 mt-auto border-t border-gray-200">
+        <div className="container mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-12">
           <div>
             <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              Mitarbeiter
+              {t("footer.staff.title")}
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="/files/Datenschutzblat.pdf" download className="hover:text-gray-900 transition-colors">
-                  Datenschutzblatt
+                  {t("footer.staff.links.privacySheet")}
                 </a>
               </li>
               <li>
                 <a href="/files/Dienstliste.pdf" download className="hover:text-gray-900 transition-colors">
-                  Dienstliste
+                  {t("footer.staff.links.dutyRoster")}
                 </a>
               </li>
               <li>
                 <a href="/files/Stammdatenblatt.pdf" download className="hover:text-gray-900 transition-colors">
-                  Stammdatenblatt
+                  {t("footer.staff.links.masterData")}
                 </a>
               </li>
               <li>
                 <a href="/files/Urlaubsschein_Zeitausgleich.pdf" download className="hover:text-gray-900 transition-colors">
-                  Urlaubsschein / Zeitausgleich
+                  {t("footer.staff.links.leaveForm")}
                 </a>
               </li>
             </ul>
@@ -190,22 +190,22 @@ export default function Imprint() {
 
           <div>
             <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              Partner
+              {t("footer.partners.title")}
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="/files/Partnerantrag.pdf" download className="hover:text-gray-900 transition-colors">
-                  Partnerantrag
+                  {t("footer.partners.links.partnerApplication")}
                 </a>
               </li>
               <li>
                 <a href="/files/Dienstleistungsvertrag.pdf" download className="hover:text-gray-900 transition-colors">
-                  Dienstleistungsvertrag
+                  {t("footer.partners.links.serviceContract")}
                 </a>
               </li>
               <li>
                 <a href="/files/Subvertrag.pdf" download className="hover:text-gray-900 transition-colors">
-                  Subvertrag
+                  {t("footer.partners.links.subcontract")}
                 </a>
               </li>
             </ul>
@@ -213,36 +213,76 @@ export default function Imprint() {
 
           <div>
             <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              Connect
+              {t("footer.customers.title")}
+            </h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <a href="/files/Dienstleistungsvertrag1.pdf" download className="hover:text-gray-900 transition-colors">
+                  {t("footer.customers.links.cleaningStandards")}
+                </a>
+              </li>
+              <li>
+                <a href="/files/Pricelist.pdf" download className="hover:text-gray-900 transition-colors">
+                  {t("footer.customers.links.priceList")}
+                </a>
+              </li>
+              <li>
+                <a href="/files/Contract.pdf" download className="hover:text-gray-900 transition-colors">
+                  {t("footer.customers.links.serviceContract")}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
+              {t("footer.connect.title")}
             </h4>
             <div className="flex space-x-4 mb-6">
-              <a href="https://www.instagram.com/putzelf11/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+              <a
+                href="https://www.instagram.com/putzelf11/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-900 transition-colors"
+              >
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://www.facebook.com/profile.php?id=61580613673114" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+              <a
+                href="https://www.facebook.com/profile.php?id=61580613673114"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-900 transition-colors"
+              >
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://www.linkedin.com/in/putz-elf-wien1110/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">
+              <a
+                href="https://www.linkedin.com/in/putz-elf-wien1110/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-900 transition-colors"
+              >
                 <Linkedin className="w-5 h-5" />
               </a>
             </div>
 
-           <div className="flex flex-col space-y-2 text-sm">
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf" download className="hover:text-gray-900 transition-colors">
-                AGB
-                </a>
-              </li>
-              <li>
-               <a href="/files/Datenschutzbestimmungen.pdf" download className="hover:text-gray-900 transition-colors">
-                Datenschutz
-                </a>
-              </li>
-            </ul>
-            <Link to="/imprint" className="hover:text-gray-900 transition-colors">Impressum</Link>
-           </div>
+            <div className="flex flex-col space-y-2 text-sm">
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf" download className="hover:text-gray-900 transition-colors">
+                    {t("footer.connect.links.terms")}
+                  </a>
+                </li>
+                <li>
+                  <a href="/files/Datenschutzbestimmungen.pdf" download className="hover:text-gray-900 transition-colors">
+                    {t("footer.connect.links.privacy")}
+                  </a>
+                </li>
+              </ul>
 
+              <Link to="/imprint" className="hover:text-gray-900 transition-colors">
+                {t("footer.connect.links.imprint")}
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -250,6 +290,7 @@ export default function Imprint() {
           © {new Date().getFullYear()} Putzelf — Alle Rechte vorbehalten.
         </div>
       </footer>
+
 
       {/* Cookie Banner */}
       {showBanner && (

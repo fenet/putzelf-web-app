@@ -6,7 +6,7 @@ const resources = {
     translation: {
       nav: {
         bookNow: "Book an Appointment Now",
-        phone: "+43 667 3302277",
+        phone: "+43 676 6300167",
         email: "office@putzelf.com"
       },
       imprint: {
@@ -202,7 +202,7 @@ const resources = {
     translation: {
       nav: {
         bookNow: "Jetzt Termin buchen",
-        phone: "+43 667 3302277",
+        phone: "+43 676 6300167",
         email: "office@putzelf.com"
       },
       imprint: {
