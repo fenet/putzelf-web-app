@@ -84,16 +84,39 @@ const resources = {
         officeCleaning: "Office Cleaning"
       },
       footer: {
-        employee: "Employee",
-        employeeHandbook: "Employee Handbook",
-        policies: "Policies",
-        terms: "Terms & Conditions",
-        privacy: "Privacy Policy",
-        imprint: "Imprint",
-        copyright: "© {{year}} putzELF. All rights reserved.",
-        partner: "Partner",
-        partnerGuide: "Partner Guide",
-        contractTemplate: "Contract Template"
+        staff: {
+            title: "Employees",
+            links: {
+              privacySheet: "Privacy Sheet",
+              dutyRoster: "Duty Roster",
+              masterData: "Master Data Sheet",
+              leaveForm: "Leave / Comp Time"
+            }
+          },
+          partners: {
+            title: "Partners",
+            links: {
+              partnerApplication: "Partner Application",
+              serviceContract: "Service Agreement",
+              subcontract: "Subcontract"
+            }
+          },
+          customers: {
+            title: "Customers",
+            links: {
+              serviceContract: "Service Contract",
+              cleaningStandards: "Cleaning Standards",
+              priceList: "Price List"
+            }
+          },
+          connect: {
+            title: "Connect",
+            links: {
+              terms: "Terms & Conditions",
+              privacy: "Privacy Policy",
+              imprint: "Imprint"
+            }
+          }
       },
       cookies: {
         msg: "We use cookies to improve your experience. By using our site, you agree to our ",
@@ -158,9 +181,13 @@ const resources = {
         placeholders: {
           name: "Full name",
           email: "Email",
-          address: "Street & House No.",
+          address: "Street name & House Number",
           phone: "Phone"
         },
+        errors: {
+            invalidEmail: "Please enter a valid email address.",
+            invalidPhone: "Please enter a valid phone number including country code."
+          },
         gdprPrefix: "I agree to the processing of my personal data in accordance with the ",
         gdprLink: "Privacy Policy (GDPR)",
         confirming: "Confirming...",
@@ -253,16 +280,39 @@ const resources = {
         officeCleaning: "Büroreinigung"
       },
       footer: {
-        employee: "Mitarbeiter",
-        employeeHandbook: "Mitarbeiterhandbuch",
-        policies: "Richtlinien",
-        terms: "Allgemeine Geschäftsbedingungen",
-        privacy: "Datenschutzerklärung",
-        imprint: "Impressum",
-        copyright: "© {{year}} putzELF. Alle Rechte vorbehalten.",
-        partner: "Partner",
-        partnerGuide: "Partnerleitfaden",
-        contractTemplate: "Vertragsvorlage"
+        staff: {
+            title: "Mitarbeiter",
+            links: {
+              privacySheet: "Datenschutzblatt",
+              dutyRoster: "Dienstliste",
+              masterData: "Stammdatenblatt",
+              leaveForm: "Urlaubsschein / Zeitausgleich"
+            }
+          },
+          partners: {
+            title: "Partner",
+            links: {
+              partnerApplication: "Partnerantrag",
+              serviceContract: "Dienstleistungsvertrag",
+              subcontract: "Subvertrag"
+            }
+          },
+          customers: {
+            title: "Kunden",
+            links: {
+              serviceContract: "Servicevertrag",
+              cleaningStandards: "Reinigungsstandards",
+              priceList: "Preisliste"
+            }
+          },
+          connect: {
+            title: "Connect",
+            links: {
+              terms: "AGB",
+              privacy: "Datenschutz",
+              imprint: "Impressum"
+            }
+          }
       },
       cookies: {
         msg: "Wir verwenden Cookies, um Ihr Erlebnis zu verbessern. Durch die Nutzung unserer Website stimmen Sie unserer ",
@@ -327,9 +377,13 @@ const resources = {
         placeholders: {
           name: "Vollständiger Name",
           email: "E-Mail",
-          address: "Straße & Hausnummer",
+          address: "Straße & Hausnummer", 
           phone: "Telefon"
         },
+        errors: {
+            invalidEmail: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+            invalidPhone: "Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein."
+          },
         gdprPrefix: "Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäß ",
         gdprLink: "Datenschutzerklärung (DSGVO)",
         confirming: "Wird bestätigt...",

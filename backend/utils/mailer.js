@@ -122,11 +122,10 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
     console.error("❌ Booking object invalid: missing recipient (to).", to);
     throw new Error("Missing recipient (to).");
   }
-  if (!booking || !booking.date || !booking.time) {
-    console.error("❌ Booking object invalid, cannot send email:", booking);
-    throw new Error("Invalid booking details. 'date' and 'time' are required.");
-  }
-
+  
+  const customerEmail =
+    booking.email || (Array.isArray(to) ? to[0] : to) || "N/A";
+ 
   // Build HTML (kept your template, but using the booking variable)
   const htmlContent = `
   <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; color: #333;">
@@ -148,6 +147,7 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🧹 Cleaning Type</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.typeOfCleaning || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏳ Duration</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} hours</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Phone</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📧 Email</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerEmail}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>💬 Renegotiate if longer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.renegotiate ? "Yes" : "No"}</td></tr>
 
         </table>

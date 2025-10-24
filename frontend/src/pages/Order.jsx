@@ -1,6 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+
+import intlTelInput from 'intl-tel-input';
+import 'intl-tel-input/build/css/intlTelInput.css';
+
 import { apiFetch } from "../lib/api";
 import { trackEvent } from "../lib/analytics";
 import { Gift, PartyPopper } from "lucide-react"; // 🎉 Lucide icons
@@ -20,6 +24,8 @@ export default function Order() {
   const [loadingConfirm, setLoadingConfirm] = useState(false);
   const [error, setError] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
+  const phoneInputRef = useRef(null);
+  const itiRef = useRef(null);
 
   // 🎉 Added popup state
   const [showPopup, setShowPopup] = useState(true);
@@ -28,7 +34,16 @@ export default function Order() {
   useEffect(() => {
     apiFetch(`/api/bookings/${id}`)
       .then((r) => r.json())
-      .then(setBooking)
+      .then((data) => {
+        setBooking(data);
+        if (data?.email || data?.phone) {
+          setCustomer((c) => ({
+            ...c,
+            email: data.email || c.email,
+            phone: data.phone || c.phone,
+          }));
+        }
+      })
       .catch(console.error);
 
     // 🎊 Update confetti size
@@ -38,6 +53,47 @@ export default function Order() {
     return () => window.removeEventListener("resize", updateSize);
   }, [id]);
 
+  useEffect(() => {
+    if (!phoneInputRef.current) return;
+
+    const inputEl = phoneInputRef.current;
+    itiRef.current = intlTelInput(inputEl, {
+      initialCountry: "at",
+      nationalMode: false,
+      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.6/build/js/utils.js",
+    });
+
+    if (customer.phone) {
+      itiRef.current.setNumber(customer.phone);
+    }
+
+    const syncPhone = () => {
+      const number = itiRef.current?.getNumber() || inputEl.value;
+      setCustomer((c) => ({ ...c, phone: number }));
+    };
+
+    inputEl.addEventListener("countrychange", syncPhone);
+    inputEl.addEventListener("input", syncPhone);
+    inputEl.addEventListener("blur", syncPhone);
+
+    return () => {
+      inputEl.removeEventListener("countrychange", syncPhone);
+      inputEl.removeEventListener("input", syncPhone);
+      inputEl.removeEventListener("blur", syncPhone);
+      itiRef.current?.destroy();
+      itiRef.current = null;
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!itiRef.current) return;
+
+    const currentNumber = itiRef.current.getNumber();
+    if (customer.phone && customer.phone !== currentNumber) {
+      itiRef.current.setNumber(customer.phone);
+    }
+  }, [customer.phone]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setCustomer((c) => ({ ...c, [name]: type === "checkbox" ? checked : value }));
@@ -46,18 +102,59 @@ export default function Order() {
   const handleConfirm = async () => {
     setError(null);
     setLoadingConfirm(true);
+
+    const trimmedEmail = customer.email.trim();
+    const intlNumber = itiRef.current?.getNumber() || customer.phone.trim();
+    const normalizedPhone = intlNumber.replace(/\s+/g, "");
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      setLoadingConfirm(false);
+      setError(t("order.errors.invalidEmail"));
+      return;
+    }
+
+    const phoneValid = itiRef.current
+      ? itiRef.current.isValidNumber()
+      : /^\+?[0-9\s\-()]{7,}$/.test(normalizedPhone);
+
+    if (!normalizedPhone || !phoneValid) {
+      setLoadingConfirm(false);
+      setError(t("order.errors.invalidPhone"));
+      return;
+    }
+
+    const payload = {
+      ...customer,
+      email: trimmedEmail,
+      phone: normalizedPhone,
+    };
+
     try {
-      try { trackEvent("Order_Submit_Click", { bookingId: id, service_type: booking?.typeOfCleaning }); } catch (_) {}
+      try {
+        trackEvent("Order_Submit_Click", { bookingId: id, service_type: booking?.typeOfCleaning });
+      } catch (_) {}
+
       const res = await apiFetch(`/api/bookings/${id}/confirm`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(customer),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to confirm booking");
+
+      setCustomer((c) => ({ ...c, email: trimmedEmail, phone: normalizedPhone }));
+      itiRef.current?.setNumber(normalizedPhone);
       setConfirmed(true);
       setBooking(data.booking || booking);
-      try { trackEvent("Confirmation_View", { bookingId: id, service_type: booking?.typeOfCleaning, price: booking?.price }); } catch (_) {}
+
+      try {
+        trackEvent("Confirmation_View", {
+          bookingId: id,
+          service_type: booking?.typeOfCleaning,
+          price: booking?.price,
+        });
+      } catch (_) {}
     } catch (err) {
       setError(err.message);
     } finally {
@@ -69,7 +166,6 @@ export default function Order() {
 
   return (
     <div className="bg-[#f9fafa] min-h-screen py-1 px-4 flex flex-col items-center relative overflow-hidden">
-
       {/* 🎉 Celebration Popup */}
       {showPopup && (
         <div
@@ -113,10 +209,22 @@ export default function Order() {
         <div className="bg-white p-8 rounded-2xl shadow-lg border border-[#e0f7f7]">
           <h2 className="text-2xl font-bold text-[#5be3e3] mb-6">{t("order.summary")}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 break-words">
-            <p><strong>{t("order.date")}:</strong> {booking.date}</p>
-            <p><strong>{t("order.time")}:</strong> {booking.time}</p>
-            <p className="min-w-0"><strong>{t("order.cleaningType")}:</strong> <span className="break-words whitespace-normal">{booking.typeOfCleaning}</span></p>
-            <p className="min-w-0"><strong>{t("order.duration")}:</strong> <span className="break-words whitespace-normal">{booking.duration} {t("order.durationUnit")}</span></p>
+            <p>
+              <strong>{t("order.date")}:</strong> {booking.date}
+            </p>
+            <p>
+              <strong>{t("order.time")}:</strong> {booking.time}
+            </p>
+            <p className="min-w-0">
+              <strong>{t("order.cleaningType")}:</strong>{" "}
+              <span className="break-words whitespace-normal">{booking.typeOfCleaning}</span>
+            </p>
+            <p className="min-w-0">
+              <strong>{t("order.duration")}:</strong>{" "}
+              <span className="break-words whitespace-normal">
+                {booking.duration} {t("order.durationUnit")}
+              </span>
+            </p>
           </div>
         </div>
 
@@ -151,6 +259,7 @@ export default function Order() {
               required
             />
             <input
+              ref={phoneInputRef}
               name="phone"
               value={customer.phone}
               onChange={handleChange}
@@ -171,7 +280,8 @@ export default function Order() {
                 {t("order.gdprPrefix")}
                 <a href="/privacy" className="text-[#5be3e3] underline hover:text-[#000000]">
                   {t("order.gdprLink")}
-                </a>.
+                </a>
+                .
               </span>
             </label>
 
@@ -187,9 +297,7 @@ export default function Order() {
           </div>
         ) : (
           <div className="bg-green-50 border-l-4 border-green-400 p-8 rounded-xl text-center">
-            <h4 className="text-green-700 font-bold text-xl">
-              {t("order.confirmedTitle")}
-            </h4>
+            <h4 className="text-green-700 font-bold text-xl">{t("order.confirmedTitle")}</h4>
             <p className="mt-2 text-gray-700">
               {t("order.confirmedMsg", { email: customer.email || booking.email })}
             </p>
