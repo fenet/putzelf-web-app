@@ -194,7 +194,11 @@ export default function Order() {
 
     const trimmedEmail = customer.email.trim();
     const intlNumber = itiRef.current?.getNumber() || customer.phone.trim();
-    const normalizedPhone = intlNumber.replace(/\s+/g, "");
+    const countryData = itiRef.current?.getSelectedCountryData();
+    let normalizedPhone = intlNumber.replace(/\s+/g, "");
+    if (countryData?.dialCode && !normalizedPhone.startsWith("+")) {
+      normalizedPhone = `+${countryData.dialCode}${normalizedPhone.replace(/^0+/, "")}`;
+    }
 
     const emailOk = validateEmail(trimmedEmail);
     const phoneOk = validatePhone(normalizedPhone);

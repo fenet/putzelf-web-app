@@ -306,6 +306,11 @@ export default function Landing() {
                   {t("footer.customers.links.serviceContract")}
                 </a>
               </li>
+              <li>
+                <Link to="/calculator" className="hover:text-gray-900 transition-colors">
+                  {t("footer.customers.links.calculator")}
+                </Link>
+              </li>
             </ul>
           </div>
 

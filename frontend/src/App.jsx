@@ -10,6 +10,7 @@ import Imprint from "./pages/Imprint";
 import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
 import LogoHeader from "./components/LogoHeader";
+import PriceCalculator from "./pages/PriceCalculator";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -73,6 +74,12 @@ export default function App() {
         </Layout>
         }
       /> 
+      <Route 
+        path="/calculator" 
+        element={
+        <PriceCalculator />
+      } 
+      />
       <Route
         path="/imprint"
         element={

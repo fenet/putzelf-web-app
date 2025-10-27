@@ -85,38 +85,39 @@ const resources = {
       },
       footer: {
         staff: {
-            title: "Employees",
-            links: {
-              privacySheet: "Privacy Sheet",
-              dutyRoster: "Duty Roster",
-              masterData: "Master Data Sheet",
-              leaveForm: "Leave / Comp Time"
-            }
-          },
-          partners: {
-            title: "Partners",
-            links: {
-              partnerApplication: "Partner Application",
-              serviceContract: "Service Agreement",
-              subcontract: "Subcontract"
-            }
-          },
-          customers: {
-            title: "Customers",
-            links: {
-              serviceContract: "Service Contract",
-              cleaningStandards: "Cleaning Standards",
-              priceList: "Price List"
-            }
-          },
-          connect: {
-            title: "Connect",
-            links: {
-              terms: "Terms & Conditions",
-              privacy: "Privacy Policy",
-              imprint: "Imprint"
-            }
+          title: "Employees",
+          links: {
+            privacySheet: "Privacy Sheet",
+            dutyRoster: "Duty Roster",
+            masterData: "Master Data Sheet",
+            leaveForm: "Leave / Comp Time"
           }
+        },
+        partners: {
+          title: "Partners",
+          links: {
+            partnerApplication: "Partner Application",
+            serviceContract: "Service Agreement",
+            subcontract: "Subcontract"
+          }
+        },
+        customers: {
+          title: "Customers",
+          links: {
+            serviceContract: "Service Contract",
+            cleaningStandards: "Cleaning Standards",
+            priceList: "Price List",
+            calculator: "Price Calculator"
+          }
+        },
+        connect: {
+          title: "Connect",
+          links: {
+            terms: "Terms & Conditions",
+            privacy: "Privacy Policy",
+            imprint: "Imprint"
+          }
+        }
       },
       cookies: {
         msg: "We use cookies to improve your experience. By using our site, you agree to our ",
@@ -152,10 +153,6 @@ const resources = {
         submit: "Let's Go",
         alerts: {
           missing: "Please fill date, time and select a cleaning type.",
-          createError: "Error creating booking: {{msg}}"
-        },
-        alerts: {
-          missing: "Please fill date, time and select a cleaning type.",
           createError: "Error creating booking: {{msg}}",
           noWorker: "Please choose your cleaner before completing the booking."
         },
@@ -166,6 +163,22 @@ const resources = {
           missing: "You haven't selected a cleaner yet.",
           choose: "Select your cleaner"
         }
+      },
+      calculator: {
+        title: "Price Calculator",
+        subtitle: "Estimate the cost of your cleaning based on duration and extras.",
+        typeHeading: "Choose a cleaning type",
+        subHeading: "Add premium services",
+        durationLabel: "Duration (hours)",
+        durationHelp: "Bookings start at 3 hours. Use the arrows to adjust.",
+        estimatedTotalLabel: "Estimated total",
+        estimatedTotal: "Estimated total: €{{price}}",
+        hourlyRate: "Hourly rate: €{{rate}}/h",
+        premiumNotice: "Premium add-ons adjust the hourly rate.",
+        renegotiateLabel: "Allow renegotiation if the job needs more time",
+        resetBtn: "Reset selection",
+        cta: "Select a professional",
+        disclaimer: "This is an estimate. Final pricing is confirmed during booking."
       },
       order: {
         loading: "Loading booking...",
@@ -181,13 +194,13 @@ const resources = {
         placeholders: {
           name: "Full name",
           email: "Email",
-          address: "Street name & House Number",
+          address: "Street name & House No. & Door No.",
           phone: "Phone"
         },
         errors: {
-            invalidEmail: "Please enter a valid email address.",
-            invalidPhone: "Please enter a valid phone number including country code."
-          },
+          invalidEmail: "Please enter a valid email address.",
+          invalidPhone: "Please enter a valid phone number including country code."
+        },
         gdprPrefix: "I agree to the processing of my personal data in accordance with the ",
         gdprLink: "Privacy Policy (GDPR)",
         confirming: "Confirming...",
@@ -235,16 +248,16 @@ const resources = {
         choose: "Wähle mich",
         rating: "{{rating}} Bewertung · {{reviews}} Bewertungen",
         workers: {
-        amelia: "Amelia K.",
-        markus: "Markus L.",
-        selin: "Selin A.",
-        leon: "Leon M.",
-        maria: "Maria S.",
-        yusuf: "Yusuf T.",
-        sofia: "Sofia P.",
-        jakob: "Jakob R.",
-        noemi: "Noemi F.",
-        anna: "Anna D."
+          amelia: "Amelia K.",
+          markus: "Markus L.",
+          selin: "Selin A.",
+          leon: "Leon M.",
+          maria: "Maria S.",
+          yusuf: "Yusuf T.",
+          sofia: "Sofia P.",
+          jakob: "Jakob R.",
+          noemi: "Noemi F.",
+          anna: "Anna D."
         }
       },
       hero: {
@@ -281,38 +294,39 @@ const resources = {
       },
       footer: {
         staff: {
-            title: "Mitarbeiter",
-            links: {
-              privacySheet: "Datenschutzblatt",
-              dutyRoster: "Dienstliste",
-              masterData: "Stammdatenblatt",
-              leaveForm: "Urlaubsschein / Zeitausgleich"
-            }
-          },
-          partners: {
-            title: "Partner",
-            links: {
-              partnerApplication: "Partnerantrag",
-              serviceContract: "Dienstleistungsvertrag",
-              subcontract: "Subvertrag"
-            }
-          },
-          customers: {
-            title: "Kunden",
-            links: {
-              serviceContract: "Servicevertrag",
-              cleaningStandards: "Reinigungsstandards",
-              priceList: "Preisliste"
-            }
-          },
-          connect: {
-            title: "Connect",
-            links: {
-              terms: "AGB",
-              privacy: "Datenschutz",
-              imprint: "Impressum"
-            }
+          title: "Mitarbeiter",
+          links: {
+            privacySheet: "Datenschutzblatt",
+            dutyRoster: "Dienstliste",
+            masterData: "Stammdatenblatt",
+            leaveForm: "Urlaubsschein / Zeitausgleich"
           }
+        },
+        partners: {
+          title: "Partner",
+          links: {
+            partnerApplication: "Partnerantrag",
+            serviceContract: "Dienstleistungsvertrag",
+            subcontract: "Subvertrag"
+          }
+        },
+        customers: {
+          title: "Kunden",
+          links: {
+            serviceContract: "Servicevertrag",
+            cleaningStandards: "Reinigungsstandards",
+            priceList: "Preisliste",
+            calculator: "Preiskalkulator"
+          }
+        },
+        connect: {
+          title: "Connect",
+          links: {
+            terms: "AGB",
+            privacy: "Datenschutz",
+            imprint: "Impressum"
+          }
+        }
       },
       cookies: {
         msg: "Wir verwenden Cookies, um Ihr Erlebnis zu verbessern. Durch die Nutzung unserer Website stimmen Sie unserer ",
@@ -336,20 +350,16 @@ const resources = {
         descriptions: {
           standard: "Regelmäßige Unterhaltsreinigung: Oberflächen, Bäder, Küche, Böden etc",
           office: "Professionelle Büroreinigung für Arbeitsplätze, Küche, Gemeinschaftsflächen etc",
-          apartmentHotel: "Gruendliche Reinigung nach Check-out und des oeffentlichen Berreiches"
+          apartmentHotel: "Gründliche Reinigung nach Check-out und der öffentlichen Bereiche"
         },
         durationLabel: "Geschätzte Arbeitszeit",
         dateLabel: "Datum",
         timeLabel: "Uhrzeit",
-        renegotiate: "Wir nehmen zur Kenntniss, dass die Dienstleistung nach tatsächlicher Arbeitszeit verrechnet wird",
+        renegotiate: "Wir nehmen zur Kenntnis, dass die Dienstleistung nach tatsächlicher Arbeitszeit verrechnet wird",
         durationHelp: "Mindestbuchung ist 3 Stunden.",
         estimated: "Geschätzter Preis",
         rate: "Preis: €{{rate}}/Stunde",
         submit: "Jetzt anfragen",
-        alerts: {
-          missing: "Bitte Datum, Uhrzeit ausfüllen und eine Reinigungsart wählen.",
-          createError: "Fehler bei der Erstellung der Buchung: {{msg}}"
-        },
         alerts: {
           missing: "Bitte Datum, Uhrzeit ausfüllen und eine Reinigungsart wählen.",
           createError: "Fehler bei der Erstellung der Buchung: {{msg}}",
@@ -362,6 +372,22 @@ const resources = {
           missing: "Du hast noch keine Reinigungskraft ausgewählt.",
           choose: "Reinigungskraft auswählen"
         }
+      },
+      calculator: {
+        title: "Preisrechner",
+        subtitle: "Schätzen Sie die Kosten Ihrer Reinigung basierend auf Dauer und Extras.",
+        typeHeading: "Reinigungsart wählen",
+        subHeading: "Optionale Premium-Services",
+        durationLabel: "Dauer (Stunden)",
+        durationHelp: "Buchungen starten bei 3 Stunden. Verwenden Sie die Pfeile zur Anpassung.",
+        estimatedTotalLabel: "Geschätzte Gesamtkosten",
+        estimatedTotal: "Geschätzte Gesamtkosten: {{price}} €",
+        hourlyRate: "Stundensatz: {{rate}} €/h",
+        premiumNotice: "Premium-Extras beeinflussen den Stundensatz.",
+        renegotiateLabel: "Nachverhandlung erlauben, falls mehr Zeit nötig ist",
+        resetBtn: "Auswahl zurücksetzen",
+        cta: "Jetzt Reinigungskraft auswählen",
+        disclaimer: "Dies ist eine Schätzung. Der finale Preis wird bei der Buchung bestätigt."
       },
       order: {
         loading: "Buchung wird geladen...",
@@ -377,13 +403,13 @@ const resources = {
         placeholders: {
           name: "Vollständiger Name",
           email: "E-Mail",
-          address: "Straße & Hausnummer", 
+          address: "Straße & Hausnummer & Türnummer",
           phone: "Telefon"
         },
         errors: {
-            invalidEmail: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
-            invalidPhone: "Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein."
-          },
+          invalidEmail: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+          invalidPhone: "Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein."
+        },
         gdprPrefix: "Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäß ",
         gdprLink: "Datenschutzerklärung (DSGVO)",
         confirming: "Wird bestätigt...",
@@ -406,5 +432,3 @@ i18n.use(initReactI18next).init({
 });
 
 export default i18n;
-
-
