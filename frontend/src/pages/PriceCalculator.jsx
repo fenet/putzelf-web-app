@@ -18,15 +18,18 @@ const premiumSubcategories = [
 
 const MIN_HOURS = 3;
 
+
 const getHourlyRate = (typeKey, subcategories) => {
-  const premiumCount = Array.isArray(subcategories) ? subcategories.length : 0;
   if (typeKey === "standard" || typeKey === "apartmentHotel") {
-    if (premiumCount === 0) return 30;
-    if (premiumCount === 1) return 42;
-    return 48;
+    const subs = Array.isArray(subcategories) ? subcategories : [];
+    if (subs.includes("intensive") && subs.includes("window")) return 50;
+    if (subs.includes("window")) return 44.9;
+    if (subs.includes("intensive")) return 43.2;
+    return 30;
   }
   return 30;
 };
+
 
 export default function PriceCalculator() {
   const { t, i18n } = useTranslation();

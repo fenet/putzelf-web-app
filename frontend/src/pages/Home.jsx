@@ -40,10 +40,13 @@ export default function Home() {
     const isHouseCleaning = typeOfCleaning === t("home.types.standard");
     const isApartmentHotel = typeOfCleaning === t("home.types.apartmentHotel");
     const isEligible = isHouseCleaning || isApartmentHotel;
-    const count = Array.isArray(subcategories) ? subcategories.length : 0;
-    if (!isEligible || count === 0) return 30;
-    if (count === 1) return 42;
-    return 48;
+    const subs = Array.isArray(subcategories) ? subcategories : [];
+
+    if (!isEligible || subs.length === 0) return 30;
+    if (subs.includes("intensive") && subs.includes("window")) return 50;
+    if (subs.includes("window")) return 44.9;
+    if (subs.includes("intensive")) return 43.2;
+    return 30;
   };
 
   const [calculatedPrice, setCalculatedPrice] = useState(

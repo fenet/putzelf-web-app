@@ -367,7 +367,13 @@ export default function Landing() {
         </div>
 
         <div className="border-t border-gray-200 mt-8 py-4 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} Putzelf — Alle Rechte vorbehalten.
+          <span>© {new Date().getFullYear()} Putzelf — Alle Rechte vorbehalten.</span>
+          <Link
+            to="/login"
+            className="inline-flex items-center justify-center rounded-lg bg-[#0097b2] px-4 py-2 text-sm font-semibold text-white shadow-md hover:shadow-lg transition"
+          >
+            Login
+          </Link>
         </div>
       </footer>
 

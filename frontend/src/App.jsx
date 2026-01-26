@@ -11,6 +11,11 @@ import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
 import LogoHeader from "./components/LogoHeader";
 import PriceCalculator from "./pages/PriceCalculator";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Admin from "./pages/Admin";
+import { AuthProvider } from "./lib/auth";
+import { ProtectedRoute, AdminRoute } from "./components/ProtectedRoute";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -37,57 +42,77 @@ export default function App() {
   }, [location.pathname]);
 
   return (
-    <Routes>
-      {/* Landing page (full-width, with its own navbar/footer) */}
-      <Route path="/" element={<Landing />} />
+    <AuthProvider>
+      <Routes>
+        {/* Landing page (full-width, with its own navbar/footer) */}
+        <Route path="/" element={<Landing />} />
 
-      {/* Booking / system pages (wrapped with Layout + LogoHeader + Footer) */}
-      <Route
-        path="/book"
-        element={
-          <Layout>
-            <Home />
-          </Layout>
-        }
-      />
-      <Route
-        path="/order/:id"
-        element={
-          <Layout>
-            <Order />
-          </Layout>
-        }
-      />
-      <Route
-        path="/search"
-        element={
-          <Layout>
-            <Search />
-          </Layout>
-        }
-      />
-      <Route 
-      path="/profile" 
-      element={
-        <Layout>
-          <Profile />
-        </Layout>
-        }
-      /> 
-      <Route 
-        path="/calculator" 
-        element={
-        <PriceCalculator />
-      } 
-      />
-      <Route
-        path="/imprint"
-        element={
-          // Imprint should look like Landing with its own header/footer
-          <Imprint />
-        }
-      />
-    </Routes>
+        {/* Booking / system pages (wrapped with Layout + LogoHeader + Footer) */}
+        <Route
+          path="/book"
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        />
+        <Route
+          path="/order/:id"
+          element={
+            <Layout>
+              <Order />
+            </Layout>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <Layout>
+              <Search />
+            </Layout>
+          }
+        />
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Profile />
+              </Layout>
+            </ProtectedRoute>
+          }
+        /> 
+        <Route 
+          path="/calculator" 
+          element={
+            <PriceCalculator />
+          } 
+        />
+        <Route 
+          path="/login" 
+          element={<Login />} 
+        />
+        <Route 
+          path="/register" 
+          element={<Register />} 
+        />
+        <Route 
+          path="/admin" 
+          element={
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          } 
+        />
+        <Route
+          path="/imprint"
+          element={
+            // Imprint should look like Landing with its own header/footer
+            <Imprint />
+          }
+        />
+      </Routes>
+    </AuthProvider>
   );
 }
 

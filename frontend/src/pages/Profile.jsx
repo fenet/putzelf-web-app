@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { trackEvent } from "../lib/analytics";
 import { Phone, Mail, Star } from "lucide-react";
 import logo from "../assets/logo.png";
+import { useAuth } from "../lib/auth";
 
 export default function Profile() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
@@ -104,6 +106,15 @@ export default function Profile() {
           </div>
 
           <div className="flex items-center gap-2 md:gap-3 shrink-0">
+            <button
+              onClick={() => {
+                logout();
+                navigate("/");
+              }}
+              className="hidden md:block border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm md:text-lg font-semibold hover:bg-gray-50 transition"
+            >
+              Logout
+            </button>
             <Link
               to="/book"
               className="hidden md:block bg-[#0097b2] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-lg font-semibold shadow-md animate-pulse-button whitespace-nowrap"

@@ -134,10 +134,10 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
         <h1 style="margin: 0; font-size: 24px;">Booking Confirmation</h1>
       </div>
       <div style="padding: 20px;">
-        <p style="font-size: 16px;">Dear <strong>${booking.name || "Customer"}</strong>,</p>
+        <p style="font-size: 16px;">Hallo <strong>${booking.name || "Customer"}</strong>,</p>
         <p style="font-size: 16px; line-height: 1.5;">
-          Your cleaning appointment has been <strong>confirmed</strong>. 🎉  
-          Below are your booking details:
+          Deine Buchung wurde bestätigt.<strong> 🎉 </strong> 
+          Nachfolgend die Details.
         </p>
         <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
           <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">

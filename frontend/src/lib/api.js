@@ -17,7 +17,16 @@ export function getApiBaseUrl() {
 export async function apiFetch(path, options = {}) {
   const base = getApiBaseUrl();
   const url = path.startsWith('http') ? path : `${base}${path.startsWith('/') ? '' : '/'}${path}`;
-  return fetch(url, options);
+  const headers = new Headers(options.headers || {});
+  try {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken && !headers.has('Authorization')) {
+      headers.set('Authorization', `Bearer ${storedToken}`);
+    }
+  } catch {
+    // ignore storage errors
+  }
+  return fetch(url, { ...options, headers });
 }
 
 export async function parseJsonSafe(response) {

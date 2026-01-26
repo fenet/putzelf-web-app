@@ -200,6 +200,11 @@ export default function Order() {
       normalizedPhone = `+${countryData.dialCode}${normalizedPhone.replace(/^0+/, "")}`;
     }
 
+    const eventId =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `evt_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+
     const emailOk = validateEmail(trimmedEmail);
     const phoneOk = validatePhone(normalizedPhone);
 
@@ -212,6 +217,8 @@ export default function Order() {
       ...customer,
       email: trimmedEmail,
       phone: normalizedPhone,
+      metaEventId: eventId,
+      metaEventSource: typeof window !== "undefined" ? window.location.href : undefined,
     };
 
     try {
@@ -219,6 +226,7 @@ export default function Order() {
         trackEvent("Order_Submit_Click", {
           bookingId: id,
           service_type: booking?.typeOfCleaning,
+          event_id: eventId,
         });
       } catch (_) {}
 
@@ -231,6 +239,8 @@ export default function Order() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to confirm booking");
 
+      const confirmedBooking = data.booking || booking;
+
       setCustomer((c) => ({
         ...c,
         email: trimmedEmail,
@@ -238,13 +248,20 @@ export default function Order() {
       }));
       itiRef.current?.setNumber(normalizedPhone);
       setConfirmed(true);
-      setBooking(data.booking || booking);
+      setBooking(confirmedBooking);
 
       try {
+        trackEvent("Booking_Confirmed", {
+          bookingId: id,
+          service_type: confirmedBooking?.typeOfCleaning,
+          value: confirmedBooking?.price,
+          currency: "EUR",
+          event_id: eventId,
+        });
         trackEvent("Confirmation_View", {
           bookingId: id,
-          service_type: booking?.typeOfCleaning,
-          price: booking?.price,
+          service_type: confirmedBooking?.typeOfCleaning,
+          price: confirmedBooking?.price,
         });
       } catch (_) {}
     } catch (err) {

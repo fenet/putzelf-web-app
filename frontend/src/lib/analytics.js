@@ -108,9 +108,10 @@ export function trackEvent(eventName, params = {}) {
 function getMetaEventName(eventName) {
   const eventMap = {
     // Only fire Meta Lead on the final confirm booking action
-    'Order_Submit_Click': 'Lead',
+    'Booking_Confirmed': 'Lead',
 
     // Non-lead events map to generic content views
+    'Order_Submit_Click': 'ViewContent',
     'Navbar_Book_Click': 'ViewContent',
     'Landing_CTA_Click': 'ViewContent',
     'Service_Standard_Click': 'ViewContent',
