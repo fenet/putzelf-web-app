@@ -15,7 +15,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import { AuthProvider } from "./lib/auth";
-import { ProtectedRoute, AdminRoute } from "./components/ProtectedRoute";
+import { AdminRoute } from "./components/ProtectedRoute";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -75,11 +75,9 @@ export default function App() {
         <Route 
           path="/profile" 
           element={
-            <ProtectedRoute>
-              <Layout>
-                <Profile />
-              </Layout>
-            </ProtectedRoute>
+            <Layout>
+              <Profile />
+            </Layout>
           }
         /> 
         <Route 
