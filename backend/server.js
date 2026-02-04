@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { sendBookingConfirmation } from "./utils/mailer.js";
-import { sendMetaLeadEvent } from "./utils/metaConversions.js";
+import { sendMetaEvent, sendMetaLeadEvent } from "./utils/metaConversions.js";
 
 dotenv.config();
 
@@ -272,6 +272,29 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to confirm booking" });
+  }
+});
+
+app.post("/api/meta/event", async (req, res) => {
+  try {
+    const { eventName, eventId, eventSourceUrl, customData } = req.body || {};
+    if (!eventName) {
+      return res.status(400).json({ error: "eventName is required" });
+    }
+
+    await sendMetaEvent({
+      eventName,
+      eventId,
+      eventSourceUrl,
+      customData,
+      clientIp: req.headers["x-forwarded-for"] || req.socket?.remoteAddress,
+      userAgent: req.headers["user-agent"],
+    });
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error("Meta event proxy error:", err);
+    res.status(500).json({ error: "Failed to dispatch Meta event" });
   }
 });
 
