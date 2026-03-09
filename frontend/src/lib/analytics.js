@@ -1,3 +1,5 @@
+import { apiFetch } from "./api";
+
 let initialized = false;
 let gaId = null;
 let fbId = null;
@@ -68,7 +70,27 @@ export function trackPageview(pathname) {
       window.gtag('event', 'page_view', { page_path: pathname });
     }
     if (window.fbq && fbId) {
-      window.fbq('track', 'PageView');
+      const eventId =
+        typeof crypto !== "undefined" && crypto.randomUUID
+          ? crypto.randomUUID()
+          : `evt_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+      window.fbq('track', 'PageView', {}, { eventID: eventId });
+      if (consentGranted) {
+        try {
+          apiFetch("/api/meta/event", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              eventName: "PageView",
+              eventId,
+              eventSourceUrl: typeof window !== "undefined" ? window.location.href : undefined,
+              customData: {
+                page_path: pathname,
+              },
+            }),
+          }).catch(() => {});
+        } catch (_) {}
+      }
     }
   } catch (_) {}
 }
@@ -83,7 +105,29 @@ export function trackEvent(eventName, params = {}) {
       // Use Meta's recommended event names for better tracking
       const metaEventName = getMetaEventName(eventName);
       const metaParams = getMetaParams(metaEventName, eventName, params);
-      window.fbq('track', metaEventName, metaParams);
+      const eventId =
+        params?.event_id ||
+        params?.eventId ||
+        (typeof crypto !== "undefined" && crypto.randomUUID
+          ? crypto.randomUUID()
+          : `evt_${Date.now()}_${Math.random().toString(16).slice(2)}`);
+      const metaOptions = eventId ? { eventID: eventId } : undefined;
+      window.fbq('track', metaEventName, metaParams, metaOptions);
+
+      if (consentGranted && metaEventName !== 'Lead') {
+        try {
+          apiFetch("/api/meta/event", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              eventName: metaEventName,
+              eventId,
+              eventSourceUrl: typeof window !== "undefined" ? window.location.href : undefined,
+              customData: metaParams,
+            }),
+          }).catch(() => {});
+        } catch (_) {}
+      }
       
       // Debug logging for development
       if (import.meta.env.DEV) {
@@ -140,10 +184,11 @@ function getMetaEventName(eventName) {
 
 // Format parameters for Meta events; only add lead fields when metaEventName is 'Lead'
 function getMetaParams(metaEventName, eventName, params) {
+  const { event_id, eventId, ...cleanParams } = params || {};
   const baseParams = {
     content_name: eventName,
     content_category: 'cleaning_services',
-    ...params
+    ...cleanParams
   };
 
   if (metaEventName === 'Lead') {

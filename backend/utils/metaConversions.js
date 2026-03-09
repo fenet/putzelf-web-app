@@ -152,3 +152,72 @@ export async function sendMetaLeadEvent({
 
   await maybeLogDatasetQuality(fetchFn);
 }
+
+export async function sendMetaEvent({
+  eventName,
+  eventId,
+  eventSourceUrl,
+  clientIp,
+  userAgent,
+  customData,
+}) {
+  if (!META_PIXEL_ID || !META_CONVERSIONS_TOKEN) {
+    console.warn(
+      "Meta Conversions API disabled: missing META_PIXEL_ID or META_CONVERSIONS_TOKEN env vars."
+    );
+    return;
+  }
+  if (!eventName) {
+    console.warn("Meta Conversions API skipped: eventName missing.");
+    return;
+  }
+
+  const fetchFn = getFetch();
+  if (!fetchFn) return;
+
+  const eventTime = Math.floor(Date.now() / 1000);
+  const dedupeId = eventId || `srv_evt_${eventTime}`;
+  const payload = {
+    data: [
+      {
+        event_name: eventName,
+        event_time: eventTime,
+        event_id: dedupeId,
+        action_source: "website",
+        event_source_url: eventSourceUrl,
+        data_processing_options: [],
+        data_set_id: META_DATASET_ID,
+        user_data: {
+          client_user_agent: userAgent,
+          client_ip_address: normalizeIp(clientIp),
+        },
+        custom_data: customData || {},
+      },
+    ],
+  };
+
+  const params = new URLSearchParams({ access_token: META_CONVERSIONS_TOKEN });
+  if (META_TEST_EVENT_CODE) params.append("test_event_code", META_TEST_EVENT_CODE);
+
+  const url = `https://graph.facebook.com/${META_API_VERSION}/${META_PIXEL_ID}/events?${params.toString()}`;
+
+  try {
+    const response = await fetchFn(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.warn("Meta Conversions API error:", errorText);
+    } else if (process.env.NODE_ENV !== "production") {
+      const result = await response.json();
+      console.log("Meta Conversions API success:", JSON.stringify(result));
+    }
+  } catch (err) {
+    console.warn("Meta Conversions API request failed:", err && err.message);
+  }
+
+  await maybeLogDatasetQuality(fetchFn);
+}
