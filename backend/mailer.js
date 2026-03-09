@@ -148,7 +148,7 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏳ Duration</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} hours</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Phone</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>💬 Renegotiate if longer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.renegotiate ? "Yes" : "No"}</td></tr>
-          <!-- <tr><td style="padding: 8px;"><strong>💶 Price</strong></td><td style="padding: 8px;">€${(typeof booking.price === "number" ? booking.price.toFixed(2) : booking.price) || "0.00"}</td></tr> -->
+          <tr><td style="padding: 8px;"><strong>💶 Price</strong></td><td style="padding: 8px;">€${(typeof booking.price === "number" ? booking.price.toFixed(2) : booking.price) || "0.00"}</td></tr>
         </table>
         <p style="margin-top: 20px; font-size: 15px;">
           If you need to make any changes, simply reply to this email and we’ll be happy to assist.

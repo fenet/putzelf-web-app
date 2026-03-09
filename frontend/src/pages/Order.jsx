@@ -341,6 +341,22 @@ export default function Order() {
                 {booking.duration} {t("order.durationUnit")}
               </span>
             </p>
+            <div className="sm:col-span-2">
+              <div className="mt-1 rounded-2xl p-[1px] bg-gradient-to-r from-[#5be3e3] via-[#00b3c1] to-[#0097b2] shadow-md">
+                <div className="rounded-2xl bg-gradient-to-br from-[#ecfeff] via-white to-[#e0f7f7] px-4 py-4 sm:px-5 sm:py-5">
+                  <p className="text-xs uppercase tracking-wide font-semibold text-[#0097b2]">
+                    {t("order.price")}
+                  </p>
+                  <p className="mt-1 text-3xl sm:text-4xl font-extrabold leading-none text-[#00343d]">
+                    {typeof booking.price === "number"
+                      ? `€${booking.price.toFixed(2)}`
+                      : booking.price
+                      ? `€${booking.price}`
+                      : "—"}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

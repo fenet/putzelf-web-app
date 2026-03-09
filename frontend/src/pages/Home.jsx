@@ -446,6 +446,25 @@ export default function Home() {
             <span>{t("home.renegotiate")}</span>
           </label>
 
+          <div className="relative overflow-hidden rounded-2xl p-[1px] bg-gradient-to-r from-[#5be3e3] via-[#00b3c1] to-[#0097b2] shadow-lg">
+            <div className="rounded-2xl bg-gradient-to-br from-[#ecfeff] via-white to-[#e0f7f7] px-4 py-5 sm:px-6 sm:py-6">
+              <p className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-[#0097b2]">
+                {t("home.estimated")}
+              </p>
+              <p className="mt-2 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-none text-[#00343d]">
+                €{Number(calculatedPrice || 0).toFixed(2)}
+              </p>
+              <p className="mt-3 text-sm sm:text-base text-gray-700">
+                {t("home.rate", {
+                  rate: getHourlyRate(
+                    form.typeOfCleaning,
+                    form.subcategories
+                  ).toFixed(2),
+                })}
+              </p>
+            </div>
+          </div>
+
           <div className="relative">
             <button
               type="submit"
