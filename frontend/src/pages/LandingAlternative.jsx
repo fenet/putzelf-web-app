@@ -184,7 +184,9 @@ export default function LandingAlternative() {
       <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 md:px-6">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="PutzELF" className="h-14 w-auto md:h-20" />
+            <Link to="/" aria-label="Go to home page">
+              <img src={logo} alt="PutzELF" className="h-14 w-auto md:h-20" />
+            </Link>
           </div>
 
           <div className="flex items-center gap-2 md:gap-3">
