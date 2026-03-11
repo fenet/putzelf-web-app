@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { trackPageview } from "./lib/analytics";
 import Landing from "./pages/Landing";
+import LandingAlternative from "./pages/LandingAlternative";
 import Home from "./pages/Home";
 import Order from "./pages/Order";
 import Search from "./pages/Search";
@@ -46,6 +47,7 @@ export default function App() {
       <Routes>
         {/* Landing page (full-width, with its own navbar/footer) */}
         <Route path="/" element={<Landing />} />
+        <Route path="/landing-alt" element={<LandingAlternative />} />
 
         {/* Booking / system pages (wrapped with Layout + LogoHeader + Footer) */}
         <Route
