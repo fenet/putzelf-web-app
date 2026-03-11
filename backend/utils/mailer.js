@@ -204,3 +204,63 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
     throw err;
   }
 }
+
+/**
+ * sendQuoteRequestConfirmation
+ * For lead flow users (Angebot anfragen) who are not booking a service yet.
+ */
+export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
+  let to = toOrBooking;
+  let booking = maybeBooking;
+
+  if (!booking && toOrBooking && typeof toOrBooking === "object") {
+    booking = toOrBooking;
+    to = booking.email;
+  }
+
+  if (!to || (Array.isArray(to) && to.length === 0)) {
+    console.error("❌ Quote request invalid: missing recipient (to).", to);
+    throw new Error("Missing recipient (to).");
+  }
+
+  const htmlContent = `
+  <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+      <div style="background: linear-gradient(90deg, #5be3e3, #0097b2); padding: 20px; text-align: center; color: #fff;">
+        <h1 style="margin: 0; font-size: 24px;">Anfrage erhalten</h1>
+      </div>
+      <div style="padding: 20px;">
+        <p style="font-size: 16px;">Hallo <strong>${booking?.name || "Kundin/Kunde"}</strong>,</p>
+        <p style="font-size: 16px; line-height: 1.5;">
+          vielen Dank für Ihre Anfrage. Wir melden uns so schnell wie möglich bei Ihnen.
+        </p>
+        <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>👤 Name</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.name || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📧 E-Mail</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.email || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.phone || "N/A"}</td></tr>
+        </table>
+        <p style="margin-top: 20px; font-size: 15px;">
+          Bei Rückfragen antworten Sie einfach auf diese E-Mail.
+        </p>
+        <p style="font-size: 15px; margin-top: 20px;">
+          Mit freundlichen Grüßen,<br />
+          <strong>PutzELF Team</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+  `;
+
+  const transporter = await getTransporter();
+  const info = await transporter.sendMail({
+    from: `"PutzELF" <${SMTP_FROM}>`,
+    to: Array.isArray(to) ? to.join(", ") : to,
+    bcc: SMTP_BCC,
+    subject: "Ihre Anfrage bei PutzELF",
+    text: `Vielen Dank für Ihre Anfrage. Name: ${booking?.name || "N/A"}, E-Mail: ${booking?.email || "N/A"}, Telefon: ${booking?.phone || "N/A"}`,
+    html: htmlContent,
+  });
+
+  console.log(`✅ Quote request email sent: messageId=${info.messageId} response=${info.response}`);
+  return info;
+}

@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { sendBookingConfirmation } from "./utils/mailer.js";
+import { sendBookingConfirmation, sendQuoteRequestConfirmation } from "./utils/mailer.js";
 import { sendMetaEvent, sendMetaLeadEvent } from "./utils/metaConversions.js";
 
 dotenv.config();
@@ -251,7 +251,15 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
       data: { name, email, address, phone, gdprConsent: true, price, userId: req.user?.id ?? existing.userId },
     });
 
-    await sendBookingConfirmation([booking.email, "office@putzelf.com"], booking);
+    const isQuoteRequest =
+      (existing.typeOfCleaning || "").toLowerCase() === "quote request" ||
+      (existing.typeOfCleaning || "").toLowerCase() === "angebot anfragen";
+
+    if (isQuoteRequest) {
+      await sendQuoteRequestConfirmation([booking.email, "office@putzelf.com"], booking);
+    } else {
+      await sendBookingConfirmation([booking.email, "office@putzelf.com"], booking);
+    }
 
     try {
       await sendMetaLeadEvent({
