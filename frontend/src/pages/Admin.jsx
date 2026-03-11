@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { apiFetch, parseJsonSafe } from "../lib/api";
-import { useAuth } from "../lib/auth";
 import { Link } from "react-router-dom";
 
 export default function Admin() {
-  const { logout } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -38,12 +36,6 @@ export default function Admin() {
             <Link to="/profile" className="px-3 py-2 rounded-md border text-gray-700 hover:bg-gray-50">
               Go to profile
             </Link>
-            <button
-              onClick={logout}
-              className="px-3 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
-            >
-              Logout
-            </button>
           </div>
         </header>
 

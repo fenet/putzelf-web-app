@@ -11,7 +11,6 @@ import officeImg from "../assets/office.jpg";
 export default function Landing() {
   const { t, i18n } = useTranslation();
   const [showBanner, setShowBanner] = useState(false);
-  const [showJobModal, setShowJobModal] = useState(false);
 
   useEffect(() => {
     const storedConsent = localStorage.getItem("cookieConsent");
@@ -122,16 +121,15 @@ export default function Landing() {
           >
             {t("hero.cta")}
           </Link>
-          <button
-            type="button"
+          <Link
+            to="/order/request"
             className="px-10 py-4 rounded-xl text-xl font-semibold bg-gradient-to-r from-[#facc15] via-[#f97316] to-[#fb923c] text-black shadow-md hover:shadow-lg hover:scale-105 transition"
             onClick={() => {
-              trackEvent("Landing_Job_CTA_Click", { cta: "hero_job_interest" });
-              setShowJobModal(true);
+              trackEvent("Landing_Job_CTA_Click", { cta: "hero_offer_request" });
             }}
           >
-            {t("hero.jobCta")}
-          </button>
+            Angebot anfragen
+          </Link>
         </div>
       </section>
 
@@ -368,58 +366,14 @@ export default function Landing() {
 
         <div className="border-t border-gray-200 mt-8 py-4 text-center text-sm text-gray-500">
           <span>© {new Date().getFullYear()} Putzelf — Alle Rechte vorbehalten.</span>
-          <Link
-            to="/login"
+          <a
+            href="https://marketing.putzelf.com"
             className="inline-flex items-center justify-center rounded-lg bg-[#0097b2] px-4 py-2 text-sm font-semibold text-white shadow-md hover:shadow-lg transition"
           >
             Login
-          </Link>
+          </a>
         </div>
       </footer>
-
-      {showJobModal && (
-        <div
-          className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center px-4"
-          onClick={() => {
-            setShowJobModal(false);
-            trackEvent("Job_Modal_Close_Click", { source: "backdrop" });
-          }}
-        >
-          <div
-            className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 space-y-5 text-center"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="job-modal-title"
-          >
-            <h3 id="job-modal-title" className="text-2xl font-semibold text-[#000000]">
-              {t("hero.jobModalTitle")}
-            </h3>
-            <p className="text-gray-600">
-              {t("hero.jobModalBody", { email: "office@putzelf.com" })}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href="mailto:office@putzelf.com"
-                className="flex-1 inline-flex items-center justify-center bg-[#0097b2] text-white font-semibold px-4 py-3 rounded-lg shadow-md hover:shadow-lg transition"
-                onClick={() => trackEvent("Job_Modal_Email_Click", { source: "landing_modal" })}
-              >
-                {t("hero.jobModalEmailCta")}
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowJobModal(false);
-                  trackEvent("Job_Modal_Close_Click", { source: "button" });
-                }}
-                className="flex-1 inline-flex items-center justify-center border border-gray-300 text-gray-700 font-semibold px-4 py-3 rounded-lg hover:bg-gray-50 transition"
-              >
-                {t("hero.jobModalClose")}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {showBanner && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">

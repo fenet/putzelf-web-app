@@ -131,7 +131,7 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
   <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
       <div style="background: linear-gradient(90deg, #5be3e3, #0097b2); padding: 20px; text-align: center; color: #fff;">
-        <h1 style="margin: 0; font-size: 24px;">Booking Confirmation</h1>
+        <h1 style="margin: 0; font-size: 24px;">Buchungsbestätigung</h1>
       </div>
       <div style="padding: 20px;">
         <p style="font-size: 16px;">Hallo <strong>${booking.name || "Customer"}</strong>,</p>
@@ -153,10 +153,10 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
 
         </table>
         <p style="margin-top: 20px; font-size: 15px;">
-          If you need to make any changes, simply reply to this email and we’ll be happy to assist.
+          Wenn Sie Änderungen vornehmen möchten, antworten Sie einfach auf diese E-Mail – wir helfen Ihnen gerne weiter.
         </p>
         <p style="font-size: 15px; margin-top: 20px;">
-          Best regards,<br />
+          Mit freundlichen Grüßen,<br />
           <strong>PutzELF Team</strong>
         </p>
       </div>

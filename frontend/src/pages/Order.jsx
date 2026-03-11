@@ -24,6 +24,7 @@ const COUNTRY_OPTIONS = [
 export default function Order() {
   const { t } = useTranslation();
   const { id } = useParams();
+  const isQuoteRequest = id === "request";
   const [booking, setBooking] = useState(null);
   const [customer, setCustomer] = useState({
     name: "",
@@ -78,6 +79,16 @@ export default function Order() {
   };
 
   useEffect(() => {
+    if (isQuoteRequest) {
+      setBooking({
+        date: "-",
+        time: "-",
+        typeOfCleaning: "Angebot anfragen",
+        duration: "-",
+      });
+      return;
+    }
+
     apiFetch(`/api/bookings/${id}`)
       .then((r) => r.json())
       .then((data) => {
@@ -99,7 +110,7 @@ export default function Order() {
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
-  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, isQuoteRequest]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!phoneInputRef.current) return;
@@ -230,7 +241,34 @@ export default function Order() {
         });
       } catch (_) {}
 
-      const res = await apiFetch(`/api/bookings/${id}/confirm`, {
+      let bookingIdToConfirm = id;
+
+      if (isQuoteRequest) {
+        const now = new Date();
+        const date = now.toISOString().slice(0, 10);
+        const time = now.toTimeString().slice(0, 5);
+
+        const createRes = await apiFetch(`/api/bookings`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            location: customer.address || "Quote Request",
+            date,
+            time,
+            duration: 3,
+            typeOfCleaning: "Quote Request",
+            renegotiate: true,
+          }),
+        });
+
+        const created = await createRes.json();
+        if (!createRes.ok || !created?.id) {
+          throw new Error(created?.error || "Failed to create quote request");
+        }
+        bookingIdToConfirm = created.id;
+      }
+
+      const res = await apiFetch(`/api/bookings/${bookingIdToConfirm}/confirm`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -252,14 +290,14 @@ export default function Order() {
 
       try {
         trackEvent("Booking_Confirmed", {
-          bookingId: id,
+          bookingId: bookingIdToConfirm,
           service_type: confirmedBooking?.typeOfCleaning,
           value: confirmedBooking?.price,
           currency: "EUR",
           event_id: eventId,
         });
         trackEvent("Confirmation_View", {
-          bookingId: id,
+          bookingId: bookingIdToConfirm,
           service_type: confirmedBooking?.typeOfCleaning,
           price: confirmedBooking?.price,
         });
@@ -318,31 +356,33 @@ export default function Order() {
       </div>
 
       <div className="w-full max-w-3xl space-y-8">
-        <div className="bg-white p-8 rounded-2xl shadow-lg border border-[#e0f7f7]">
-          <h2 className="text-2xl font-bold text-[#5be3e3] mb-6">
-            {t("order.summary")}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 break-words">
-            <p>
-              <strong>{t("order.date")}:</strong> {booking.date}
-            </p>
-            <p>
-              <strong>{t("order.time")}:</strong> {booking.time}
-            </p>
-            <p className="min-w-0">
-              <strong>{t("order.cleaningType")}:</strong>{" "}
-              <span className="break-words whitespace-normal">
-                {booking.typeOfCleaning}
-              </span>
-            </p>
-            <p className="min-w-0">
-              <strong>{t("order.duration")}:</strong>{" "}
-              <span className="break-words whitespace-normal">
-                {booking.duration} {t("order.durationUnit")}
-              </span>
-            </p>
+        {!isQuoteRequest && (
+          <div className="bg-white p-8 rounded-2xl shadow-lg border border-[#e0f7f7]">
+            <h2 className="text-2xl font-bold text-[#5be3e3] mb-6">
+              {t("order.summary")}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 break-words">
+              <p>
+                <strong>{t("order.date")}:</strong> {booking.date}
+              </p>
+              <p>
+                <strong>{t("order.time")}:</strong> {booking.time}
+              </p>
+              <p className="min-w-0">
+                <strong>{t("order.cleaningType")}:</strong>{" "}
+                <span className="break-words whitespace-normal">
+                  {booking.typeOfCleaning}
+                </span>
+              </p>
+              <p className="min-w-0">
+                <strong>{t("order.duration")}:</strong>{" "}
+                <span className="break-words whitespace-normal">
+                  {booking.duration} {t("order.durationUnit")}
+                </span>
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
         {!confirmed ? (
           <div className="bg-white p-8 rounded-2xl shadow-lg border border-[#e0f7f7] space-y-4">
