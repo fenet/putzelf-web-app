@@ -113,13 +113,14 @@ export default function Landing() {
       <section className="flex flex-col items-center justify-center text-center px-6 pt-32 md:pt-40 pb-24 bg-gray-50">
         <h1 className="text-4xl md:text-6xl font-bold text-[#000000] mb-6">{t("hero.title")}</h1>
         <p className="text-lg text-gray-700 max-w-2xl mb-8">{t("hero.subtitle")}</p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <div className="flex flex-col items-center justify-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
             to="/profile"
             className="bg-[#0097b2] text-white px-10 py-4 rounded-xl text-xl font-semibold hover:shadow-lg hover:scale-105 transition"
             onClick={() => trackEvent("Landing_CTA_Click", { cta: "hero_book_here" })}
           >
-            {t("hero.cta")}
+            JETZT BUCHEN
           </Link>
           <Link
             to="/order/request"
@@ -129,6 +130,15 @@ export default function Landing() {
             }}
           >
             Angebot anfragen
+          </Link>
+          </div>
+
+          <Link
+            to="/landing-alt"
+            className="bg-gradient-to-r from-[#22c55e] via-[#14b8a6] to-[#0097b2] text-white px-10 py-4 rounded-xl text-xl font-semibold shadow-md hover:shadow-lg hover:scale-105 transition"
+            onClick={() => trackEvent("Landing_B2B_Click", { cta: "hero_business" })}
+          >
+            Für Unternehmen
           </Link>
         </div>
       </section>
