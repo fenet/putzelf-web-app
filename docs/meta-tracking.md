@@ -48,3 +48,28 @@ META_DATASET_TOKEN=your_dataset_quality_token
 4. Remove `META_TEST_EVENT_CODE` before going live.
 
 Securely store all tokens. They grant access to ad conversion data and should not be committed to source control.
+
+## 5. Required setup in Meta platform
+
+1. In Meta Events Manager, create/select your dataset and copy:
+   - `Pixel ID`
+   - `Conversions API access token`
+   - `Dataset ID` (+ dataset token if you use dataset quality stats)
+2. Add domain in Events Manager and verify domain ownership.
+3. Configure Aggregated Event Measurement priority (highest first):
+   1. `Lead`
+   2. `ViewContent`
+   3. `PageView`
+4. Use Test Events to validate browser + server deduplication (`event_id` must match).
+
+## 6. Event/page mapping implemented
+
+- Global page visits (`PageView`): sent for all routes through router pageview tracking.
+- Landing page booking clicks (`ViewContent`): sent from CTA/button events on landing flows.
+- Scheduling page booking intent (`ViewContent`): sent on submit click before confirmation.
+- Thank-you/confirmation state (`Lead`): sent only after booking confirmation succeeds.
+
+Implementation notes:
+- Browser events are sent via Meta Pixel.
+- Server events are sent via Conversions API for improved reliability.
+- `Lead` is dispatched server-side from booking confirmation endpoint; browser `Lead` shares the same `event_id` for deduplication.

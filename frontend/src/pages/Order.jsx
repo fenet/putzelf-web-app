@@ -44,6 +44,8 @@ export default function Order() {
 
   const [showPopup, setShowPopup] = useState(true);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  const [confirmationEventId, setConfirmationEventId] = useState(null);
+  const confirmationTrackedRef = useRef(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -170,6 +172,26 @@ export default function Order() {
     }
   }, [selectedCountry]);
 
+  useEffect(() => {
+    if (!confirmed || !booking || confirmationTrackedRef.current) return;
+
+    confirmationTrackedRef.current = true;
+    try {
+      trackEvent("Booking_Confirmed", {
+        bookingId: booking?.id || id,
+        service_type: booking?.typeOfCleaning,
+        value: booking?.price,
+        currency: "EUR",
+        event_id: confirmationEventId,
+      });
+      trackEvent("Confirmation_View", {
+        bookingId: booking?.id || id,
+        service_type: booking?.typeOfCleaning,
+        price: booking?.price,
+      });
+    } catch (_) {}
+  }, [confirmed, booking, confirmationEventId, id]);
+
   const handleCountryChange = (e) => {
     const iso2 = e.target.value;
     setSelectedCountry(iso2);
@@ -202,6 +224,7 @@ export default function Order() {
   const handleConfirm = async () => {
     setError(null);
     setLoadingConfirm(true);
+    confirmationTrackedRef.current = false;
 
     const trimmedEmail = customer.email.trim();
     const intlNumber = itiRef.current?.getNumber() || customer.phone.trim();
@@ -287,21 +310,7 @@ export default function Order() {
       itiRef.current?.setNumber(normalizedPhone);
       setConfirmed(true);
       setBooking(confirmedBooking);
-
-      try {
-        trackEvent("Booking_Confirmed", {
-          bookingId: bookingIdToConfirm,
-          service_type: confirmedBooking?.typeOfCleaning,
-          value: confirmedBooking?.price,
-          currency: "EUR",
-          event_id: eventId,
-        });
-        trackEvent("Confirmation_View", {
-          bookingId: bookingIdToConfirm,
-          service_type: confirmedBooking?.typeOfCleaning,
-          price: confirmedBooking?.price,
-        });
-      } catch (_) {}
+      setConfirmationEventId(eventId);
     } catch (err) {
       setError(err.message);
     } finally {

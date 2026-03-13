@@ -8,6 +8,36 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#0097b2" />
+    <script>
+      (function() {
+        var pixelId = "%VITE_FB_PIXEL_ID%";
+        if (!pixelId || pixelId === "undefined") return;
+
+        var hasConsent = false;
+        try {
+          hasConsent = localStorage.getItem("cookieConsent") === "true";
+        } catch (_) {}
+        if (!hasConsent) return;
+
+        !(function(f,b,e,v,n,t,s){
+          if(f.fbq) return;
+          n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq) f._fbq=n;
+          n.push=n;
+          n.loaded=!0;
+          n.version='2.0';
+          n.queue=[];
+          t=b.createElement(e);
+          t.async=!0;
+          t.src=v;
+          t.id='fb-pixel-src';
+          s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s);
+        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+        window.fbq('init', pixelId);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

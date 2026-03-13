@@ -30,7 +30,12 @@ function loadGa(measurementId) {
 }
 
 function loadFb(pixelId) {
-  if (!pixelId || document.getElementById('fb-pixel-src')) return;
+  if (!pixelId) return;
+  if (window.fbq) {
+    try { window.fbq('init', pixelId); } catch (_) {}
+    return;
+  }
+  if (document.getElementById('fb-pixel-src')) return;
   !(function(f,b,e,v,n,t,s){
     if(f.fbq) return; n=f.fbq=function(){ n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments) };
     if(!f._fbq) f._fbq=n; n.push=n; n.loaded=!0; n.version='2.0'; n.queue=[];
@@ -158,6 +163,10 @@ function getMetaEventName(eventName) {
     'Order_Submit_Click': 'ViewContent',
     'Navbar_Book_Click': 'ViewContent',
     'Landing_CTA_Click': 'ViewContent',
+    'AltLanding_Nav_CTA_Click': 'ViewContent',
+    'AltLanding_Hero_CTA_Click': 'ViewContent',
+    'AltLanding_Process_CTA_Click': 'ViewContent',
+    'AltLanding_Mobile_Book_Click': 'ViewContent',
     'Service_Standard_Click': 'ViewContent',
     'Service_Deep_Click': 'ViewContent',
     'Service_Office_Click': 'ViewContent',
