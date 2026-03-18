@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { trackEvent } from "../lib/analytics";
@@ -49,13 +49,20 @@ export default function Profile() {
     navigate(`/book?worker=${workerId}`);
   };
 
-  const workers = [
-    { id: "agnesC", name: "Agnes C.", rating: 4.96, reviews: 182 },
-    { id: "kaldesalC", name: "Kalderal C.", rating: 4.9, reviews: 128 },
-    { id: "dobrilaN", name: "Dobrila N.", rating: 4.85, reviews: 97 },
-    { id: "chirstyM", name: "Chirsty M.", rating: 4.93, reviews: 175 },
-    { id: "eojleceT", name: "Erika T.", rating: 4.92, reviews: 143 },
-  ];
+  const workers = useMemo(() => {
+    const baseWorkers = [
+      { id: "agnesC", name: "AGNES C.", rating: 4.96, reviews: 182 },
+      { id: "mohammedE", name: "MOHAMMED E.", rating: 4.94, reviews: 169 },
+      { id: "veraI", name: "VERA I.", rating: 4.91, reviews: 153 },
+      { id: "kataK", name: "KATA K.", rating: 4.93, reviews: 161 },
+      { id: "gordanaK", name: "GORDANA K.", rating: 4.90, reviews: 148 },
+      { id: "haianeM", name: "HAIANE M.", rating: 4.95, reviews: 177 },
+      { id: "catalinaP", name: "CATALINA P.", rating: 4.92, reviews: 157 },
+      { id: "milicaV", name: "MILICA V.", rating: 4.89, reviews: 141 },
+    ];
+
+    return [...baseWorkers].sort(() => Math.random() - 0.5);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen pb-24 md:pb-0 bg-gray-50">
