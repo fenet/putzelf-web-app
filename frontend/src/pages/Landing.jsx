@@ -133,13 +133,6 @@ export default function Landing() {
           </Link>
           </div>
 
-          <Link
-            to="/landing-alt"
-            className="bg-gradient-to-r from-[#22c55e] via-[#14b8a6] to-[#0097b2] text-white px-10 py-4 rounded-xl text-xl font-semibold shadow-md hover:shadow-lg hover:scale-105 transition"
-            onClick={() => trackEvent("Landing_B2B_Click", { cta: "hero_business" })}
-          >
-            Für Unternehmen
-          </Link>
         </div>
       </section>
 

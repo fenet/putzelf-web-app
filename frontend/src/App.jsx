@@ -45,9 +45,9 @@ export default function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/* Landing page (full-width, with its own navbar/footer) */}
-        <Route path="/" element={<Landing />} />
-        <Route path="/landing-alt" element={<LandingAlternative />} />
+        {/* Landing pages (full-width, with their own navbar/footer) */}
+        <Route path="/" element={<LandingAlternative />} />
+        <Route path="/landing-alt" element={<Landing />} />
 
         {/* Booking / system pages (wrapped with Layout + LogoHeader + Footer) */}
         <Route
