@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PutzELF</title>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0097b2" />
+    <script>
+      (function() {
+        var pixelId = "2204077110057707";
+        if (!pixelId || pixelId === "undefined") return;
+
+        var hasConsent = false;
+        try {
+          hasConsent = localStorage.getItem("cookieConsent") === "true";
+        } catch (_) {}
+        if (!hasConsent) return;
+
+        !(function(f,b,e,v,n,t,s){
+          if(f.fbq) return;
+          n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq) f._fbq=n;
+          n.push=n;
+          n.loaded=!0;
+          n.version='2.0';
+          n.queue=[];
+          t=b.createElement(e);
+          t.async=!0;
+          t.src=v;
+          t.id='fb-pixel-src';
+          s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s);
+        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+        window.fbq('init', pixelId);
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-c45a61ef.js"></script>
+    <link rel="stylesheet" href="/assets/index-2ac73804.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    
+  </body>
+</html>
+

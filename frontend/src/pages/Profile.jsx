@@ -10,6 +10,18 @@ export default function Profile() {
   const navigate = useNavigate();
   const [showBanner, setShowBanner] = useState(false);
 
+  const getInitials = (name) => {
+    if (!name) return "";
+    const parts = String(name)
+      .replace(/\./g, "")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+    const first = parts[0]?.[0] ?? "";
+    const last = parts.length > 1 ? parts[parts.length - 1]?.[0] ?? "" : "";
+    return `${first}${last}`.toUpperCase();
+  };
+
   useEffect(() => {
     const storedConsent = localStorage.getItem("cookieConsent");
     const storedTime = localStorage.getItem("cookieConsentTime");
@@ -50,18 +62,29 @@ export default function Profile() {
   };
 
   const workers = useMemo(() => {
+    const shuffle = (items) => {
+      const arr = [...items];
+      for (let i = arr.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+
     const baseWorkers = [
-      { id: "agnesC", name: "AGNES C.", rating: 4.96, reviews: 182 },
-      { id: "mohammedE", name: "MOHAMMED E.", rating: 4.94, reviews: 169 },
+      { id: "agnesC", name: "AGNES C.", rating: 4.96, reviews: 182, photoUrl: "/agnes.jpeg" },
+      { id: "slavkaS", name: "SLAVKA S.", rating: 4.94, reviews: 169, photoUrl: "/slavka.jpeg" },
       { id: "veraI", name: "VERA I.", rating: 4.91, reviews: 153 },
       { id: "kataK", name: "KATA K.", rating: 4.93, reviews: 161 },
       { id: "gordanaK", name: "GORDANA K.", rating: 4.90, reviews: 148 },
-      { id: "haianeM", name: "HAIANE M.", rating: 4.95, reviews: 177 },
+      { id: "haianeM", name: "HAIANE M.", rating: 4.95, reviews: 177, photoUrl: "/haiane.jpeg" },
       { id: "catalinaP", name: "CATALINA P.", rating: 4.92, reviews: 157 },
-      { id: "milicaV", name: "MILICA V.", rating: 4.89, reviews: 141 },
+      { id: "milicaV", name: "MILICA V.", rating: 4.89, reviews: 141, photoUrl: "/milica.jpeg" },
     ];
 
-    return [...baseWorkers].sort(() => Math.random() - 0.5);
+    const withPhoto = baseWorkers.filter((w) => Boolean(w.photoUrl));
+    const withoutPhoto = baseWorkers.filter((w) => !w.photoUrl);
+    return [...shuffle(withPhoto), ...shuffle(withoutPhoto)];
   }, []);
 
   return (
@@ -178,14 +201,29 @@ export default function Profile() {
           {workers.map((worker) => (
             <article
               key={worker.id}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-transform duration-200 hover:-translate-y-1 p-6 flex flex-col space-y-4"
+              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-transform duration-200 hover:-translate-y-1 p-8 flex flex-col space-y-5"
             >
-              <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-semibold text-[#000000]">
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="relative">
+                  {worker.photoUrl ? (
+                    <img
+                      src={worker.photoUrl}
+                      alt={worker.name}
+                      className="h-36 w-36 sm:h-40 sm:w-40 md:h-48 md:w-48 rounded-full object-cover shadow-sm"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="h-36 w-36 sm:h-40 sm:w-40 md:h-48 md:w-48 rounded-full bg-gradient-to-br from-[#5be3e3] via-[#0097b2] to-[#48c6ef] flex items-center justify-center text-white text-3xl md:text-4xl font-bold shadow-sm">
+                      {getInitials(worker.name)}
+                    </div>
+                  )}
+                </div>
+
+                <h2 className="text-2xl md:text-3xl font-semibold text-[#000000]">
                   {worker.name.toUpperCase()}
                 </h2>
-                
-                <span className="flex items-center text-[#facc15] font-semibold">
+
+                <span className="inline-flex items-center justify-center text-[#facc15] font-semibold">
                   <Star size={20} className="fill-[#facc15] text-[#facc15] mr-1" />
                   {worker.rating.toFixed(2)}
                 </span>
