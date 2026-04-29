@@ -74,11 +74,11 @@ export default function Profile() {
     const baseWorkers = [
       { id: "agnesC", name: "AGNES C.", rating: 4.96, reviews: 182, photoUrl: "/agnes.jpeg" },
       { id: "slavkaS", name: "SLAVKA S.", rating: 4.94, reviews: 169, photoUrl: "/slavka.jpeg" },
-      { id: "veraI", name: "VERA I.", rating: 4.91, reviews: 153 },
+      { id: "dobrilaN", name: "DOBRILA N.", rating: 4.91, reviews: 153, photoUrl: "/dobrila.jpeg" },
       { id: "kataK", name: "KATA K.", rating: 4.93, reviews: 161 },
-      { id: "gordanaK", name: "GORDANA K.", rating: 4.90, reviews: 148 },
+      { id: "hajkunaD", name: "HAJKUNA D.", rating: 4.90, reviews: 148 },
       { id: "haianeM", name: "HAIANE M.", rating: 4.95, reviews: 177, photoUrl: "/haiane.jpeg" },
-      { id: "catalinaP", name: "CATALINA P.", rating: 4.92, reviews: 157 },
+      { id: "dijanaV", name: "DIJANA V.", rating: 4.92, reviews: 157 },
       { id: "milicaV", name: "MILICA V.", rating: 4.89, reviews: 141, photoUrl: "/milica.jpeg" },
     ];
 
