@@ -452,15 +452,15 @@ export default function Home() {
                 {t("home.estimated")}
               </p>
               <p className="mt-2 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-none text-[#00343d]">
-                €{Number(calculatedPrice || 0).toFixed(2)}
+                €{(Number(calculatedPrice || 0) * 1.2).toFixed(2)}
               </p>
               <p className="mt-3 text-sm sm:text-base text-gray-700">
                 {t("home.rate", {
-                  rate: getHourlyRate(
-                    form.typeOfCleaning,
-                    form.subcategories
+                  rate: (
+                    getHourlyRate(form.typeOfCleaning, form.subcategories) * 1.2
                   ).toFixed(2),
-                })}
+                })}{" "}
+                <span className="text-xs text-gray-600">(Brutto)</span>
               </p>
             </div>
           </div>

@@ -17,6 +17,7 @@ const premiumSubcategories = [
 ];
 
 const MIN_HOURS = 3;
+const TAX_RATE = 0.2;
 
 
 const getHourlyRate = (typeKey, subcategories) => {
@@ -55,6 +56,9 @@ export default function PriceCalculator() {
     () => normalizedDuration * hourlyRate,
     [normalizedDuration, hourlyRate]
   );
+  const netPrice = totalPrice;
+  const taxAmount = useMemo(() => netPrice * TAX_RATE, [netPrice]);
+  const grossPrice = useMemo(() => netPrice + taxAmount, [netPrice, taxAmount]);
 
   const chooseType = (key) =>
     setForm((prev) => ({ ...prev, typeKey: key, subcategories: [] }));
@@ -312,13 +316,39 @@ export default function PriceCalculator() {
             </section>
 
             <aside className="h-fit space-y-5 rounded-2xl border border-[#e0f7f7] bg-white p-5 shadow-lg md:p-6">
-              <div className="rounded-xl bg-[#0097b2] p-5 text-white shadow-md">
+              <div className="rounded-2xl bg-gradient-to-br from-[#0097b2] to-[#007a90] p-5 text-white shadow-md">
                 <p className="text-sm uppercase tracking-wide opacity-80">
-                  {t("calculator.estimatedTotalLabel")}
+                  {t("calculator.estimatedTotalLabel", { defaultValue: "Price breakdown" })}
                 </p>
-                <p className="mt-2 text-3xl font-bold md:text-4xl">€{totalPrice.toFixed(2)}</p>
+                <div className="mt-3 rounded-xl bg-white/10 p-4 text-center">
+                  <p className="text-xs uppercase tracking-wider text-[#d8f7fb]">
+                    {t("calculator.bruttoLabelShort", { defaultValue: "Brutto" })}
+                  </p>
+                  <p className="mt-1 text-4xl font-bold md:text-5xl">€{grossPrice.toFixed(2)}</p>
+                  <p className="mt-1 text-xs text-[#d8f7fb]">
+                    {t("calculator.bruttoLabel", {
+                      defaultValue: "Includes 20% tax",
+                    })}
+                  </p>
+                </div>
+
+                <div className="mt-4 space-y-2 rounded-xl bg-white/10 p-4 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="opacity-90">{t("calculator.bruttoLabelShort", { defaultValue: "Brutto" })}</span>
+                    <span>€{grossPrice.toFixed(2)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="opacity-90">{t("calculator.taxLabel", { defaultValue: "Tax (20%)" })}</span>
+                    <span>€{taxAmount.toFixed(2)}</span>
+                  </div>
+                  <div className="border-t border-white/20 pt-2 flex items-center justify-between text-base font-semibold">
+                    <span>{t("calculator.bruttoLabelShort", { defaultValue: "Brutto" })}</span>
+                    <span>€{grossPrice.toFixed(2)}</span>
+                  </div>
+                </div>
+
                 <p className="mt-3 text-sm text-[#d8f7fb]">
-                  {t("calculator.hourlyRate", { rate: hourlyRate.toFixed(2) })}
+                  {t("calculator.hourlyRate", { rate: (hourlyRate * (1 + TAX_RATE)).toFixed(2) })}
                 </p>
               </div>
 
