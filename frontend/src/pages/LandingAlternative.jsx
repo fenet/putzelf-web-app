@@ -21,6 +21,7 @@ import { trackEvent } from "../lib/analytics";
 import logo from "../assets/logo.png";
 import cover from "../assets/cover.svg";
 import Footer from "../components/Footer";
+import Seo from "../components/Seo";
 
 const content = {
   en: {
@@ -100,9 +101,10 @@ const content = {
   },
   de: {
     navCta: "Erste Reinigung buchen",
-    heroTitle: "Professionelle Reinigungsservices für Unternehmen",
+    heroTitle: "Professionelle Reinigung:",
+    heroTitleLine2: "Putzfrau in Wien gesucht? PutzELF gefunden",
     heroSubtitle:
-      "Zuverlässige Reinigung für Büros, Restaurants und Einzelhandel – mit gleichbleibender Qualität und flexiblen Zeiten.",
+      "Zuverlässige Unterhaltsreinigung für Büro, Gastro und Praxis – mit gleichbleibender Qualität und flexiblen Zeiten.",
     heroPrimaryCta: "Kostenlose Beratung buchen",
     heroSecondaryCta: "Erste Reinigung buchen",
     trust: ["4,9/5 Durchschnittsbewertung", "500+ Abgeschlossene Aufträge", "Vertrauen von lokalen Unternehmen"],
@@ -179,8 +181,13 @@ export default function LandingAlternative() {
   const lang = i18n.language?.startsWith("de") ? "de" : "en";
   const c = useMemo(() => content[lang], [lang]);
 
+  const seoTitle = "Reinigungsfirma Wien – Büroreinigung & Gebäudereinigung";
+  const seoDescription =
+    "Reinigungsfirma Wien für Unternehmen: Büroreinigung, Unterhaltsreinigung sowie Gastro- und Praxisreinigung. Flexible Zeiten und geprüfte Reinigungskräfte.";
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
+      <Seo title={seoTitle} description={seoDescription} path="/" />
       <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 md:px-6">
           <div className="flex items-center gap-3">
@@ -221,7 +228,17 @@ export default function LandingAlternative() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#5be3e3]/30 via-white to-[#0097b2]/20" />
         <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-14 md:grid-cols-2 md:px-6 md:py-20">
           <div>
-            <h1 className="text-4xl font-bold leading-tight md:text-5xl">{c.heroTitle}</h1>
+            <h1 className="text-4xl font-bold leading-tight md:text-5xl">
+              {lang === "de" ? (
+                <>
+                  {c.heroTitle}
+                  <br />
+                  {c.heroTitleLine2}
+                </>
+              ) : (
+                c.heroTitle
+              )}
+            </h1>
             <p className="mt-4 max-w-xl text-lg text-slate-700">{c.heroSubtitle}</p>
 
             <div className="mt-8 flex justify-center">

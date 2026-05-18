@@ -7,6 +7,7 @@ import { apiFetch } from "../lib/api";
 import { trackEvent } from "../lib/analytics";
 import { Gift, PartyPopper } from "lucide-react";
 import Confetti from "react-confetti";
+import Seo from "../components/Seo";
 
 const COUNTRY_OPTIONS = [
   { code: "at", label: "Austria (+43)" },
@@ -25,6 +26,9 @@ export default function Order() {
   const { t } = useTranslation();
   const { id } = useParams();
   const isQuoteRequest = id === "request";
+  const pageTitle = isQuoteRequest
+    ? t("order.quoteRequestTitle", { defaultValue: "Quote request" })
+    : t("order.title", { defaultValue: "Order" });
   const [booking, setBooking] = useState(null);
   const [customer, setCustomer] = useState({
     name: "",
@@ -322,6 +326,12 @@ export default function Order() {
 
   return (
     <div className="bg-[#f9fafa] min-h-screen py-1 px-4 flex flex-col items-center relative overflow-hidden">
+      <Seo
+        title={pageTitle}
+        description={pageTitle}
+        path={`/order/${id || ""}`}
+        noindex
+      />
       {showPopup && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../lib/auth";
+import Seo from "../components/Seo";
 
 export default function Register() {
   const { register } = useAuth();
@@ -34,16 +35,17 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <Seo title="Registrieren" description="Konto erstellen, um Termine zu buchen." path="/register" noindex />
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-6">
         <header className="text-center space-y-2">
-          <h1 className="text-3xl font-semibold text-gray-900">Create account</h1>
-          <p className="text-sm text-gray-600">Register to book and manage appointments.</p>
+          <h1 className="text-3xl font-semibold text-gray-900">Konto erstellen</h1>
+          <p className="text-sm text-gray-600">Registrieren Sie sich, um Termine zu buchen und zu verwalten.</p>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
+              E-Mail
             </label>
             <input
               id="email"
@@ -59,7 +61,7 @@ export default function Register() {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
+              Passwort
             </label>
             <input
               id="password"
@@ -75,7 +77,7 @@ export default function Register() {
 
           <div>
             <label htmlFor="inviteCode" className="block text-sm font-medium text-gray-700">
-              Admin invite code (optional)
+              Admin-Einladungscode (optional)
             </label>
             <input
               id="inviteCode"
@@ -84,7 +86,7 @@ export default function Register() {
               value={form.inviteCode}
               onChange={handleChange}
               className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-[#5be3e3]"
-              placeholder="Enter code only if you were invited as admin"
+              placeholder="Nur ausfüllen, wenn Sie als Admin eingeladen wurden"
             />
           </div>
 

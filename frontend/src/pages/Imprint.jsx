@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Phone, Mail, Instagram, Facebook, Linkedin } from "lucide-react";
 import { trackEvent } from "../lib/analytics";
 import logo from "../assets/logo.png";
+import Seo from "../components/Seo";
 
 export default function Imprint() {
   const { t, i18n } = useTranslation();
@@ -41,6 +42,11 @@ export default function Imprint() {
 
   return (
     <div className="flex flex-col min-h-screen pb-24 md:pb-0 bg-gray-50">
+      <Seo
+        title="Impressum"
+        description="Impressum und Kontaktinformationen von PutzELF (Wien)."
+        path="/imprint"
+      />
       {/* Navbar copied from Landing */}
       <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex flex-wrap justify-between items-center gap-2">

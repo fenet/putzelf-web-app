@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { trackEvent } from "../lib/analytics";
 import { Phone, Mail, Star } from "lucide-react";
 import logo from "../assets/logo.png";
+import Seo from "../components/Seo";
 
 export default function Profile() {
   const { t, i18n } = useTranslation();
@@ -89,6 +90,16 @@ export default function Profile() {
 
   return (
     <div className="flex flex-col min-h-screen pb-24 md:pb-0 bg-gray-50">
+      <Seo
+        title={i18n.language?.startsWith("de") ? "Reinigungskraft auswählen" : "Choose a cleaner"}
+        description={
+          i18n.language?.startsWith("de")
+            ? "Wählen Sie Ihre Reinigungskraft aus und buchen Sie Ihren Termin."
+            : "Choose your cleaner and book your appointment."
+        }
+        path="/profile"
+        noindex
+      />
       <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center space-x-3 md:space-x-6 min-w-0">

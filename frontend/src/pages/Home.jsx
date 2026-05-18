@@ -4,6 +4,7 @@ import { apiFetch, parseJsonSafe } from "../lib/api";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Gift } from "lucide-react";
+import Seo from "../components/Seo";
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -216,13 +217,23 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center py-1 px-4">
+      <Seo
+        title={i18n.language?.startsWith("de") ? "Reinigung buchen" : "Booking"}
+        description={
+          i18n.language?.startsWith("de")
+            ? "Termin auswählen und Ihre Daten eingeben."
+            : "Book a cleaning and enter your details."
+        }
+        path="/book"
+        noindex
+      />
       <div className="w-full max-w-2xl">
-        <h2
+        <h1
           className="text-center text-3xl font-bold mb-6"
           style={{ color: "#000000" }}
         >
           {t("home.title")}
-        </h2>
+        </h1>
 
         {selectedWorker ? (
           <div className="mb-6 rounded-2xl border border-[#5be3e3] bg-[#e6fbff] p-5 text-center shadow-sm">
@@ -360,7 +371,7 @@ export default function Home() {
                 type="button"
                 onClick={decrementDuration}
                 aria-label="Decrease hours"
-                title={t("home.durationMinTip") || "Minimum is 3 hours"}
+                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 3 Stunden." })}
                 className="px-3 rounded-l-lg border bg-gray-50 hover:bg-gray-100"
               >
                 −
@@ -377,14 +388,14 @@ export default function Home() {
                 onChange={handleChange}
                 onKeyDown={handleDurationKeyDown}
                 aria-describedby="duration-help"
-                title={t("home.durationMinTip") || "Minimum is 3 hours"}
+                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 3 Stunden." })}
                 className="w-full p-3 border-t border-b text-center"
               />
               <button
                 type="button"
                 onClick={incrementDuration}
                 aria-label="Increase hours"
-                title={t("home.durationMinTip") || "Minimum is 3 hours"}
+                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 3 Stunden." })}
                 className="px-3 rounded-r-lg border bg-gray-50 hover:bg-gray-100"
               >
                 +

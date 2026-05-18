@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../lib/auth";
+import Seo from "../components/Seo";
 
 export default function Login() {
   const { login } = useAuth();
@@ -30,18 +31,17 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <Seo title="Anmelden" description="Anmelden, um Buchungen zu verwalten." path="/login" noindex />
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 space-y-6">
         <header className="text-center space-y-2">
-          <h1 className="text-3xl font-semibold text-gray-900">Login</h1>
-          <p className="text-sm text-gray-600">
-            Sign in to manage your bookings.
-          </p>
+          <h1 className="text-3xl font-semibold text-gray-900">Anmelden</h1>
+          <p className="text-sm text-gray-600">Melden Sie sich an, um Ihre Buchungen zu verwalten.</p>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
+              E-Mail
             </label>
             <input
               id="email"
@@ -57,7 +57,7 @@ export default function Login() {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
+              Passwort
             </label>
             <input
               id="password"
@@ -78,14 +78,14 @@ export default function Login() {
             disabled={loading}
             className="w-full rounded-lg bg-[#0097b2] py-2 text-white font-semibold shadow hover:bg-[#00819a] transition disabled:opacity-60"
           >
-            {loading ? "Signing in…" : "Sign in"}
+            {loading ? "Anmeldung läuft…" : "Anmelden"}
           </button>
         </form>
 
         <div className="text-center text-sm text-gray-600">
-          <span>Need an account?</span>{" "}
+          <span>Noch kein Konto?</span>{" "}
           <Link to="/register" className="text-[#0097b2] font-semibold hover:underline">
-            Register
+            Registrieren
           </Link>
         </div>
       </div>

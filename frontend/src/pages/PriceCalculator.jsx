@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Calculator, Phone, Mail, Instagram, Facebook, Linkedin } from "lucide-react";
 import { trackEvent } from "../lib/analytics";
 import logo from "../assets/logo.png";
+import Seo from "../components/Seo";
 
 const cleaningTypes = [
   { key: "standard", emoji: "✨" },
@@ -110,6 +111,11 @@ export default function PriceCalculator() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#f9fafa]">
+      <Seo
+        title="Preisrechner Reinigung Wien"
+        description="Preisrechner für Reinigung in Wien: Kosten (brutto) in wenigen Sekunden berechnen."
+        path="/calculator"
+      />
       <nav className="bg-white shadow-md fixed inset-x-0 top-0 z-50">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 md:px-6 md:py-4">
           <div className="flex min-w-0 items-center space-x-3 md:space-x-6">

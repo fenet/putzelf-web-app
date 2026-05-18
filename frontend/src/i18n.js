@@ -134,31 +134,31 @@ const resources = {
         accept: "Accept"
       },
       home: {
-        title: "Book Your Cleaning",
-        selectType: "Select Cleaning Type",
+        title: "Book a cleaning",
+        selectType: "Choose a cleaning type",
         types: {
-          standard: "House Cleaning",
-          office: "Office Cleaning",
+          standard: "Home cleaning",
+          office: "Office cleaning",
           apartmentHotel: "Apartment / Hotel"
         },
         subcategories: {
-          title: "Choose Subcategory",
+          title: "Choose subcategory",
           intensive: "Intensive",
-          window: "Window"
+          window: "Windows"
         },
         descriptions: {
           standard: "Regular maintenance clean for homes; surfaces, bathrooms, and floors.",
           office: "Professional office cleaning tailored to workspaces and common areas.",
           apartmentHotel: "Detailed clean for apartments and hotel rooms between stays."
         },
-        durationLabel: "Hours (min 3)",
+        durationLabel: "Estimated hours",
         dateLabel: "Date",
         timeLabel: "Time",
-        renegotiate: "Willing to renegotiate if job takes longer",
+        renegotiate: "I understand the service is billed based on the actual time worked",
         durationHelp: "Minimum booking is 3 hours.",
-        estimated: "Estimated Price",
+        estimated: "Estimated price",
         rate: "Rate: €{{rate}}/hour",
-        submit: "Let's Go",
+        submit: "Submit",
         alerts: {
           missing: "Please fill date, time and select a cleaning type.",
           createError: "Error creating booking: {{msg}}",
@@ -189,6 +189,8 @@ const resources = {
         disclaimer: "This is an estimate. Final pricing is confirmed during booking."
       },
       order: {
+        title: "Order",
+        quoteRequestTitle: "Quote request",
         loading: "Loading booking...",
         confirmTitle: "Confirm Your Booking",
         summary: "Booking Summary",
@@ -277,12 +279,12 @@ const resources = {
         }
       },
       hero: {
-        title: "Professionelle Reinigung auf Knopfdruck",
-        subtitle: "Buchen Sie zuverlässige und preiswerte Reinigungen in wenigen Klicks.",
+        title: "Reinigung in Wien – schnell & extra sauber",
+        subtitle: "Buche deine Reinigungskraft in Wien in wenigen Klicks: Haushaltsreinigung, Grundreinigung, Fensterreinigung oder Büroreinigung.",
         cta: "JETZT BUCHEN",
-        jobCta: "Auf Jobsuche?",
-        jobModalTitle: "Werde Teil des Putzelf-Teams",
-        jobModalBody: "Bitte senden Sie uns Ihre Kontaktdaten und Bewerbung an {{email}}. Wir melden uns in Kürze.",
+        jobCta: "Job gesucht?",
+        jobModalTitle: "Werde Teil des PutzELF-Teams",
+        jobModalBody: "Schick uns deine Kontaktdaten und Bewerbung an {{email}} – wir melden uns schnell zurück.",
         jobModalEmailCta: "E-Mail senden",
         jobModalClose: "Schließen"
       },
@@ -406,6 +408,8 @@ const resources = {
         disclaimer: "Dies ist eine Schätzung. Der finale Preis wird bei der Buchung bestätigt."
       },
       order: {
+        title: "Buchung",
+        quoteRequestTitle: "Angebot anfragen",
         loading: "Buchung wird geladen...",
         confirmTitle: "Buchung bestätigen",
         summary: "Buchungsübersicht",

@@ -7,10 +7,15 @@ import logo from "../assets/logo.png";
 import cover from "../assets/cover.svg";
 import homeImg from "../assets/home.jpg";
 import officeImg from "../assets/office.jpg";
+import Seo from "../components/Seo";
 
 export default function Landing() {
   const { t, i18n } = useTranslation();
   const [showBanner, setShowBanner] = useState(false);
+
+  const seoTitle = "Reinigungsfirma Wien – Putzfrau & Reinigungskraft buchen";
+  const seoDescription =
+    "Reinigung in Wien: Putzfrau Wien & Reinigungskraft Wien – schnell online buchen. Reinigungsfirma Wien für Haushalt & Büro. Geprüfte Reinigungskräfte.";
 
   useEffect(() => {
     const storedConsent = localStorage.getItem("cookieConsent");
@@ -44,6 +49,7 @@ export default function Landing() {
 
   return (
     <div className="flex flex-col min-h-screen pb-24 md:pb-0">
+      <Seo title={seoTitle} description={seoDescription} path="/landing-alt" />
       <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center space-x-3 md:space-x-6 min-w-0">
@@ -111,7 +117,17 @@ export default function Landing() {
       </nav>
 
       <section className="flex flex-col items-center justify-center text-center px-6 pt-32 md:pt-40 pb-24 bg-gray-50">
-        <h1 className="text-4xl md:text-6xl font-bold text-[#000000] mb-6">{t("hero.title")}</h1>
+        <h1 className="text-4xl md:text-6xl font-bold text-[#000000] mb-6">
+          {i18n.language?.startsWith("de") ? (
+            <>
+              Professionelle Reinigung:
+              <br />
+              Putzfrau in Wien gesucht? PutzELF gefunden
+            </>
+          ) : (
+            t("hero.title")
+          )}
+        </h1>
         <p className="text-lg text-gray-700 max-w-2xl mb-8">{t("hero.subtitle")}</p>
         <div className="flex flex-col items-center justify-center gap-3">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

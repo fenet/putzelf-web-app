@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { apiFetch, parseJsonSafe } from "../lib/api";
 import { Link } from "react-router-dom";
+import Seo from "../components/Seo";
 
 export default function Admin() {
   const [bookings, setBookings] = useState([]);
@@ -29,12 +30,13 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Seo title="Admin-Bereich" description="Admin-Bereich" path="/admin" noindex />
       <div className="container mx-auto px-4 py-6">
         <header className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Admin dashboard</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Admin-Dashboard</h1>
           <div className="flex items-center gap-3">
             <Link to="/profile" className="px-3 py-2 rounded-md border text-gray-700 hover:bg-gray-50">
-              Go to profile
+              Zum Profil
             </Link>
           </div>
         </header>
