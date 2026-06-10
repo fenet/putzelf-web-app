@@ -253,7 +253,7 @@ const resources = {
         membership: "Mitglied der Wirtschaftskammer Wien, Fachgruppe Gewerbliche Dienstleister"
       },
       profile: {
-        title: "Wählen Sie Ihren Lieblingsmitarbeiter",
+        title: "Putzfrau in Wien gesucht?",
         subtitle: "Überprüfen Sie unsere vertrauenswürdigen Fachkräfte und wählen Sie die Reinigungskraft, die am besten zu Ihrer Buchung passt.",
         choose: "Wähle mich",
         rating: "{{rating}} Bewertung · {{reviews}} Bewertungen",

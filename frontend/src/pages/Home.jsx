@@ -26,16 +26,145 @@ export default function Home() {
     return params.get("worker");
   });
 
+  const [workersIndex, setWorkersIndex] = useState({});
+  const [workersError, setWorkersError] = useState(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    (async () => {
+      try {
+        setWorkersError(null);
+        const res = await apiFetch("/api/workers", { signal: controller.signal });
+        const data = await parseJsonSafe(res);
+        if (!res.ok) {
+          throw new Error(data?.error || "Failed to load workers");
+        }
+        const employees = Array.isArray(data?.employees) ? data.employees : [];
+        const index = {};
+        employees.forEach((emp) => {
+          const code = String(emp?.code || "").trim();
+          if (!code) return;
+          index[code] = { name: String(emp?.name || code).trim() || code };
+        });
+        setWorkersIndex(index);
+      } catch (err) {
+        if (err?.name === "AbortError") return;
+        setWorkersIndex({});
+        setWorkersError(err?.message || "Failed to load workers");
+      }
+    })();
+    return () => controller.abort();
+  }, []);
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     setSelectedWorker(params.get("worker"));
   }, [location.search]);
 
   const selectedWorkerName = selectedWorker
-    ? t(`profile.workers.${selectedWorker}`, { defaultValue: selectedWorker })
+    ? workersIndex?.[selectedWorker]?.name ||
+      t(`profile.workers.${selectedWorker}`, { defaultValue: selectedWorker })
     : null;
 
   const [rewardImageError, setRewardImageError] = useState(false);
+
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
+  const [slotsError, setSlotsError] = useState(null);
+
+  const toYYYYMM = (d) => {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    return `${year}-${month}`;
+  };
+
+  const todayYMD = (() => {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  })();
+
+  const parseYMDToMonthCursor = (ymd) => {
+    const raw = String(ymd || "").trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+      const now = new Date();
+      return new Date(now.getFullYear(), now.getMonth(), 1);
+    }
+    const [y, m] = raw.split("-").map((v) => Number(v));
+    if (!y || !m) {
+      const now = new Date();
+      return new Date(now.getFullYear(), now.getMonth(), 1);
+    }
+    return new Date(y, m - 1, 1);
+  };
+
+  const [monthCursor, setMonthCursor] = useState(() => parseYMDToMonthCursor(form.date));
+  const [monthAvailableDays, setMonthAvailableDays] = useState(() => new Set());
+  const [monthLoading, setMonthLoading] = useState(false);
+  const [monthError, setMonthError] = useState(null);
+
+  useEffect(() => {
+    if (!form.date) return;
+    const next = parseYMDToMonthCursor(form.date);
+    setMonthCursor((prev) => {
+      if (prev.getFullYear() === next.getFullYear() && prev.getMonth() === next.getMonth()) {
+        return prev;
+      }
+      return next;
+    });
+  }, [form.date]);
+
+  useEffect(() => {
+    const worker = String(selectedWorker || "").trim();
+    const durationHours = Number(form.duration || 0);
+    if (!worker || !durationHours) {
+      setMonthAvailableDays(new Set());
+      setMonthError(null);
+      setMonthLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const params = new URLSearchParams({
+      worker,
+      month: toYYYYMM(monthCursor),
+      duration_hours: String(durationHours),
+    });
+    if (form.location) params.set("address", String(form.location));
+
+    (async () => {
+      try {
+        setMonthLoading(true);
+        setMonthError(null);
+        const res = await apiFetch(`/api/availability/month?${params.toString()}`, {
+          signal: controller.signal,
+        });
+        const data = await parseJsonSafe(res);
+        if (!res.ok) {
+          throw new Error(data?.error || "Failed to load availability");
+        }
+        const days = Array.isArray(data?.availableDays) ? data.availableDays : [];
+        const set = new Set(days.filter((d) => typeof d === "string"));
+        setMonthAvailableDays(set);
+        setForm((prev) => {
+          if (prev.date && !set.has(prev.date)) {
+            return { ...prev, date: "", time: "" };
+          }
+          return prev;
+        });
+      } catch (err) {
+        if (err?.name === "AbortError") return;
+        setMonthAvailableDays(new Set());
+        setMonthError(err?.message || "Failed to load availability");
+      } finally {
+        setMonthLoading(false);
+      }
+    })();
+
+    return () => controller.abort();
+  }, [selectedWorker, form.duration, form.location, monthCursor]);
 
   const getHourlyRate = (typeOfCleaning, subcategories) => {
     const isHouseCleaning = typeOfCleaning === t("home.types.standard");
@@ -93,8 +222,66 @@ export default function Home() {
       setCalculatedPrice(hours * rate);
     }
 
-    setForm((prev) => ({ ...prev, [name]: updatedValue }));
+    setForm((prev) => {
+      const next = { ...prev, [name]: updatedValue };
+      if (name === "date" || name === "duration" || name === "location") {
+        next.time = "";
+      }
+      return next;
+    });
   };
+
+  useEffect(() => {
+    const worker = String(selectedWorker || "").trim();
+    const day = String(form.date || "").trim();
+    const durationHours = Number(form.duration || 0);
+
+    if (!worker || !day || !durationHours) {
+      setAvailableSlots([]);
+      setSlotsError(null);
+      setSlotsLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const params = new URLSearchParams({
+      worker,
+      day,
+      duration_hours: String(durationHours),
+    });
+    if (form.location) params.set("address", String(form.location));
+
+    (async () => {
+      try {
+        setSlotsLoading(true);
+        setSlotsError(null);
+        const res = await apiFetch(`/api/availability/slots?${params.toString()}`, {
+          signal: controller.signal,
+        });
+        const data = await parseJsonSafe(res);
+        if (!res.ok) {
+          throw new Error(data?.error || "Failed to load available times");
+        }
+
+        const slots = Array.isArray(data?.slots) ? data.slots : [];
+        setAvailableSlots(slots);
+        setForm((prev) => {
+          if (prev.time && !slots.includes(prev.time)) {
+            return { ...prev, time: "" };
+          }
+          return prev;
+        });
+      } catch (err) {
+        if (err?.name === "AbortError") return;
+        setAvailableSlots([]);
+        setSlotsError(err?.message || "Failed to load available times");
+      } finally {
+        setSlotsLoading(false);
+      }
+    })();
+
+    return () => controller.abort();
+  }, [selectedWorker, form.date, form.duration, form.location]);
 
   const decrementDuration = () => {
     setForm((prev) => {
@@ -417,15 +604,132 @@ export default function Home() {
               >
                 {t("home.dateLabel") || "Date"}
               </label>
-              <input
-                id="date"
-                name="date"
-                type="date"
-                placeholder={t("home.datePlaceholder") || "Select date"}
-                value={form.date}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg"
-              />
+              <div className="w-full p-3 border rounded-lg bg-white">
+                {!selectedWorker ? (
+                  <p className="text-sm text-gray-600">
+                    {t("home.slots.chooseWorker", {
+                      defaultValue: "Choose a worker to see available days.",
+                    })}
+                  </p>
+                ) : monthLoading ? (
+                  <p className="text-sm text-gray-600">
+                    {t("home.calendar.loading", {
+                      defaultValue: "Loading availability…",
+                    })}
+                  </p>
+                ) : monthError ? (
+                  <p className="text-sm text-red-600">{monthError}</p>
+                ) : (
+                  (() => {
+                    const year = monthCursor.getFullYear();
+                    const month = monthCursor.getMonth();
+                    const first = new Date(year, month, 1);
+                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+                    const sundayBased = first.getDay();
+                    const offset = (sundayBased + 6) % 7; // Monday=0
+                    const cells = [];
+                    for (let i = 0; i < offset; i += 1) cells.push(null);
+                    for (let d = 1; d <= daysInMonth; d += 1) cells.push(d);
+
+                    const locale = (i18n?.language || "").toLowerCase().startsWith("de") ? "de-AT" : "en-US";
+                    const monthLabel = new Intl.DateTimeFormat(locale, {
+                      month: "long",
+                      year: "numeric",
+                    }).format(first);
+
+                    const dow = (i18n?.language || "").toLowerCase().startsWith("de")
+                      ? ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+                      : ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+                    const toYMD = (dayNumber) => {
+                      const mm = String(month + 1).padStart(2, "0");
+                      const dd = String(dayNumber).padStart(2, "0");
+                      return `${year}-${mm}-${dd}`;
+                    };
+
+                    const goPrev = () => setMonthCursor((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+                    const goNext = () => setMonthCursor((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+
+                    return (
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <button
+                            type="button"
+                            onClick={goPrev}
+                            className="px-3 py-2 rounded-lg border bg-gray-50 hover:bg-gray-100 text-sm font-semibold"
+                            aria-label={t("home.calendar.prev", { defaultValue: "Previous month" })}
+                          >
+                            ←
+                          </button>
+                          <div className="text-sm font-semibold text-gray-800">{monthLabel}</div>
+                          <button
+                            type="button"
+                            onClick={goNext}
+                            className="px-3 py-2 rounded-lg border bg-gray-50 hover:bg-gray-100 text-sm font-semibold"
+                            aria-label={t("home.calendar.next", { defaultValue: "Next month" })}
+                          >
+                            →
+                          </button>
+                        </div>
+
+                        {workersError ? (
+                          <p className="text-xs text-red-600 mb-2">{workersError}</p>
+                        ) : null}
+
+                        <div className="grid grid-cols-7 gap-2">
+                          {dow.map((label) => (
+                            <div key={label} className="text-xs font-semibold text-gray-500 text-center">
+                              {label}
+                            </div>
+                          ))}
+                          {cells.map((dayNumber, idx) => {
+                            if (!dayNumber) {
+                              return <div key={`empty-${idx}`} />;
+                            }
+                            const ymd = toYMD(dayNumber);
+                            const isPast = ymd < todayYMD;
+                            const isAvailable = monthAvailableDays.has(ymd);
+                            const isSelected = form.date === ymd;
+                            const disabled = isPast || !isAvailable;
+
+                            return (
+                              <button
+                                key={ymd}
+                                type="button"
+                                disabled={disabled}
+                                onClick={() =>
+                                  setForm((prev) => ({
+                                    ...prev,
+                                    date: ymd,
+                                    time: "",
+                                  }))
+                                }
+                                aria-pressed={isSelected}
+                                className={`h-10 rounded-lg border text-sm font-semibold transition text-center ${
+                                  disabled
+                                    ? "bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed"
+                                    : isSelected
+                                      ? "bg-[#5be3e3] border-[#0097b2] text-black"
+                                      : "bg-white hover:bg-gray-50 border-gray-200 text-gray-800"
+                                }`}
+                                title={
+                                  disabled
+                                    ? t("home.calendar.unavailable", { defaultValue: "Unavailable" })
+                                    : t("home.calendar.available", { defaultValue: "Available" })
+                                }
+                              >
+                                {dayNumber}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })()
+                )}
+
+                <input id="date" name="date" type="hidden" value={form.date} readOnly />
+              </div>
             </div>
             <div>
               <label
@@ -434,15 +738,67 @@ export default function Home() {
               >
                 {t("home.timeLabel") || "Time"}
               </label>
-              <input
-                id="time"
-                name="time"
-                type="time"
-                placeholder={t("home.timePlaceholder") || "Select time"}
-                value={form.time}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg"
-              />
+              <div className="w-full p-3 border rounded-lg bg-white">
+                {!selectedWorker ? (
+                  <p className="text-sm text-gray-600">
+                    {t("home.slots.chooseWorker", {
+                      defaultValue: "Choose a worker to see available times.",
+                    })}
+                  </p>
+                ) : !form.date ? (
+                  <p className="text-sm text-gray-600">
+                    {t("home.slots.chooseDate", {
+                      defaultValue: "Pick a date to see available times.",
+                    })}
+                  </p>
+                ) : slotsLoading ? (
+                  <p className="text-sm text-gray-600">
+                    {t("home.slots.loading", {
+                      defaultValue: "Loading available times…",
+                    })}
+                  </p>
+                ) : slotsError ? (
+                  <p className="text-sm text-red-600">{slotsError}</p>
+                ) : availableSlots.length === 0 ? (
+                  <p className="text-sm text-gray-600">
+                    {t("home.slots.none", {
+                      defaultValue:
+                        "No available times for this day. Please choose another date.",
+                    })}
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    {availableSlots.map((slot) => {
+                      const selected = form.time === slot;
+                      return (
+                        <button
+                          key={slot}
+                          type="button"
+                          onClick={() =>
+                            setForm((prev) => ({ ...prev, time: slot }))
+                          }
+                          aria-pressed={selected}
+                          className={`px-3 py-2 rounded-lg border text-sm font-semibold transition ${
+                            selected
+                              ? "bg-[#5be3e3] border-[#0097b2] text-black"
+                              : "bg-gray-50 hover:bg-gray-100 border-gray-200 text-gray-800"
+                          }`}
+                        >
+                          {slot}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                <input
+                  id="time"
+                  name="time"
+                  type="hidden"
+                  value={form.time}
+                  readOnly
+                />
+              </div>
             </div>
           </div>
 

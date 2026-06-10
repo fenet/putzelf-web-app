@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { trackEvent } from "../lib/analytics";
+import { apiFetch, parseJsonSafe } from "../lib/api";
 import { Phone, Mail, Star } from "lucide-react";
 import logo from "../assets/logo.png";
 import Seo from "../components/Seo";
@@ -10,6 +11,10 @@ export default function Profile() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [showBanner, setShowBanner] = useState(false);
+
+  const [employees, setEmployees] = useState([]);
+  const [employeesLoading, setEmployeesLoading] = useState(false);
+  const [employeesError, setEmployeesError] = useState(null);
 
   const getInitials = (name) => {
     if (!name) return "";
@@ -72,20 +77,42 @@ export default function Profile() {
       return arr;
     };
 
-    const baseWorkers = [
-      { id: "agnesC", name: "AGNES C.", rating: 4.96, reviews: 182, photoUrl: "/agnes.jpeg" },
-      { id: "slavkaS", name: "SLAVKA S.", rating: 4.94, reviews: 169, photoUrl: "/slavka.jpeg" },
-      { id: "dobrilaN", name: "DOBRILA N.", rating: 4.91, reviews: 153, photoUrl: "/dobrila.jpeg" },
-      { id: "kataK", name: "KATA K.", rating: 4.93, reviews: 161 },
-      { id: "hajkunaD", name: "HAJKUNA D.", rating: 4.90, reviews: 148 },
-      { id: "haianeM", name: "HAIANE M.", rating: 4.95, reviews: 177, photoUrl: "/haiane.jpeg" },
-      { id: "dijanaV", name: "DIJANA V.", rating: 4.92, reviews: 157 },
-      { id: "milicaV", name: "MILICA V.", rating: 4.89, reviews: 141, photoUrl: "/milica.jpeg" },
-    ];
+    const baseWorkers = Array.isArray(employees) ? employees : [];
+    const normalized = baseWorkers
+      .map((emp) => {
+        const code = String(emp?.code || "").trim();
+        if (!code) return null;
+        const name = String(emp?.name || code).trim() || code;
+        const active = emp?.active !== false;
+        return active ? { id: code, name } : null;
+      })
+      .filter(Boolean);
 
-    const withPhoto = baseWorkers.filter((w) => Boolean(w.photoUrl));
-    const withoutPhoto = baseWorkers.filter((w) => !w.photoUrl);
-    return [...shuffle(withPhoto), ...shuffle(withoutPhoto)];
+    return shuffle(normalized);
+  }, [employees]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    (async () => {
+      try {
+        setEmployeesLoading(true);
+        setEmployeesError(null);
+        const res = await apiFetch("/api/workers", { signal: controller.signal });
+        const data = await parseJsonSafe(res);
+        if (!res.ok) {
+          throw new Error(data?.error || "Failed to load workers");
+        }
+        const next = Array.isArray(data?.employees) ? data.employees : [];
+        setEmployees(next);
+      } catch (err) {
+        if (err?.name === "AbortError") return;
+        setEmployees([]);
+        setEmployeesError(err?.message || "Failed to load workers");
+      } finally {
+        setEmployeesLoading(false);
+      }
+    })();
+    return () => controller.abort();
   }, []);
 
   return (
@@ -208,6 +235,19 @@ export default function Profile() {
           </p>
         </header>
 
+        {employeesLoading && (
+          <p className="text-center text-gray-600">{t("common.loading", { defaultValue: "Loading…" })}</p>
+        )}
+        {!employeesLoading && employeesError && (
+          <p className="text-center text-red-600">{employeesError}</p>
+        )}
+
+        {!employeesLoading && !employeesError && workers.length === 0 && (
+          <p className="text-center text-gray-600">
+            {t("profile.noWorkers", { defaultValue: "No active workers available." })}
+          </p>
+        )}
+
         <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {workers.map((worker) => (
             <article
@@ -231,20 +271,15 @@ export default function Profile() {
                 </div>
 
                 <h2 className="text-2xl md:text-3xl font-semibold text-[#000000]">
-                  {worker.name.toUpperCase()}
+                  {worker.name.toUpperCase()}, Putzfrau in Wien
                 </h2>
 
-                <span className="inline-flex items-center justify-center text-[#facc15] font-semibold">
-                  <Star size={20} className="fill-[#facc15] text-[#facc15] mr-1" />
-                  {worker.rating.toFixed(2)}
+                <span className="inline-flex items-center justify-center text-gray-500 font-medium">
+                  <Star size={18} className="text-gray-400 mr-1" />
+                  {t("profile.workerLabel", { defaultValue: "Cleaner" })}
                 </span>
               </div>
-              <p className="text-sm text-gray-500">
-                {t("profile.rating", {
-                  rating: worker.rating.toFixed(2),
-                  reviews: worker.reviews,
-                })}
-              </p>
+              <p className="text-sm text-gray-500">{t("profile.chooseSubtitle", { defaultValue: "Choose this cleaner to continue." })}</p>
               <button
                 type="button"
                 onClick={() => handleSelectWorker(worker.id)}

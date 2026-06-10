@@ -28,8 +28,10 @@ model Booking {
   time           String
   duration       Int
   typeOfCleaning String
+  preferredWorkerCode String?
   renegotiate    Boolean  @default(false)
   price          Float
+  adminShiftId    Int?
   name           String?
   email          String?
   address        String?
@@ -38,6 +40,7 @@ model Booking {
   userId         Int?
   user           User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   createdAt      DateTime @default(now())
+  confirmedAt     DateTime?
 
   @@index([userId])
 }
