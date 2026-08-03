@@ -35,6 +35,7 @@ export default function Order() {
     email: "",
     address: "",
     phone: "",
+    notes: "",
     gdprConsent: false,
   });
   const [loadingConfirm, setLoadingConfirm] = useState(false);
@@ -472,6 +473,21 @@ export default function Order() {
               {phoneError && (
                 <p className="mt-1 text-sm text-red-500">{phoneError}</p>
               )}
+            </div>
+
+            <div>
+              <label htmlFor="notes" className="block text-sm font-medium mb-1 text-gray-700">
+                Anmerkungen
+              </label>
+              <textarea
+                id="notes"
+                name="notes"
+                value={customer.notes}
+                onChange={handleChange}
+                rows={4}
+                placeholder="Bitte schreiben Sie hier zusätzliche Anmerkungen oder Wünsche..."
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3] resize-y"
+              />
             </div>
 
             <label className="flex items-center space-x-2 text-sm text-gray-600">

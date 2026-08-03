@@ -93,6 +93,21 @@ function getTransporter() {
   return _transporterPromise;
 }
 
+function formatGermanDate(value) {
+  if (!value) return "N/A";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value);
+  return date.toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
+function formatYesNo(value) {
+  return value ? "Ja" : "Nein";
+}
+
 /**
  * sendBookingConfirmation
  * Accepts either:
@@ -141,13 +156,14 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
           Nachfolgend die Details.
         </p>
         <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Location</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.address || booking.location || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📅 Date</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.date || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏰ Time</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🧹 Cleaning Type</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.typeOfCleaning || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏳ Duration</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} hours</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Phone</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>💬 Renegotiate if longer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.renegotiate ? "Yes" : "No"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Ort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.address || booking.location || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📅 Datum</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatGermanDate(booking.date)}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏰ Uhrzeit</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🧹 Reinigungsart</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.typeOfCleaning || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏳ Dauer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} Stunden</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>� Anmerkungen</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.notes || "").toString().trim() ? (booking.notes || "").toString().trim().replace(/\n/g, "<br />") : "Keine"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>�💬 Verlängerung möglich</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatYesNo(booking.renegotiate)}</td></tr>
         </table>
         <p style="margin-top: 20px; font-size: 15px;">
           Wenn Sie Änderungen vornehmen möchten, antworten Sie einfach auf diese E-Mail – wir helfen Ihnen gerne weiter.
@@ -159,9 +175,9 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
       </div>
       <div style="background: #f1f1f1; padding: 20px; text-align: center; font-size: 13px; color: #666;">
         <div style="margin-bottom: 15px;">
-          <a href="https://your-domain.com/terms" style="margin: 0 10px; color: #666; text-decoration: none;">Terms & Conditions</a> |
-          <a href="https://your-domain.com/privacy" style="margin: 0 10px; color: #666; text-decoration: none;">Privacy Policy</a> |
-          <a href="https://your-domain.com/imprint" style="margin: 0 10px; color: #666; text-decoration: none;">Imprint</a>
+          <a href="https://your-domain.com/terms" style="margin: 0 10px; color: #666; text-decoration: none;">AGB</a> |
+          <a href="https://your-domain.com/privacy" style="margin: 0 10px; color: #666; text-decoration: none;">Datenschutz</a> |
+          <a href="https://your-domain.com/imprint" style="margin: 0 10px; color: #666; text-decoration: none;">Impressum</a>
         </div>
         <div style="margin-bottom: 15px;">
           <a href="https://instagram.com" style="margin: 0 8px;" target="_blank">
@@ -174,7 +190,7 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
             <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn" style="width: 24px; height: 24px;" />
           </a>
         </div>
-        <div>© ${new Date().getFullYear()} PutzELF. All rights reserved.</div>
+        <div>© ${new Date().getFullYear()} PutzELF. Alle Rechte vorbehalten.</div>
       </div>
     </div>
   </div>
@@ -186,8 +202,8 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
       from: `"PutzELF" <${SMTP_FROM}>`,
       to: Array.isArray(to) ? to.join(", ") : to,
       bcc: SMTP_BCC,
-      subject: "Your Booking Confirmation – PutzELF",
-      text: "Your booking is confirmed! Please check the details in the email.",
+      subject: "Buchungsbestätigung – PutzELF",
+      text: "Ihre Buchung wurde bestätigt. Bitte prüfen Sie die Details in der E-Mail.",
       html: htmlContent,
     });
 

@@ -406,6 +406,7 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
       email,
       address,
       phone,
+      notes,
       gdprConsent,
       metaEventId,
       metaEventSource,
@@ -480,14 +481,19 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
       },
     });
 
+    const emailBooking = {
+      ...booking,
+      notes: typeof notes === "string" ? notes : "",
+    };
+
     const isQuoteRequest =
       (existing.typeOfCleaning || "").toLowerCase() === "quote request" ||
       (existing.typeOfCleaning || "").toLowerCase() === "angebot anfragen";
 
     if (isQuoteRequest) {
-      await sendQuoteRequestConfirmation([booking.email, "office@putzelf.com"], booking);
+      await sendQuoteRequestConfirmation([booking.email, "office@putzelf.com"], emailBooking);
     } else {
-      await sendBookingConfirmation([booking.email, "office@putzelf.com"], booking);
+      await sendBookingConfirmation([booking.email, "office@putzelf.com"], emailBooking);
     }
 
     try {
