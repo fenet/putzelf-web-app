@@ -224,6 +224,53 @@ export default function LandingAlternative() {
         </div>
       </nav>
 
+      <div className="mx-auto mt-6 max-w-7xl px-4 md:px-6">
+        <div className="mb-8 w-full rounded-2xl p-4 bg-gradient-to-r from-[#fff7ed] via-[#fff3e0] to-white shadow-xl border border-transparent drop-in">
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-[#ff6b00]">Neu in Graz</p>
+              <h3 className="mt-1 text-2xl md:text-3xl font-extrabold text-gray-900">Wir sind jetzt in Graz — Waagner‑Biro‑Straße.</h3>
+              <p className="mt-2 text-sm text-gray-700">Vereinbaren Sie Ihren Termin lokal.</p>
+              <div className="mt-4 flex items-center gap-3">
+                <Link to="/profile" aria-label="Termin vereinbaren in Graz" className="inline-flex items-center px-5 py-3 bg-[#ff6b00] text-white rounded-full text-sm font-semibold shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition">Termin vereinbaren</Link>
+                <a
+                  href="tel:+436766300167"
+                  aria-label={lang === "de" ? "Rufen Sie uns an +43 676 6300167" : "Call +43 676 6300167"}
+                  className="inline-flex items-center px-4 py-2 border rounded-full text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  {lang === "de" ? "Jetzt anrufen" : "Call now"}
+                </a>
+              </div>
+            </div>
+
+            <div className="w-full md:w-80 mt-4 md:mt-0 relative">
+              <div className="map-card w-full h-48 md:h-56">
+                <iframe
+                  title="Google Maps Waagner-Biro-Straße Graz"
+                  src="https://www.google.com/maps?q=Waagner-Biro-Stra%C3%9Fe,+Graz&output=embed"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  aria-label="Karte: Waagner-Biro-Straße, Graz"
+                />
+              </div>
+              <a
+                className="map-chip"
+                href="https://www.google.com/maps/search/?api=1&query=Waagner-Biro-Stra%C3%9Fe+Graz"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Öffnen in Google Maps"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                  <path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 12 6 12s6-6.75 6-12c0-3.314-2.686-6-6-6z" stroke="#0f172a" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="12" cy="8" r="2.2" fill="#0f172a" />
+                </svg>
+                <span>Waagner‑Biro‑Straße, Graz</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#5be3e3]/30 via-white to-[#0097b2]/20" />
         <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-14 md:grid-cols-2 md:px-6 md:py-20">

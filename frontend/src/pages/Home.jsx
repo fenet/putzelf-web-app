@@ -414,6 +414,27 @@ export default function Home() {
         path="/book"
         noindex
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: "PutzELF",
+            telephone: "+43 676 6300167",
+            email: "info@putzelf.com",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "Waagner-Biro-Straße",
+              addressLocality: "Graz",
+              addressCountry: "AT",
+            },
+            url: "/graz",
+          }),
+        }}
+      />
+
+      {/* Graz CTA moved to LandingAlternative.jsx */}
       <div className="w-full max-w-2xl">
         <h1
           className="text-center text-3xl font-bold mb-6"

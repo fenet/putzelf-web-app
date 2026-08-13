@@ -4,3 +4,60 @@
 
 html, body, #root { height: 100%; }
 
+/* Graz CTA drop-in animation and accessibility-safe fallback */
+@keyframes dropIn {
+	0% {
+		transform: translateY(-60%) rotate(-4deg) scale(0.995);
+		opacity: 0;
+	}
+	60% {
+		transform: translateY(6px) rotate(1deg) scale(1.01);
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(0) rotate(0) scale(1);
+		opacity: 1;
+	}
+}
+
+.drop-in {
+	animation: dropIn 700ms cubic-bezier(.16,.84,.52,1) both;
+	will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.drop-in { animation: none !important; }
+}
+
+/* Map card visuals */
+.map-card {
+	overflow: hidden;
+	border-radius: 0.75rem; /* rounded-lg */
+	box-shadow: 0 8px 30px rgba(2,6,23,0.08);
+	border: 1px solid rgba(2,6,23,0.06);
+	background-clip: padding-box;
+}
+.map-card iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	border: 0;
+}
+.map-chip {
+	position: absolute;
+	left: 12px;
+	bottom: 12px;
+	background: rgba(255,255,255,0.95);
+	color: #0f172a;
+	padding: 6px 10px;
+	border-radius: 9999px;
+	font-weight: 600;
+	font-size: 0.875rem;
+	display: inline-flex;
+	gap: 8px;
+	align-items: center;
+	box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+	border: 1px solid rgba(2,6,23,0.06);
+}
+
