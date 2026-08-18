@@ -276,7 +276,7 @@ const resources = {
         premiumNotice: "Premium add-ons adjust the hourly rate.",
         renegotiateLabel: "Allow renegotiation if the job needs more time",
         resetBtn: "Reset selection",
-        cta: "Select a professional",
+        cta: "Book Now",
         disclaimer: "This is an estimate. Final pricing is confirmed during booking."
       },
       order: {
@@ -604,7 +604,7 @@ const resources = {
         premiumNotice: "Premium-Extras beeinflussen den Stundensatz.",
         renegotiateLabel: "Nachverhandlung erlauben, falls mehr Zeit nötig ist",
         resetBtn: "Auswahl zurücksetzen",
-        cta: "Jetzt Reinigungskraft auswählen",
+        cta: "Jetzt buchen",
         disclaimer: "Dies ist eine Schätzung. Der finale Preis wird bei der Buchung bestätigt."
       },
       order: {

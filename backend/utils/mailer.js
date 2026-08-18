@@ -89,7 +89,13 @@ async function createTransporter() {
 // Cache one transporter promise for reuse
 let _transporterPromise = null;
 function getTransporter() {
-  if (!_transporterPromise) _transporterPromise = createTransporter();
+  if (!_transporterPromise) {
+    // createTransporter may reject; ensure we clear the cached promise on failure
+    _transporterPromise = createTransporter().catch((err) => {
+      _transporterPromise = null;
+      throw err;
+    });
+  }
   return _transporterPromise;
 }
 
@@ -155,16 +161,16 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
           Nachfolgend die Details.
         </p>
         <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📌 Standort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.location || "vienna").toLowerCase() === "graz" ? "Graz" : "Wien"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.address || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Standort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.location || "vienna").toLowerCase() === "graz" ? "Graz" : "Wien"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏠 Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.address || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📅 Datum</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatGermanDate(booking.date)}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏰ Uhrzeit</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🧹 Reinigungsart</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.typeOfCleaning || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏳ Dauer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} Stunden</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📧 E-Mail</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerEmail}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>� Anmerkungen</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.notes || "").toString().trim() ? (booking.notes || "").toString().trim().replace(/\n/g, "<br />") : "Keine"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>�💬 Verlängerung möglich</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatYesNo(booking.renegotiate)}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📝 Anmerkungen</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.notes || "").toString().trim() ? (booking.notes || "").toString().trim().replace(/\n/g, "<br />") : "Keine"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🔄 Verlängerung möglich</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatYesNo(booking.renegotiate)}</td></tr>
         </table>
         <p style="margin-top: 20px; font-size: 15px;">
           Wenn Sie Änderungen vornehmen möchten, antworten Sie einfach auf diese E-Mail – wir helfen Ihnen gerne weiter.
@@ -176,9 +182,9 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
       </div>
       <div style="background: #f1f1f1; padding: 20px; text-align: center; font-size: 13px; color: #666;">
         <div style="margin-bottom: 15px;">
-          <a href="https://your-domain.com/terms" style="margin: 0 10px; color: #666; text-decoration: none;">AGB</a> |
-          <a href="https://your-domain.com/privacy" style="margin: 0 10px; color: #666; text-decoration: none;">Datenschutz</a> |
-          <a href="https://your-domain.com/imprint" style="margin: 0 10px; color: #666; text-decoration: none;">Impressum</a>
+          <a href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf" style="margin: 0 10px; color: #666; text-decoration: none;">AGB</a> |
+          <a href="/files/Datenschutzbestimmungen.pdf" style="margin: 0 10px; color: #666; text-decoration: none;">Datenschutz</a> |
+          <a href="https://putzelf.com/imprint" style="margin: 0 10px; color: #666; text-decoration: none;">Impressum</a>
         </div>
         <div style="margin-bottom: 15px;">
           <a href="https://instagram.com" style="margin: 0 8px;" target="_blank">
@@ -199,6 +205,11 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
 
   try {
     const transporter = await getTransporter();
+    console.log("Sending booking confirmation email", {
+      from: SMTP_FROM,
+      to: Array.isArray(to) ? to.join(", ") : to,
+      subject: "Buchungsbestätigung – PutzELF",
+    });
     const info = await transporter.sendMail({
       from: `"PutzELF" <${SMTP_FROM}>`,
       to: Array.isArray(to) ? to.join(", ") : to,
@@ -265,6 +276,11 @@ export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
   `;
 
   const transporter = await getTransporter();
+  console.log("Sending quote request email", {
+    from: SMTP_FROM,
+    to: Array.isArray(to) ? to.join(", ") : to,
+    subject: "Ihre Anfrage bei PutzELF",
+  });
   const info = await transporter.sendMail({
     from: `"PutzELF" <${SMTP_FROM}>`,
     to: Array.isArray(to) ? to.join(", ") : to,

@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import { Calculator, Phone, Mail, Instagram, Facebook, Linkedin } from "lucide-react";
+import { Calculator } from "lucide-react";
 import { trackEvent } from "../lib/analytics";
-import logo from "../assets/logo.png";
 import Seo from "../components/Seo";
-import LanguageSwitcher from "../components/LanguageSwitcher";
-import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import {
+  getLocalizedAlternates,
+  getLocalizedPath,
+  getLocaleFromPathname,
+} from "../lib/localeRoutes";
 
 const cleaningTypes = [
   { key: "standard", emoji: "✨" },
@@ -22,26 +26,29 @@ const premiumSubcategories = [
 const MIN_HOURS = 3;
 const TAX_RATE = 0.2;
 
-
 const getHourlyRate = (typeKey, subcategories) => {
   if (typeKey === "standard" || typeKey === "apartmentHotel") {
     const subs = Array.isArray(subcategories) ? subcategories : [];
+
     if (subs.includes("intensive") && subs.includes("window")) return 50;
     if (subs.includes("window")) return 44.9;
     if (subs.includes("intensive")) return 43.2;
+
     return 30;
   }
+
   return 30;
 };
 
-
 export default function PriceCalculator() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
+
   const [form, setForm] = useState({
     duration: MIN_HOURS,
     typeKey: "standard",
@@ -53,24 +60,43 @@ export default function PriceCalculator() {
     () => getHourlyRate(form.typeKey, form.subcategories),
     [form.typeKey, form.subcategories]
   );
+
   const normalizedDuration = useMemo(
     () => Math.max(MIN_HOURS, Number(form.duration) || MIN_HOURS),
     [form.duration]
   );
+
   const totalPrice = useMemo(
     () => normalizedDuration * hourlyRate,
     [normalizedDuration, hourlyRate]
   );
+
   const netPrice = totalPrice;
-  const taxAmount = useMemo(() => netPrice * TAX_RATE, [netPrice]);
-  const grossPrice = useMemo(() => netPrice + taxAmount, [netPrice, taxAmount]);
 
-  const chooseType = (key) =>
-    setForm((prev) => ({ ...prev, typeKey: key, subcategories: [] }));
+  const taxAmount = useMemo(
+    () => netPrice * TAX_RATE,
+    [netPrice]
+  );
 
-  const toggleSubcategory = (key) =>
+  const grossPrice = useMemo(
+    () => netPrice + taxAmount,
+    [netPrice, taxAmount]
+  );
+
+  const chooseType = (key) => {
+    setForm((prev) => ({
+      ...prev,
+      typeKey: key,
+      subcategories: [],
+    }));
+  };
+
+  const toggleSubcategory = (key) => {
     setForm((prev) => {
-      const current = Array.isArray(prev.subcategories) ? prev.subcategories : [];
+      const current = Array.isArray(prev.subcategories)
+        ? prev.subcategories
+        : [];
+
       return {
         ...prev,
         subcategories: current.includes(key)
@@ -78,17 +104,30 @@ export default function PriceCalculator() {
           : [...current, key],
       };
     });
+  };
 
-  const incrementDuration = () =>
-    setForm((prev) => ({ ...prev, duration: normalizedDuration + 1 }));
+  const incrementDuration = () => {
+    setForm((prev) => ({
+      ...prev,
+      duration: normalizedDuration + 1,
+    }));
+  };
 
-  const decrementDuration = () =>
-    setForm((prev) => ({ ...prev, duration: Math.max(MIN_HOURS, normalizedDuration - 1) }));
+  const decrementDuration = () => {
+    setForm((prev) => ({
+      ...prev,
+      duration: Math.max(MIN_HOURS, normalizedDuration - 1),
+    }));
+  };
 
   const handleDurationChange = (e) => {
     const value = Number(e.target.value);
+
     if (!Number.isNaN(value)) {
-      setForm((prev) => ({ ...prev, duration: Math.max(MIN_HOURS, value) }));
+      setForm((prev) => ({
+        ...prev,
+        duration: Math.max(MIN_HOURS, value),
+      }));
     }
   };
 
@@ -111,108 +150,103 @@ export default function PriceCalculator() {
     });
 
   const shouldShowSubcategories =
-    form.typeKey === "standard" || form.typeKey === "apartmentHotel";
+    form.typeKey === "standard" ||
+    form.typeKey === "apartmentHotel";
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f9fafa]">
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       <Seo
-        title={locale === "de" ? "Preisrechner Reinigung Wien" : "Cleaning Price Calculator Vienna"}
-        description={locale === "de" ? "Preisrechner für Reinigung in Wien: Kosten (brutto) in wenigen Sekunden berechnen." : "Cleaning price calculator for Vienna: estimate the gross cost in seconds."}
+        title={
+          locale === "de"
+            ? "Preisrechner Reinigung Wien"
+            : "Cleaning Price Calculator Vienna"
+        }
+        description={
+          locale === "de"
+            ? "Preisrechner für Reinigung in Wien: Kosten (brutto) in wenigen Sekunden berechnen."
+            : "Cleaning price calculator for Vienna: estimate the gross cost in seconds."
+        }
         path={getLocalizedPath(locale, "calculator")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}
         xDefaultPath={getLocalizedPath("de", "calculator")}
       />
-      <nav className="bg-white shadow-md fixed inset-x-0 top-0 z-50">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 md:px-6 md:py-4">
-          <div className="flex min-w-0 items-center space-x-3 md:space-x-6">
-            <Link
-              to="/"
-              className="flex items-center"
-              onClick={() => trackEvent("Navbar_Logo_Click", { source: "calculator" })}
-            >
-              <img src={logo} alt={t("alt.logo")} className="h-12 w-auto shrink-0 md:h-20" />
-            </Link>
-            
-            <a
-              href="tel:+436673302277"
-              className="flex flex-col items-center font-semibold text-[#0097b2] hover:underline"
-              aria-label="Call us"
-              onClick={() =>
-                trackEvent("Contact_Phone_Click", { contact_method: "phone", source: "navbar_calculator" })
-              }
-            >
-              <Phone size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
-              <span className="hidden text-base text-gray-700 md:inline">+43 676 6300167</span>
-            </a>
-            <a
-              href="mailto:office@putzelf.com"
-              className="flex flex-col items-center font-semibold text-[#5be3e3] hover:underline"
-              aria-label="Email us"
-              onClick={() =>
-                trackEvent("Contact_Email_Click", { contact_method: "email", source: "navbar_calculator" })
-              }
-            >
-              <Mail size={24} className="mb-0.5 md:mb-1 md:size-[32px]" />
-              <span className="hidden text-base text-gray-700 md:inline">office@putzelf.com</span>
-            </a>
-          </div>
 
-          <div className="flex shrink-0 items-center gap-2 md:gap-3">
-            <Link
-              to={getLocalizedPath(locale, "booking")}
-              className="hidden whitespace-nowrap rounded-lg bg-[#0097b2] px-4 py-2 text-sm font-semibold text-white shadow-md md:block md:px-6 md:py-3 md:text-lg"
-              onClick={() => trackEvent("Navbar_Book_Click", { source: "navbar_calculator_desktop" })}
-            >
-              {t("nav.bookNow")}
-            </Link>
-            <LanguageSwitcher compact />
-          </div>
+      <Navbar />
 
-          <div className="mt-2 flex w-full justify-center md:hidden">
-            <Link
-              to={getLocalizedPath(locale, "booking")}
-              className="whitespace-nowrap rounded-lg bg-[#0097b2] px-4 py-2 text-sm font-semibold text-white shadow-md"
-              onClick={() => trackEvent("Navbar_Book_Click", { source: "navbar_calculator_mobile" })}
-            >
-              {t("nav.bookNow")}
-            </Link>
-          </div>
-        </div>
-      </nav>
+      {/* =========================
+          BACK BUTTON
+      ========================== */}
+      <div className="flex justify-center px-4 pt-4 md:pt-5">
+        <Link
+          to={getLocalizedPath(locale, "home")}
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0097b2] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#007f96] hover:shadow-md active:scale-95 sm:px-6 sm:py-3 sm:text-base"
+        >
+          <span className="text-lg leading-none">←</span>
+          {t("common.backToHome", {
+            defaultValue:
+              locale === "de" ? "Zur Startseite" : "Back to home",
+          })}
+        </Link>
+      </div>
 
-      <main className="flex flex-1 justify-center px-4 pb-16 pt-32 md:px-6 md:pt-36">
-        <div className="flex w-full max-w-5xl flex-col gap-10">
-          <header className="text-center space-y-4">
+      {/* =========================
+          MAIN CONTENT
+      ========================== */}
+      <main className="flex flex-1 justify-center px-4 pb-16 pt-6 md:px-6 md:pt-8">
+        <div className="flex w-full max-w-5xl flex-col gap-8">
+          
+          {/* =========================
+              HEADER
+          ========================== */}
+          <header className="space-y-4 text-center">
             <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#e6fbff] text-[#0097b2]">
               <Calculator size={32} />
             </span>
-            <h1 className="text-3xl font-bold text-[#000000] md:text-4xl">{t("calculator.title")}</h1>
+
+            <h1 className="text-3xl font-bold text-[#000000] md:text-4xl">
+              {t("calculator.title")}
+            </h1>
+
             <p className="mx-auto max-w-2xl text-sm text-gray-600 md:text-base">
               {t("calculator.subtitle")}
             </p>
           </header>
 
+          {/* =========================
+              CALCULATOR
+          ========================== */}
           <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr),minmax(0,1fr)]">
+            
+            {/* LEFT SIDE */}
             <section className="space-y-8 rounded-2xl border border-[#e0f7f7] bg-white p-5 shadow-lg md:p-6">
+              
+              {/* Cleaning Type */}
               <div>
-                <h2 className="mb-4 text-lg font-semibold text-[#0097b2]">{t("calculator.typeHeading")}</h2>
+                <h2 className="mb-4 text-lg font-semibold text-[#0097b2]">
+                  {t("calculator.typeHeading")}
+                </h2>
+
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   {cleaningTypes.map(({ key, emoji }) => {
                     const selected = form.typeKey === key;
+
                     return (
                       <button
                         key={key}
                         type="button"
                         onClick={() => chooseType(key)}
-                        className={`flex flex-col items-center justify-center rounded-xl border p-4 text-sm font-medium transition shadow-sm ${
+                        className={`flex flex-col items-center justify-center rounded-xl border p-4 text-sm font-medium shadow-sm transition ${
                           selected
                             ? "border-[#00b3c1] bg-[#5be3e3] text-black shadow-lg"
                             : "bg-gray-50 hover:shadow"
                         }`}
                         aria-pressed={selected}
                       >
-                        <span className="mb-2 text-3xl">{emoji}</span>
+                        <span className="mb-2 text-3xl">
+                          {emoji}
+                        </span>
+
                         {t(`home.types.${key}`)}
                       </button>
                     );
@@ -220,12 +254,18 @@ export default function PriceCalculator() {
                 </div>
               </div>
 
+              {/* Subcategories */}
               {shouldShowSubcategories && (
                 <div>
-                  <h3 className="mb-3 text-md font-semibold text-[#0097b2]">{t("calculator.subHeading")}</h3>
+                  <h3 className="mb-3 text-md font-semibold text-[#0097b2]">
+                    {t("calculator.subHeading")}
+                  </h3>
+
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {premiumSubcategories.map(({ key, emoji }) => {
-                      const selected = form.subcategories.includes(key);
+                      const selected =
+                        form.subcategories.includes(key);
+
                       return (
                         <button
                           key={key}
@@ -238,20 +278,31 @@ export default function PriceCalculator() {
                           }`}
                           aria-pressed={selected}
                         >
-                          <span className="mr-2 text-xl">{emoji}</span>
+                          <span className="mr-2 text-xl">
+                            {emoji}
+                          </span>
+
                           {t(`home.subcategories.${key}`)}
                         </button>
                       );
                     })}
                   </div>
-                  <p className="mt-2 text-xs text-gray-500">{t("calculator.premiumNotice")}</p>
+
+                  <p className="mt-2 text-xs text-gray-500">
+                    {t("calculator.premiumNotice")}
+                  </p>
                 </div>
               )}
 
+              {/* Duration */}
               <div>
-                <label htmlFor="duration" className="mb-2 block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="duration"
+                  className="mb-2 block text-sm font-medium text-gray-700"
+                >
                   {t("calculator.durationLabel")}
                 </label>
+
                 <div className="flex items-stretch">
                   <button
                     type="button"
@@ -261,6 +312,7 @@ export default function PriceCalculator() {
                   >
                     −
                   </button>
+
                   <input
                     id="duration"
                     name="duration"
@@ -271,6 +323,7 @@ export default function PriceCalculator() {
                     onKeyDown={handleDurationKeyDown}
                     className="w-full border border-gray-300 text-center focus:ring-2 focus:ring-[#5be3e3]"
                   />
+
                   <button
                     type="button"
                     onClick={incrementDuration}
@@ -280,21 +333,32 @@ export default function PriceCalculator() {
                     +
                   </button>
                 </div>
-                <p className="mt-2 text-xs text-gray-500">{t("calculator.durationHelp")}</p>
+
+                <p className="mt-2 text-xs text-gray-500">
+                  {t("calculator.durationHelp")}
+                </p>
               </div>
 
+              {/* Renegotiate / Reset */}
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <label className="flex items-center space-x-2 text-sm text-gray-600">
                   <input
                     type="checkbox"
                     checked={form.renegotiate}
                     onChange={(e) =>
-                      setForm((prev) => ({ ...prev, renegotiate: e.target.checked }))
+                      setForm((prev) => ({
+                        ...prev,
+                        renegotiate: e.target.checked,
+                      }))
                     }
                     className="h-4 w-4"
                   />
-                  <span>{t("calculator.renegotiateLabel")}</span>
+
+                  <span>
+                    {t("calculator.renegotiateLabel")}
+                  </span>
                 </label>
+
                 <button
                   type="button"
                   onClick={resetForm}
@@ -305,16 +369,28 @@ export default function PriceCalculator() {
               </div>
             </section>
 
+            {/* RIGHT SIDE */}
             <aside className="h-fit space-y-5 rounded-2xl border border-[#e0f7f7] bg-white p-5 shadow-lg md:p-6">
+              
+              {/* Price */}
               <div className="rounded-2xl bg-gradient-to-br from-[#0097b2] to-[#007a90] p-5 text-white shadow-md">
                 <p className="text-sm uppercase tracking-wide opacity-80">
-                  {t("calculator.estimatedTotalLabel", { defaultValue: "Price breakdown" })}
+                  {t("calculator.estimatedTotalLabel", {
+                    defaultValue: "Price breakdown",
+                  })}
                 </p>
+
                 <div className="mt-3 rounded-xl bg-white/10 p-4 text-center">
                   <p className="text-xs uppercase tracking-wider text-[#d8f7fb]">
-                    {t("calculator.bruttoLabelShort", { defaultValue: "Brutto" })}
+                    {t("calculator.bruttoLabelShort", {
+                      defaultValue: "Brutto",
+                    })}
                   </p>
-                  <p className="mt-1 text-4xl font-bold md:text-5xl">€{grossPrice.toFixed(2)}</p>
+
+                  <p className="mt-1 text-4xl font-bold md:text-5xl">
+                    €{grossPrice.toFixed(2)}
+                  </p>
+
                   <p className="mt-1 text-xs text-[#d8f7fb]">
                     {t("calculator.bruttoLabel", {
                       defaultValue: "Includes 20% tax",
@@ -324,39 +400,82 @@ export default function PriceCalculator() {
 
                 <div className="mt-4 space-y-2 rounded-xl bg-white/10 p-4 text-sm">
                   <div className="flex items-center justify-between">
-                    <span className="opacity-90">{t("calculator.bruttoLabelShort", { defaultValue: "Brutto" })}</span>
-                    <span>€{grossPrice.toFixed(2)}</span>
+                    <span className="opacity-90">
+                      {t("calculator.bruttoLabelShort", {
+                        defaultValue: "Brutto",
+                      })}
+                    </span>
+
+                    <span>
+                      €{grossPrice.toFixed(2)}
+                    </span>
                   </div>
+
                   <div className="flex items-center justify-between">
-                    <span className="opacity-90">{t("calculator.taxLabel", { defaultValue: "Tax (20%)" })}</span>
-                    <span>€{taxAmount.toFixed(2)}</span>
+                    <span className="opacity-90">
+                      {t("calculator.taxLabel", {
+                        defaultValue: "Tax (20%)",
+                      })}
+                    </span>
+
+                    <span>
+                      €{taxAmount.toFixed(2)}
+                    </span>
                   </div>
-                  <div className="border-t border-white/20 pt-2 flex items-center justify-between text-base font-semibold">
-                    <span>{t("calculator.bruttoLabelShort", { defaultValue: "Brutto" })}</span>
-                    <span>€{grossPrice.toFixed(2)}</span>
+
+                  <div className="flex items-center justify-between border-t border-white/20 pt-2 text-base font-semibold">
+                    <span>
+                      {t("calculator.bruttoLabelShort", {
+                        defaultValue: "Brutto",
+                      })}
+                    </span>
+
+                    <span>
+                      €{grossPrice.toFixed(2)}
+                    </span>
                   </div>
                 </div>
 
                 <p className="mt-3 text-sm text-[#d8f7fb]">
-                  {t("calculator.hourlyRate", { rate: (hourlyRate * (1 + TAX_RATE)).toFixed(2) })}
+                  {t("calculator.hourlyRate", {
+                    rate: (hourlyRate * (1 + TAX_RATE)).toFixed(2),
+                  })}
                 </p>
               </div>
 
+              {/* Summary */}
               <ul className="space-y-2 text-sm text-gray-700">
                 <li>
-                  <strong>{t("home.durationLabel")}:</strong> {normalizedDuration}h
+                  <strong>
+                    {t("home.durationLabel")}:
+                  </strong>{" "}
+                  {normalizedDuration}h
                 </li>
+
                 <li>
-                  <strong>{t("calculator.typeHeading")}:</strong> {t(`home.types.${form.typeKey}`)}
+                  <strong>
+                    {t("calculator.typeHeading")}:
+                  </strong>{" "}
+                  {t(`home.types.${form.typeKey}`)}
                 </li>
+
                 <li>
-                  <strong>{t("home.subcategories.title")}:</strong>{" "}
+                  <strong>
+                    {t("home.subcategories.title")}:
+                  </strong>{" "}
                   {form.subcategories.length
-                    ? form.subcategories.map((key) => t(`home.subcategories.${key}`)).join(", ")
-                    : t("home.subcategories.none", { defaultValue: "—" })}
+                    ? form.subcategories
+                        .map((key) =>
+                          t(`home.subcategories.${key}`)
+                        )
+                        .join(", ")
+                    : t("home.subcategories.none", {
+                        defaultValue: "—",
+                      })}
                 </li>
               </ul>
 
+              {/* Book Now */}
               <Link
                 to={getLocalizedPath(locale, "booking")}
                 className="block rounded-xl bg-[#5be3e3] py-3 text-center font-semibold text-black transition hover:bg-[#48c9c9]"
@@ -369,165 +488,15 @@ export default function PriceCalculator() {
                 {t("calculator.cta")}
               </Link>
 
-              <p className="text-xs text-gray-500">{t("calculator.disclaimer")}</p>
+              <p className="text-xs text-gray-500">
+                {t("calculator.disclaimer")}
+              </p>
             </aside>
           </div>
         </div>
       </main>
 
-      <footer className="border-t border-gray-200 bg-white text-gray-700">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-12 md:grid-cols-4">
-          <div>
-            <h4 className="mb-4 border-b border-gray-300 pb-2 text-lg font-semibold">
-              {t("footer.staff.title")}
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a href="/files/Datenschutzblat.pdf" download className="transition-colors hover:text-gray-900">
-                  {t("footer.staff.links.privacySheet")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Dienstliste.pdf" download className="transition-colors hover:text-gray-900">
-                  {t("footer.staff.links.dutyRoster")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Stammdatenblatt.pdf" download className="transition-colors hover:text-gray-900">
-                  {t("footer.staff.links.masterData")}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/files/Urlaubsschein_Zeitausgleich.pdf"
-                  download
-                  className="transition-colors hover:text-gray-900"
-                >
-                  {t("footer.staff.links.leaveForm")}
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="mb-4 border-b border-gray-300 pb-2 text-lg font-semibold">
-              {t("footer.partners.title")}
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a href="/files/Partnerantrag.pdf" download className="transition-colors hover:text-gray-900">
-                  {t("footer.partners.links.partnerApplication")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Dienstleistungsvertrag.pdf" download className="transition-colors hover:text-gray-900">
-                  {t("footer.partners.links.serviceContract")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Subvertrag.pdf" download className="transition-colors hover:text-gray-900">
-                  {t("footer.partners.links.subcontract")}
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="mb-4 border-b border-gray-300 pb-2 text-lg font-semibold">
-              {t("footer.customers.title")}
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href="/files/Dienstleistungsvertrag1.pdf"
-                  download
-                  className="transition-colors hover:text-gray-900"
-                >
-                  {t("footer.customers.links.cleaningStandards")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Pricelist.pdf" download className="transition-colors hover:text-gray-900">
-                  {t("footer.customers.links.priceList")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Contract.pdf" download className="transition-colors hover:text-gray-900">
-                  {t("footer.customers.links.serviceContract")}
-                </a>
-              </li>
-              <li>
-                <Link to={getLocalizedPath(locale, "calculator")} className="transition-colors hover:text-gray-900">
-                  {t("footer.customers.links.calculator")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="mb-4 border-b border-gray-300 pb-2 text-lg font-semibold">
-              {t("footer.connect.title")}
-            </h4>
-            <div className="mb-6 flex space-x-4">
-              <a
-                href="https://www.instagram.com/putzelf11/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors hover:text-gray-900"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a
-                href="https://www.facebook.com/profile.php?id=61580613673114"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors hover:text-gray-900"
-              >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/putz-elf-wien1110/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors hover:text-gray-900"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
-            </div>
-
-            <div className="flex flex-col space-y-2 text-sm">
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a
-                    href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf"
-                    download
-                    className="transition-colors hover:text-gray-900"
-                  >
-                    {t("footer.connect.links.terms")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/files/Datenschutzbestimmungen.pdf"
-                    download
-                    className="transition-colors hover:text-gray-900"
-                  >
-                    {t("footer.connect.links.privacy")}
-                  </a>
-                </li>
-              </ul>
-
-              <Link to={getLocalizedPath(locale, "imprint")} className="transition-colors hover:text-gray-900">
-                {t("footer.connect.links.imprint")}
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-200 py-4 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} Putzelf — Alle Rechte vorbehalten.
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

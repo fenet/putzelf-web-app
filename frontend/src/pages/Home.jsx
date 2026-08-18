@@ -1082,31 +1082,7 @@ export default function Home() {
                   : "Open reward box"
               }
             >
-              <div className="p-[2px] rounded-2xl bg-gradient-to-r from-[#5be3e3] via-[#48c9c9] to-[#00b3c1] shadow-lg transition-transform duration-200 group-hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-[#5be3e3]/50">
-                <div className="rounded-2xl bg-white text-center px-6 py-8 md:py-10">
-                  {(() => {
-                    const isGerman = (i18n?.language || "")
-                      .toLowerCase()
-                      .startsWith("de");
-                    const headline = isGerman
-                      ? "Öffne deine Belohnung, indem du deinen Termin buchst"
-                      : "Open your reward by booking your appointment";
-                    return (
-                      <div className="flex flex-col items-center max-w-[34rem] mx-auto">
-                        <div className="my-4 flex justify-center">
-                          <Gift
-                            className="h-24 sm:h-28 md:h-36 w-24 sm:w-28 md:w-36 text-[#00b3c1] animate-bounce drop-shadow-lg"
-                            strokeWidth={2.5}
-                          />
-                        </div>
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900">
-                          {headline}
-                        </h3>
-                      </div>
-                    );
-                  })()}
-                </div>
-              </div>
+              
             </button>
           </div>
 

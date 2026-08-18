@@ -296,12 +296,32 @@ app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
     if (gdprConsent === true) {
         const emailBooking = { ...booking, notes: typeof notes === "string" ? notes : "" };
         // determine office recipient based on booking.location (server-side source of truth)
-        const officeEmail = (booking.location || "vienna").toLowerCase() === "graz" ? "office-stmk@putzelf.com" : "office@putzelf.com";
+        const officeEmail = (booking.location || "vienna").toLowerCase() === "graz" ? "office.stmk@putzelf.com" : "office@putzelf.com";
         if (isQuoteRequest) {
           // send only to office recipient (single recipient requirement)
-          await sendQuoteRequestConfirmation(officeEmail, emailBooking);
+          try {
+            await sendQuoteRequestConfirmation(officeEmail, emailBooking);
+          } catch (err) {
+            console.warn("Failed to send quote request email to office:", err && (err.message || err));
+          }
         } else {
-          await sendBookingConfirmation(officeEmail, emailBooking);
+          // First send to office
+          try {
+            await sendBookingConfirmation(officeEmail, emailBooking);
+          } catch (err) {
+            console.warn("Failed to send booking email to office:", err && (err.message || err));
+          }
+
+          // Then send a confirmation to the customer if email present
+          if (emailBooking.email) {
+            try {
+              await sendBookingConfirmation(emailBooking.email, emailBooking);
+            } catch (err) {
+              console.warn("Failed to send booking confirmation to customer:", err && (err.message || err));
+            }
+          } else {
+            console.warn("No customer email provided; skipping customer confirmation");
+          }
         }
       }
     } catch (mailErr) {
@@ -417,11 +437,29 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
       (existing.typeOfCleaning || "").toLowerCase() === "angebot anfragen";
 
     // determine office recipient based on booking.location (server-side)
-    const officeEmail = (booking.location || "vienna").toLowerCase() === "graz" ? "office-stmk@putzelf.com" : "office@putzelf.com";
+    const officeEmail = (booking.location || "vienna").toLowerCase() === "graz" ? "office.stmk@putzelf.com" : "office@putzelf.com";
     if (isQuoteRequest) {
-      await sendQuoteRequestConfirmation(officeEmail, emailBooking);
+      try {
+        await sendQuoteRequestConfirmation(officeEmail, emailBooking);
+      } catch (err) {
+        console.warn("Failed to send quote request email to office:", err && (err.message || err));
+      }
     } else {
-      await sendBookingConfirmation(officeEmail, emailBooking);
+      try {
+        await sendBookingConfirmation(officeEmail, emailBooking);
+      } catch (err) {
+        console.warn("Failed to send booking email to office:", err && (err.message || err));
+      }
+
+      if (emailBooking.email) {
+        try {
+          await sendBookingConfirmation(emailBooking.email, emailBooking);
+        } catch (err) {
+          console.warn("Failed to send booking confirmation to customer:", err && (err.message || err));
+        }
+      } else {
+        console.warn("No customer email provided; skipping customer confirmation");
+      }
     }
 
     try {

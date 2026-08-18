@@ -89,7 +89,12 @@ async function createTransporter() {
 // Cache one transporter promise for reuse
 let _transporterPromise = null;
 function getTransporter() {
-  if (!_transporterPromise) _transporterPromise = createTransporter();
+  if (!_transporterPromise) {
+    _transporterPromise = createTransporter().catch((err) => {
+      _transporterPromise = null;
+      throw err;
+    });
+  }
   return _transporterPromise;
 }
 
@@ -142,6 +147,20 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
     throw new Error("Invalid booking details. 'date' and 'time' are required.");
   }
 
+  const customerEmail = booking.email || (Array.isArray(to) ? to[0] : to) || "N/A";
+  // inline SVGs for theme-colored icons
+  const svg = {
+    location: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#0097b2" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>`,
+    calendar: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#0097b2" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V6c0-1.11-.89-2-2-2zm0 14H5V9h14v9z"/></svg>`,
+    clock: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#0097b2" d="M12 20c4.41 0 8-3.59 8-8s-3.59-8-8-8-8 3.59-8 8 3.59 8 8 8zm1-13h-2v6l5 3 1-1.54-4-2.46V7z"/></svg>`,
+    broom: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#0097b2" d="M7 16l-4 4 1 1 4-4 7-7-5-5L7 16zM20.71 7.04l-1.41-1.41-2.83 2.83 1.41 1.41 2.83-2.83z"/></svg>`,
+    timer: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#0097b2" d="M15.07 1L14 2.07 16.94 5 18 3.93 15.07 1zM12 8v5l4 2 .75-1.23-3.25-1.77V8h-1.5zM6.54 4.21L5.1 5.65C6.16 6.41 7 7.5 7 9c0 1.66-1 3-3 3v2c3.31 0 6-2.69 6-6 0-1.93-1.02-3.61-2.46-4.79zM12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/></svg>`,
+    phone: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#0097b2" d="M6.6 10.8c1.9 3.8 4.9 6.8 8.7 8.7l2.2-2.2c.3-.3.8-.4 1.2-.2 1.3.5 2.8.8 4.3.8.4 0 .8.3.9.7.2 1 .4 2 .4 3.1 0 .5-.4.9-.9.9C11.7 24 0 12.3 0 0.9 0 .4.4 0 .9 0c1.1 0 2.1.1 3.1.4.4.1.7.5.7.9 0 1.5.3 3 .8 4.3.2.4.1.9-.2 1.2L6.6 10.8z"/></svg>`,
+    mail: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#0097b2" d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h16c1.11 0 2-.9 2-2V6c0-1.11-.89-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`,
+    anmerkungen: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#0097b2" d="M20 2H4c-1.1 0-2 .9-2 2v16l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 10H6v-2h12v2zm0-3H6V7h12v2zm-4 6H6v-2h8v2z"/></svg>`,
+    verlangerung: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#0097b2" d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.1-.3 2.13-.82 3.01l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm-6 8c0-1.1.3-2.13.82-3.01L5.36 7.53A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3c-3.31 0-6-2.69-6-6z"/></svg>`,
+  };
+
   // Build HTML (kept your template, but using the booking variable)
   const htmlContent = `
   <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; color: #333;">
@@ -156,15 +175,16 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
           Nachfolgend die Details.
         </p>
         <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📌 Standort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.location || "vienna").toLowerCase() === "graz" ? "Graz" : "Wien"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.address || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📅 Datum</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatGermanDate(booking.date)}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏰ Uhrzeit</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🧹 Reinigungsart</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.typeOfCleaning || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏳ Dauer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} Stunden</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>� Anmerkungen</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.notes || "").toString().trim() ? (booking.notes || "").toString().trim().replace(/\n/g, "<br />") : "Keine"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>�💬 Verlängerung möglich</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatYesNo(booking.renegotiate)}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.location} Standort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.location || "vienna").toLowerCase() === "graz" ? "Graz" : "Wien"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.location} Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.address || "N/A"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.calendar} Datum</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatGermanDate(booking.date)}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.clock} Uhrzeit</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time || "N/A"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.broom} Reinigungsart</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.typeOfCleaning || "N/A"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.timer} Dauer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} Stunden</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.phone} Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.mail} E-Mail</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerEmail}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Anmerkungen</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.notes || "").toString().trim() ? (booking.notes || "").toString().trim().replace(/\n/g, "<br />") : "Keine"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Verlängerung möglich</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatYesNo(booking.renegotiate)}</td></tr>
         </table>
         <p style="margin-top: 20px; font-size: 15px;">
           Wenn Sie Änderungen vornehmen möchten, antworten Sie einfach auf diese E-Mail – wir helfen Ihnen gerne weiter.
@@ -199,6 +219,11 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
 
   try {
     const transporter = await getTransporter();
+    console.log("Sending booking confirmation email", {
+      from: SMTP_FROM,
+      to: Array.isArray(to) ? to.join(", ") : to,
+      subject: "Buchungsbestätigung – PutzELF",
+    });
     const info = await transporter.sendMail({
       from: `"PutzELF" <${SMTP_FROM}>`,
       to: Array.isArray(to) ? to.join(", ") : to,
