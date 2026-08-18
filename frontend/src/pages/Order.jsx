@@ -22,6 +22,16 @@ const COUNTRY_OPTIONS = [
   { code: "hr", label: "Croatia (+385)" },
 ];
 
+  // add more European countries
+  const EXTRA_COUNTRIES = [
+    { code: "nl", label: "Netherlands (+31)" },
+    { code: "be", label: "Belgium (+32)" },
+    { code: "fr", label: "France (+33)" },
+    { code: "it", label: "Italy (+39)" },
+    { code: "es", label: "Spain (+34)" },
+  ];
+  const ALL_COUNTRIES = [...COUNTRY_OPTIONS, ...EXTRA_COUNTRIES];
+
 export default function Order() {
   const { t } = useTranslation();
   const { id } = useParams();
@@ -51,6 +61,7 @@ export default function Order() {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [confirmationEventId, setConfirmationEventId] = useState(null);
   const confirmationTrackedRef = useRef(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -126,7 +137,7 @@ export default function Order() {
     itiRef.current = intlTelInput(inputEl, {
       initialCountry: selectedCountry,
       nationalMode: false,
-      allowDropdown: false,
+      allowDropdown: true,
       separateDialCode: true,
       utilsScript:
         "https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.6/build/js/utils.js",
@@ -208,6 +219,20 @@ export default function Order() {
     }
   };
 
+  const validateContactBeforeDetails = () => {
+    const nameOk = validateName(customer.name || "");
+    const emailOk = validateEmail(customer.email || "");
+    const addressOk = validateAddress(customer.address || "");
+    const phoneOk = validatePhone(customer.phone || "");
+    return nameOk && emailOk && addressOk && phoneOk;
+  };
+
+  const openDetailsIfValid = () => {
+    if (validateContactBeforeDetails()) {
+      setDetailsOpen(true);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -280,7 +305,8 @@ export default function Order() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            location: customer.address || "Quote Request",
+            // default to vienna when no explicit location provided here
+            location: customer.address || "vienna",
             date,
             time,
             duration: 3,
@@ -410,118 +436,148 @@ export default function Order() {
               {t("order.enterDetails")}
             </h3>
 
-            <input
-              name="name"
-              value={customer.name}
-              onChange={handleChange}
-              placeholder={t("order.placeholders.name")}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
-              required
-            />
-            <div>
-              <input
-                name="email"
-                value={customer.email}
-                onChange={handleChange}
-                placeholder={t("order.placeholders.email")}
-                type="email"
-                className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#5be3e3] ${
-                  emailError ? "border-red-500" : "border-gray-300"
-                }`}
-                required
-              />
-              {emailError && (
-                <p className="mt-1 text-sm text-red-500">{emailError}</p>
-              )}
-            </div>
-            <input
-              name="address"
-              value={customer.address}
-              onChange={handleChange}
-              placeholder={t("order.placeholders.address")}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
-              required
-            />
-
-            <div>
-              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 space-y-3 sm:space-y-0">
-                <select
-                  value={selectedCountry}
-                  onChange={handleCountryChange}
-                  className="w-full sm:w-56 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
-                  aria-label="Select country"
-                >
-                  {COUNTRY_OPTIONS.map((country) => (
-                    <option key={country.code} value={country.code}>
-                      {country.label}
-                    </option>
-                  ))}
-                </select>
-
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">{t("order.labels.name", { defaultValue: "Name" })}</label>
                 <input
-                  ref={phoneInputRef}
-                  name="phone"
-                  value={customer.phone}
+                  name="name"
+                  value={customer.name}
                   onChange={handleChange}
-                  placeholder={t("order.placeholders.phone")}
-                  className={`flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-[#5be3e3] ${
-                    phoneError ? "border-red-500" : "border-gray-300"
-                  }`}
+                  placeholder={t("order.placeholders.name", { defaultValue: "Vor- und Nachname" })}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
                   required
                 />
               </div>
-              {phoneError && (
-                <p className="mt-1 text-sm text-red-500">{phoneError}</p>
-              )}
+
+              <div>
+                <label className="block text-sm font-medium mb-1">{t("order.labels.email", { defaultValue: "E-Mail" })}</label>
+                <input
+                  name="email"
+                  value={customer.email}
+                  onChange={handleChange}
+                  placeholder={t("order.placeholders.email", { defaultValue: "E-Mail-Adresse" })}
+                  type="email"
+                  className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#5be3e3] ${
+                    emailError ? "border-red-500" : "border-gray-300"
+                  }`}
+                  required
+                />
+                {emailError && (
+                  <p className="mt-1 text-sm text-red-500">{emailError}</p>
+                )}
+              </div>
+
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium mb-1">{t("order.labels.address", { defaultValue: "Adresse" })}</label>
+                <input
+                  name="address"
+                  value={customer.address}
+                  onChange={handleChange}
+                  placeholder={t("order.placeholders.address", { defaultValue: "Straßenname, Hausnr., Türnr." })}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
+                  required
+                />
+              </div>
+
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium mb-1">{t("order.labels.phone", { defaultValue: "Telefon" })}</label>
+                <div className="flex items-center gap-3">
+                  <select
+                    value={selectedCountry}
+                    onChange={handleCountryChange}
+                    className="w-40 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
+                    aria-label="Select country"
+                  >
+                    {ALL_COUNTRIES.map((country) => (
+                      <option key={country.code} value={country.code}>
+                        {country.label}
+                      </option>
+                    ))}
+                  </select>
+
+                  <input
+                    ref={phoneInputRef}
+                    name="phone"
+                    value={customer.phone}
+                    onChange={handleChange}
+                    placeholder={t("order.placeholders.phone", { defaultValue: "Telefonnummer" })}
+                    className={`flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-[#5be3e3] ${
+                      phoneError ? "border-red-500" : "border-gray-300"
+                    }`}
+                    required
+                  />
+                </div>
+                {phoneError && (
+                  <p className="mt-1 text-sm text-red-500">{phoneError}</p>
+                )}
+              </div>
             </div>
 
-            <div>
-              <label htmlFor="notes" className="block text-sm font-medium mb-1 text-gray-700">
-                Anmerkungen
-              </label>
-              <textarea
-                id="notes"
-                name="notes"
-                value={customer.notes}
-                onChange={handleChange}
-                rows={4}
-                placeholder="Bitte schreiben Sie hier zusätzliche Anmerkungen oder Wünsche..."
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3] resize-y"
-              />
-            </div>
-
-            <label className="flex items-center space-x-2 text-sm text-gray-600">
-              <input
-                type="checkbox"
-                name="gdprConsent"
-                checked={customer.gdprConsent}
-                onChange={handleChange}
-                className="w-4 h-4"
-              />
-              <span>
-                {t("order.gdprPrefix")}
-                <a
-                  href="/privacy"
-                  className="text-[#5be3e3] underline hover:text-[#000000]"
+            {!detailsOpen ? (
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={openDetailsIfValid}
+                  className="w-full bg-[#0097b2] text-white font-semibold py-3 rounded-xl hover:bg-[#007f95] transition"
                 >
-                  {t("order.gdprLink")}
-                </a>
-                .
-              </span>
-            </label>
+                  {t("order.directInquiry", { defaultValue: "Direkt anfragen" })}
+                </button>
+              </div>
+            ) : null}
 
-            <button
-              onClick={handleConfirm}
-              disabled={loadingConfirm}
-              className="w-full bg-[#5be3e3] text-black font-semibold py-3 rounded-xl hover:bg-[#48c9c9] transition disabled:opacity-60"
-            >
-              {loadingConfirm ? t("order.confirming") : t("order.confirmBtn")}
-            </button>
+            {detailsOpen && (
+              <div className="mt-4 space-y-4">
+                <div>
+                  <label htmlFor="notes" className="block text-sm font-medium mb-1 text-gray-700">
+                    {t("order.notesLabel", { defaultValue: "Anmerkungen" })}
+                  </label>
+                  <textarea
+                    id="notes"
+                    name="notes"
+                    value={customer.notes}
+                    onChange={handleChange}
+                    rows={4}
+                    placeholder={t("order.placeholders.notes", { defaultValue: "Bitte schreiben Sie hier zusätzliche Anmerkungen oder Wünsche..." })}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3] resize-y"
+                  />
+                </div>
 
-            {error && <p className="text-red-500 mt-2">{error}</p>}
+                <label className="flex items-start space-x-2 text-sm text-gray-600">
+                  <input
+                    type="checkbox"
+                    name="gdprConsent"
+                    checked={customer.gdprConsent}
+                    onChange={handleChange}
+                    className="w-4 h-4 mt-1"
+                  />
+                  <span>
+                    {t("order.gdprFull", { defaultValue: "Ich stimme zu, dass meine Daten für die Buchung verarbeitet und ich bezüglich dieser Buchung kontaktiert werde." })}
+                    <a
+                      href="/privacy"
+                      className="text-[#5be3e3] underline hover:text-[#000000] ml-1"
+                    >
+                      {t("order.gdprLink")}
+                    </a>
+                  </span>
+                </label>
+
+                <button
+                  onClick={handleConfirm}
+                  disabled={loadingConfirm}
+                  className="w-full bg-[#5be3e3] text-black font-semibold py-3 rounded-xl hover:bg-[#48c9c9] transition disabled:opacity-60"
+                >
+                  {loadingConfirm ? t("order.confirming") : t("order.submitBtn", { defaultValue: "Jetzt anfragen" })}
+                </button>
+
+                {error && <p className="text-red-500 mt-2">{error}</p>}
+              </div>
+            )}
           </div>
         ) : (
           <div className="bg-green-50 border-l-4 border-green-400 p-8 rounded-xl text-center">
+            {typeof window !== "undefined" && !window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches && (
+              <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={150} />
+            )}
             <h4 className="text-green-700 font-bold text-xl">
               {t("order.confirmedTitle")}
             </h4>
@@ -530,6 +586,9 @@ export default function Order() {
                 email: customer.email || booking.email,
               })}
             </p>
+            {booking?.id && (
+              <p className="mt-2 text-sm text-gray-600">{t("order.bookingId", { id: booking.id })}</p>
+            )}
           </div>
         )}
       </div>

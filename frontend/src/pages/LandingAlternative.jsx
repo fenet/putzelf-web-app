@@ -1,6 +1,5 @@
-import { useMemo } from "react";
-import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useMemo, useState, useRef, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   Phone,
   Mail,
@@ -16,12 +15,20 @@ import {
   CheckCircle2,
   AlertTriangle,
   Star,
+  Briefcase,
+  Home,
+  ChevronDown,
 } from "lucide-react";
 import { trackEvent } from "../lib/analytics";
+import { useTranslation } from "react-i18next";
 import logo from "../assets/logo.png";
 import cover from "../assets/cover.svg";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Seo from "../components/Seo";
+import GoogleReviewsCarousel from "../components/GoogleReviewsCarousel";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
 const content = {
   en: {
@@ -176,63 +183,137 @@ const content = {
 
 const serviceIcons = [Building2, UtensilsCrossed, Store, Stethoscope];
 
-export default function LandingAlternative() {
-  const { i18n } = useTranslation();
-  const lang = i18n.language?.startsWith("de") ? "de" : "en";
-  const c = useMemo(() => content[lang], [lang]);
+const Unternehmen = [
+  { key: "officeCleaning" },
+  { key: "deepCleaning" },
+  { key: "restaurantCleaning" },
+];
 
-  const seoTitle = "Reinigungsfirma Wien – Büroreinigung & Gebäudereinigung";
-  const seoDescription =
-    "Reinigungsfirma Wien für Unternehmen: Büroreinigung, Unterhaltsreinigung sowie Gastro- und Praxisreinigung. Flexible Zeiten und geprüfte Reinigungskräfte.";
+const Privatkunden = [
+  { key: "oneTimeCleaning" },
+  { key: "permanentCleaning" },
+];
+
+const navCopy = {
+  de: {
+    services: "Leistungen",
+    contact: "Kontakt",
+    company: "Unternehmen",
+    private: "Privatkunden",
+    businessNote: "Für Unternehmen",
+    privateNote: "Für Privatkunden",
+    officeCleaning: "Büroreinigung",
+    deepCleaning: "Tiefenreinigung",
+    restaurantCleaning: "Restaurantreinigung",
+    oneTimeCleaning: "Einmalreinigung",
+    permanentCleaning: "Regelmäßige Reinigung",
+    wienServices: "Services in Wien",
+    grazServices: "Services in Graz",
+    jobOpening: "Jobs",
+    getPartners: "Partner werden",
+  },
+  en: {
+    services: "Services",
+    contact: "Contact",
+    company: "Business",
+    private: "Private Customers",
+    businessNote: "For businesses",
+    privateNote: "For private customers",
+    officeCleaning: "Office Cleaning",
+    deepCleaning: "Deep Cleaning",
+    restaurantCleaning: "Restaurant Cleaning",
+    oneTimeCleaning: "One-time Cleaning",
+    permanentCleaning: "Permanent Cleaning",
+    wienServices: "Vienna Services",
+    grazServices: "Graz Services",
+    jobOpening: "Job Opening",
+    getPartners: "Get Partners",
+  },
+};
+
+export default function LandingAlternative() {
+  const location = useLocation();
+  const lang = getLocaleFromPathname(location.pathname);
+  const c = useMemo(() => content[lang], [lang]);
+  const n = navCopy[lang];
+
+  // Cookie banner state (migrated from Profile.jsx)
+  const { t } = useTranslation();
+  const [showCookieBanner, setShowCookieBanner] = useState(false);
+
+  useEffect(() => {
+    const storedConsent = localStorage.getItem("cookieConsent");
+    const storedTime = localStorage.getItem("cookieConsentTime");
+
+    if (!storedConsent || !storedTime) {
+      setShowCookieBanner(true);
+      return;
+    }
+
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+    if (now - parseInt(storedTime, 10) > oneDay) {
+      setShowCookieBanner(true);
+    }
+  }, []);
+
+  const acceptCookies = () => {
+    localStorage.setItem("cookieConsent", "true");
+    localStorage.setItem("cookieConsentTime", Date.now().toString());
+    setShowCookieBanner(false);
+    window.dispatchEvent(new CustomEvent("consentChanged", { detail: { consent: true } }));
+  };
+
+  const declineCookies = () => {
+    localStorage.setItem("cookieConsent", "false");
+    localStorage.setItem("cookieConsentTime", Date.now().toString());
+    setShowCookieBanner(false);
+    window.dispatchEvent(new CustomEvent("consentChanged", { detail: { consent: false } }));
+  };
+
+  // controlled services menu (desktop + mobile)
+  const [open, setOpen] = useState(false);
+  const [openCompany, setOpenCompany] = useState(false);
+  const [openPrivate, setOpenPrivate] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openContact, setOpenContact] = useState(false);
+  const [mobileGroup, setMobileGroup] = useState(null);
+  const [mobileContactOpen, setMobileContactOpen] = useState(false);
+  const timerRef = useRef(null);
+  useEffect(() => () => clearTimeout(timerRef.current), []);
+  const openMenu = () => { clearTimeout(timerRef.current); setOpen(true); };
+  const closeMenu = () => { clearTimeout(timerRef.current); timerRef.current = setTimeout(() => setOpen(false), 150); };
+
+  const seoTitle = lang === "de"
+    ? "Reinigungsfirma Wien – Büroreinigung & Gebäudereinigung"
+    : "Cleaning Company Vienna – Office & Commercial Cleaning";
+  const seoDescription = lang === "de"
+    ? "Reinigungsfirma Wien für Unternehmen: Büroreinigung, Unterhaltsreinigung sowie Gastro- und Praxisreinigung. Flexible Zeiten und geprüfte Reinigungskräfte."
+    : "Cleaning services in Vienna for businesses: office, maintenance, restaurant and medical cleaning with flexible schedules and vetted staff.";
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      <Seo title={seoTitle} description={seoDescription} path="/" />
-      <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 md:px-6">
-          <div className="flex items-center gap-3">
-            <Link to="/" aria-label="Go to home page">
-              <img src={logo} alt="PutzELF" className="h-14 w-auto md:h-20" />
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-2 md:gap-3">
-            <Link
-              to="/profile"
-              className="hidden rounded-xl bg-[#0097b2] px-6 py-3 text-base font-bold text-white shadow-lg hover:bg-[#007f95] sm:inline-flex md:px-8 md:py-3.5 md:text-lg"
-              onClick={() => trackEvent("AltLanding_Nav_CTA_Click", { cta: "nav_book" })}
-            >
-              {c.navCta}
-            </Link>
-            <button
-              onClick={() => i18n.changeLanguage("en")}
-              title="English"
-              aria-label="Switch to English"
-              className={`h-9 w-9 rounded-full border text-sm ${lang === "en" ? "ring-2 ring-[#0097b2]" : ""}`}
-            >
-              🇬🇧
-            </button>
-            <button
-              onClick={() => i18n.changeLanguage("de")}
-              title="Deutsch"
-              aria-label="Auf Deutsch umschalten"
-              className={`h-9 w-9 rounded-full border text-sm ${lang === "de" ? "ring-2 ring-[#0097b2]" : ""}`}
-            >
-              🇩🇪
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Seo
+        title={seoTitle}
+        description={seoDescription}
+        path={getLocalizedPath(lang, "home")}
+        lang={lang}
+        alternates={getLocalizedAlternates(location.pathname)}
+        xDefaultPath={getLocalizedPath("de", "home")}
+      />
+      <Navbar />
 
       <div className="mx-auto mt-6 max-w-7xl px-4 md:px-6">
         <div className="mb-8 w-full rounded-2xl p-4 bg-gradient-to-r from-[#fff7ed] via-[#fff3e0] to-white shadow-xl border border-transparent drop-in">
           <div className="flex flex-col md:flex-row items-center gap-4">
             <div className="flex-1">
-              <p className="text-sm font-semibold text-[#ff6b00]">Neu in Graz</p>
-              <h3 className="mt-1 text-2xl md:text-3xl font-extrabold text-gray-900">Wir sind jetzt in Graz — Waagner‑Biro‑Straße.</h3>
-              <p className="mt-2 text-sm text-gray-700">Vereinbaren Sie Ihren Termin lokal.</p>
+              <p className="text-sm font-semibold text-[#ff6b00]">{lang === "de" ? "Neu in Graz" : "Now in Graz"}</p>
+              <h3 className="mt-1 text-2xl md:text-3xl font-extrabold text-gray-900">
+                {lang === "de" ? "Wir sind jetzt in Graz — Waagner‑Biro‑Straße." : "We’re now in Graz — Waagner-Biro-Straße."}
+              </h3>
+              <p className="mt-2 text-sm text-gray-700">{lang === "de" ? "Vereinbaren Sie Ihren Termin lokal." : "Book your appointment locally."}</p>
               <div className="mt-4 flex items-center gap-3">
-                <Link to="/profile" aria-label="Termin vereinbaren in Graz" className="inline-flex items-center px-5 py-3 bg-[#ff6b00] text-white rounded-full text-sm font-semibold shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition">Termin vereinbaren</Link>
+                <Link to={getLocalizedPath(lang, "profile")} aria-label={lang === "de" ? "Termin vereinbaren in Graz" : "Book an appointment in Graz"} className="inline-flex items-center px-5 py-3 bg-[#ff6b00] text-white rounded-full text-sm font-semibold shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition">{lang === "de" ? "Termin vereinbaren" : "Book now"}</Link>
                 <a
                   href="tel:+436766300167"
                   aria-label={lang === "de" ? "Rufen Sie uns an +43 676 6300167" : "Call +43 676 6300167"}
@@ -246,11 +327,11 @@ export default function LandingAlternative() {
             <div className="w-full md:w-80 mt-4 md:mt-0 relative">
               <div className="map-card w-full h-48 md:h-56">
                 <iframe
-                  title="Google Maps Waagner-Biro-Straße Graz"
+                  title={lang === "de" ? "Google Maps Waagner-Biro-Straße Graz" : "Google Maps Waagner-Biro-Straße, Graz"}
                   src="https://www.google.com/maps?q=Waagner-Biro-Stra%C3%9Fe,+Graz&output=embed"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  aria-label="Karte: Waagner-Biro-Straße, Graz"
+                  aria-label={lang === "de" ? "Karte: Waagner-Biro-Straße, Graz" : "Map: Waagner-Biro-Straße, Graz"}
                 />
               </div>
               <a
@@ -258,7 +339,7 @@ export default function LandingAlternative() {
                 href="https://www.google.com/maps/search/?api=1&query=Waagner-Biro-Stra%C3%9Fe+Graz"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Öffnen in Google Maps"
+                aria-label={lang === "de" ? "Öffnen in Google Maps" : "Open in Google Maps"}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                   <path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 12 6 12s6-6.75 6-12c0-3.314-2.686-6-6-6z" stroke="#0f172a" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -290,7 +371,7 @@ export default function LandingAlternative() {
 
             <div className="mt-8 flex justify-center">
               <Link
-                to="/profile"
+                to={getLocalizedPath(lang, "profile")}
                 className="rounded-xl bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-[#fb923c] px-8 py-3 text-base font-bold text-white shadow-lg hover:opacity-95 md:px-10 md:py-4 md:text-lg"
                 onClick={() => trackEvent("AltLanding_Hero_CTA_Click", { cta: "book_first_order" })}
               >
@@ -356,26 +437,8 @@ export default function LandingAlternative() {
         <div className="absolute inset-0 bg-black/10" />
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-14 md:px-6">
-        <h3 className="text-2xl font-bold">{c.socialTitle}</h3>
-        <p className="mt-2 text-slate-600">{c.socialSubtitle}</p>
-
-        <div className="mt-6 grid gap-5 md:grid-cols-3">
-          {c.testimonials.map((item) => (
-            <div key={item.author} className="rounded-2xl bg-white p-5 shadow">
-              <div className="mb-3 flex text-amber-400">
-                <Star className="h-4 w-4 fill-current" />
-                <Star className="h-4 w-4 fill-current" />
-                <Star className="h-4 w-4 fill-current" />
-                <Star className="h-4 w-4 fill-current" />
-                <Star className="h-4 w-4 fill-current" />
-              </div>
-              <p className="text-slate-700">“{item.quote}”</p>
-              <p className="mt-3 text-sm font-semibold text-slate-500">{item.author}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Reviews carousel (replaces previous testimonials placeholder) */}
+      <GoogleReviewsCarousel />
 
       <section className="bg-white py-14">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 md:grid-cols-2 md:px-6">
@@ -483,7 +546,7 @@ export default function LandingAlternative() {
 
           <div className="mt-8 flex justify-center">
             <Link
-              to="/profile"
+              to={getLocalizedPath(lang, "profile")}
               className="rounded-xl bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-[#fb923c] px-10 py-4 text-center text-lg font-bold text-white shadow-lg hover:opacity-95 md:px-12 md:py-5"
               onClick={() => trackEvent("AltLanding_Process_CTA_Click", { cta: "book_cleaning" })}
             >
@@ -535,6 +598,40 @@ export default function LandingAlternative() {
         </div>
       </section>
 
+      {showCookieBanner && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-xl shadow-lg max-w-md text-center space-y-4">
+            <p className="text-gray-700">
+              {t("cookies.msg")}
+              <Link to="/privacy" className="underline text-[#5be3e3]">
+                {t("cookies.privacyPolicy")}
+              </Link>
+              .
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => {
+                  declineCookies();
+                  trackEvent("Cookie_Decline_Click", { consent: false, source: "banner" });
+                }}
+                className="bg-gray-300 text-black px-6 py-2 rounded-md font-semibold hover:opacity-90 transition"
+              >
+                {t("cookies.decline")}
+              </button>
+              <button
+                onClick={() => {
+                  acceptCookies();
+                  trackEvent("Cookie_Accept_Click", { consent: true, source: "banner" });
+                }}
+                className="bg-[#5be3e3] text-black px-6 py-2 rounded-md font-semibold hover:opacity-90 transition"
+              >
+                {t("cookies.accept")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
 
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-3 shadow-xl backdrop-blur md:hidden">
@@ -547,7 +644,7 @@ export default function LandingAlternative() {
             <Phone className="h-4 w-4" /> {lang === "de" ? "Jetzt anrufen" : "Call now"}
           </a>
           <Link
-            to="/profile"
+            to={getLocalizedPath(lang, "profile")}
             className="inline-flex flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-[#0097b2] to-[#3b82f6] px-4 py-3 text-sm font-semibold text-white"
             onClick={() => trackEvent("AltLanding_Mobile_Book_Click", { cta: "sticky_mobile_book" })}
           >

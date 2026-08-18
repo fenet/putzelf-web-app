@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import { apiFetch, parseJsonSafe } from "../lib/api";
 import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
+import { useLocation } from "react-router-dom";
+import { getLocalizedPath, getLocaleFromPathname, getLocalizedAlternates } from "../lib/localeRoutes";
 
 export default function Admin() {
+  const location = useLocation();
+  const locale = getLocaleFromPathname(location.pathname);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -30,12 +34,12 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Seo title="Admin-Bereich" description="Admin-Bereich" path="/admin" noindex />
+      <Seo title="Admin-Bereich" description="Admin-Bereich" path={getLocalizedPath(locale, "admin")} lang={locale} alternates={getLocalizedAlternates(location.pathname)} xDefaultPath={getLocalizedPath("de", "admin")} noindex />
       <div className="container mx-auto px-4 py-6">
         <header className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Admin-Dashboard</h1>
           <div className="flex items-center gap-3">
-            <Link to="/profile" className="px-3 py-2 rounded-md border text-gray-700 hover:bg-gray-50">
+            <Link to={getLocalizedPath(locale, "booking")} className="px-3 py-2 rounded-md border text-gray-700 hover:bg-gray-50">
               Zum Profil
             </Link>
           </div>

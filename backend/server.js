@@ -16,7 +16,6 @@ const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET;
 const ADMIN_INVITE_CODE = process.env.ADMIN_INVITE_CODE;
 
-const MARKETING_API_BASE_URL = (process.env.MARKETING_API_BASE_URL || "").trim().replace(/\/$/, "");
 const INTEGRATION_KEY = (process.env.INTEGRATION_KEY || "").trim();
 
 if (!JWT_SECRET) {
@@ -26,50 +25,15 @@ if (!JWT_SECRET) {
 app.use(cors());
 app.use(bodyParser.json());
 
-function assertIntegrationConfigured() {
-  if (!MARKETING_API_BASE_URL || !INTEGRATION_KEY) {
-    const missing = [
-      !MARKETING_API_BASE_URL ? "MARKETING_API_BASE_URL" : null,
-      !INTEGRATION_KEY ? "INTEGRATION_KEY" : null,
-    ].filter(Boolean);
-    const msg = `Integration not configured. Missing: ${missing.join(", ")}`;
-    const err = new Error(msg);
-    err.code = "INTEGRATION_NOT_CONFIGURED";
-    throw err;
-  }
+import googleRouter from "./google/oauth.js";
+app.use("/api/google", googleRouter);
+import businessRouter from "./google/businessRoutes.js";
+app.use("/api/google", businessRouter);
+import reviewsRouter from "./reviews/reviewsRoutes.js";
+app.use("/api", reviewsRouter);
 
-  // Common local-dev pitfall: pointing MARKETING_API_BASE_URL back to this backend.
-  // That causes recursive calls and opaque 404/HTML responses.
-  try {
-    const u = new URL(MARKETING_API_BASE_URL);
-    const host = (u.hostname || "").toLowerCase();
-    const port = String(u.port || (u.protocol === "https:" ? "443" : "80"));
-    const serverPort = String(PORT);
-    const loopbackHosts = new Set(["localhost", "127.0.0.1", "0.0.0.0"]);
-    if (loopbackHosts.has(host) && port === serverPort) {
-      const msg =
-        `Integration misconfigured: MARKETING_API_BASE_URL points to the backend itself (${MARKETING_API_BASE_URL}). ` +
-        `Set MARKETING_API_BASE_URL to the marketing app base URL (e.g. http://127.0.0.1:5000).`;
-      const err = new Error(msg);
-      err.code = "INTEGRATION_MISCONFIGURED";
-      throw err;
-    }
-  } catch (e) {
-    if (e?.code === "INTEGRATION_MISCONFIGURED") throw e;
-    // Ignore URL parsing errors here; downstream fetch will fail with a clearer message.
-  }
-}
-
-async function marketingFetch(path, options = {}) {
-  assertIntegrationConfigured();
-  const url = path.startsWith("http") ? path : `${MARKETING_API_BASE_URL}${path.startsWith("/") ? "" : "/"}${path}`;
-  const headers = new Headers(options.headers || {});
-  headers.set("X-INTEGRATION-KEY", INTEGRATION_KEY);
-  if (!headers.has("Content-Type") && options.body) {
-    headers.set("Content-Type", "application/json");
-  }
-  return fetch(url, { ...options, headers });
-}
+import partnersRouter from "./partners/partnersRoutes.js";
+app.use("/api/partners", partnersRouter);
 
 const sanitizeUser = (user) => ({
   id: user.id,
@@ -135,130 +99,83 @@ app.get("/", (req, res) => res.send("PutzELF backend running"));
 
 app.get("/api/availability/slots", async (req, res) => {
   try {
-    const employeeCode = String(req.query.worker || req.query.employee_code || "").trim();
     const day = String(req.query.day || req.query.date || "").trim();
-    const durationHours = String(req.query.duration_hours || req.query.duration || "").trim();
-    const address = String(req.query.address || req.query.location || "").trim();
+    const durationHoursRaw = String(req.query.duration_hours || req.query.duration || "").trim();
 
-    if (!employeeCode || !day || !durationHours) {
-      return res.status(400).json({ error: "worker, day and duration_hours are required" });
+    if (!day || !durationHoursRaw) {
+      return res.status(400).json({ error: "day and duration_hours are required" });
     }
 
-    const params = new URLSearchParams({
-      employee_code: employeeCode,
-      day,
-      duration_hours: durationHours,
+    const durationHours = Math.max(1, Number(durationHoursRaw) || 1);
+
+    // Generate hourly slots 07:00 - 17:00 inclusive, but ensure slot start + duration <= 17:00
+    const closingHour = 17;
+    const slotLength = Math.max(1, Math.ceil(durationHours));
+    const baseSlots = [];
+    for (let h = 7; h <= 17; h += 1) {
+      baseSlots.push(String(h).padStart(2, "0") + ":00");
+    }
+
+    const slots = baseSlots.filter((s) => {
+      const startHour = Number(s.slice(0, 2));
+      return startHour + slotLength <= closingHour;
     });
-    if (address) params.set("address", address);
 
-    const upstream = await marketingFetch(`/api/integrations/availability/slots?${params.toString()}`);
-    const data = await upstream.json().catch(() => null);
-    if (!upstream.ok) {
-      return res.status(upstream.status).json({ error: data?.error || "Failed to fetch slots" });
-    }
-    return res.json(data);
+    return res.json({ slots });
   } catch (err) {
     console.error("Slots proxy error:", err);
-    if (err?.code === "INTEGRATION_NOT_CONFIGURED") {
-      return res.status(503).json({ error: err.message });
-    }
-    return res.status(500).json({ error: err?.message || "Failed to fetch slots" });
+    return res.status(500).json({ error: err?.message || "Failed to compute slots" });
   }
 });
 
 app.get("/api/availability/month", async (req, res) => {
   try {
-    const employeeCode = String(req.query.worker || req.query.employee_code || "").trim();
     const month = String(req.query.month || "").trim();
-    const durationHours = String(req.query.duration_hours || req.query.duration || "").trim();
-    const address = String(req.query.address || req.query.location || "").trim();
+    const durationHoursRaw = String(req.query.duration_hours || req.query.duration || "").trim();
 
-    if (!employeeCode || !month || !durationHours) {
-      return res.status(400).json({ error: "worker, month and duration_hours are required" });
+    if (!month || !durationHoursRaw) {
+      return res.status(400).json({ error: "month and duration_hours are required" });
     }
 
-    const params = new URLSearchParams({
-      employee_code: employeeCode,
-      month,
-      duration_hours: durationHours,
-    });
-    if (address) params.set("address", address);
-
-    const upstream = await marketingFetch(`/api/integrations/availability/month?${params.toString()}`);
-    const data = await upstream.json().catch(() => null);
-    if (!upstream.ok) {
-      return res.status(upstream.status).json({ error: data?.error || "Failed to fetch availability" });
+    // Parse YYYY-MM
+    const parts = month.split("-");
+    if (parts.length !== 2) {
+      return res.status(400).json({ error: "month must be in YYYY-MM format" });
     }
-    return res.json(data);
+    const year = Number(parts[0]);
+    const mon = Number(parts[1]);
+    if (!year || !mon || mon < 1 || mon > 12) {
+      return res.status(400).json({ error: "Invalid month" });
+    }
+
+    const durationHours = Math.max(1, Number(durationHoursRaw) || 1);
+
+    const daysInMonth = new Date(year, mon, 0).getDate();
+    const availableDays = [];
+    const today = new Date();
+    const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    for (let d = 1; d <= daysInMonth; d += 1) {
+      const dt = new Date(year, mon - 1, d);
+      // Include weekends as valid days; skip past dates only
+      // skip past dates
+      if (dt < startOfToday) continue;
+      const yyyy = dt.getFullYear();
+      const mm = String(dt.getMonth() + 1).padStart(2, "0");
+      const dd = String(dt.getDate()).padStart(2, "0");
+      availableDays.push(`${yyyy}-${mm}-${dd}`);
+    }
+
+    return res.json({ availableDays });
   } catch (err) {
     console.error("Month availability proxy error:", err);
-    if (err?.code === "INTEGRATION_NOT_CONFIGURED") {
-      return res.status(503).json({ error: err.message });
-    }
-    return res.status(500).json({ error: err?.message || "Failed to fetch availability" });
+    return res.status(500).json({ error: err?.message || "Failed to compute availability" });
   }
 });
 
 app.get("/api/workers", async (_req, res) => {
-  try {
-    const upstream = await marketingFetch("/api/integrations/employees");
-    const data = await upstream.clone().json().catch(() => null);
-    if (!upstream.ok) {
-      const text = data ? null : await upstream.text().catch(() => null);
-      const fallback = text && text.trim().length > 0
-        ? `Failed to fetch workers (upstream ${upstream.status}): ${text.trim().slice(0, 160)}`
-        : "Failed to fetch workers";
-      return res.status(upstream.status).json({ error: data?.error || fallback });
-    }
-    const rawEmployees = Array.isArray(data)
-      ? data
-      : Array.isArray(data?.employees)
-        ? data.employees
-        : Array.isArray(data?.data)
-          ? data.data
-          : Array.isArray(data?.data?.employees)
-            ? data.data.employees
-            : Array.isArray(data?.results)
-              ? data.results
-              : [];
-
-    const normalizedEmployees = rawEmployees
-      .map((emp) => {
-        const code = String(
-          emp?.code ||
-            emp?.employee_code ||
-            emp?.employeeCode ||
-            emp?.id ||
-            emp?.uuid ||
-            ""
-        ).trim();
-        if (!code) return null;
-        const name = String(
-          emp?.name ||
-            emp?.full_name ||
-            emp?.fullName ||
-            emp?.display_name ||
-            emp?.displayName ||
-            emp?.email ||
-            code
-        ).trim();
-        const status = emp?.status ?? emp?.state ?? null;
-        const activeRaw = emp?.active ?? emp?.is_active ?? emp?.isActive ?? status;
-        const active = typeof activeRaw === "string"
-          ? ["active", "enabled", "true"].includes(activeRaw.toLowerCase())
-          : Boolean(activeRaw ?? true);
-        return { code, name, active };
-      })
-      .filter(Boolean);
-
-    return res.json({ employees: normalizedEmployees });
-  } catch (err) {
-    console.error("Workers proxy error:", err);
-    if (err?.code === "INTEGRATION_NOT_CONFIGURED" || err?.code === "INTEGRATION_MISCONFIGURED") {
-      return res.status(503).json({ error: err.message });
-    }
-    return res.status(500).json({ error: err?.message || "Failed to fetch workers" });
-  }
+  // Workers endpoint stubbed: return empty list to remove dependency on marketing integration
+  return res.json({ employees: [] });
 });
 
 app.post("/api/auth/register", async (req, res) => {
@@ -323,7 +240,21 @@ app.post("/api/auth/logout", (_req, res) => {
 
 app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
   try {
-    const { location, date, time, duration, typeOfCleaning, renegotiate, preferredWorker } = req.body;
+    const {
+      location,
+      date,
+      time,
+      duration,
+      typeOfCleaning,
+      renegotiate,
+      preferredWorker,
+      name,
+      email,
+      address,
+      phone,
+      notes,
+      gdprConsent,
+    } = req.body;
 
     if (!date || !time || !duration || !typeOfCleaning) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -332,19 +263,51 @@ app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
     const hourlyRate = getHourlyRate(typeOfCleaning);
     const price = Number(duration) * hourlyRate;
 
-    const booking = await prisma.booking.create({
-      data: {
-        location,
-        date,
-        time,
-        duration: Number(duration),
-        typeOfCleaning,
-        preferredWorkerCode: preferredWorker ? String(preferredWorker) : null,
-        renegotiate: !!renegotiate,
-        price,
-        userId: req.user?.id ?? null,
-      },
-    });
+    // Build booking data and attach user relation only when present
+    const bookingData = {
+      location,
+      date,
+      time,
+      duration: Number(duration),
+      typeOfCleaning,
+      preferredWorkerCode: preferredWorker ? String(preferredWorker) : null,
+      renegotiate: !!renegotiate,
+      price,
+      name: name ? String(name) : null,
+      email: email ? String(email) : null,
+      address: address ? String(address) : null,
+      phone: phone ? String(phone) : null,
+      gdprConsent: !!gdprConsent,
+      confirmedAt: gdprConsent === true ? new Date() : null,
+    };
+
+    if (req.user && req.user.id) {
+      bookingData.user = { connect: { id: req.user.id } };
+    }
+
+    const booking = await prisma.booking.create({ data: bookingData });
+
+    // If GDPR consent present and true, treat this as final confirmation and send emails
+    try {
+      const isQuoteRequest =
+        (typeOfCleaning || "").toLowerCase() === "quote request" ||
+        (typeOfCleaning || "").toLowerCase() === "angebot anfragen";
+
+    if (gdprConsent === true) {
+        const emailBooking = { ...booking, notes: typeof notes === "string" ? notes : "" };
+        // determine office recipient based on booking.location (server-side source of truth)
+        const officeEmail = (booking.location || "vienna").toLowerCase() === "graz" ? "office-stmk@putzelf.com" : "office@putzelf.com";
+        if (isQuoteRequest) {
+          // send only to office recipient (single recipient requirement)
+          await sendQuoteRequestConfirmation(officeEmail, emailBooking);
+        } else {
+          await sendBookingConfirmation(officeEmail, emailBooking);
+        }
+      }
+    } catch (mailErr) {
+      console.warn("Failed to send booking confirmation email:", mailErr && (mailErr.message || mailErr));
+      // Do not fail the request for email errors
+    }
 
     return res.status(201).json(booking);
   } catch (err) {
@@ -424,62 +387,25 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
     const hourlyRate = getHourlyRate(existing.typeOfCleaning);
     const price = Number(existing.duration) * hourlyRate;
 
-    // Final stamp: create a shift in marketing schedule (source of truth).
-    // If a worker is selected, confirmation only succeeds if the shift is created.
-    const employeeCode = existing.preferredWorkerCode;
-    let adminShiftId = null;
-    if (employeeCode) {
-      let shiftRes;
-      try {
-        shiftRes = await marketingFetch("/api/integrations/shifts/from-booking", {
-          method: "POST",
-          body: JSON.stringify({
-            booking_id: existing.id,
-            employee_code: employeeCode,
-            day: existing.date,
-            start_time: existing.time,
-            duration_hours: Number(existing.duration),
-            address: address || existing.location,
-            instructions: `Website booking #${existing.id}${name ? ` — ${name}` : ""}`,
-          }),
-        });
-      } catch (integrationErr) {
-        console.warn(
-          "Marketing shift creation failed:",
-          integrationErr?.message || integrationErr
-        );
-        return res.status(503).json({
-          error: "Scheduling system unavailable. Please try again shortly.",
-        });
-      }
+    // No external scheduling integration: do not create external shifts.
+    // Proceed with confirming the booking locally regardless of preferredWorker.
+    const adminShiftId = null;
 
-      const shiftData = await shiftRes.json().catch(() => null);
-      if (!shiftRes.ok) {
-        const message =
-          shiftData?.error ||
-          (typeof shiftData === "string" ? shiftData : null) ||
-          `Slot no longer available (upstream ${shiftRes.status})`;
-        return res.status(shiftRes.status).json({ error: message });
-      }
-      if (shiftData?.shiftId) {
-        adminShiftId = Number(shiftData.shiftId);
-      }
+    const updateData = {
+      name,
+      email,
+      address,
+      phone,
+      gdprConsent: true,
+      price,
+      confirmedAt: new Date(),
+      adminShiftId,
+    };
+    if (req.user && req.user.id) {
+      updateData.user = { connect: { id: req.user.id } };
     }
 
-    const booking = await prisma.booking.update({
-      where: { id },
-      data: {
-        name,
-        email,
-        address,
-        phone,
-        gdprConsent: true,
-        price,
-        userId: req.user?.id ?? existing.userId,
-        confirmedAt: new Date(),
-        adminShiftId,
-      },
-    });
+    const booking = await prisma.booking.update({ where: { id }, data: updateData });
 
     const emailBooking = {
       ...booking,
@@ -490,10 +416,12 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
       (existing.typeOfCleaning || "").toLowerCase() === "quote request" ||
       (existing.typeOfCleaning || "").toLowerCase() === "angebot anfragen";
 
+    // determine office recipient based on booking.location (server-side)
+    const officeEmail = (booking.location || "vienna").toLowerCase() === "graz" ? "office-stmk@putzelf.com" : "office@putzelf.com";
     if (isQuoteRequest) {
-      await sendQuoteRequestConfirmation([booking.email, "office@putzelf.com"], emailBooking);
+      await sendQuoteRequestConfirmation(officeEmail, emailBooking);
     } else {
-      await sendBookingConfirmation([booking.email, "office@putzelf.com"], emailBooking);
+      await sendBookingConfirmation(officeEmail, emailBooking);
     }
 
     try {

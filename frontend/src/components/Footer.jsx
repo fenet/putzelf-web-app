@@ -1,9 +1,13 @@
 import { Instagram, Facebook, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+import { getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
 export default function Footer() {
   const { t } = useTranslation();
+  const location = useLocation();
+  const locale = getLocaleFromPathname(location.pathname);
   return (
            <footer className="bg-white text-gray-700 mt-auto border-t border-gray-200">
         <div className="container mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-12">
@@ -74,6 +78,11 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <Link to={getLocalizedPath(locale, "calculator")} className="hover:text-gray-900 transition-colors">
+                  {t("footer.customers.links.priceCalculator", { defaultValue: "Price Calculator" })}
+                </Link>
+              </li>
+              <li>
                 <a href="/files/Contract.pdf" download className="hover:text-gray-900 transition-colors">
                   {t("footer.customers.links.serviceContract")}
                 </a>
@@ -126,7 +135,7 @@ export default function Footer() {
                 </li>
               </ul>
 
-              <Link to="/imprint" className="hover:text-gray-900 transition-colors">
+              <Link to={getLocalizedPath(locale, "imprint")} className="hover:text-gray-900 transition-colors">
                 {t("footer.connect.links.imprint")}
               </Link>
             </div>

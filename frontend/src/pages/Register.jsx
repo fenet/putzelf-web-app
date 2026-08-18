@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/auth";
 import Seo from "../components/Seo";
+import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
 export default function Register() {
   const { register } = useAuth();
+  const location = useLocation();
+  const locale = getLocaleFromPathname(location.pathname);
   const [form, setForm] = useState({ email: "", password: "", inviteCode: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,7 +28,7 @@ export default function Register() {
         password: form.password,
         inviteCode: form.inviteCode || undefined,
       });
-      navigate(user.role === "ADMIN" ? "/admin" : "/profile");
+      navigate(user.role === "ADMIN" ? getLocalizedPath(locale, "admin") : getLocalizedPath(locale, "booking"));
     } catch (err) {
       setError(err.message);
     } finally {
@@ -35,7 +38,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <Seo title="Registrieren" description="Konto erstellen, um Termine zu buchen." path="/register" noindex />
+      <Seo title={locale === "de" ? "Registrieren" : "Register"} description={locale === "de" ? "Konto erstellen, um Termine zu buchen." : "Create an account to book appointments."} path={getLocalizedPath(locale, "register")} lang={locale} alternates={getLocalizedAlternates(location.pathname)} xDefaultPath={getLocalizedPath("de", "register")} noindex />
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-6">
         <header className="text-center space-y-2">
           <h1 className="text-3xl font-semibold text-gray-900">Konto erstellen</h1>
@@ -103,8 +106,8 @@ export default function Register() {
 
         <div className="text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link to="/login" className="text-[#0097b2] font-semibold hover:underline">
-            Sign in
+          <Link to={getLocalizedPath(locale, "login")} className="text-[#0097b2] font-semibold hover:underline">
+            {locale === "de" ? "Anmelden" : "Sign in"}
           </Link>
         </div>
       </div>

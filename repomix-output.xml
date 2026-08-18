@@ -5601,7 +5601,7 @@ const resources = {
         phoneLabel: "Phone",
         phoneValue: "+43 (0)676 6300167",
         emailLabel: "Email",
-        emailValue: "info@putzelf.com",
+        emailValue: "office@putzelf.com",
         membership: "Member of the Vienna Economic Chamber, Vienna Commercial Service Providers Section"
       },
       hero: {
@@ -5820,7 +5820,7 @@ const resources = {
         phoneLabel: "Telefon",
         phoneValue: "+43 (0)676 6300167",
         emailLabel: "E-Mail",
-        emailValue: "info@putzelf.com",
+        emailValue: "office@putzelf.com",
         membership: "Mitglied der Wirtschaftskammer Wien, Fachgruppe Gewerbliche Dienstleister"
       },
       profile: {

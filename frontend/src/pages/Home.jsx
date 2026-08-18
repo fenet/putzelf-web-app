@@ -5,14 +5,22 @@ import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Gift } from "lucide-react";
 import Seo from "../components/Seo";
+import Confetti from "react-confetti";
+import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
 export default function Home() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const locale = getLocaleFromPathname(location.pathname);
 
   const [form, setForm] = useState({
+    // contact first
+    name: "",
+    phone: "",
+    email: "",
     location: "",
+    // booking fields
     date: "",
     time: "",
     duration: 3,
@@ -21,52 +29,116 @@ export default function Home() {
     renegotiate: false,
   });
 
-  const [selectedWorker, setSelectedWorker] = useState(() => {
-    const params = new URLSearchParams(location.search);
-    return params.get("worker");
-  });
+  // service location (vienna | graz) — ask every time booking page mounts
+  const [serviceLocation, setServiceLocation] = useState("");
+  const [locationModalOpen, setLocationModalOpen] = useState(true);
 
-  const [workersIndex, setWorkersIndex] = useState({});
-  const [workersError, setWorkersError] = useState(null);
+  // worker selection removed: booking no longer depends on employee listing
 
+  // flow choice: direct inquiry or view price calculator
+  const [flowChoice, setFlowChoice] = useState("inquiry");
+
+  // Contact validation state (mirrors Order.jsx logic)
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [gdprError, setGdprError] = useState("");
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  const validateEmail = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setEmailError(t("order.errors.requiredEmail") || "Email is required");
+      return false;
+    }
+    if (trimmed.includes("..")) {
+      setEmailError(t("order.errors.invalidEmailDoubleDot") || "Email cannot contain consecutive dots");
+      return false;
+    }
+    if (!emailRegex.test(trimmed)) {
+      setEmailError(t("order.errors.invalidEmail") || "Please enter a valid email address");
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
+
+  const handleEmailBlur = (e) => {
+    const raw = String(e.target.value || "");
+    const sanitized = raw.trim().replace(/\.{2,}/g, ".");
+    if (sanitized !== raw) {
+      setForm((prev) => ({ ...prev, email: sanitized }));
+    }
+    validateEmail(sanitized);
+  };
+
+  const validatePhone = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setPhoneError(t("order.errors.requiredPhone"));
+      return false;
+    }
+    const isValid = /^\+?[0-9\s\-()]{7,}$/.test(trimmed);
+    if (!isValid) {
+      setPhoneError(t("order.errors.invalidPhone"));
+      return false;
+    }
+    setPhoneError("");
+    return true;
+  };
+
+  const validateName = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setNameError(t("order.errors.requiredName", { defaultValue: "Name is required" }));
+      return false;
+    }
+    setNameError("");
+    return true;
+  };
+
+  const validateAddress = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setAddressError(t("order.errors.requiredAddress", { defaultValue: "Address is required" }));
+      return false;
+    }
+    setAddressError("");
+    return true;
+  };
+
+  // Persist/restore contact fields when navigating to calculator
   useEffect(() => {
-    const controller = new AbortController();
-    (async () => {
-      try {
-        setWorkersError(null);
-        const res = await apiFetch("/api/workers", { signal: controller.signal });
-        const data = await parseJsonSafe(res);
-        if (!res.ok) {
-          throw new Error(data?.error || "Failed to load workers");
-        }
-        const employees = Array.isArray(data?.employees) ? data.employees : [];
-        const index = {};
-        employees.forEach((emp) => {
-          const code = String(emp?.code || "").trim();
-          if (!code) return;
-          index[code] = { name: String(emp?.name || code).trim() || code };
-        });
-        setWorkersIndex(index);
-      } catch (err) {
-        if (err?.name === "AbortError") return;
-        setWorkersIndex({});
-        setWorkersError(err?.message || "Failed to load workers");
+    try {
+      const raw = sessionStorage.getItem("booking_contact");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        setForm((prev) => ({ ...prev, ...parsed }));
       }
-    })();
-    return () => controller.abort();
+    } catch (_) {}
   }, []);
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    setSelectedWorker(params.get("worker"));
-  }, [location.search]);
+  const saveContactToSession = () => {
+    try {
+      const contact = {
+        name: form.name || "",
+        phone: form.phone || "",
+        email: form.email || "",
+        location: form.location || "",
+      };
+      sessionStorage.setItem("booking_contact", JSON.stringify(contact));
+    } catch (_) {}
+  };
 
-  const selectedWorkerName = selectedWorker
-    ? workersIndex?.[selectedWorker]?.name ||
-      t(`profile.workers.${selectedWorker}`, { defaultValue: selectedWorker })
-    : null;
+  const selectedWorkerName = null;
 
   const [rewardImageError, setRewardImageError] = useState(false);
+
+  const [gdprConsent, setGdprConsent] = useState(false);
+  const [notes, setNotes] = useState("");
+  const [successBooking, setSuccessBooking] = useState(null);
 
   const [availableSlots, setAvailableSlots] = useState([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
@@ -117,18 +189,18 @@ export default function Home() {
   }, [form.date]);
 
   useEffect(() => {
-    const worker = String(selectedWorker || "").trim();
     const durationHours = Number(form.duration || 0);
-    if (!worker || !durationHours) {
+    if (!durationHours) {
       setMonthAvailableDays(new Set());
       setMonthError(null);
       setMonthLoading(false);
       return;
     }
 
+    // allow fetching month availability even if address not provided
+
     const controller = new AbortController();
     const params = new URLSearchParams({
-      worker,
       month: toYYYYMM(monthCursor),
       duration_hours: String(durationHours),
     });
@@ -156,15 +228,17 @@ export default function Home() {
         });
       } catch (err) {
         if (err?.name === "AbortError") return;
-        setMonthAvailableDays(new Set());
-        setMonthError(err?.message || "Failed to load availability");
+          setMonthAvailableDays(new Set());
+          const msg = err?.message ? String(err.message) : null;
+          const base = t("home.calendar.errorFetchDates", { defaultValue: "Failed to fetch dates." });
+          setMonthError(msg ? `${base} ${msg}` : base);
       } finally {
         setMonthLoading(false);
       }
     })();
 
     return () => controller.abort();
-  }, [selectedWorker, form.duration, form.location, monthCursor]);
+  }, [form.duration, form.location, monthCursor]);
 
   const getHourlyRate = (typeOfCleaning, subcategories) => {
     const isHouseCleaning = typeOfCleaning === t("home.types.standard");
@@ -227,16 +301,23 @@ export default function Home() {
       if (name === "date" || name === "duration" || name === "location") {
         next.time = "";
       }
+
+      // run validators for contact fields
+      if (name === "email") validateEmail(updatedValue);
+      if (name === "phone") validatePhone(updatedValue);
+      if (name === "name") validateName(updatedValue);
+      if (name === "location") validateAddress(updatedValue);
+      if (name === "gdprConsent") setGdprConsent(Boolean(updatedValue));
+
       return next;
     });
   };
 
   useEffect(() => {
-    const worker = String(selectedWorker || "").trim();
     const day = String(form.date || "").trim();
     const durationHours = Number(form.duration || 0);
 
-    if (!worker || !day || !durationHours) {
+    if (!day || !durationHours) {
       setAvailableSlots([]);
       setSlotsError(null);
       setSlotsLoading(false);
@@ -245,7 +326,6 @@ export default function Home() {
 
     const controller = new AbortController();
     const params = new URLSearchParams({
-      worker,
       day,
       duration_hours: String(durationHours),
     });
@@ -273,15 +353,17 @@ export default function Home() {
         });
       } catch (err) {
         if (err?.name === "AbortError") return;
-        setAvailableSlots([]);
-        setSlotsError(err?.message || "Failed to load available times");
+          setAvailableSlots([]);
+          const msg = err?.message ? String(err.message) : null;
+          const base = t("home.calendar.errorFetchSlots", { defaultValue: "Failed to fetch available times." });
+          setSlotsError(msg ? `${base} ${msg}` : base);
       } finally {
         setSlotsLoading(false);
       }
     })();
 
     return () => controller.abort();
-  }, [selectedWorker, form.date, form.duration, form.location]);
+  }, [form.date, form.duration, form.location]);
 
   const decrementDuration = () => {
     setForm((prev) => {
@@ -351,13 +433,33 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!selectedWorker) {
-      alert(t("home.alerts.noWorker"));
+    if (!serviceLocation) {
+      alert(t("home.locationModal.validation"));
       return;
     }
 
-    if (!form.date || !form.time || !form.typeOfCleaning) {
+    // worker is optional now
+    if (!form.typeOfCleaning) {
       alert(t("home.alerts.missing"));
+      return;
+    }
+
+    // Sanitize and validate contact fields (mirror Order.jsx behavior)
+    const sanitizedEmail = String(form.email || "").trim().replace(/\.{2,}/g, ".");
+    if (sanitizedEmail !== form.email) setForm((prev) => ({ ...prev, email: sanitizedEmail }));
+
+    const nameOk = validateName(form.name);
+    const phoneOk = validatePhone(form.phone);
+    const emailOk = validateEmail(sanitizedEmail);
+    const addressOk = validateAddress(form.location);
+    const gdprOk = gdprConsent === true;
+    if (!gdprOk) {
+      setGdprError(t("order.errors.requiredGdpr", { defaultValue: "Please agree to GDPR consent" }));
+    } else {
+      setGdprError("");
+    }
+
+    if (!nameOk || !phoneOk || !emailOk || !addressOk || !gdprOk) {
       return;
     }
 
@@ -367,11 +469,22 @@ export default function Home() {
           service_type: form.typeOfCleaning,
           duration: form.duration,
           price: calculatedPrice,
-          preferredWorker: selectedWorker,
+          preferredWorker: null,
         });
       } catch (_) {}
 
-      const payload = { ...form, preferredWorker: selectedWorker };
+      const payload = {
+        ...form,
+        preferredWorker: null,
+        name: form.name,
+        email: sanitizedEmail,
+        // 'address' keeps the free-text street/address; 'location' is the selected city code
+        address: form.location,
+        location: serviceLocation || "vienna",
+        phone: form.phone,
+        notes,
+        gdprConsent,
+      };
 
       const res = await apiFetch("/api/bookings", {
         method: "POST",
@@ -389,11 +502,12 @@ export default function Home() {
           bookingId: data?.id,
           service_type: form.typeOfCleaning,
           price: calculatedPrice,
-          preferredWorker: selectedWorker,
+          preferredWorker: null,
         });
       } catch (_) {}
 
-      navigate(`/order/${data?.id}`);
+      // Show in-place success state instead of redirecting to order page
+      setSuccessBooking(data);
     } catch (err) {
       console.error(err);
       alert(
@@ -411,7 +525,10 @@ export default function Home() {
             ? "Termin auswählen und Ihre Daten eingeben."
             : "Book a cleaning and enter your details."
         }
-        path="/book"
+        path={getLocalizedPath(locale, "booking")}
+        lang={locale}
+        alternates={getLocalizedAlternates(location.pathname)}
+        xDefaultPath={getLocalizedPath("de", "book")}
         noindex
       />
       <script
@@ -422,65 +539,170 @@ export default function Home() {
             "@type": "LocalBusiness",
             name: "PutzELF",
             telephone: "+43 676 6300167",
-            email: "info@putzelf.com",
+            email: "office@putzelf.com",
             address: {
               "@type": "PostalAddress",
               streetAddress: "Waagner-Biro-Straße",
               addressLocality: "Graz",
               addressCountry: "AT",
             },
-            url: "/graz",
+            url: getLocalizedPath(locale, "booking"),
           }),
         }}
       />
 
       {/* Graz CTA moved to LandingAlternative.jsx */}
       <div className="w-full max-w-2xl">
+        {/* Location modal */}
+        {locationModalOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+          >
+            <div className="relative bg-white rounded-2xl shadow-2xl p-6 w-[92%] max-w-md text-center border border-[#e0f7f7]">
+              <h2 className="text-xl font-bold mb-3">{t("home.locationModal.title")}</h2>
+              <p className="text-sm text-gray-600 mb-4">{t("home.locationModal.prompt")}</p>
+              <div className="flex gap-3 justify-center mb-4">
+                <button
+                  onClick={() => { setServiceLocation("vienna"); setLocationModalOpen(false); }}
+                  className="px-6 py-3 bg-[#0097b2] text-white rounded-lg font-semibold"
+                >
+                  {t("home.locationModal.vienna")}
+                </button>
+                <button
+                  onClick={() => { setServiceLocation("graz"); setLocationModalOpen(false); }}
+                  className="px-6 py-3 bg-gray-100 text-gray-800 rounded-lg font-semibold border"
+                >
+                  {t("home.locationModal.graz")}
+                </button>
+              </div>
+              <div className="text-sm text-gray-500">
+                <button onClick={() => { setLocationModalOpen(true); }} className="underline">{t("home.locationModal.prompt")}</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* show selected service location */}
+        <div className="text-sm text-gray-700 mb-4">
+          <label className="font-semibold mr-2">{t("home.serviceLocationLabel")}</label>
+          <select
+            value={serviceLocation}
+            onChange={(e) => setServiceLocation(e.target.value)}
+            className="ml-2 p-2 border rounded"
+            aria-label={t("home.locationModal.title")}
+          >
+            <option value="">{t("home.locationModal.prompt")}</option>
+            <option value="vienna">{t("home.locationModal.vienna")}</option>
+            <option value="graz">{t("home.locationModal.graz")}</option>
+          </select>
+        </div>
         <h1
           className="text-center text-3xl font-bold mb-6"
           style={{ color: "#000000" }}
         >
           {t("home.title")}
         </h1>
-
-        {selectedWorker ? (
-          <div className="mb-6 rounded-2xl border border-[#5be3e3] bg-[#e6fbff] p-5 text-center shadow-sm">
-            <p className="text-sm font-semibold uppercase tracking-wide text-[#0097b2]">
-              {t("home.selectedWorker.label")}
-            </p>
-            <p className="mt-2 text-2xl font-bold text-[#000000]">
-              {selectedWorkerName}
-            </p>
-            <p className="mt-1 text-sm text-gray-600">
-              {t("home.selectedWorker.selected", {
-                name: selectedWorkerName,
-              })}
-            </p>
-            <Link
-              to="/profile"
-              className="mt-4 inline-flex items-center justify-center rounded-full border border-[#0097b2] px-4 py-2 text-sm font-semibold text-[#0097b2] hover:bg-[#0097b2]/10 transition"
-            >
-              {t("home.selectedWorker.change")}
-            </Link>
+        {successBooking ? (
+          <div className="bg-white p-6 rounded-2xl shadow-md text-center">
+            {typeof window !== "undefined" && !window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches && (
+              <Confetti
+                width={window.innerWidth}
+                height={window.innerHeight}
+                recycle={false}
+                numberOfPieces={150}
+              />
+            )}
+            <h2 className="text-2xl font-bold mb-2">{t("home.successTitle", { defaultValue: "Booking confirmed" })}</h2>
+            <p className="mb-4">{t("home.successMessage", { defaultValue: "Thank you — your booking is confirmed." })}</p>
+            <p className="text-sm text-gray-600">{t("home.bookingId", { id: successBooking.id, defaultValue: `Booking ID: ${successBooking.id}` })}</p>
           </div>
         ) : (
-          <div className="mb-6 rounded-2xl border border-dashed border-gray-300 p-5 text-center">
-            <p className="text-base font-semibold text-gray-700">
-              {t("home.selectedWorker.missing")}
-            </p>
-            <Link
-              to="/profile"
-              className="mt-3 inline-flex items-center justify-center rounded-full bg-[#0097b2] px-4 py-2 text-sm font-semibold text-white shadow-md hover:shadow-lg transition"
-            >
-              {t("home.selectedWorker.choose")}
-            </Link>
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white p-6 rounded-2xl shadow-md space-y-6"
+          >
+          {/* Step 1: Contact information */}
+          <div>
+            <h3 className="text-lg font-medium mb-3">{t("home.contactTitle", { defaultValue: "Your contact details" })}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <input name="name" value={form.name} onChange={handleChange} placeholder={t("home.contact.name", { defaultValue: "Full name" })} className="p-3 border rounded w-full" />
+                {nameError ? <p className="text-sm text-red-600 mt-1">{nameError}</p> : null}
+              </div>
+              <div>
+                <input name="phone" value={form.phone} onChange={handleChange} placeholder={t("home.contact.phone", { defaultValue: "Phone number" })} className="p-3 border rounded w-full" />
+                {phoneError ? <p className="text-sm text-red-600 mt-1">{phoneError}</p> : null}
+              </div>
+              <div>
+                <input name="email" value={form.email} onChange={handleChange} onBlur={handleEmailBlur} placeholder={t("home.contact.email", { defaultValue: "Email address" })} className="p-3 border rounded w-full" />
+                {emailError ? <p className="text-sm text-red-600 mt-1">{emailError}</p> : null}
+              </div>
+              <div>
+                <input name="location" value={form.location} onChange={handleChange} placeholder={t("home.contact.address", { defaultValue: "Address" })} className="p-3 border rounded w-full" />
+                {addressError ? <p className="text-sm text-red-600 mt-1">{addressError}</p> : null}
+              </div>
+            </div>
           </div>
-        )}
 
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-6 rounded-2xl shadow-md space-y-6"
-        >
+          {/* Step 2: Flow decision */}
+          <div>
+           
+<div className="w-full">
+  {/* Inquiry is the current/main path */}
+  <div className="rounded-xl border border-[#0097b2]/20 bg-[#0097b2]/5 p-4">
+    <div className="flex items-start gap-3">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0097b2] text-white">
+        ✓
+      </div>
+
+      <div className="flex-1">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="font-semibold text-gray-900">
+            {t("home.flow.inquiry", {
+              defaultValue: "Send an Inquiry",
+            })}
+          </h3>
+
+          
+        </div>
+
+        <p className="mt-1 text-sm text-gray-600">
+          {t("home.flow.inquiryDescription", {
+            defaultValue:
+              "Fill in the form below and we'll get back to you with a personalized offer.",
+          })}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {/* Soft alternative */}
+  <div className="mt-3 flex items-center justify-center gap-2 text-sm text-gray-500">
+    <span>
+      {t("home.flow.calculatorPrompt", {
+        defaultValue: "Just want to get an estimated price?",
+      })}
+    </span>
+
+    <button
+      type="button"
+      onClick={() => {
+        saveContactToSession();
+        setFlowChoice("calculator");
+        navigate(getLocalizedPath(locale, "calculator"));
+      }}
+      className="font-medium text-gray-600 underline decoration-gray-300 underline-offset-2 transition-colors hover:text-[#0097b2] hover:decoration-[#0097b2]"
+    >
+      {t("home.flow.calculator", {
+        defaultValue: "View Price Calculator",
+      })}
+      <span className="ml-1">→</span>
+    </button>
+  </div>
+</div>
+          </div>
           <div>
             <h3 className="text-lg font-medium mb-3">
               {t("home.selectType")}
@@ -626,13 +848,14 @@ export default function Home() {
                 {t("home.dateLabel") || "Date"}
               </label>
               <div className="w-full p-3 border rounded-lg bg-white">
-                {!selectedWorker ? (
-                  <p className="text-sm text-gray-600">
-                    {t("home.slots.chooseWorker", {
-                      defaultValue: "Choose a worker to see available days.",
+                {!form.location ? (
+                  <p className="text-sm text-gray-500 mb-3">
+                    {t("home.slots.enterAddress", {
+                      defaultValue: "Enter your address to see available days.",
                     })}
                   </p>
-                ) : monthLoading ? (
+                ) : null}
+                {monthLoading ? (
                   <p className="text-sm text-gray-600">
                     {t("home.calendar.loading", {
                       defaultValue: "Loading availability…",
@@ -693,9 +916,7 @@ export default function Home() {
                           </button>
                         </div>
 
-                        {workersError ? (
-                          <p className="text-xs text-red-600 mb-2">{workersError}</p>
-                        ) : null}
+                        
 
                         <div className="grid grid-cols-7 gap-2">
                           {dow.map((label) => (
@@ -760,13 +981,7 @@ export default function Home() {
                 {t("home.timeLabel") || "Time"}
               </label>
               <div className="w-full p-3 border rounded-lg bg-white">
-                {!selectedWorker ? (
-                  <p className="text-sm text-gray-600">
-                    {t("home.slots.chooseWorker", {
-                      defaultValue: "Choose a worker to see available times.",
-                    })}
-                  </p>
-                ) : !form.date ? (
+                {!form.date ? (
                   <p className="text-sm text-gray-600">
                     {t("home.slots.chooseDate", {
                       defaultValue: "Pick a date to see available times.",
@@ -834,24 +1049,26 @@ export default function Home() {
             <span>{t("home.renegotiate")}</span>
           </label>
 
-          <div className="relative overflow-hidden rounded-2xl p-[1px] bg-gradient-to-r from-[#5be3e3] via-[#00b3c1] to-[#0097b2] shadow-lg">
-            <div className="rounded-2xl bg-gradient-to-br from-[#ecfeff] via-white to-[#e0f7f7] px-4 py-5 sm:px-6 sm:py-6">
-              <p className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-[#0097b2]">
-                {t("home.estimated")}
-              </p>
-              <p className="mt-2 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-none text-[#00343d]">
-                €{(Number(calculatedPrice || 0) * 1.2).toFixed(2)}
-              </p>
-              <p className="mt-3 text-sm sm:text-base text-gray-700">
-                {t("home.rate", {
-                  rate: (
-                    getHourlyRate(form.typeOfCleaning, form.subcategories) * 1.2
-                  ).toFixed(2),
-                })}{" "}
-                <span className="text-xs text-gray-600">(Brutto)</span>
-              </p>
-            </div>
+          <div>
+            <label htmlFor="notes" className="block text-sm font-medium mb-1">{t("order.notesLabel", { defaultValue: "Notes (optional)" })}</label>
+            <textarea id="notes" name="notes" value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full p-3 border rounded" rows={4} />
           </div>
+
+          <label className="flex items-start space-x-3 text-sm">
+            <input
+              type="checkbox"
+              name="gdprConsent"
+              checked={gdprConsent}
+              onChange={(e) => { setGdprConsent(e.target.checked); setGdprError(""); }}
+              className="w-4 h-4 mt-1"
+            />
+            <span>
+              {t("order.gdprText", { defaultValue: "I agree that my data will be processed for the booking and contacted about this booking." })}
+              {gdprError ? <div className="text-red-600 text-sm mt-1">{gdprError}</div> : null}
+            </span>
+          </label>
+
+          {/* Price estimation removed from booking page; use Price Calculator instead */}
 
           <div className="relative">
             <button
@@ -900,7 +1117,8 @@ export default function Home() {
           >
             {t("home.submit")}
           </button>
-        </form>
+          </form>
+        )}
       </div>
     </div>
   );

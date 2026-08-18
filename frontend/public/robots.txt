@@ -3,8 +3,12 @@ Allow: /
 Disallow: /admin
 Disallow: /login
 Disallow: /register
-Disallow: /book
-Disallow: /order
-Disallow: /search
-Disallow: /profile
+Disallow: /de/book
+Disallow: /en/book
+Disallow: /de/order
+Disallow: /en/order
+Disallow: /de/search
+Disallow: /en/search
+Disallow: /de/profile
+Disallow: /en/profile
 Sitemap: https://putzelf.com/sitemap.xml

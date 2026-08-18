@@ -30,7 +30,7 @@ const resources = {
         phoneLabel: "Phone",
         phoneValue: "+43 (0)676 6300167",
         emailLabel: "Email",
-        emailValue: "info@putzelf.com",
+        emailValue: "office@putzelf.com",
         membership: "Member of the Vienna Economic Chamber, Vienna Commercial Service Providers Section"
       },
       hero: {
@@ -84,7 +84,78 @@ const resources = {
         homeCta: "Book Home Cleaning",
         officeTitle: "Office Cleaning",
         officeDesc: "A spotless office means a productive day for your team. We keep your workspaces clean, hygienic, and professional.",
-        officeCta: "Book Office Cleaning"
+          officeCta: "Book Office Cleaning",
+          // New structured services translations (private + business)
+          private: {
+            maintenance: {
+              title: "Maintenance Cleaning",
+              description: "Regular cleaning for private households, tailored to your schedule.",
+              features: ["Regular room cleaning", "Kitchen and bathroom cleaning", "Flexible time slots"]
+            },
+            deep: {
+              title: "Deep Cleaning",
+              description: "Thorough cleaning for hard-to-reach areas and stubborn dirt.",
+              features: ["Deep floor and surface cleaning", "Descaling and sanitary care", "Intensive kitchen cleaning"]
+            },
+            residential: {
+              title: "Residential Cleaning",
+              description: "Careful cleaning for apartments and family homes.",
+              features: ["Dusting and vacuuming", "Surface care", "Window cleaning (optional)"]
+            },
+            construction: {
+              title: "Post-construction / Rough Cleaning",
+              description: "Cleaning after construction or renovation work, removing debris and fine dust.",
+              features: ["Debris and dust removal", "Fine cleaning after rough cleaning", "Safe disposal"]
+            },
+            window: {
+              title: "Window & Frame Cleaning",
+              description: "Cleaning of windows and frames for streak-free results.",
+              features: ["Interior & exterior windows", "Frame and groove cleaning", "Optional prep for repainting frames"]
+            },
+            industrial: {
+              title: "Industrial Cleaning & Machinery",
+              description: "Specialized cleaning for machinery and industrial areas (no maintenance).",
+              features: ["Machine surface cleaning", "Safe cleaning procedures", "Removal of production residues"]
+            }
+          },
+          business: {
+            maintenance: {
+              title: "Maintenance Cleaning",
+              description: "Regular cleaning plans for businesses and offices.",
+              features: ["Workstation cleaning", "Sanitary and kitchen care", "Flexible scheduling"]
+            },
+            deep: {
+              title: "Deep Cleaning",
+              description: "Comprehensive deep cleaning for commercial spaces.",
+              features: ["Intensive floor cleaning", "Carpet and upholstery care", "Contact surface disinfection"]
+            },
+            staircase: {
+              title: "Staircase Cleaning",
+              description: "Regular upkeep and cleaning of staircases and common areas.",
+              features: ["Step cleaning", "Handrail care", "Garbage room and cellar cleaning"]
+            },
+            construction: {
+              title: "Post-construction / Rough Cleaning",
+              description: "Cleaning after construction work in commercial properties.",
+              features: ["Rough cleaning", "Fine cleaning after construction", "Removal of construction materials"]
+            },
+            window: {
+              title: "Window & Frame Cleaning",
+              description: "Professional window and frame cleaning for facades and interiors.",
+              features: ["Facade windows", "Interior and exterior cleaning", "Safety and lift work if required"]
+            },
+            industrial: {
+              title: "Industrial Cleaning & Machinery",
+              description: "Cleaning in industrial settings aligned with safety requirements.",
+              features: ["Machine cleaning", "Production line cleaning", "Safe disposal of residues"]
+            }
+          },
+          whatWeOffer: "What we offer",
+          benefitsTitle: "Benefits",
+          benefit1: "Vetted cleaning professionals",
+          benefit2: "Flexible scheduling",
+          benefit3: "Transparent pricing",
+          cta: "Request an Offer"
       },
       alt: {
         logo: "putzELF Logo",
@@ -135,11 +206,26 @@ const resources = {
       },
       home: {
         title: "Book a cleaning",
+        locationModal: {
+          title: "Where would you like to book the cleaning?",
+          prompt: "Select the city for your service",
+          vienna: "Vienna",
+          graz: "Graz",
+          validation: "Please choose a location to continue."
+        },
+        successTitle: "Booking confirmed",
+        successMessage: "Thank you — your booking is confirmed.",
+        bookingId: "Booking ID: {{id}}",
+        serviceLocationLabel: "Service location:",
         selectType: "Choose a cleaning type",
         types: {
           standard: "Home cleaning",
           office: "Office cleaning",
           apartmentHotel: "Apartment / Hotel"
+        },
+        flow: {
+          inquiry: "Send Inquiry",
+          calculator: "Price Calculator"
         },
         subcategories: {
           title: "Choose subcategory",
@@ -150,6 +236,11 @@ const resources = {
           standard: "Regular maintenance clean for homes; surfaces, bathrooms, and floors.",
           office: "Professional office cleaning tailored to workspaces and common areas.",
           apartmentHotel: "Detailed clean for apartments and hotel rooms between stays."
+        },
+        calendar: {
+          loading: "Loading availability…",
+          errorFetchDates: "Failed to fetch dates.",
+          errorFetchSlots: "Failed to fetch available times."
         },
         durationLabel: "Estimated hours",
         dateLabel: "Date",
@@ -217,6 +308,7 @@ const resources = {
         confirmBtn: "Confirm Booking",
         confirmedTitle: "Booking confirmed ✅",
         confirmedMsg: "A confirmation email has been sent to {{email}}.",
+        bookingId: "Booking ID: {{id}}",
         errorPrefix: ""
       }
     }
@@ -249,7 +341,7 @@ const resources = {
         phoneLabel: "Telefon",
         phoneValue: "+43 (0)676 6300167",
         emailLabel: "E-Mail",
-        emailValue: "info@putzelf.com",
+        emailValue: "office@putzelf.com",
         membership: "Mitglied der Wirtschaftskammer Wien, Fachgruppe Gewerbliche Dienstleister"
       },
       profile: {
@@ -304,6 +396,78 @@ const resources = {
         officeTitle: "Büroreinigung",
         officeDesc: "Ein sauberes Büro bedeutet einen produktiven Tag. Wir halten Ihre Arbeitsräume sauber, hygienisch und professionell.",
         officeCta: "Büroreinigung buchen"
+      ,
+      // Neue strukturierte Services (privat + gewerblich)
+      private: {
+        maintenance: {
+          title: "Unterhaltsreinigung",
+          description: "Regelmäßige Reinigung für Privathaushalte, abgestimmt auf Ihre Abläufe.",
+          features: ["Regelmäßige Raumreinigung", "Reinigung von Küche und Bad", "Flexible Zeitfenster"]
+        },
+        deep: {
+          title: "Grundreinigung",
+          description: "Tiefgehende Reinigung für schwer zugängliche Bereiche und hartnäckige Verschmutzungen.",
+          features: ["Grundreinigung von Böden und Oberflächen", "Entkalkung und Sanitärpflege", "Intensive Küchenreinigung"]
+        },
+        residential: {
+          title: "Wohnreinigung",
+          description: "Sorgfältige Reinigung von Wohnungen und Einfamilienhäusern.",
+          features: ["Staubwischen und Saugen", "Oberflächenpflege", "Fensterreinigung (optional)"]
+        },
+        construction: {
+          title: "Bauendreinigung / Grobreinigung",
+          description: "Reinigung nach Bau- oder Renovierungsarbeiten, Entfernen von Bauschutt und Feinstaub.",
+          features: ["Bauschutt- und Feinstaubentfernung", "Feinreinigung nach Grobreinigung", "Sichere Entsorgung"]
+        },
+        window: {
+          title: "Glas- & Rahmenreinigung",
+          description: "Reinigung von Fenstern und Rahmen für ein streifenfreies Ergebnis.",
+          features: ["Fenster innen & außen", "Rahmen- und Falzreinigung", "Optionaler Rahmenanstrich-Vorbereitung"]
+        },
+        industrial: {
+          title: "Industriereinigung & Maschinen",
+          description: "Spezialisierte Reinigung für Maschinen und industrielle Bereiche (keine Wartung).",
+          features: ["Maschinenoberflächenreinigung", "Sichere Reinigungsverfahren", "Entfernung von Produktionsrückständen"]
+        }
+      },
+      business: {
+        maintenance: {
+          title: "Unterhaltsreinigung",
+          description: "Regelmäßige Reinigungspläne für Unternehmen und Büros.",
+          features: ["Reinigung von Arbeitsplätzen", "Sanitär- und Küchenpflege", "Flexible Zeitfenster"]
+        },
+        deep: {
+          title: "Grundreinigung",
+          description: "Umfassende Grundreinigung für Geschäftsräume und gewerbliche Flächen.",
+          features: ["Intensive Bodenreinigung", "Teppich- und Polsterpflege", "Desinfektion von Kontaktflächen"]
+        },
+        staircase: {
+          title: "Treppenhausreinigung",
+          description: "Regelmäßige Pflege und Reinigung von Treppenhäusern und Gemeinschaftsbereichen.",
+          features: ["Treppenstufenreinigung", "Geländerpflege", "Müllraum- und Kellerreinigung"]
+        },
+        construction: {
+          title: "Bauendreinigung / Grobreinigung",
+          description: "Reinigung nach Bauarbeiten in gewerblichen Objekten.",
+          features: ["Grobreinigung", "Feinreinigung nach Bau", "Entfernung von Baumaterialien"]
+        },
+        window: {
+          title: "Glas- & Rahmenreinigung",
+          description: "Professionelle Glas- und Rahmenreinigung für Geschäftsfassaden und Innenbereiche.",
+          features: ["Fassadenfenster", "Innen- und Außenreinigung", "Sicherheits- und Hebebühnenarbeiten (falls erforderlich)"]
+        },
+        industrial: {
+          title: "Industriereinigung & Maschinen",
+          description: "Reinigung in industriellen Umgebungen, abgestimmt auf Sicherheitsanforderungen.",
+          features: ["Maschinenreinigung", "Produktionslinienreinigung", "Sichere Entsorgung von Rückständen"]
+        }
+      },
+      whatWeOffer: "Was wir anbieten",
+      benefitsTitle: "Vorteile",
+      benefit1: "Geprüfte Reinigungskräfte",
+      benefit2: "Flexible Terminplanung",
+      benefit3: "Transparente Preise",
+      cta: "Angebot anfordern"
       },
       alt: {
         logo: "putzELF Logo",
@@ -334,7 +498,7 @@ const resources = {
             serviceContract: "Servicevertrag",
             cleaningStandards: "Reinigungsstandards",
             priceList: "Preisliste",
-            calculator: "Preiskalkulator"
+            priceCalculator: "Preiskalkulator"
           }
         },
         connect: {
@@ -354,7 +518,19 @@ const resources = {
       },
       home: {
         title: "Reinigung buchen",
+        locationModal: {
+          title: "Wo möchten Sie die Reinigung buchen?",
+          prompt: "Wählen Sie die Stadt für Ihre Dienstleistung",
+          vienna: "Wien",
+          graz: "Graz",
+          validation: "Bitte wählen Sie einen Ort, um fortzufahren."
+        },
+        successTitle: "Buchung bestätigt",
+        successMessage: "Vielen Dank – Ihre Buchung wurde bestätigt.",
+        bookingId: "Buchungs-ID: {{id}}",
+        serviceLocationLabel: "Servicestandort:",
         selectType: "Reinigungsart auswählen",
+        contactTitle: "Ihre Kontaktdaten",
         types: {
           standard: "Hausreinigung",
           office: "Büroreinigung",
@@ -365,11 +541,35 @@ const resources = {
           intensive: "Intensiv",
           window: "Fenster"
         },
+        flow: {
+          inquiry: "Anfrage senden",
+          calculator: "Preiskalkulator",
+          calculatorPrompt: "Möchten Sie zuerst einen ungefähren Preis sehen?",
+          inquiryDescription: "Füllen Sie das untenstehende Formular aus und wir melden uns mit einem individuellen Angebot bei Ihnen."
+        },
+        contact: {
+          name: "Vollständiger Name",
+          phone: "Telefonnummer",
+          email: "E-Mail-Adresse",
+          address: "Straße,Hausnummer,Türnummer"
+        },
         descriptions: {
           standard: "Regelmäßige Unterhaltsreinigung: Oberflächen, Bäder, Küche, Böden etc",
           office: "Professionelle Büroreinigung für Arbeitsplätze, Küche, Gemeinschaftsflächen etc",
           apartmentHotel: "Gründliche Reinigung nach Check-out und der öffentlichen Bereiche"
         },
+        slots: {
+          enterAddress: "Geben Sie Ihre Adresse ein, um verfügbare Tage anzuzeigen.",
+          chooseDate: "Wählen Sie ein Datum, um verfügbare Zeiten anzuzeigen.",
+          loading: "Verfügbare Zeiten werden geladen…",
+          none: "Für diesen Tag sind keine Zeiten verfügbar. Bitte wählen Sie ein anderes Datum."
+        },
+        calendar: {
+          loading: "Verfügbarkeit wird geladen…",
+          errorFetchDates: "Fehler beim Laden der verfügbaren Tage.",
+          errorFetchSlots: "Fehler beim Laden der verfügbaren Zeiten."
+        },
+        
         durationLabel: "Geschätzte Arbeitszeit",
         dateLabel: "Datum",
         timeLabel: "Uhrzeit",
@@ -419,23 +619,33 @@ const resources = {
         duration: "Dauer",
         durationUnit: "Stunden",
         price: "Preis",
+        notesLabel: "Anmerkungen",
         enterDetails: "Daten eingeben und bestätigen",
         placeholders: {
           name: "Vollständiger Name",
           email: "E-Mail",
           address: "Straße & Hausnummer & Türnummer",
-          phone: "Telefon"
+          phone: "Telefon",
+          notes: "Zusätzliche Anmerkungen oder Wünsche",
+          bookingAddress: "Ihre Adresse"  
         },
         errors: {
           invalidEmail: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
-          invalidPhone: "Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein."
+          invalidPhone: "Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein.",
+          requiredName: "Name ist erforderlich",
+          requiredAddress: "Adresse ist erforderlich",
+          requiredPhone: "Telefonnummer ist erforderlich",
+          requiredEmail: "E-Mail-Adresse ist erforderlich",
+          requiredGdpr: "Bitte stimmen Sie der DSGVO-Einwilligung zu",
         },
         gdprPrefix: "Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäß ",
+        gdprText: "Ich stimme zu, dass meine Daten für die Buchung verarbeitet und ich bezüglich dieser Buchung kontaktiert werde.",
         gdprLink: "Datenschutzerklärung (DSGVO)",
         confirming: "Wird bestätigt...",
         confirmBtn: "Buchung anfragen",
         confirmedTitle: "Buchung bestätigt ✅",
         confirmedMsg: "Eine Bestätigungs-E-Mail wurde an {{email}} gesendet.",
+        bookingId: "Buchungs-ID: {{id}}",
         errorPrefix: ""
       }
     }

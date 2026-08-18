@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Calculator, Phone, Mail, Instagram, Facebook, Linkedin } from "lucide-react";
 import { trackEvent } from "../lib/analytics";
 import logo from "../assets/logo.png";
 import Seo from "../components/Seo";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
 const cleaningTypes = [
   { key: "standard", emoji: "✨" },
@@ -35,6 +37,8 @@ const getHourlyRate = (typeKey, subcategories) => {
 
 export default function PriceCalculator() {
   const { t, i18n } = useTranslation();
+  const location = useLocation();
+  const locale = getLocaleFromPathname(location.pathname);
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
@@ -112,9 +116,12 @@ export default function PriceCalculator() {
   return (
     <div className="flex min-h-screen flex-col bg-[#f9fafa]">
       <Seo
-        title="Preisrechner Reinigung Wien"
-        description="Preisrechner für Reinigung in Wien: Kosten (brutto) in wenigen Sekunden berechnen."
-        path="/calculator"
+        title={locale === "de" ? "Preisrechner Reinigung Wien" : "Cleaning Price Calculator Vienna"}
+        description={locale === "de" ? "Preisrechner für Reinigung in Wien: Kosten (brutto) in wenigen Sekunden berechnen." : "Cleaning price calculator for Vienna: estimate the gross cost in seconds."}
+        path={getLocalizedPath(locale, "calculator")}
+        lang={locale}
+        alternates={getLocalizedAlternates(location.pathname)}
+        xDefaultPath={getLocalizedPath("de", "calculator")}
       />
       <nav className="bg-white shadow-md fixed inset-x-0 top-0 z-50">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 md:px-6 md:py-4">
@@ -153,41 +160,18 @@ export default function PriceCalculator() {
 
           <div className="flex shrink-0 items-center gap-2 md:gap-3">
             <Link
-              to="/profile"
+              to={getLocalizedPath(locale, "booking")}
               className="hidden whitespace-nowrap rounded-lg bg-[#0097b2] px-4 py-2 text-sm font-semibold text-white shadow-md md:block md:px-6 md:py-3 md:text-lg"
               onClick={() => trackEvent("Navbar_Book_Click", { source: "navbar_calculator_desktop" })}
             >
               {t("nav.bookNow")}
             </Link>
-            <button
-              onClick={() => i18n.changeLanguage("en")}
-              title="English"
-              aria-label="Switch to English"
-              className={`flex h-8 w-8 items-center justify-center rounded-full border text-sm hover:bg-gray-50 md:h-9 md:w-9 md:text-base ${
-                i18n.language?.startsWith("en") ? "ring-2 ring-[#0097b2]" : ""
-              }`}
-            >
-              <span role="img" aria-label="English flag">
-                🇬🇧
-              </span>
-            </button>
-            <button
-              onClick={() => i18n.changeLanguage("de")}
-              title="Deutsch"
-              aria-label="Auf Deutsch umschalten"
-              className={`flex h-8 w-8 items-center justify-center rounded-full border text-sm hover:bg-gray-50 md:h-9 md:w-9 md:text-base ${
-                i18n.language?.startsWith("de") ? "ring-2 ring-[#0097b2]" : ""
-              }`}
-            >
-              <span role="img" aria-label="German flag">
-                🇩🇪
-              </span>
-            </button>
+            <LanguageSwitcher compact />
           </div>
 
           <div className="mt-2 flex w-full justify-center md:hidden">
             <Link
-              to="/profile"
+              to={getLocalizedPath(locale, "booking")}
               className="whitespace-nowrap rounded-lg bg-[#0097b2] px-4 py-2 text-sm font-semibold text-white shadow-md"
               onClick={() => trackEvent("Navbar_Book_Click", { source: "navbar_calculator_mobile" })}
             >
@@ -374,9 +358,13 @@ export default function PriceCalculator() {
               </ul>
 
               <Link
-                to="/profile"
+                to={getLocalizedPath(locale, "booking")}
                 className="block rounded-xl bg-[#5be3e3] py-3 text-center font-semibold text-black transition hover:bg-[#48c9c9]"
-                onClick={() => trackEvent("Calculator_Book_Now_Click")}
+                onClick={() => {
+                  try {
+                    trackEvent("Calculator_Book_Now_Click");
+                  } catch (_) {}
+                }}
               >
                 {t("calculator.cta")}
               </Link>
@@ -469,7 +457,7 @@ export default function PriceCalculator() {
                 </a>
               </li>
               <li>
-                <Link to="/calculator" className="transition-colors hover:text-gray-900">
+                <Link to={getLocalizedPath(locale, "calculator")} className="transition-colors hover:text-gray-900">
                   {t("footer.customers.links.calculator")}
                 </Link>
               </li>
@@ -529,7 +517,7 @@ export default function PriceCalculator() {
                 </li>
               </ul>
 
-              <Link to="/imprint" className="transition-colors hover:text-gray-900">
+              <Link to={getLocalizedPath(locale, "imprint")} className="transition-colors hover:text-gray-900">
                 {t("footer.connect.links.imprint")}
               </Link>
             </div>

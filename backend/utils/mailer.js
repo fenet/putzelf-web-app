@@ -155,7 +155,8 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
           Nachfolgend die Details.
         </p>
         <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Ort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.address || booking.location || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📌 Standort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.location || "vienna").toLowerCase() === "graz" ? "Graz" : "Wien"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.address || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📅 Datum</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatGermanDate(booking.date)}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏰ Uhrzeit</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🧹 Reinigungsart</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.typeOfCleaning || "N/A"}</td></tr>
@@ -201,7 +202,6 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
     const info = await transporter.sendMail({
       from: `"PutzELF" <${SMTP_FROM}>`,
       to: Array.isArray(to) ? to.join(", ") : to,
-      bcc: SMTP_BCC,
       subject: "Buchungsbestätigung – PutzELF",
       text: "Ihre Buchung wurde bestätigt. Bitte prüfen Sie die Details in der E-Mail.",
       html: htmlContent,
@@ -268,7 +268,6 @@ export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
   const info = await transporter.sendMail({
     from: `"PutzELF" <${SMTP_FROM}>`,
     to: Array.isArray(to) ? to.join(", ") : to,
-    bcc: SMTP_BCC,
     subject: "Ihre Anfrage bei PutzELF",
     text: `Vielen Dank für Ihre Anfrage. Name: ${booking?.name || "N/A"}, E-Mail: ${booking?.email || "N/A"}, Telefon: ${booking?.phone || "N/A"}`,
     html: htmlContent,
