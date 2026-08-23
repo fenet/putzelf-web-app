@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { MIN_HOURS, WINDOW_PRICE_NET, INTENSIVE_HOURLY_NET } from "../config/pricing";
 import { trackEvent } from "../lib/analytics";
 import { apiFetch, parseJsonSafe } from "../lib/api";
 import { useTranslation } from "react-i18next";
@@ -23,7 +24,8 @@ export default function Home() {
     // booking fields
     date: "",
     time: "",
-    duration: 3,
+    duration: MIN_HOURS,
+    windows: 0,
     typeOfCleaning: "Standard Cleaning",
     subcategories: [],
     renegotiate: false,
@@ -139,6 +141,7 @@ export default function Home() {
   const [gdprConsent, setGdprConsent] = useState(false);
   const [notes, setNotes] = useState("");
   const [successBooking, setSuccessBooking] = useState(null);
+  const [showWindowModal, setShowWindowModal] = useState(false);
 
   const [availableSlots, setAvailableSlots] = useState([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
@@ -247,14 +250,13 @@ export default function Home() {
     const subs = Array.isArray(subcategories) ? subcategories : [];
 
     if (!isEligible || subs.length === 0) return 30;
-    if (subs.includes("intensive") && subs.includes("window")) return 50;
-    if (subs.includes("window")) return 44.9;
-    if (subs.includes("intensive")) return 43.2;
+    if (subs.includes("intensive")) return INTENSIVE_HOURLY_NET;
+    // windows are charged per-window, not by hourly rate
     return 30;
   };
 
   const [calculatedPrice, setCalculatedPrice] = useState(
-    getHourlyRate(form.typeOfCleaning, []) * 3
+    getHourlyRate(form.typeOfCleaning, []) * MIN_HOURS
   );
 
   const cleaningTypes = [
@@ -290,10 +292,11 @@ export default function Home() {
 
     if (name === "duration") {
       let hours = Number(updatedValue) || 0;
-      if (hours < 3) hours = 3;
+      if (hours < MIN_HOURS) hours = MIN_HOURS;
       updatedValue = hours;
       const rate = getHourlyRate(form.typeOfCleaning, form.subcategories);
-      setCalculatedPrice(hours * rate);
+      const windowsNet = Number(form.windows || 0) * WINDOW_PRICE_NET;
+      setCalculatedPrice(hours * rate + windowsNet);
     }
 
     setForm((prev) => {
@@ -367,9 +370,10 @@ export default function Home() {
 
   const decrementDuration = () => {
     setForm((prev) => {
-      const next = Math.max(3, Number(prev.duration || 0) - 1);
+      const next = Math.max(MIN_HOURS, Number(prev.duration || 0) - 1);
       const rate = getHourlyRate(prev.typeOfCleaning, prev.subcategories);
-      setCalculatedPrice(next * rate);
+      const windowsNet = Number(prev.windows || 0) * WINDOW_PRICE_NET;
+      setCalculatedPrice(next * rate + windowsNet);
       return { ...prev, duration: next };
     });
   };
@@ -378,7 +382,8 @@ export default function Home() {
     setForm((prev) => {
       const next = Number(prev.duration || 0) + 1;
       const rate = getHourlyRate(prev.typeOfCleaning, prev.subcategories);
-      setCalculatedPrice(next * rate);
+      const windowsNet = Number(prev.windows || 0) * WINDOW_PRICE_NET;
+      setCalculatedPrice(next * rate + windowsNet);
       return { ...prev, duration: next };
     });
   };
@@ -418,7 +423,16 @@ export default function Home() {
         ? current.filter((k) => k !== subKey)
         : [...current, subKey];
       const rate = getHourlyRate(prev.typeOfCleaning, nextSubs);
-      setCalculatedPrice(prev.duration * rate);
+      const windowsNet = Number(prev.windows || 0) * WINDOW_PRICE_NET;
+      // if enabling window, ensure at least 1
+      if (!exists && subKey === "window") {
+        const w = prev.windows && prev.windows > 0 ? prev.windows : 1;
+        setShowWindowModal(true);
+        setCalculatedPrice(prev.duration * rate + w * WINDOW_PRICE_NET);
+        return { ...prev, subcategories: nextSubs, windows: w };
+      }
+
+      setCalculatedPrice(prev.duration * rate + windowsNet);
       return { ...prev, subcategories: nextSubs };
     });
     try {
@@ -518,6 +532,29 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center py-1 px-4">
+      {showWindowModal ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="mx-4 max-w-lg rounded-lg bg-white p-6 shadow-lg">
+            <h3 className="mb-3 text-lg font-semibold">{t("windowModal.title", { defaultValue: "How many windows would you like cleaned?" })}</h3>
+            <div className="flex items-center gap-3">
+              <input
+                type="number"
+                min={1}
+                value={form.windows || 1}
+                onChange={(e) => setForm((prev) => ({ ...prev, windows: Math.max(1, Number(e.target.value) || 1) }))}
+                className="w-24 rounded-md border px-2 py-1"
+              />
+              <div className="ml-auto flex gap-2">
+                <button className="rounded bg-gray-100 px-3 py-1" onClick={() => {
+                  setForm((prev) => ({ ...prev, subcategories: (prev.subcategories || []).filter(s => s !== 'window'), windows: 0 }));
+                  setShowWindowModal(false);
+                }}>{t("common.cancel", { defaultValue: "Cancel" })}</button>
+                <button className="rounded bg-[#0097b2] px-3 py-1 text-white" onClick={() => setShowWindowModal(false)}>{t("common.ok", { defaultValue: "OK" })}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
       <Seo
         title={i18n.language?.startsWith("de") ? "Reinigung buchen" : "Booking"}
         description={
@@ -780,7 +817,7 @@ export default function Home() {
                           selected ? "text-black" : "text-gray-800"
                         }`}
                       >
-                        {t(`home.subcategories.${key}`)}
+                        {t(`home.subcategories.${key}`)}{key === 'window' && form.windows > 0 ? ` (${form.windows})` : ''}
                       </span>
                     </button>
                   );
@@ -794,14 +831,14 @@ export default function Home() {
               htmlFor="duration"
               className="block text-sm font-medium mb-1"
             >
-              {t("home.durationLabel") || "Hours (min 3)"}
+              {t("home.durationLabel") || "Hours (min 2)"}
             </label>
             <div className="flex items-stretch">
               <button
                 type="button"
                 onClick={decrementDuration}
                 aria-label="Decrease hours"
-                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 3 Stunden." })}
+                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 2 Stunden." })}
                 className="px-3 rounded-l-lg border bg-gray-50 hover:bg-gray-100"
               >
                 −
@@ -812,20 +849,20 @@ export default function Home() {
                 type="number"
                 inputMode="numeric"
                 step="1"
-                min="3"
-                placeholder={t("home.durationPlaceholder") || "3+"}
+                min="2"
+                placeholder={t("home.durationPlaceholder") || "2+"}
                 value={form.duration}
                 onChange={handleChange}
                 onKeyDown={handleDurationKeyDown}
                 aria-describedby="duration-help"
-                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 3 Stunden." })}
+                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 2 Stunden." })}
                 className="w-full p-3 border-t border-b text-center"
               />
               <button
                 type="button"
                 onClick={incrementDuration}
                 aria-label="Increase hours"
-                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 3 Stunden." })}
+                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 2 Stunden." })}
                 className="px-3 rounded-r-lg border bg-gray-50 hover:bg-gray-100"
               >
                 +
@@ -900,7 +937,7 @@ export default function Home() {
                           <button
                             type="button"
                             onClick={goPrev}
-                            className="px-3 py-2 rounded-lg border bg-gray-50 hover:bg-gray-100 text-sm font-semibold"
+                            className="px-3 py-2 rounded-lg border bg-gray-50 hover:bg-gray-100 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0097b2] focus-visible:ring-offset-2"
                             aria-label={t("home.calendar.prev", { defaultValue: "Previous month" })}
                           >
                             ←
@@ -909,14 +946,30 @@ export default function Home() {
                           <button
                             type="button"
                             onClick={goNext}
-                            className="px-3 py-2 rounded-lg border bg-gray-50 hover:bg-gray-100 text-sm font-semibold"
+                            className="px-3 py-2 rounded-lg border bg-gray-50 hover:bg-gray-100 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0097b2] focus-visible:ring-offset-2"
                             aria-label={t("home.calendar.next", { defaultValue: "Next month" })}
                           >
                             →
                           </button>
                         </div>
 
-                        
+                        <div className="sr-only" aria-live="polite" aria-atomic="true">
+                          {form.date
+                            ? (() => {
+                                const selectedDate = new Date(`${form.date}T12:00:00`);
+                                const selectedLabel = new Intl.DateTimeFormat(locale, {
+                                  weekday: "long",
+                                  month: "long",
+                                  day: "numeric",
+                                  year: "numeric",
+                                }).format(selectedDate);
+                                const selectedState = monthAvailableDays.has(form.date)
+                                  ? t("home.calendar.selectedAvailable", { defaultValue: "Selected and available" })
+                                  : t("home.calendar.selected", { defaultValue: "Selected" });
+                                return `${selectedLabel} — ${selectedState}`;
+                              })()
+                            : t("home.calendar.dateHint", { defaultValue: "Choose a date from the calendar." })}
+                        </div>
 
                         <div className="grid grid-cols-7 gap-2">
                           {dow.map((label) => (
@@ -933,6 +986,22 @@ export default function Home() {
                             const isAvailable = monthAvailableDays.has(ymd);
                             const isSelected = form.date === ymd;
                             const disabled = isPast || !isAvailable;
+                            const shortDate = new Intl.DateTimeFormat(locale, {
+                              day: "numeric",
+                              month: "short",
+                            }).format(new Date(`${ymd}T12:00:00`));
+                            const fullDate = new Intl.DateTimeFormat(locale, {
+                              weekday: "long",
+                              month: "long",
+                              day: "numeric",
+                              year: "numeric",
+                            }).format(new Date(`${ymd}T12:00:00`));
+                            const statusText = isSelected
+                              ? t("home.calendar.selected", { defaultValue: "Selected" })
+                              : disabled
+                                ? t("home.calendar.unavailable", { defaultValue: "Unavailable" })
+                                : t("home.calendar.available", { defaultValue: "Available" });
+                            const ariaText = `${fullDate} — ${statusText}`;
 
                             return (
                               <button
@@ -946,21 +1015,29 @@ export default function Home() {
                                     time: "",
                                   }))
                                 }
+                                aria-label={ariaText}
                                 aria-pressed={isSelected}
-                                className={`h-10 rounded-lg border text-sm font-semibold transition text-center ${
+                                className={`h-12 rounded-lg border text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0097b2] focus-visible:ring-offset-2 ${
                                   disabled
                                     ? "bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed"
                                     : isSelected
                                       ? "bg-[#5be3e3] border-[#0097b2] text-black"
                                       : "bg-white hover:bg-gray-50 border-gray-200 text-gray-800"
                                 }`}
-                                title={
-                                  disabled
-                                    ? t("home.calendar.unavailable", { defaultValue: "Unavailable" })
-                                    : t("home.calendar.available", { defaultValue: "Available" })
-                                }
+                                title={ariaText}
                               >
-                                {dayNumber}
+                                <span className="flex h-full flex-col items-center justify-center leading-none">
+                                  <span className="text-sm font-semibold">{dayNumber}</span>
+                                  <span className={`mt-1 text-[10px] font-medium ${
+                                    disabled
+                                      ? "text-gray-400"
+                                      : isSelected
+                                        ? "text-black"
+                                        : "text-emerald-700"
+                                  }`}>
+                                    {shortDate}
+                                  </span>
+                                </span>
                               </button>
                             );
                           })}

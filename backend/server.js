@@ -5,7 +5,8 @@ import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { sendBookingConfirmation, sendQuoteRequestConfirmation } from "./utils/mailer.js";
+import { sendBookingConfirmation, sendContactRequest, sendQuoteRequestConfirmation } from "./utils/mailer.js";
+import { MIN_HOURS, WINDOW_PRICE_NET, INTENSIVE_HOURLY_NET, TAX_RATE } from "./config.js";
 import { sendMetaEvent, sendMetaLeadEvent } from "./utils/metaConversions.js";
 
 dotenv.config();
@@ -91,7 +92,10 @@ const requireRole = (...roles) => (req, res, next) => {
   next();
 };
 
-function getHourlyRate(typeOfCleaning) {
+function getHourlyRate(typeOfCleaning, subcategories) {
+  // simple mapping: base net hourly rate is 30. If intensive is requested, use intensive net rate.
+  const subs = Array.isArray(subcategories) ? subcategories : [];
+  if (subs.includes("intensive")) return INTENSIVE_HOURLY_NET;
   return 30;
 }
 
@@ -106,10 +110,10 @@ app.get("/api/availability/slots", async (req, res) => {
       return res.status(400).json({ error: "day and duration_hours are required" });
     }
 
-    const durationHours = Math.max(1, Number(durationHoursRaw) || 1);
+    const durationHours = Math.max(MIN_HOURS, Number(durationHoursRaw) || MIN_HOURS);
 
-    // Generate hourly slots 07:00 - 17:00 inclusive, but ensure slot start + duration <= 17:00
-    const closingHour = 17;
+    // Generate hourly slots 07:00 - 19:00 inclusive, but ensure slot start + duration <= 17:00
+    const closingHour = 19;
     const slotLength = Math.max(1, Math.ceil(durationHours));
     const baseSlots = [];
     for (let h = 7; h <= 17; h += 1) {
@@ -148,7 +152,7 @@ app.get("/api/availability/month", async (req, res) => {
       return res.status(400).json({ error: "Invalid month" });
     }
 
-    const durationHours = Math.max(1, Number(durationHoursRaw) || 1);
+    const durationHours = Math.max(MIN_HOURS, Number(durationHoursRaw) || MIN_HOURS);
 
     const daysInMonth = new Date(year, mon, 0).getDate();
     const availableDays = [];
@@ -238,6 +242,42 @@ app.post("/api/auth/logout", (_req, res) => {
   res.json({ message: "Logged out" });
 });
 
+app.post("/api/contact", async (req, res) => {
+  try {
+    const { name, email, phone, location, subject, message } = req.body || {};
+    const normalizedLocation = String(location || "vienna").trim().toLowerCase();
+
+    if (!name || !email || !phone || !subject || !message) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email))) {
+      return res.status(400).json({ error: "Invalid email address" });
+    }
+
+    if (!['vienna', 'graz'].includes(normalizedLocation)) {
+      return res.status(400).json({ error: "Invalid location" });
+    }
+
+    const contactRequest = {
+      name: String(name).trim(),
+      email: String(email).trim(),
+      phone: String(phone).trim(),
+      location: normalizedLocation,
+      subject: String(subject).trim(),
+      message: String(message).trim(),
+    };
+
+    const recipient = normalizedLocation === "graz" ? "office.stmk@putzelf.com" : "office@putzelf.com";
+    await sendContactRequest(contactRequest, recipient);
+
+    return res.status(201).json({ ok: true, recipient });
+  } catch (err) {
+    console.error("Contact form error:", err && (err.stack || err.message || err));
+    return res.status(500).json({ error: "Failed to send contact request" });
+  }
+});
+
 app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
   try {
     const {
@@ -260,8 +300,14 @@ app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    const hourlyRate = getHourlyRate(typeOfCleaning);
-    const price = Number(duration) * hourlyRate;
+    const subcategories = Array.isArray(req.body.subcategories) ? req.body.subcategories : [];
+    const windowsCount = Number(req.body.windows || 0) || 0;
+    const hourlyRate = getHourlyRate(typeOfCleaning, subcategories);
+
+    const windowsNet = windowsCount * WINDOW_PRICE_NET;
+    const priceNet = Number(duration) * hourlyRate + windowsNet;
+    const taxAmount = priceNet * TAX_RATE;
+    const price = priceNet + taxAmount; // store gross price
 
     // Build booking data and attach user relation only when present
     const bookingData = {
@@ -273,6 +319,7 @@ app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
       preferredWorkerCode: preferredWorker ? String(preferredWorker) : null,
       renegotiate: !!renegotiate,
       price,
+      // windows and subcategories are not persisted in DB currently; include in email payload below
       name: name ? String(name) : null,
       email: email ? String(email) : null,
       address: address ? String(address) : null,
@@ -294,7 +341,12 @@ app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
         (typeOfCleaning || "").toLowerCase() === "angebot anfragen";
 
     if (gdprConsent === true) {
-        const emailBooking = { ...booking, notes: typeof notes === "string" ? notes : "" };
+        const emailBooking = {
+          ...booking,
+          notes: typeof notes === "string" ? notes : "",
+          windows: windowsCount,
+          subcategories,
+        };
         // determine office recipient based on booking.location (server-side source of truth)
         const officeEmail = (booking.location || "vienna").toLowerCase() === "graz" ? "office.stmk@putzelf.com" : "office@putzelf.com";
         if (isQuoteRequest) {

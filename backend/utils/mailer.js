@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import dns from "dns";
+import { WINDOW_PRICE_NET } from "../config.js";
 
 dotenv.config();
 
@@ -169,6 +170,7 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏳ Dauer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} Stunden</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📧 E-Mail</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerEmail}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🪟 Fenster</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.windows ? booking.windows : '—'}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📝 Anmerkungen</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.notes || "").toString().trim() ? (booking.notes || "").toString().trim().replace(/\n/g, "<br />") : "Keine"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🔄 Verlängerung möglich</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatYesNo(booking.renegotiate)}</td></tr>
         </table>
@@ -178,6 +180,9 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
         <p style="font-size: 15px; margin-top: 20px;">
           Mit freundlichen Grüßen,<br />
           <strong>PutzELF Team</strong>
+        </p>
+        <p style="font-size: 14px; margin-top: 20px; line-height: 1.5; color: #555;">
+          Bitte beachten Sie: Online-Buchungen werden spätestens am nächsten Werktag bearbeitet. Für eine sofortige Bestätigung kontaktieren Sie uns am besten telefonisch.
         </p>
       </div>
       <div style="background: #f1f1f1; padding: 20px; text-align: center; font-size: 13px; color: #666;">
@@ -233,6 +238,60 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
  * sendQuoteRequestConfirmation
  * For lead flow users (Angebot anfragen) who are not booking a service yet.
  */
+export async function sendContactRequest(formData) {
+  const normalized = formData || {};
+  const locationKey = String(normalized.location || "vienna").trim().toLowerCase();
+  const selectedLocation = locationKey === "graz" ? "Graz" : "Wien";
+  const recipient = locationKey === "graz" ? "office.stmk@putzelf.com" : "office@putzelf.com";
+
+  const htmlContent = `
+  <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; color: #333;">
+    <div style="max-width: 700px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+      <div style="background: linear-gradient(90deg, #5be3e3, #0097b2); padding: 20px; text-align: center; color: #fff;">
+        <h1 style="margin: 0; font-size: 24px;">Contact Form Request</h1>
+      </div>
+      <div style="padding: 20px;">
+        <p style="font-size: 16px; line-height: 1.5;">
+          A new contact request has been submitted through the PutzELF website.
+        </p>
+        <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Name</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${normalized.name || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Email</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${normalized.email || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Phone</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${normalized.phone || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Location</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${selectedLocation}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Subject</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${normalized.subject || "N/A"}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee; vertical-align: top;"><strong>Message</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(normalized.message || "").toString().trim().replace(/\n/g, "<br />") || "—"}</td></tr>
+        </table>
+        <p style="margin-top: 20px; font-size: 15px; color: #555;">
+          This message was routed to the ${selectedLocation} team based on the selected form location.
+        </p>
+      </div>
+    </div>
+  </div>
+  `;
+
+  const transporter = await getTransporter();
+  const info = await transporter.sendMail({
+    from: `"PutzELF Contact" <${SMTP_FROM}>`,
+    to: recipient,
+    replyTo: normalized.email || SMTP_FROM,
+    subject: `Contact Form Request – ${normalized.subject || "General Inquiry"}`,
+    text: [
+      "Contact Form Request",
+      `Name: ${normalized.name || "N/A"}`,
+      `Email: ${normalized.email || "N/A"}`,
+      `Phone: ${normalized.phone || "N/A"}`,
+      `Location: ${selectedLocation}`,
+      `Subject: ${normalized.subject || "N/A"}`,
+      `Message: ${normalized.message || "N/A"}`
+    ].join("\n"),
+    html: htmlContent,
+  });
+
+  console.log(`✅ Contact request email sent to ${recipient}: messageId=${info.messageId}`);
+  return info;
+}
+
 export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
   let to = toOrBooking;
   let booking = maybeBooking;
@@ -259,9 +318,13 @@ export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
           vielen Dank für Ihre Anfrage. Wir melden uns so schnell wie möglich bei Ihnen.
         </p>
         <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>👤 Name</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.name || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📧 E-Mail</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.email || "N/A"}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.phone || "N/A"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>👤 Name</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.name || "N/A"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏢 Firma</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.company || "—"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Standort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking?.location || 'vienna').toLowerCase() === 'graz' ? 'Graz' : 'Wien'}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏠 Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.address || "—"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📧 E-Mail</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.email || "N/A"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.phone || "N/A"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>💬 Nachricht</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking?.message || "").toString().trim().replace(/\n/g, "<br />") || "—"}</td></tr>
         </table>
         <p style="margin-top: 20px; font-size: 15px;">
           Bei Rückfragen antworten Sie einfach auf diese E-Mail.
@@ -285,7 +348,7 @@ export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
     from: `"PutzELF" <${SMTP_FROM}>`,
     to: Array.isArray(to) ? to.join(", ") : to,
     subject: "Ihre Anfrage bei PutzELF",
-    text: `Vielen Dank für Ihre Anfrage. Name: ${booking?.name || "N/A"}, E-Mail: ${booking?.email || "N/A"}, Telefon: ${booking?.phone || "N/A"}`,
+    text: `Vielen Dank für Ihre Anfrage. Name: ${booking?.name || "N/A"}, Firma: ${booking?.company || "—"}, Standort: ${(booking?.location || 'vienna')}, Adresse: ${booking?.address || "—"}, E-Mail: ${booking?.email || "N/A"}, Telefon: ${booking?.phone || "N/A"}, Nachricht: ${booking?.message || "—"}`,
     html: htmlContent,
   });
 

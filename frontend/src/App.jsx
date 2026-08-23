@@ -16,6 +16,7 @@ import OneTimePrivate from "./pages/OneTimePrivate";
 import OneTimeBusiness from "./pages/OneTimeBusiness";
 import PermanentCleaning from "./pages/PermanentCleaning";
 import ServiceGeneric from "./pages/ServiceGeneric";
+import Contact from "./pages/Contact";
 import JobOpening from "./pages/JobOpening";
 import GetPartners from "./pages/GetPartners";
 import Home from "./pages/Home";
@@ -93,6 +94,8 @@ export default function App() {
         <Route path="/services/restaurant-cleaning" element={<LegacyRedirect to="/de/services/restaurantreinigung" />} />
         <Route path="/services/one-time-cleaning" element={<LegacyRedirect to="/de/services/einmalreinigung" />} />
         <Route path="/services/permanent-cleaning" element={<LegacyRedirect to="/de/services/regelmaessige-reinigung" />} />
+        <Route path="/contact" element={<LegacyRedirect to="/de/kontakt" />} />
+        <Route path="/kontakt" element={<LegacyRedirect to="/de/kontakt" />} />
         <Route path="/job-opening" element={<LegacyRedirect to="/de/karriere" />} />
         <Route path="/get-partners" element={<LegacyRedirect to="/de/partner-werden" />} />
         <Route path="/imprint" element={<LegacyRedirect to="/de/impressum" />} />
@@ -131,6 +134,7 @@ export default function App() {
           <Route path="services/glas-rahmenreinigung-gewerbe" element={<ServiceGeneric />} />
           <Route path="services/industriereinigung-maschinen-gewerbe" element={<ServiceGeneric />} />
           <Route path="services/einmalreinigung-gewerbe" element={<OneTimeBusiness />} />
+          <Route path="kontakt" element={<Contact />} />
           <Route path="karriere" element={<JobOpening />} />
           <Route path="partner-werden" element={<GetPartners />} />
           <Route path="impressum" element={<Imprint />} />
@@ -173,6 +177,7 @@ export default function App() {
           <Route path="services/window-cleaning-business" element={<ServiceGeneric />} />
           <Route path="services/industrial-cleaning-business" element={<ServiceGeneric />} />
           <Route path="services/one-time-cleaning-business" element={<OneTimeBusiness />} />
+          <Route path="contact" element={<Contact />} />
           <Route path="job-opening" element={<JobOpening />} />
           <Route path="get-partners" element={<GetPartners />} />
           <Route path="imprint" element={<Imprint />} />

@@ -23,17 +23,23 @@ const premiumSubcategories = [
   { key: "window", emoji: "🪟" },
 ];
 
-const MIN_HOURS = 3;
-const TAX_RATE = 0.2;
+import {
+  MIN_HOURS,
+  TAX_RATE,
+  WINDOW_PRICE_NET,
+  INTENSIVE_HOURLY_NET,
+  INTENSIVE_HOURLY_GROSS,
+} from "../config/pricing";
 
 const getHourlyRate = (typeKey, subcategories) => {
+  // base hourly net rate
   if (typeKey === "standard" || typeKey === "apartmentHotel") {
     const subs = Array.isArray(subcategories) ? subcategories : [];
 
-    if (subs.includes("intensive") && subs.includes("window")) return 50;
-    if (subs.includes("window")) return 44.9;
-    if (subs.includes("intensive")) return 43.2;
+    // Intensive changes the hourly gross to INTENSIVE_HOURLY_GROSS (we store net below)
+    if (subs.includes("intensive")) return INTENSIVE_HOURLY_NET;
 
+    // default hourly net rate
     return 30;
   }
 
@@ -53,8 +59,10 @@ export default function PriceCalculator() {
     duration: MIN_HOURS,
     typeKey: "standard",
     subcategories: [],
+    windows: 0,
     renegotiate: false,
   });
+  const [showWindowModal, setShowWindowModal] = useState(false);
 
   const hourlyRate = useMemo(
     () => getHourlyRate(form.typeKey, form.subcategories),
@@ -66,22 +74,22 @@ export default function PriceCalculator() {
     [form.duration]
   );
 
-  const totalPrice = useMemo(
+  // Window add-on: per-window net price
+  const windowNet = useMemo(() => {
+    const n = Number(form.windows || 0) || 0;
+    return n * WINDOW_PRICE_NET;
+  }, [form.windows]);
+
+  const totalNetFromHours = useMemo(
     () => normalizedDuration * hourlyRate,
     [normalizedDuration, hourlyRate]
   );
 
-  const netPrice = totalPrice;
+  const netPrice = useMemo(() => totalNetFromHours + windowNet, [totalNetFromHours, windowNet]);
 
-  const taxAmount = useMemo(
-    () => netPrice * TAX_RATE,
-    [netPrice]
-  );
+  const taxAmount = useMemo(() => netPrice * TAX_RATE, [netPrice]);
 
-  const grossPrice = useMemo(
-    () => netPrice + taxAmount,
-    [netPrice, taxAmount]
-  );
+  const grossPrice = useMemo(() => netPrice + taxAmount, [netPrice, taxAmount]);
 
   const chooseType = (key) => {
     setForm((prev) => ({
@@ -97,12 +105,19 @@ export default function PriceCalculator() {
         ? prev.subcategories
         : [];
 
-      return {
-        ...prev,
-        subcategories: current.includes(key)
-          ? current.filter((item) => item !== key)
-          : [...current, key],
-      };
+      const next = current.includes(key)
+        ? current.filter((item) => item !== key)
+        : [...current, key];
+
+      // if enabling window, ensure we open modal to ask quantity
+      if (!current.includes("window") && key === "window") {
+        // set default windows to 1 if currently zero
+        const windowsDefault = prev.windows && prev.windows > 0 ? prev.windows : 1;
+        setShowWindowModal(true);
+        return { ...prev, subcategories: next, windows: windowsDefault };
+      }
+
+      return { ...prev, subcategories: next };
     });
   };
 
@@ -173,6 +188,31 @@ export default function PriceCalculator() {
       />
 
       <Navbar />
+
+      {showWindowModal ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="mx-4 max-w-lg rounded-lg bg-white p-6 shadow-lg">
+            <h3 className="mb-3 text-lg font-semibold">{t("windowModal.title", { defaultValue: "How many windows would you like cleaned?" })}</h3>
+            <div className="flex items-center gap-3">
+              <input
+                type="number"
+                min={1}
+                value={form.windows || 1}
+                onChange={(e) => setForm((prev) => ({ ...prev, windows: Math.max(1, Number(e.target.value) || 1) }))}
+                className="w-24 rounded-md border px-2 py-1"
+              />
+              <div className="ml-auto flex gap-2">
+                <button className="rounded bg-gray-100 px-3 py-1" onClick={() => {
+                  // cancel selecting windows: remove subcategory
+                  setForm((prev) => ({ ...prev, subcategories: (prev.subcategories || []).filter(s => s !== 'window'), windows: 0 }));
+                  setShowWindowModal(false);
+                }}>{t("common.cancel", { defaultValue: "Cancel" })}</button>
+                <button className="rounded bg-[#0097b2] px-3 py-1 text-white" onClick={() => setShowWindowModal(false)}>{t("common.ok", { defaultValue: "OK" })}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {/* =========================
           BACK BUTTON
@@ -267,23 +307,37 @@ export default function PriceCalculator() {
                         form.subcategories.includes(key);
 
                       return (
-                        <button
-                          key={key}
-                          type="button"
-                          onClick={() => toggleSubcategory(key)}
-                          className={`flex items-center justify-center rounded-lg border p-3 text-sm font-medium transition ${
-                            selected
-                              ? "border-[#00b3c1] bg-[#5be3e3] text-black shadow"
-                              : "bg-gray-50 hover:shadow"
-                          }`}
-                          aria-pressed={selected}
-                        >
-                          <span className="mr-2 text-xl">
-                            {emoji}
-                          </span>
+                        <div key={key} className="flex flex-col">
+                          <button
+                            type="button"
+                            onClick={() => toggleSubcategory(key)}
+                            className={`flex items-center justify-center rounded-lg border p-3 text-sm font-medium transition ${
+                              selected
+                                ? "border-[#00b3c1] bg-[#5be3e3] text-black shadow"
+                                : "bg-gray-50 hover:shadow"
+                            }`}
+                            aria-pressed={selected}
+                          >
+                            <span className="mr-2 text-xl">{emoji}</span>
+                            {t(`home.subcategories.${key}`)}{key === 'window' && form.windows > 0 ? ` (${form.windows})` : ''}
+                          </button>
 
-                          {t(`home.subcategories.${key}`)}
-                        </button>
+                          {key === "window" && selected ? (
+                            <div className="mt-2 flex items-center gap-2">
+                              <label className="text-sm text-gray-600">{t("home.subcategories.window")}</label>
+                              <input
+                                type="number"
+                                min={1}
+                                value={form.windows || 0}
+                                onChange={(e) => {
+                                  const val = Math.max(1, Number(e.target.value) || 0);
+                                  setForm((prev) => ({ ...prev, windows: val }));
+                                }}
+                                className="w-20 rounded-md border px-2 py-1"
+                              />
+                            </div>
+                          ) : null}
+                        </div>
                       );
                     })}
                   </div>

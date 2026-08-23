@@ -4,12 +4,15 @@ import { useLocation } from "react-router-dom";
 import Seo from "../components/Seo";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import Navbar from "../components/Navbar";
+import GoogleReviewsCarousel from "../components/GoogleReviewsCarousel";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
 const copy = {
   de: {
     title: "Regelmäßige Reinigung",
     intro: "Wiederkehrende Reinigungspläne, abgestimmt auf Ihren Bedarf und Zeitplan.",
+    metaTitle: "Regelmäßige Reinigung Wien | Professionelle Büro- und Wohnreinigung – PutzELF",
+    metaDescription: "Regelmäßige Reinigungspläne in Wien: individuell abgestimmte Frequenzen für Büros und Privathaushalte mit transparenten Leistungen.",
     optionsTitle: "Planoptionen",
     options: ["Wöchentliche Termine", "Zweiwöchentliche Termine", "Individuelle Frequenz und Teamgröße"],
     cta: "Angebot anfordern",
@@ -17,6 +20,8 @@ const copy = {
   en: {
     title: "Permanent Cleaning",
     intro: "Recurring cleaning plans tailored to your needs and schedule.",
+    metaTitle: "Permanent Cleaning Vienna | Recurring Commercial & Home Cleaning – PutzELF",
+    metaDescription: "Recurring cleaning plans in Vienna: tailored schedules and clear service definitions for ongoing maintenance.",
     optionsTitle: "Plan options",
     options: ["Weekly visits", "Bi-weekly visits", "Custom frequency and staffing"],
     cta: "Request an Offer",
@@ -31,10 +36,14 @@ export default function PermanentCleaning() {
     <>
       <Navbar />
       <main className="max-w-4xl mx-auto px-6 py-12">
-      <Seo title={locale === "de" ? "Regelmäßige Reinigung – PutzELF" : "Permanent Cleaning – PutzELF"} description={c.intro} path={getLocalizedPath(locale, "permanentCleaning")} lang={locale} alternates={getLocalizedAlternates(location.pathname)} xDefaultPath={getLocalizedPath("de", "permanentCleaning")} />
+      <Seo title={c.metaTitle || (locale === "de" ? "Regelmäßige Reinigung – PutzELF" : "Permanent Cleaning – PutzELF")} description={c.metaDescription || c.intro} path={getLocalizedPath(locale, "permanentCleaning")} lang={locale} alternates={getLocalizedAlternates(location.pathname)} xDefaultPath={getLocalizedPath("de", "permanentCleaning")} />
       <div className="flex justify-end mb-4"><LanguageSwitcher compact /></div>
-      <h1 className="text-3xl font-bold">{c.title}</h1>
+      <h1 className="text-3xl font-bold">{c.title} {locale === 'de' ? 'Wien' : 'Vienna'}</h1>
       <p className="mt-4 text-slate-700">{c.intro}</p>
+
+      <div className="mt-6">
+        <div className="w-full h-56 bg-slate-100 border border-dashed border-slate-200 rounded flex items-center justify-center text-slate-500">[IMAGE PLACEHOLDER: {c.title}]</div>
+      </div>
 
       <section className="mt-8 space-y-6">
         <div>
@@ -42,6 +51,10 @@ export default function PermanentCleaning() {
           <ul className="mt-2 list-disc pl-5 text-slate-600">
             {c.options.map((item) => <li key={item}>{item}</li>)}
           </ul>
+        </div>
+
+        <div className="mt-10">
+          <GoogleReviewsCarousel />
         </div>
 
         <div className="mt-4">

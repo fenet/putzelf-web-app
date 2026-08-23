@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import dns from "dns";
+import { WINDOW_PRICE_NET, TAX_RATE } from "./config.js";
 
 dotenv.config();
 
@@ -183,6 +184,7 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.timer} Dauer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} Stunden</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.phone} Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.mail} E-Mail</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerEmail}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Fenster</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.windows ? booking.windows : '—'}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Anmerkungen</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.notes || "").toString().trim() ? (booking.notes || "").toString().trim().replace(/\n/g, "<br />") : "Keine"}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Verlängerung möglich</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatYesNo(booking.renegotiate)}</td></tr>
         </table>
@@ -192,6 +194,9 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
         <p style="font-size: 15px; margin-top: 20px;">
           Mit freundlichen Grüßen,<br />
           <strong>PutzELF Team</strong>
+        </p>
+        <p style="font-size: 14px; margin-top: 20px; line-height: 1.5; color: #555;">
+          Bitte beachten Sie: Online-Buchungen werden spätestens am nächsten Werktag bearbeitet. Für eine sofortige Bestätigung kontaktieren Sie uns am besten telefonisch.
         </p>
       </div>
       <div style="background: #f1f1f1; padding: 20px; text-align: center; font-size: 13px; color: #666;">

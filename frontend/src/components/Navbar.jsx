@@ -8,6 +8,7 @@ import {
   ChevronDown,
   Phone,
   Mail,
+  MessageSquareText,
 } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
@@ -39,7 +40,7 @@ const copy = {
     getPartners: "Partner werden",
 
     // Main CTA
-    book: "Erste Reinigung buchen",
+    book: "Anfrage starten",
 
     company: "Unternehmen",
     private: "Privatkunden",
@@ -79,7 +80,7 @@ const copy = {
     getPartners: "Get Partners",
 
     // Main CTA
-    book: "Book Your First Order",
+    book: "Start an Inquiry",
 
     company: "Business",
     private: "Private Customers",
@@ -364,6 +365,20 @@ const Navbar = () => {
                   onMouseEnter={openContactMenu}
                   onMouseLeave={closeContactMenu}
                 >
+                  <Link
+                    to={getLocalizedPath(locale, "contact")}
+                    className="flex items-center gap-3 px-3 py-3 text-sm text-slate-800 hover:bg-slate-50 rounded-lg transition-colors"
+                    onClick={() => setContactOpen(false)}
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-50 text-[#0097b2]">
+                      <MessageSquareText size={16} />
+                    </span>
+                    <div className="text-left">
+                      <div className="font-medium">{c.contact}</div>
+                      <div className="text-gray-500">{locale === "de" ? "Kontaktseite" : "Contact page"}</div>
+                    </div>
+                  </Link>
+
                   {/* PHONE */}
                   <a
                     href="tel:+436766300167"
@@ -385,7 +400,7 @@ const Navbar = () => {
                     </div>
                   </a>
 
-                  {/* EMAIL */}
+                  {/* EMAIL VIENNA */}
                   <a
                     href="mailto:office@putzelf.com"
                     className="flex items-center gap-3 px-3 py-3 text-sm text-slate-800 hover:bg-slate-50 rounded-lg transition-colors"
@@ -397,11 +412,32 @@ const Navbar = () => {
 
                     <div className="text-left min-w-0">
                       <div className="font-medium">
-                        {c.email}
+                        {c.email} · Wien
                       </div>
 
                       <div className="text-gray-500 truncate">
                         office@putzelf.com
+                      </div>
+                    </div>
+                  </a>
+
+                  {/* EMAIL GRAZ */}
+                  <a
+                    href="mailto:office.stmk@putzelf.com"
+                    className="flex items-center gap-3 px-3 py-3 text-sm text-slate-800 hover:bg-slate-50 rounded-lg transition-colors"
+                  >
+                    <Mail
+                      size={20}
+                      className="text-[#0097b2] shrink-0"
+                    />
+
+                    <div className="text-left min-w-0">
+                      <div className="font-medium">
+                        {c.email} · Graz
+                      </div>
+
+                      <div className="text-gray-500 truncate">
+                        office.stmk@putzelf.com
                       </div>
                     </div>
                   </a>
@@ -588,6 +624,14 @@ const Navbar = () => {
 
           {mobileContactOpen && (
             <div className="mt-2 space-y-2 pl-4">
+              <Link
+                to={getLocalizedPath(locale, "contact")}
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                onClick={() => setMobileOpen(false)}
+              >
+                <MessageSquareText className="h-4 w-4 text-[#0097b2]" />
+                <span>{c.contact}</span>
+              </Link>
 
               {/* Mobile phone */}
               <a
@@ -604,7 +648,7 @@ const Navbar = () => {
                 </span>
               </a>
 
-              {/* Mobile email */}
+              {/* Mobile email Vienna */}
               <a
                 href="mailto:office@putzelf.com"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
@@ -615,7 +659,22 @@ const Navbar = () => {
                 />
 
                 <span>
-                  office@putzelf.com
+                  office@putzelf.com · Wien
+                </span>
+              </a>
+
+              {/* Mobile email Graz */}
+              <a
+                href="mailto:office.stmk@putzelf.com"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                onClick={() => setMobileOpen(false)}
+              >
+                <Mail
+                  className="h-4 w-4 text-[#0097b2]"
+                />
+
+                <span>
+                  office.stmk@putzelf.com · Graz
                 </span>
               </a>
 

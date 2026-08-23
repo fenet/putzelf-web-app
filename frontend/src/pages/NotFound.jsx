@@ -12,9 +12,9 @@ const copy = {
   de: {
     title: "Ups! Hier ist nichts zu putzen. 🧹",
     message:
-      "Diese Seite hat sich wohl irgendwo versteckt. Aber keine Sorge – wir bringen dich wieder zurück.",
+      "Diese Seite wurde leider nicht gefunden. Wir bringen Sie zurück zur Startseite.",
     home: "Zur Startseite",
-    back: "Oder starte deine Suche neu",
+    back: "Oder starten Sie Ihre Suche neu",
   },
   en: {
     title: "Oops! Nothing to clean here. 🧹",

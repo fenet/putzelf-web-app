@@ -131,14 +131,14 @@ export default function Landing() {
               className="bg-[#0097b2] text-white px-10 py-4 rounded-xl text-xl font-semibold hover:shadow-lg hover:scale-105 transition"
               onClick={() => trackEvent("Landing_CTA_Click", { cta: "hero_book_here" })}
             >
-              {i18n.language?.startsWith("de") ? "JETZT BUCHEN" : "BOOK NOW"}
+              {t("hero.cta")}
             </Link>
             <Link
               to={getLocalizedPath(locale, "order", { id: "request" })}
               className="px-10 py-4 rounded-xl text-xl font-semibold bg-gradient-to-r from-[#facc15] via-[#f97316] to-[#fb923c] text-black shadow-md hover:shadow-lg hover:scale-105 transition"
               onClick={() => trackEvent("Landing_Job_CTA_Click", { cta: "hero_offer_request" })}
             >
-              {i18n.language?.startsWith("de") ? "Angebot anfragen" : "Request a quote"}
+              {t("home.flow.inquiry")}
             </Link>
           </div>
         </div>
@@ -376,7 +376,7 @@ export default function Landing() {
         </div>
 
         <div className="border-t border-gray-200 mt-8 py-4 text-center text-sm text-gray-500">
-          <span>© {new Date().getFullYear()} Putzelf — Alle Rechte vorbehalten.</span>
+          <span>© {new Date().getFullYear()} PutzELF — Alle Rechte vorbehalten.</span>
           <a
             href="https://marketing.putzelf.com"
             className="inline-flex items-center justify-center rounded-lg bg-[#0097b2] px-4 py-2 text-sm font-semibold text-white shadow-md hover:shadow-lg transition"

@@ -143,7 +143,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-200 mt-8 py-4 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} Putzelf — Alle Rechte vorbehalten.
+          © {new Date().getFullYear()} PutzELF — Alle Rechte vorbehalten.
         </div>
       </footer>
 

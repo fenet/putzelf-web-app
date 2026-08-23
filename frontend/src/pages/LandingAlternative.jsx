@@ -32,12 +32,11 @@ import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from 
 
 const content = {
   en: {
-    navCta: "Book Your First Order",
+    navCta: "Start Booking",
     heroTitle: "Professional Cleaning Services for Businesses",
-    heroSubtitle:
-      "Reliable cleaning for offices, restaurants, and retail spaces with consistent quality and flexible schedules.",
-    heroPrimaryCta: "Book a Free Consultation",
-    heroSecondaryCta: "Book Your First Order",
+    heroSubtitle: "Reliable cleaning for offices, restaurants, and retail spaces with consistent quality and flexible schedules.",
+    heroPrimaryCta: "Start an Inquiry",
+    heroSecondaryCta: "Start Booking",
     trust: ["4.9/5 Average Rating", "500+ Completed Jobs", "Trusted by Local Businesses"],
     socialTitle: "Trusted by Growing Teams",
     socialSubtitle: "Real feedback from businesses that rely on us every week.",
@@ -104,16 +103,29 @@ const content = {
     ],
     finalTitle: "Ready for Reliable Cleaning?",
     finalSubtitle: "Book your free consultation or contact us directly.",
-    finalCta: "Schedule a Free Consultation",
+    finalCta: "Start an Inquiry",
+    heroSecondaryNote: "Call or request a consultation for quick scheduling.",
+    localBadge: "Now in Graz",
+    localHeadline: "We’re now in Graz — Waagner-Biro-Straße.",
+    localSubtitle: "Book your appointment locally.",
+    localBookAria: "Book an appointment in Graz",
+    callAria: "Call +43 676 6300167",
+    mapTitle: "Google Maps Waagner-Biro-Straße, Graz",
+    mapAria: "Map: Waagner-Biro-Straße, Graz",
+    directContact: "Direct Contact",
+    freeConsultTitle: "Get a free consultation by phone now",
+    freeConsultNote: "No scheduling calendar needed — call us directly and we’ll discuss your needs right away.",
+    solutionTitle: "Our Solution",
+    gdprText: "GDPR-compliant processes",
   },
   de: {
-    navCta: "Erste Reinigung buchen",
+    navCta: "Buchung starten",
     heroTitle: "Professionelle Reinigung:",
     heroTitleLine2: "Putzfrau in Wien gesucht? PutzELF gefunden",
     heroSubtitle:
       "Zuverlässige Unterhaltsreinigung für Büro, Gastro und Praxis – mit gleichbleibender Qualität und flexiblen Zeiten.",
-    heroPrimaryCta: "Kostenlose Beratung buchen",
-    heroSecondaryCta: "Erste Reinigung buchen",
+    heroPrimaryCta: "Anfrage starten",
+    heroSecondaryCta: "Buchung starten",
     trust: ["4,9/5 Durchschnittsbewertung", "500+ Abgeschlossene Aufträge", "Vertrauen von lokalen Unternehmen"],
     socialTitle: "Vertrauen von wachsenden Teams",
     socialSubtitle: "Echtes Feedback von Unternehmen, die wöchentlich auf uns setzen.",
@@ -177,7 +189,20 @@ const content = {
     ],
     finalTitle: "Bereit für zuverlässige Reinigung?",
     finalSubtitle: "Buchen Sie Ihre kostenlose Beratung oder kontaktieren Sie uns direkt.",
-    finalCta: "Kostenlose Beratung planen",
+    finalCta: "Anfrage starten",
+    heroSecondaryNote: "Rufen Sie uns an oder fordern Sie eine Beratung für schnelle Terminvereinbarung an.",
+    localBadge: "Neu in Graz",
+    localHeadline: "Wir sind jetzt in Graz — Waagner‑Biro‑Straße.",
+    localSubtitle: "Vereinbaren Sie Ihren Termin lokal.",
+    localBookAria: "Termin vereinbaren in Graz",
+    callAria: "Rufen Sie uns an +43 676 6300167",
+    mapTitle: "Google Maps Waagner-Biro-Straße Graz",
+    mapAria: "Karte: Waagner-Biro-Straße, Graz",
+    directContact: "Direkter Kontakt",
+    freeConsultTitle: "Kostenlose Beratung sofort per Anruf",
+    freeConsultNote: "Kein Kalender nötig – rufen Sie uns direkt an und wir besprechen Ihren Bedarf sofort.",
+    solutionTitle: "Unsere Lösung",
+    gdprText: "DSGVO-konforme Prozesse",
   },
 };
 
@@ -245,8 +270,14 @@ export default function LandingAlternative() {
     const storedConsent = localStorage.getItem("cookieConsent");
     const storedTime = localStorage.getItem("cookieConsentTime");
 
+    // Debug: log stored values so we can see why banner may not render
+    try {
+      console.debug("cookieConsent:", storedConsent, "cookieConsentTime:", storedTime);
+    } catch (e) {}
+
     if (!storedConsent || !storedTime) {
       setShowCookieBanner(true);
+      console.debug("Showing cookie banner: missing consent or time");
       return;
     }
 
@@ -254,6 +285,7 @@ export default function LandingAlternative() {
     const oneDay = 24 * 60 * 60 * 1000;
     if (now - parseInt(storedTime, 10) > oneDay) {
       setShowCookieBanner(true);
+      console.debug("Showing cookie banner: consent expired");
     }
   }, []);
 
@@ -307,19 +339,18 @@ export default function LandingAlternative() {
         <div className="mb-8 w-full rounded-2xl p-4 bg-gradient-to-r from-[#fff7ed] via-[#fff3e0] to-white shadow-xl border border-transparent drop-in">
           <div className="flex flex-col md:flex-row items-center gap-4">
             <div className="flex-1">
-              <p className="text-sm font-semibold text-[#ff6b00]">{lang === "de" ? "Neu in Graz" : "Now in Graz"}</p>
-              <h3 className="mt-1 text-2xl md:text-3xl font-extrabold text-gray-900">
-                {lang === "de" ? "Wir sind jetzt in Graz — Waagner‑Biro‑Straße." : "We’re now in Graz — Waagner-Biro-Straße."}
-              </h3>
-              <p className="mt-2 text-sm text-gray-700">{lang === "de" ? "Vereinbaren Sie Ihren Termin lokal." : "Book your appointment locally."}</p>
+              <p className="text-sm font-semibold text-[#ff6b00]">{c.localBadge}</p>
+              <h3 className="mt-1 text-2xl md:text-3xl font-extrabold text-gray-900">{c.localHeadline}</h3>
+              <p className="mt-2 text-sm text-gray-700">{c.localSubtitle}</p>
+              <p className="mt-2 text-sm text-gray-500">{c.heroSecondaryNote}</p>
               <div className="mt-4 flex items-center gap-3">
-                <Link to={getLocalizedPath(lang, "profile")} aria-label={lang === "de" ? "Termin vereinbaren in Graz" : "Book an appointment in Graz"} className="inline-flex items-center px-5 py-3 bg-[#ff6b00] text-white rounded-full text-sm font-semibold shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition">{lang === "de" ? "Termin vereinbaren" : "Book now"}</Link>
+                <Link to={getLocalizedPath(lang, "profile")} aria-label={c.localBookAria} className="inline-flex items-center px-5 py-3 bg-[#ff6b00] text-white rounded-full text-sm font-semibold shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition">{c.heroSecondaryCta}</Link>
                 <a
                   href="tel:+436766300167"
-                  aria-label={lang === "de" ? "Rufen Sie uns an +43 676 6300167" : "Call +43 676 6300167"}
+                  aria-label={c.callAria}
                   className="inline-flex items-center px-4 py-2 border rounded-full text-sm text-gray-700 hover:bg-gray-50"
                 >
-                  {lang === "de" ? "Jetzt anrufen" : "Call now"}
+                  {t("contact.callNow")}
                 </a>
               </div>
             </div>
@@ -327,20 +358,14 @@ export default function LandingAlternative() {
             <div className="w-full md:w-80 mt-4 md:mt-0 relative">
               <div className="map-card w-full h-48 md:h-56">
                 <iframe
-                  title={lang === "de" ? "Google Maps Waagner-Biro-Straße Graz" : "Google Maps Waagner-Biro-Straße, Graz"}
+                  title={c.mapTitle}
                   src="https://www.google.com/maps?q=Waagner-Biro-Stra%C3%9Fe,+Graz&output=embed"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  aria-label={lang === "de" ? "Karte: Waagner-Biro-Straße, Graz" : "Map: Waagner-Biro-Straße, Graz"}
+                  aria-label={c.mapAria}
                 />
               </div>
-              <a
-                className="map-chip"
-                href="https://www.google.com/maps/search/?api=1&query=Waagner-Biro-Stra%C3%9Fe+Graz"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={lang === "de" ? "Öffnen in Google Maps" : "Open in Google Maps"}
-              >
+                <a className="map-chip" href="https://www.google.com/maps/search/?api=1&query=Waagner-Biro-Stra%C3%9Fe+Graz" target="_blank" rel="noopener noreferrer" aria-label={c.mapAria}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                   <path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 12 6 12s6-6.75 6-12c0-3.314-2.686-6-6-6z" stroke="#0f172a" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
                   <circle cx="12" cy="8" r="2.2" fill="#0f172a" />
@@ -373,9 +398,9 @@ export default function LandingAlternative() {
               <Link
                 to={getLocalizedPath(lang, "profile")}
                 className="rounded-xl bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-[#fb923c] px-8 py-3 text-base font-bold text-white shadow-lg hover:opacity-95 md:px-10 md:py-4 md:text-lg"
-                onClick={() => trackEvent("AltLanding_Hero_CTA_Click", { cta: "book_first_order" })}
+                onClick={() => trackEvent("AltLanding_Hero_CTA_Click", { cta: "inquiry_primary" })}
               >
-                {c.heroSecondaryCta}
+                {c.heroPrimaryCta}
               </Link>
             </div>
 
@@ -405,16 +430,10 @@ export default function LandingAlternative() {
           <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-xl backdrop-blur">
             <div className="inline-flex items-center gap-2 rounded-full bg-[#0097b2]/10 px-3 py-1 text-sm font-semibold text-[#0097b2]">
               <Phone className="h-4 w-4" />
-              {lang === "de" ? "Direkter Kontakt" : "Direct Contact"}
+              {c.directContact}
             </div>
-            <h2 className="mt-4 text-2xl font-bold text-slate-900">
-              {lang === "de" ? "Kostenlose Beratung sofort per Anruf" : "Get a free consultation by phone now"}
-            </h2>
-            <p className="mt-3 text-slate-600">
-              {lang === "de"
-                ? "Kein Kalender nötig – rufen Sie uns direkt an und wir besprechen Ihren Bedarf sofort."
-                : "No scheduling calendar needed — call us directly and we’ll discuss your needs right away."}
-            </p>
+            <h2 className="mt-4 text-2xl font-bold text-slate-900">{c.freeConsultTitle}</h2>
+            <p className="mt-3 text-slate-600">{c.freeConsultNote}</p>
             <div className="mt-6 space-y-3">
               <a
                 href="tel:+436766300167"
@@ -469,7 +488,7 @@ export default function LandingAlternative() {
           </div>
 
           <div>
-            <h3 className="text-2xl font-bold">{lang === "de" ? "Unsere Lösung" : "Our Solution"}</h3>
+            <h3 className="text-2xl font-bold">{c.solutionTitle}</h3>
             <ul className="mt-6 space-y-5">
               {c.solutions.map((s, idx) => {
                 const gradients = [
@@ -544,15 +563,15 @@ export default function LandingAlternative() {
             })}
           </div>
 
-          <div className="mt-8 flex justify-center">
-            <Link
-              to={getLocalizedPath(lang, "profile")}
-              className="rounded-xl bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-[#fb923c] px-10 py-4 text-center text-lg font-bold text-white shadow-lg hover:opacity-95 md:px-12 md:py-5"
-              onClick={() => trackEvent("AltLanding_Process_CTA_Click", { cta: "book_cleaning" })}
-            >
-              {lang === "de" ? "Reinigung buchen" : "Book Your Cleaning"}
-            </Link>
-          </div>
+            <div className="mt-8 flex justify-center">
+              <Link
+                to={getLocalizedPath(lang, "profile")}
+                className="rounded-xl bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-[#fb923c] px-10 py-4 text-center text-lg font-bold text-white shadow-lg hover:opacity-95 md:px-12 md:py-5"
+                onClick={() => trackEvent("AltLanding_Process_CTA_Click", { cta: "book_cleaning_secondary" })}
+              >
+                {c.heroSecondaryCta}
+              </Link>
+            </div>
         </div>
       </section>
 
@@ -592,7 +611,7 @@ export default function LandingAlternative() {
 
             <div className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm">
               <ShieldCheck className="h-4 w-4 text-[#5be3e3]" />
-              {lang === "de" ? "DSGVO-konforme Prozesse" : "GDPR-compliant processes"}
+              {c.gdprText}
             </div>
           </div>
         </div>
@@ -641,14 +660,14 @@ export default function LandingAlternative() {
             className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#5be3e3] to-[#0097b2] px-4 py-3 text-sm font-semibold text-white"
             onClick={() => trackEvent("AltLanding_Mobile_Call_Click", { cta: "sticky_mobile_call" })}
           >
-            <Phone className="h-4 w-4" /> {lang === "de" ? "Jetzt anrufen" : "Call now"}
+            <Phone className="h-4 w-4" /> {t("contact.callNow")}
           </a>
           <Link
             to={getLocalizedPath(lang, "profile")}
             className="inline-flex flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-[#0097b2] to-[#3b82f6] px-4 py-3 text-sm font-semibold text-white"
             onClick={() => trackEvent("AltLanding_Mobile_Book_Click", { cta: "sticky_mobile_book" })}
           >
-            {lang === "de" ? "Buchen" : "Book"}
+            {c.heroSecondaryCta}
           </Link>
         </div>
       </div>

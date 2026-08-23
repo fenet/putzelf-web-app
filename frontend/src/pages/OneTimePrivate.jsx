@@ -11,12 +11,14 @@ const copy = {
     title: "Einmalreinigung (Privat)",
     intro: "Flexible Einmalreinigung für Privathaushalte — ideal für Frühjahrsputz oder besondere Anlässe.",
     body: "Einzelbesuch mit Fokus auf die Bereiche, die Ihnen am wichtigsten sind: Küche, Bad, Fenster und mehr.",
+    includesTitle: "Worum es geht",
     cta: "Angebot anfordern",
   },
   en: {
     title: "One-time Cleaning (Private)",
     intro: "Flexible one-off cleaning for private homes — ideal for spring cleaning or special occasions.",
     body: "Tailored visits focusing on the areas that matter most to you: kitchen, bathroom, windows and more.",
+    includesTitle: "What it includes",
     cta: "Request an Offer",
   },
 };
@@ -40,7 +42,7 @@ export default function OneTimePrivate() {
 
         <section className="mt-8 space-y-6">
           <div>
-            <h2 className="text-xl font-semibold">{locale === "de" ? "Worum es geht" : "What it includes"}</h2>
+            <h2 className="text-xl font-semibold">{c.includesTitle}</h2>
             <p className="mt-2 text-slate-600">{c.body}</p>
           </div>
 

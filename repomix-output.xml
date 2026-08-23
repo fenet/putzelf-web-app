@@ -4877,14 +4877,14 @@ export default function Home() {
               htmlFor="duration"
               className="block text-sm font-medium mb-1"
             >
-              {t("home.durationLabel") || "Hours (min 3)"}
+              {t("home.durationLabel") || "Hours (min 2)"}
             </label>
             <div className="flex items-stretch">
               <button
                 type="button"
                 onClick={decrementDuration}
                 aria-label="Decrease hours"
-                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 3 Stunden." })}
+                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 2 Stunden." })}
                 className="px-3 rounded-l-lg border bg-gray-50 hover:bg-gray-100"
               >
                 −
@@ -4895,20 +4895,20 @@ export default function Home() {
                 type="number"
                 inputMode="numeric"
                 step="1"
-                min="3"
-                placeholder={t("home.durationPlaceholder") || "3+"}
+                min="2"
+                placeholder={t("home.durationPlaceholder") || "2+"}
                 value={form.duration}
                 onChange={handleChange}
                 onKeyDown={handleDurationKeyDown}
                 aria-describedby="duration-help"
-                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 3 Stunden." })}
+                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 2 Stunden." })}
                 className="w-full p-3 border-t border-b text-center"
               />
               <button
                 type="button"
                 onClick={incrementDuration}
                 aria-label="Increase hours"
-                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 3 Stunden." })}
+                title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 2 Stunden." })}
                 className="px-3 rounded-r-lg border bg-gray-50 hover:bg-gray-100"
               >
                 +
@@ -5726,7 +5726,7 @@ const resources = {
         dateLabel: "Date",
         timeLabel: "Time",
         renegotiate: "I understand the service is billed based on the actual time worked",
-        durationHelp: "Minimum booking is 3 hours.",
+        durationHelp: "Minimum booking is 2 hours.",
         estimated: "Estimated price",
         rate: "Rate: €{{rate}}/hour",
         submit: "Submit",
@@ -5749,7 +5749,7 @@ const resources = {
         typeHeading: "Choose a cleaning type",
         subHeading: "Add premium services",
         durationLabel: "Duration (hours)",
-        durationHelp: "Bookings start at 3 hours. Use the arrows to adjust.",
+        durationHelp: "Bookings start at 2 hours. Use the arrows to adjust.",
         estimatedTotalLabel: "Estimated total",
         estimatedTotal: "Estimated total: €{{price}}",
         hourlyRate: "Hourly rate: €{{rate}}/h",
@@ -5945,7 +5945,7 @@ const resources = {
         dateLabel: "Datum",
         timeLabel: "Uhrzeit",
         renegotiate: "Wir nehmen zur Kenntnis, dass die Dienstleistung nach tatsächlicher Arbeitszeit verrechnet wird",
-        durationHelp: "Mindestbuchung ist 3 Stunden.",
+        durationHelp: "Mindestbuchung ist 2 Stunden.",
         estimated: "Geschätzter Preis",
         rate: "Preis: €{{rate}}/Stunde",
         submit: "Jetzt anfragen",
@@ -5968,7 +5968,7 @@ const resources = {
         typeHeading: "Reinigungsart wählen",
         subHeading: "Optionale Premium-Services",
         durationLabel: "Dauer (Stunden)",
-        durationHelp: "Buchungen starten bei 3 Stunden. Verwenden Sie die Pfeile zur Anpassung.",
+        durationHelp: "Buchungen starten bei 2 Stunden. Verwenden Sie die Pfeile zur Anpassung.",
         estimatedTotalLabel: "Geschätzte Gesamtkosten",
         estimatedTotal: "Geschätzte Gesamtkosten: {{price}} €",
         hourlyRate: "Stundensatz: {{rate}} €/h",
