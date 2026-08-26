@@ -469,6 +469,19 @@ const resources = {
           subject: "Subject",
           message: "Message"
         },
+        bookingContact: {
+          title: "Title (optional)",
+          firstName: "First Name",
+          lastName: "Last Name",
+          streetName: "Street Name",
+          houseNumber: "House Number",
+          doorNumber: "Door Number",
+          buildingNumber: "Building Number (optional)",
+          postalCode: "Postal Code",
+          city: "City",
+          phone: "Phone Number",
+          email: "Email Address"
+        },
         locations: {
           vienna: "Vienna / Wien",
           graz: "Graz"
@@ -602,6 +615,14 @@ const resources = {
         errors: {
           invalidEmail: "Please enter a valid email address.",
           invalidPhone: "Please enter a valid phone number including country code."
+          ,requiredFirstName: "Please enter your first name.",
+          requiredLastName: "Please enter your last name.",
+          requiredStreet: "Please enter your street name.",
+          requiredHouseNumber: "Please enter your house number.",
+          requiredPostal: "Please enter your postal code.",
+          requiredCity: "Please enter your city.",
+          requiredAddress: "Please enter your address.",
+          requiredName: "Please enter your name."
         },
         gdprPrefix: "I agree to the processing of my personal data in accordance with the ",
         gdprLink: "Privacy Policy (GDPR)",
@@ -1080,6 +1101,19 @@ const resources = {
           subject: "Betreff",
           message: "Nachricht"
         },
+        bookingContact: {
+          title: "Titel (optional)",
+          firstName: "Vorname",
+          lastName: "Nachname",
+          streetName: "Straßenname",
+          houseNumber: "Hausnummer",
+          doorNumber: "Türnummer",
+          buildingNumber: "Hausnummer Zusatz (optional)",
+          postalCode: "Postleitzahl",
+          city: "Ort",
+          phone: "Telefonnummer",
+          email: "E-Mail-Adresse"
+        },
         locations: {
           vienna: "Wien",
           graz: "Graz"
@@ -1092,7 +1126,15 @@ const resources = {
           location: "Bitte wählen Sie einen Standort aus.",
           subject: "Bitte geben Sie einen Betreff ein.",
           message: "Bitte geben Sie Ihre Nachricht ein.",
-          submitFailed: "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
+          submitFailed: "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+          requiredFirstName: "Bitte geben Sie Ihren Vornamen ein.",
+          requiredLastName: "Bitte geben Sie Ihren Nachnamen ein.",
+          requiredStreet: "Bitte geben Sie den Straßennamen ein.",
+          requiredHouseNumber: "Bitte geben Sie die Hausnummer ein.",
+          requiredPostal: "Bitte geben Sie die Postleitzahl ein.",
+          requiredCity: "Bitte geben Sie den Ort ein.",
+          requiredAddress: "Bitte geben Sie Ihre Adresse ein.",
+          requiredName: "Bitte geben Sie Ihren Namen ein."
         },
         submit: {
           label: "Nachricht senden",
@@ -1236,6 +1278,12 @@ const resources = {
           requiredPhone: "Telefonnummer ist erforderlich",
           requiredEmail: "E-Mail-Adresse ist erforderlich",
           requiredGdpr: "Bitte stimmen Sie der DSGVO-Einwilligung zu",
+          requiredFirstName: "Bitte geben Sie Ihren Vornamen ein.",
+          requiredLastName: "Bitte geben Sie Ihren Nachnamen ein.",
+          requiredStreet: "Bitte geben Sie den Straßennamen ein.",
+          requiredHouseNumber: "Bitte geben Sie die Hausnummer ein.",
+          requiredPostal: "Bitte geben Sie die Postleitzahl ein.",
+          requiredCity: "Bitte geben Sie den Ort ein.",
         },
         gdprPrefix: "Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäß ",
         gdprText: "Ich stimme zu, dass meine Daten für die Buchung verarbeitet und ich bezüglich dieser Buchung kontaktiert werde.",

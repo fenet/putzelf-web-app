@@ -16,10 +16,20 @@ export default function Home() {
   const locale = getLocaleFromPathname(location.pathname);
 
   const [form, setForm] = useState({
-    // contact first
-    name: "",
+    // contact first (structured)
+    title: "",
+    firstName: "",
+    lastName: "",
+    streetName: "",
+    houseNumber: "",
+    doorNumber: "",
+    buildingNumber: "",
+    postalCode: "",
+    city: "",
     phone: "",
     email: "",
+    // legacy/fallback free-text fields
+    name: "",
     location: "",
     // booking fields
     date: "",
@@ -45,6 +55,12 @@ export default function Home() {
   const [phoneError, setPhoneError] = useState("");
   const [nameError, setNameError] = useState("");
   const [addressError, setAddressError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [streetError, setStreetError] = useState("");
+  const [houseNumberError, setHouseNumberError] = useState("");
+  const [postalError, setPostalError] = useState("");
+  const [cityError, setCityError] = useState("");
   const [gdprError, setGdprError] = useState("");
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -110,6 +126,65 @@ export default function Home() {
     setAddressError("");
     return true;
   };
+  const validateFirstName = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setFirstNameError(t("order.errors.requiredFirstName", { defaultValue: "First name is required" }));
+      return false;
+    }
+    setFirstNameError("");
+    return true;
+  };
+
+  const validateLastName = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setLastNameError(t("order.errors.requiredLastName", { defaultValue: "Last name is required" }));
+      return false;
+    }
+    setLastNameError("");
+    return true;
+  };
+
+  const validateStreetName = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setStreetError(t("order.errors.requiredStreet", { defaultValue: "Street name is required" }));
+      return false;
+    }
+    setStreetError("");
+    return true;
+  };
+
+  const validateHouseNumber = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setHouseNumberError(t("order.errors.requiredHouseNumber", { defaultValue: "House number is required" }));
+      return false;
+    }
+    setHouseNumberError("");
+    return true;
+  };
+
+  const validatePostalCode = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setPostalError(t("order.errors.requiredPostal", { defaultValue: "Postal code is required" }));
+      return false;
+    }
+    setPostalError("");
+    return true;
+  };
+
+  const validateCity = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setCityError(t("order.errors.requiredCity", { defaultValue: "City is required" }));
+      return false;
+    }
+    setCityError("");
+    return true;
+  };
 
   // Persist/restore contact fields when navigating to calculator
   useEffect(() => {
@@ -125,9 +200,19 @@ export default function Home() {
   const saveContactToSession = () => {
     try {
       const contact = {
-        name: form.name || "",
+        title: form.title || "",
+        firstName: form.firstName || "",
+        lastName: form.lastName || "",
+        streetName: form.streetName || "",
+        houseNumber: form.houseNumber || "",
+        doorNumber: form.doorNumber || "",
+        buildingNumber: form.buildingNumber || "",
+        postalCode: form.postalCode || "",
+        city: form.city || "",
         phone: form.phone || "",
         email: form.email || "",
+        // legacy
+        name: form.name || "",
         location: form.location || "",
       };
       sessionStorage.setItem("booking_contact", JSON.stringify(contact));
@@ -310,6 +395,12 @@ export default function Home() {
       if (name === "phone") validatePhone(updatedValue);
       if (name === "name") validateName(updatedValue);
       if (name === "location") validateAddress(updatedValue);
+      if (name === "firstName") validateFirstName(updatedValue);
+      if (name === "lastName") validateLastName(updatedValue);
+      if (name === "streetName") validateStreetName(updatedValue);
+      if (name === "houseNumber") validateHouseNumber(updatedValue);
+      if (name === "postalCode") validatePostalCode(updatedValue);
+      if (name === "city") validateCity(updatedValue);
       if (name === "gdprConsent") setGdprConsent(Boolean(updatedValue));
 
       return next;
@@ -462,10 +553,15 @@ export default function Home() {
     const sanitizedEmail = String(form.email || "").trim().replace(/\.{2,}/g, ".");
     if (sanitizedEmail !== form.email) setForm((prev) => ({ ...prev, email: sanitizedEmail }));
 
-    const nameOk = validateName(form.name);
+    const nameOk = validateName(form.name) || (validateFirstName(form.firstName) && validateLastName(form.lastName));
     const phoneOk = validatePhone(form.phone);
     const emailOk = validateEmail(sanitizedEmail);
-    const addressOk = validateAddress(form.location);
+    const addressOk = (
+      // accept legacy free-text OR structured address
+      validateAddress(form.location) || (
+        validateStreetName(form.streetName) && validateHouseNumber(form.houseNumber) && validatePostalCode(form.postalCode) && validateCity(form.city)
+      )
+    );
     const gdprOk = gdprConsent === true;
     if (!gdprOk) {
       setGdprError(t("order.errors.requiredGdpr", { defaultValue: "Please agree to GDPR consent" }));
@@ -487,13 +583,19 @@ export default function Home() {
         });
       } catch (_) {}
 
+      // build payload with structured fields, but keep legacy flat fields for compatibility
+      const canonicalName = (form.firstName || form.lastName) ? `${form.firstName || ""} ${form.lastName || ""}`.trim() : form.name;
+      const canonicalAddress = (form.streetName || form.houseNumber || form.postalCode || form.city)
+        ? `${form.streetName || ""} ${form.houseNumber || ""}${form.doorNumber ? ", Tür " + form.doorNumber : ""}, ${form.postalCode || ""} ${form.city || ""}`.trim()
+        : form.location;
+
       const payload = {
         ...form,
         preferredWorker: null,
-        name: form.name,
+        // legacy compatibility
+        name: canonicalName,
         email: sanitizedEmail,
-        // 'address' keeps the free-text street/address; 'location' is the selected city code
-        address: form.location,
+        address: canonicalAddress,
         location: serviceLocation || "vienna",
         phone: form.phone,
         notes,
@@ -665,9 +767,33 @@ export default function Home() {
             <h3 className="text-lg font-medium mb-3">{t("home.contactTitle", { defaultValue: "Your contact details" })}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <input name="name" value={form.name} onChange={handleChange} placeholder={t("home.contact.name", { defaultValue: "Full name" })} className="p-3 border rounded w-full" />
-                {nameError ? <p className="text-sm text-red-600 mt-1">{nameError}</p> : null}
+                <input name="title" value={form.title} onChange={handleChange} placeholder={t("contact.bookingContact.title", { defaultValue: "Title (optional)" })} className="p-3 border rounded w-full" />
               </div>
+              <div />
+
+              <div>
+                <input name="firstName" value={form.firstName} onChange={handleChange} placeholder={t("contact.bookingContact.firstName", { defaultValue: "First Name" })} className="p-3 border rounded w-full" />
+                {firstNameError ? <p className="text-sm text-red-600 mt-1">{firstNameError}</p> : null}
+              </div>
+
+              <div>
+                <input name="lastName" value={form.lastName} onChange={handleChange} placeholder={t("contact.bookingContact.lastName", { defaultValue: "Last Name" })} className="p-3 border rounded w-full" />
+                {lastNameError ? <p className="text-sm text-red-600 mt-1">{lastNameError}</p> : null}
+              </div>
+
+              <div className="flex gap-3">
+                <input name="streetName" value={form.streetName} onChange={handleChange} placeholder={t("contact.bookingContact.streetName", { defaultValue: "Street Name" })} className="p-3 border rounded w-full" />
+                <input name="houseNumber" value={form.houseNumber} onChange={handleChange} placeholder={t("contact.bookingContact.houseNumber", { defaultValue: "House Number" })} className="p-3 border rounded w-32" />
+              </div>
+              <div className="flex gap-3">
+                <input name="doorNumber" value={form.doorNumber} onChange={handleChange} placeholder={t("contact.bookingContact.doorNumber", { defaultValue: "Door Number" })} className="p-3 border rounded w-32" />
+                <input name="buildingNumber" value={form.buildingNumber} onChange={handleChange} placeholder={t("contact.bookingContact.buildingNumber", { defaultValue: "Building Number (optional)" })} className="p-3 border rounded w-full" />
+              </div>
+              <div className="flex gap-3">
+                <input name="postalCode" value={form.postalCode} onChange={handleChange} placeholder={t("contact.bookingContact.postalCode", { defaultValue: "Postal Code" })} className="p-3 border rounded w-32" />
+                <input name="city" value={form.city} onChange={handleChange} placeholder={t("contact.bookingContact.city", { defaultValue: "City" })} className="p-3 border rounded w-full" />
+              </div>
+
               <div>
                 <input name="phone" value={form.phone} onChange={handleChange} placeholder={t("home.contact.phone", { defaultValue: "Phone number" })} className="p-3 border rounded w-full" />
                 {phoneError ? <p className="text-sm text-red-600 mt-1">{phoneError}</p> : null}
@@ -676,7 +802,9 @@ export default function Home() {
                 <input name="email" value={form.email} onChange={handleChange} onBlur={handleEmailBlur} placeholder={t("home.contact.email", { defaultValue: "Email address" })} className="p-3 border rounded w-full" />
                 {emailError ? <p className="text-sm text-red-600 mt-1">{emailError}</p> : null}
               </div>
-              <div>
+
+              {/* legacy free-text address fallback (hidden if structured provided) */}
+              <div className="md:col-span-2">
                 <input name="location" value={form.location} onChange={handleChange} placeholder={t("home.contact.address", { defaultValue: "Address" })} className="p-3 border rounded w-full" />
                 {addressError ? <p className="text-sm text-red-600 mt-1">{addressError}</p> : null}
               </div>
