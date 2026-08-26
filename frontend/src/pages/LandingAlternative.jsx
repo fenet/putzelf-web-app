@@ -105,6 +105,7 @@ const content = {
     finalSubtitle: "Book your free consultation or contact us directly.",
     finalCta: "Start an Inquiry",
     heroSecondaryNote: "Call or request a consultation for quick scheduling.",
+    callNow: "Call now",
     localBadge: "Now in Graz",
     localHeadline: "We’re now in Graz — Waagner-Biro-Straße.",
     localSubtitle: "Book your appointment locally.",
@@ -191,6 +192,7 @@ const content = {
     finalSubtitle: "Buchen Sie Ihre kostenlose Beratung oder kontaktieren Sie uns direkt.",
     finalCta: "Anfrage starten",
     heroSecondaryNote: "Rufen Sie uns an oder fordern Sie eine Beratung für schnelle Terminvereinbarung an.",
+    callNow: "Jetzt anrufen",
     localBadge: "Neu in Graz",
     localHeadline: "Wir sind jetzt in Graz — Waagner‑Biro‑Straße.",
     localSubtitle: "Vereinbaren Sie Ihren Termin lokal.",
@@ -350,7 +352,7 @@ export default function LandingAlternative() {
                   aria-label={c.callAria}
                   className="inline-flex items-center px-4 py-2 border rounded-full text-sm text-gray-700 hover:bg-gray-50"
                 >
-                  {t("contact.callNow")}
+                  {c.callNow}
                 </a>
               </div>
             </div>
@@ -660,7 +662,7 @@ export default function LandingAlternative() {
             className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#5be3e3] to-[#0097b2] px-4 py-3 text-sm font-semibold text-white"
             onClick={() => trackEvent("AltLanding_Mobile_Call_Click", { cta: "sticky_mobile_call" })}
           >
-            <Phone className="h-4 w-4" /> {t("contact.callNow")}
+            <Phone className="h-4 w-4" /> {c.callNow}
           </a>
           <Link
             to={getLocalizedPath(lang, "profile")}

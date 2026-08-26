@@ -70,21 +70,154 @@ export default function ServiceGeneric() {
   };
 
   const isWindowService = key === "privateWindow" || key === "businessWindow";
+  // Use special residential images from the public folder for the private residential page
+  const residentialImages = [
+    "/resedential/a1.jpg",
+    "/resedential/a2.jpg",
+    "/resedential/a3.jpg",
+    "/resedential/a4.jpg",
+    "/resedential/a5.jpg",
+    "/resedential/a6.jpg",
+    "/resedential/a7.jpg",
+    "/resedential/a8.jpg",
+  ];
+
+  const isResidential = key === "privateResidential" || key === "businessResidential";
+  // Per-service image mapping for non-residential services.
+  // Keep residential behavior unchanged above.
+  const serviceImages = {
+    privateMaintenance: {
+      hero: "/services/privateMaintenance/hero.svg",
+      solution: "/services/privateMaintenance/solution.svg",
+      gallery: [
+        "/services/privateMaintenance/gallery1.svg",
+        "/services/privateMaintenance/gallery2.svg",
+      ],
+    },
+    privateDeep: {
+      hero: "/services/privateDeep/pd1.jpg",
+      solution: "/services/privateDeep/pd2.jpg",
+      gallery: [
+        "/services/privateDeep/pd3.jpg",
+        "/services/privateDeep/pd4.jpeg",
+        "/services/privateDeep/pd5.jpeg",
+        "/services/privateDeep/pd6.jpg",
+      ],
+    },
+    privateConstruction: {
+      hero: "/services/privateConstruction/pc1.jpeg",
+      solution: "/services/privateConstruction/pc2.jpeg",
+      gallery: [
+        "/services/privateConstruction/pc3.jpeg",
+        "/services/privateConstruction/pc4.jpeg",
+        "/services/privateConstruction/pc5.jpg",
+      ],
+    },
+    privateWindow: {
+      hero: "/services/privateWindow/pw1.jpg",
+      solution: "/services/privateWindow/pw2.jpg",
+      gallery: [
+        "/services/privateWindow/pw3.jpg",
+        "/services/privateWindow/pw4.jpeg",
+        "/services/privateWindow/pw5.jpeg",
+        "/services/privateWindow/pw6.jpeg",
+      ],
+    },
+    privateIndustrial: {
+      hero: "/services/privateIndustrial/hero.svg",
+      solution: "/services/privateIndustrial/solution.svg",
+      gallery: [
+        "/services/privateIndustrial/gallery1.svg",
+        "/services/privateIndustrial/gallery2.svg",
+      ],
+    },
+    businessMaintenance: {
+      hero: "/services/businessMaintenance/bm1.jpg",
+      solution: "/services/businessMaintenance/bm2.png",
+      gallery: [
+        "/services/businessMaintenance/bm3.jpg",
+        "/services/businessMaintenance/bm4.jpg",
+        "/services/businessMaintenance/bm5.jpeg",
+        "/services/businessMaintenance/bm6.jpeg",
+        "/services/businessMaintenance/bm7.jpeg",
+        "/services/businessMaintenance/bm8.jpeg",
+      ],
+    },
+    businessDeep: {
+      hero: "/services/businessDeep/bd1.jpg",
+      solution: "/services/businessDeep/bd2.jpeg",
+      gallery: [
+        "/services/businessDeep/bd3.jpeg",
+        "/services/businessDeep/bd4.jpeg",
+        "/services/businessDeep/bd5.jpeg",
+        "/services/businessDeep/bd6.jpg",
+      ],
+    },
+    businessStaircase: {
+      hero: "/services/businessStaircase/bs1.jpeg",
+      solution: "/services/businessStaircase/bs2.jpeg",
+      gallery: [
+        "/services/businessStaircase/bs3.jpeg",
+        "/services/businessStaircase/bs4.jpeg",
+        "/services/businessStaircase/bs5.jpg",
+        "/services/businessStaircase/bs6.jpg",
+        "/services/businessStaircase/bs7.jpg",
+      ],
+    },
+    businessConstruction: {
+      hero: "/services/businessConstruction/bc1.png",
+      solution: "/services/businessConstruction/bc2.jpeg",
+      gallery: [
+        "/services/businessConstruction/bc3.jpeg",
+        "/services/businessConstruction/bc4.jpeg",
+        "/services/businessConstruction/bc5.jpeg",
+        "/services/businessConstruction/bc6.png",
+      ],
+    },
+    businessWindow: {
+      hero: "/services/businessWindow/bw1.jpeg",
+      solution: "/services/businessWindow/bw2.jpeg",
+      gallery: [
+        "/services/businessWindow/bw3.jpeg",
+        "/services/businessWindow/bw4.jpeg",
+        "/services/businessWindow/bw5.jpeg",
+        "/services/businessWindow/bw6.jpg",
+        "/services/businessWindow/bw7.jpg",
+        "/services/businessWindow/bw8.jpg",
+        "/services/businessWindow/bw9.jpg",
+      ],
+    },
+    businessIndustrial: {
+      hero: "/services/businessIndustrial/hero.svg",
+      solution: "/services/businessIndustrial/solution.svg",
+      gallery: [
+        "/services/businessIndustrial/gallery1.svg",
+        "/services/businessIndustrial/gallery2.svg",
+      ],
+    },
+  };
+
+  const mapped = serviceImages[key] || null;
+
   const heroImage = isWindowService
-    ? "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80"
-    : "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1200&q=80";
+    ? (mapped?.hero || "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80")
+    : isResidential
+    ? residentialImages[0]
+    : (mapped?.hero || "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1200&q=80");
 
   const solutionImage = isWindowService
-    ? "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"
-    : "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80";
+    ? (mapped?.solution || "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80")
+    : isResidential
+    ? residentialImages[1]
+    : (mapped?.solution || "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80");
 
-  const galleryImages = [
-    "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=900&q=80"
-  ];
+  const galleryImages = isResidential
+    ? residentialImages
+    : (mapped?.gallery || [
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80",
+      ]);
 
   const faqJson = faqs.length
     ? {
