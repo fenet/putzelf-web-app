@@ -178,7 +178,33 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
-      <div className="mx-auto max-w-7xl px-4 md:px-6 py-3 md:py-4 flex items-center">
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6 py-3 md:py-4 flex items-center">
+
+        {/* Mobile top bar: hamburger (left), centered logo, language (right) */}
+        <div className="w-full flex items-center justify-between md:hidden">
+          {/* Hamburger (left) */}
+          <button
+            type="button"
+            className="px-2 py-1 border border-slate-300 rounded text-sm"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-services"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fillRule="evenodd" d="M3 5h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 1 0 110-2z" clipRule="evenodd" />
+            </svg>
+          </button>
+
+          {/* Centered logo */}
+          <Link to={getLocalizedPath(locale, "home")} aria-label="Go to home page" className="absolute left-1/2 transform -translate-x-1/2">
+            <img src={logo} alt="PutzELF" className="h-10 w-auto" />
+          </Link>
+
+          {/* Language switcher (right) */}
+          <div className="flex items-center">
+            <LanguageSwitcher className="flex" compact />
+          </div>
+        </div>
 
         {/* =========================
             LEFT: LOGO
@@ -191,7 +217,7 @@ const Navbar = () => {
             <img
               src={logo}
               alt="PutzELF"
-              className="h-14 w-auto md:h-20"
+              className="hidden md:block h-14 w-auto md:h-20"
             />
           </Link>
         </div>
@@ -199,8 +225,8 @@ const Navbar = () => {
         {/* =========================
             CENTER: DESKTOP NAV
         ========================== */}
-        <div className="flex-1 text-center">
-          <div className="inline-flex items-center gap-6">
+        <div className="hidden md:flex md:flex-1 md:justify-center md:text-center">
+          <div className="md:inline-flex md:items-center md:gap-6">
 
             {/* =========================
                 SERVICES
@@ -256,7 +282,7 @@ const Navbar = () => {
 
                       {activeGroup === "company" && (
                         <div
-                          className="absolute left-full top-0 w-48 bg-white border border-slate-200 rounded-lg shadow-lg p-2 z-50"
+                          className="absolute left-full top-0 w-64 bg-white border border-slate-200 rounded-lg shadow-lg p-2 z-50"
                           onMouseEnter={() => {
                             clearTimeout(timerRef.current);
                             setOpen(true);
@@ -470,7 +496,7 @@ const Navbar = () => {
           {/* MOBILE MENU BUTTON */}
           <button
             type="button"
-            className="md:hidden px-2 py-1 border border-slate-300 rounded text-sm"
+            className="hidden"
             onClick={() => setMobileOpen((v) => !v)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-services"
