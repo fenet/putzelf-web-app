@@ -114,6 +114,31 @@ function formatYesNo(value) {
   return value ? "Ja" : "Nein";
 }
 
+function getBookingRecipient(location) {
+  const normalizedLocation = String(location || "vienna").trim().toLowerCase();
+  return normalizedLocation === "graz" ? "graz.booking@putzelf.com" : "wien.booking@putzelf.com";
+}
+
+function getBookingCustomerFields(booking = {}) {
+  const rawPhone = booking.phone || "N/A";
+  const rawEmail = booking.email || "N/A";
+  const rawName = booking.name || "";
+  const nameParts = String(rawName).trim().split(/\s+/).filter(Boolean);
+
+  return {
+    firstName: booking.firstName || nameParts[0] || "N/A",
+    lastName: booking.lastName || nameParts.slice(1).join(" ") || "N/A",
+    streetName: booking.streetName || "N/A",
+    houseNumber: booking.houseNumber || "N/A",
+    doorNumber: booking.doorNumber || "N/A",
+    buildingNumber: booking.buildingNumber || "N/A",
+    postalCode: booking.postalCode || "N/A",
+    city: booking.city || "N/A",
+    phone: rawPhone,
+    email: rawEmail,
+  };
+}
+
 /**
  * sendBookingConfirmation
  * Accepts either:
@@ -149,6 +174,15 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
   }
 
   const customerEmail = booking.email || (Array.isArray(to) ? to[0] : to) || "N/A";
+  const bookingLocation = String(booking.location || "vienna").trim().toLowerCase();
+  const bookingRecipient = getBookingRecipient(bookingLocation);
+  const rawRecipient = Array.isArray(to) ? to[0] : String(to || "");
+  const targetRecipient =
+    booking && rawRecipient && rawRecipient.toLowerCase() === String(booking.email || "").toLowerCase()
+      ? rawRecipient
+      : bookingRecipient;
+  const customerFields = getBookingCustomerFields(booking);
+
   // inline SVGs for theme-colored icons
   const svg = {
     location: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#0097b2" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>`,
@@ -167,36 +201,42 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
   <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
       <div style="background: linear-gradient(90deg, #5be3e3, #0097b2); padding: 20px; text-align: center; color: #fff;">
-        <h1 style="margin: 0; font-size: 24px;">Buchungsbestätigung</h1>
+        <h1 style="margin: 0; font-size: 24px;">Anfragebestätigung</h1>
       </div>
       <div style="padding: 20px;">
         <p style="font-size: 16px;">Hallo <strong>${booking.name || "Customer"}</strong>,</p>
         <p style="font-size: 16px; line-height: 1.5;">
-          Deine Buchung wurde bestätigt.<strong> 🎉 </strong> 
-          Nachfolgend die Details.
+          Vielen Dank für Ihre Anfrage. Wir haben Ihre Anfrage erhalten und werden uns telefonisch bei Ihnen melden, um den Termin zu besprechen und zu bestätigen.
         </p>
         <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.location} Standort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.location || "vienna").toLowerCase() === "graz" ? "Graz" : "Wien"}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.location} Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.address || "N/A"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>👤 Vorname</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerFields.firstName}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>👤 Nachname</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerFields.lastName}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏠 Straßenname</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerFields.streetName}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏡 Hausnummer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerFields.houseNumber}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🚪 Türnummer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerFields.doorNumber}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏢 Gebäudenummer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerFields.buildingNumber}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📮 Postleitzahl</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerFields.postalCode}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Ort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerFields.city}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.calendar} Datum</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatGermanDate(booking.date)}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.clock} Uhrzeit</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time || "N/A"}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.broom} Reinigungsart</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.typeOfCleaning || "N/A"}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.timer} Dauer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} Stunden</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.phone} Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.mail} E-Mail</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerEmail}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.phone} Telefonnummer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="tel:${customerFields.phone}">${customerFields.phone}</a></td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${svg.mail} E-Mail-Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="mailto:${customerFields.email}">${customerFields.email}</a></td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Fenster</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.windows ? booking.windows : '—'}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Anmerkungen</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.notes || "").toString().trim() ? (booking.notes || "").toString().trim().replace(/\n/g, "<br />") : "Keine"}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Verlängerung möglich</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatYesNo(booking.renegotiate)}</td></tr>
         </table>
         <p style="margin-top: 20px; font-size: 15px;">
-          Wenn Sie Änderungen vornehmen möchten, antworten Sie einfach auf diese E-Mail – wir helfen Ihnen gerne weiter.
+          Vielen Dank für Ihre Anfrage. Wir haben Ihre Anfrage erhalten. Unser Team wird sich telefonisch bei Ihnen melden, um den Termin zu besprechen und zu bestätigen.
         </p>
         <p style="font-size: 15px; margin-top: 20px;">
           Mit freundlichen Grüßen,<br />
           <strong>PutzELF Team</strong>
         </p>
         <p style="font-size: 14px; margin-top: 20px; line-height: 1.5; color: #555;">
-          Bitte beachten Sie: Online-Buchungen werden spätestens am nächsten Werktag bearbeitet. Für eine sofortige Bestätigung kontaktieren Sie uns am besten telefonisch.
+          Bitte beachten Sie: Der Termin wird nach Rücksprache mit Ihnen telefonisch bestätigt.
         </p>
       </div>
       <div style="background: #f1f1f1; padding: 20px; text-align: center; font-size: 13px; color: #666;">
@@ -224,16 +264,17 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
 
   try {
     const transporter = await getTransporter();
+    const resolvedTo = targetRecipient;
     console.log("Sending booking confirmation email", {
       from: SMTP_FROM,
-      to: Array.isArray(to) ? to.join(", ") : to,
+      to: resolvedTo,
       subject: "Buchungsbestätigung – PutzELF",
     });
     const info = await transporter.sendMail({
       from: `"PutzELF" <${SMTP_FROM}>`,
-      to: Array.isArray(to) ? to.join(", ") : to,
-      subject: "Buchungsbestätigung – PutzELF",
-      text: "Ihre Buchung wurde bestätigt. Bitte prüfen Sie die Details in der E-Mail.",
+      to: resolvedTo,
+      subject: "Anfragebestätigung – PutzELF",
+      text: "Vielen Dank für Ihre Anfrage. Wir haben Ihre Anfrage erhalten. Unser Team meldet sich telefonisch bei Ihnen, um den Termin zu besprechen und zu bestätigen.",
       html: htmlContent,
     });
 

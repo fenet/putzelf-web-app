@@ -5,7 +5,7 @@ const resources = {
   en: {
     translation: {
       nav: {
-        bookNow: "Book an Appointment Now",
+        bookNow: "Start an Inquiry",
         phone: "+43 676 6300167",
         email: "office@putzelf.com"
       },
@@ -470,17 +470,17 @@ const resources = {
           message: "Message"
         },
         bookingContact: {
-          title: "Title (optional)",
-          firstName: "First Name",
-          lastName: "Last Name",
-          streetName: "Street Name",
-          houseNumber: "House Number",
-          doorNumber: "Door Number",
-          buildingNumber: "Building Number (optional)",
-          postalCode: "Postal Code",
-          city: "City",
-          phone: "Phone Number",
-          email: "Email Address"
+          title: "Title",
+          firstName: "First Name *",
+          lastName: "Last Name *",
+          streetName: "Street Name *",
+          houseNumber: "House No.*",
+          doorNumber: "Door No. *",
+          buildingNumber: "Building No. *",
+          postalCode: "Postal Code *",
+          city: "City *",
+          phone: "Phone Number *",
+          email: "Email Address *"
         },
         locations: {
           vienna: "Vienna / Wien",
@@ -503,22 +503,61 @@ const resources = {
         }
       },
       cookies: {
-        msg: "We use cookies to improve your experience. We also use Google tracking and may process lead information (contact details) to respond to inquiries. By using our site, you agree to our ",
+        msg: "We only activate analytics and marketing tools after your explicit consent. No tracking is active until you accept. Please review our ",
         privacyPolicy: "Privacy Policy",
         decline: "Decline",
         accept: "Accept"
       },
+      privacyPolicy: {
+        title: "Privacy Policy",
+        intro: "This website privacy notice explains which personal data we may process, for which purposes, how long we keep it, and what choices you have regarding consent and tracking.",
+        lastUpdated: "Last updated",
+        sections: {
+          overview: {
+            title: "1. Overview",
+            body: "We process personal data only to the extent necessary to provide and improve our cleaning services, respond to inquiries, and manage bookings. We do not use non-essential tracking tools until you explicitly accept cookies and tracking.",
+          },
+          data: {
+            title: "2. Data we process",
+            body: "Depending on the service request, we may process your name, phone number, email address, address details, preferred date and time, cleaning type, and any additional notes you provide in the contact or booking form.",
+          },
+          purposes: {
+            title: "3. Purpose of processing",
+            body: "We use your data to answer your inquiry, prepare an offer, coordinate a cleaning appointment, communicate with you about the request, and maintain our service quality and operational records."
+          },
+          tracking: {
+            title: "4. Cookies and tracking",
+            body: "Tracking, analytics, marketing, and advertising tools are disabled by default. These services are only initialized after you explicitly accept cookies. Until then, we do not activate Google Analytics, Google Ads, Meta Pixel or similar tools, and we do not create tracking cookies for non-essential marketing and analytics purposes."
+          },
+          retention: {
+            title: "5. Retention and sharing",
+            body: "We keep information only as long as necessary for the relevant service, legal obligations, and operational records. We do not share personal data with third parties for marketing purposes without your consent. If a service provider is involved, they only receive the minimum data required to fulfill the request."
+          },
+          rights: {
+            title: "6. Your rights",
+            body: "You may ask for access, correction, deletion, or restriction of your personal data, and you may withdraw consent at any time where processing is based on consent. Please contact us using the details listed below if you want to exercise these rights."
+          },
+          contact: {
+            title: "7. Contact",
+            body: "If you have questions about this privacy policy or your personal data, please contact us by email at office@putzelf.com or by phone at +43 676 6300167."
+          },
+          disclaimer: {
+            title: "8. Important note",
+            body: "This page is a website privacy notice and not a substitute for formal legal advice. Exact legal requirements may vary by case and jurisdiction."
+          }
+        }
+      },
       home: {
-        title: "Book a cleaning",
+        title: "Request a cleaning",
         locationModal: {
-          title: "Where would you like to book the cleaning?",
+          title: "Where would you like to request the cleaning?",
           prompt: "Select the city for your service",
           vienna: "Vienna",
           graz: "Graz",
           validation: "Please choose a location to continue."
         },
-        successTitle: "Booking confirmed",
-        successMessage: "Thank you — your booking is confirmed.",
+        successTitle: "Inquiry sent successfully",
+        successMessage: "Thank you! Your inquiry has been successfully submitted.",
         bookingId: "Booking ID: {{id}}",
         serviceLocationLabel: "Service location:",
         selectType: "Choose a cleaning type",
@@ -558,7 +597,8 @@ const resources = {
         durationHelp: "Minimum booking is 2 hours.",
         estimated: "Estimated price",
         rate: "Rate: €{{rate}}/hour",
-        submit: "Submit",
+        submit: "Send Request",
+        submitInquiry: "Send Request",
         alerts: {
           missing: "Please fill date, time and select a cleaning type.",
           createError: "Error creating booking: {{msg}}",
@@ -585,8 +625,8 @@ const resources = {
         premiumNotice: "Premium add-ons adjust the hourly rate.",
         renegotiateLabel: "Allow renegotiation if the job needs more time",
         resetBtn: "Reset selection",
-        cta: "Start Booking",
-        disclaimer: "This is an estimate. Final pricing is confirmed during booking.",
+        cta: "Request a Booking",
+        disclaimer: "This is an estimate. Final pricing is confirmed after your inquiry is reviewed.",
         taxLabel: "Tax (20%)"
       },
 
@@ -597,7 +637,7 @@ const resources = {
         title: "Order",
         quoteRequestTitle: "Quote request",
         loading: "Loading booking...",
-        confirmTitle: "Confirm Your Booking",
+        confirmTitle: "Request a Booking",
         summary: "Booking Summary",
         date: "Date",
         time: "Time",
@@ -605,7 +645,7 @@ const resources = {
         duration: "Duration",
         durationUnit: "hours",
         price: "Price",
-        enterDetails: "Enter your details to confirm",
+        enterDetails: "Enter your details to request a cleaning",
         placeholders: {
           name: "Full name",
           email: "Email",
@@ -626,10 +666,10 @@ const resources = {
         },
         gdprPrefix: "I agree to the processing of my personal data in accordance with the ",
         gdprLink: "Privacy Policy (GDPR)",
-        confirming: "Confirming...",
-        confirmBtn: "Confirm Booking",
-        confirmedTitle: "Booking confirmed ✅",
-        confirmedMsg: "A confirmation email has been sent to {{email}}.",
+        confirming: "Sending request...",
+        confirmBtn: "Request a Booking",
+        confirmedTitle: "Inquiry sent successfully",
+        confirmedMsg: "Thank you! Your inquiry has been successfully submitted. A member of our team will contact you to confirm the appointment.",
         bookingId: "Booking ID: {{id}}",
         errorPrefix: ""
       }
@@ -638,7 +678,7 @@ const resources = {
   de: {
     translation: {
       nav: {
-        bookNow: "Jetzt Termin buchen",
+        bookNow: "Anfrage starten",
         phone: "+43 676 6300167",
         email: "office@putzelf.com"
       },
@@ -1102,17 +1142,17 @@ const resources = {
           message: "Nachricht"
         },
         bookingContact: {
-          title: "Titel (optional)",
-          firstName: "Vorname",
-          lastName: "Nachname",
-          streetName: "Straßenname",
-          houseNumber: "Hausnummer",
-          doorNumber: "Türnummer",
-          buildingNumber: "Hausnummer Zusatz (optional)",
-          postalCode: "Postleitzahl",
-          city: "Ort",
-          phone: "Telefonnummer",
-          email: "E-Mail-Adresse"
+          title: "Titel",
+          firstName: "Vorname *",
+          lastName: "Nachname *",
+          streetName: "Straßenname *",
+          houseNumber: "Hausnummer *",
+          doorNumber: "Türnummer *",
+          buildingNumber: "Gebäudenummer",
+          postalCode: "Postleitzahl *",
+          city: "Ort *",
+          phone: "Telefonnummer *",
+          email: "E-Mail-Adresse *"
         },
         locations: {
           vienna: "Wien",
@@ -1143,22 +1183,61 @@ const resources = {
         }
       },
       cookies: {
-        msg: "Wir verwenden Cookies, um Ihr Erlebnis zu verbessern. Wir nutzen auch Google-Tracking und können Lead-Informationen (Kontaktdaten) verarbeiten, um auf Anfragen zu reagieren. Durch die Nutzung unserer Website stimmen Sie unserer ",
+        msg: "Wir verwenden technisch notwendige Cookies, um die Sicherheit unserer Website zu gewährleisten. Mit Ihrer Einwilligung nutzen wir zudem Analyse-Tools (wie Google Analytics und Leadinfo), um unser Angebot zu verbessern und Unternehmensbesuche zu analysieren. Ein Tracking erfolgt erst nach Ihrer Zustimmung. Sie können Ihre Einwilligung erteilen, ablehnen oder in unserer Datenschutzerklärung mehr dazu erfahren.",
         privacyPolicy: "Datenschutzerklärung",
         decline: "Ablehnen",
         accept: "Akzeptieren"
       },
+      privacyPolicy: {
+        title: "Datenschutzerklärung",
+        intro: "Diese Datenschutzerklärung erklärt, welche personenbezogenen Daten wir verarbeiten, zu welchen Zwecken, wie lange wir sie aufbewahren und welche Rechte Sie in Bezug auf Einwilligungen und Tracking haben.",
+        lastUpdated: "Stand",
+        sections: {
+          overview: {
+            title: "1. Überblick",
+            body: "Wir verarbeiten personenbezogene Daten nur insoweit, wie dies für die Bereitstellung und Verbesserung unserer Reinigungsleistungen, die Beantwortung von Anfragen und die Verwaltung von Buchungen erforderlich ist. Nicht notwendige Tracking-Tools werden erst aktiviert, wenn Sie Cookies und Tracking ausdrücklich akzeptieren."
+          },
+          data: {
+            title: "2. Verarbeitete Daten",
+            body: "Je nach Anfrage können wir Ihren Namen, Ihre Telefonnummer, Ihre E-Mail-Adresse, Adressdaten, bevorzugtes Datum und Uhrzeit, die gewünschte Reinigungsart sowie zusätzliche Hinweise aus dem Kontakt- oder Buchungsformular verarbeiten."
+          },
+          purposes: {
+            title: "3. Zwecke der Verarbeitung",
+            body: "Wir nutzen Ihre Daten, um Ihre Anfrage zu beantworten, ein Angebot vorzubereiten, einen Reinigungstermin zu koordinieren, mit Ihnen zu kommunizieren und die Qualität und Organisation unserer Leistungen zu gewährleisten."
+          },
+          tracking: {
+            title: "4. Cookies und Tracking",
+            body: "Tracking, Analyse- und Marketing-Tools sind standardmäßig deaktiviert. Diese Dienste werden erst nach Ihrer ausdrücklichen Cookie-Einwilligung initialisiert. Bis dahin aktivieren wir kein Google Analytics, Google Ads, Meta Pixel oder ähnliche Tools und erstellen keine nicht notwendigen Tracking-Cookies für Marketing oder Analysezwecke."
+          },
+          retention: {
+            title: "5. Aufbewahrung und Weitergabe",
+            body: "Wir speichern Informationen nur so lange, wie es für den jeweiligen Service, rechtliche Verpflichtungen und interne Betriebsabläufe erforderlich ist. Wir geben personenbezogene Daten nicht ohne Ihre Einwilligung an Dritte für Marketingzwecke weiter. Falls ein Dienstleister beteiligt ist, erhält dieser nur die minimal erforderlichen Daten zur Aufgabenerfüllung."
+          },
+          rights: {
+            title: "6. Ihre Rechte",
+            body: "Sie können Auskunft, Berichtigung, Löschung oder Einschränkung Ihrer personenbezogenen Daten verlangen und Ihre Einwilligung jederzeit widerrufen, soweit die Verarbeitung auf Einwilligung beruht. Bitte kontaktieren Sie uns über die unten genannten Angaben, wenn Sie Ihre Rechte ausüben möchten."
+          },
+          contact: {
+            title: "7. Kontakt",
+            body: "Wenn Sie Fragen zur Datenschutzerklärung oder zu Ihren personenbezogenen Daten haben, erreichen Sie uns per E-Mail unter office@putzelf.com oder telefonisch unter +43 676 6300167."
+          },
+          disclaimer: {
+            title: "8. Wichtiger Hinweis",
+            body: "Diese Seite dient als Website-Information und ersetzt keine fachliche Rechtsberatung. Die genauen rechtlichen Anforderungen können je nach Fall und Rechtsprechung variieren."
+          }
+        }
+      },
       home: {
-        title: "Reinigung buchen",
+        title: "Reinigung anfragen",
         locationModal: {
-          title: "Wo möchten Sie die Reinigung buchen?",
+          title: "Wo möchten Sie die Reinigung anfragen?",
           prompt: "Wählen Sie die Stadt für Ihre Dienstleistung",
           vienna: "Wien",
           graz: "Graz",
           validation: "Bitte wählen Sie einen Ort, um fortzufahren."
         },
-        successTitle: "Buchung bestätigt",
-        successMessage: "Vielen Dank – Ihre Buchung wurde bestätigt.",
+        successTitle: "Anfrage erfolgreich gesendet",
+        successMessage: "Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt.",
         bookingId: "Buchungs-ID: {{id}}",
         serviceLocationLabel: "Servicestandort:",
         selectType: "Reinigungsart auswählen",
@@ -1181,8 +1260,8 @@ const resources = {
         },
         contact: {
           name: "Vollständiger Name",
-          phone: "Telefonnummer",
-          email: "E-Mail-Adresse",
+          phone: "Telefonnummer*",
+          email: "E-Mail-Adresse*",
           address: "Straße,Hausnummer,Türnummer"
         },
         descriptions: {
@@ -1214,7 +1293,8 @@ const resources = {
         durationHelp: "Mindestbuchung ist 2 Stunden.",
         estimated: "Geschätzter Preis",
         rate: "Preis: €{{rate}}/Stunde",
-        submit: "Jetzt anfragen",
+        submit: "Anfragebestätigung",
+        submitInquiry: "Anfragebestätigung",
         alerts: {
           missing: "Bitte Datum, Uhrzeit ausfüllen und eine Reinigungsart wählen.",
           createError: "Fehler bei der Erstellung der Buchung: {{msg}}",
@@ -1241,8 +1321,8 @@ const resources = {
         premiumNotice: "Premium-Extras beeinflussen den Stundensatz.",
         renegotiateLabel: "Nachverhandlung erlauben, falls mehr Zeit nötig ist",
         resetBtn: "Auswahl zurücksetzen",
-        cta: "Buchung starten",
-        disclaimer: "Dies ist eine Schätzung. Der finale Preis wird bei der Buchung bestätigt.",
+        cta: "Buchung anfragen",
+        disclaimer: "Dies ist eine Schätzung. Der finale Preis wird nach Prüfung Ihrer Anfrage bestätigt.",
         taxLabel: "Umsatzsteuer (20%)"
       },
       windowModal: {
@@ -1288,10 +1368,10 @@ const resources = {
         gdprPrefix: "Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäß ",
         gdprText: "Ich stimme zu, dass meine Daten für die Buchung verarbeitet und ich bezüglich dieser Buchung kontaktiert werde.",
         gdprLink: "Datenschutzerklärung (DSGVO)",
-        confirming: "Wird bestätigt...",
+        confirming: "Anfrage wird gesendet...",
         confirmBtn: "Buchung anfragen",
-        confirmedTitle: "Buchung bestätigt ✅",
-        confirmedMsg: "Eine Bestätigungs-E-Mail wurde an {{email}} gesendet.",
+        confirmedTitle: "Anfrage erfolgreich gesendet",
+        confirmedMsg: "Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt. Unser Team meldet sich telefonisch bei Ihnen, um den Termin zu besprechen und zu bestätigen.",
         bookingId: "Buchungs-ID: {{id}}",
         errorPrefix: ""
       }

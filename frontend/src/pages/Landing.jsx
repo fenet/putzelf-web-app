@@ -391,7 +391,7 @@ export default function Landing() {
           <div className="bg-white p-6 rounded-xl shadow-lg max-w-md text-center space-y-4">
             <p className="text-gray-700">
               {t("cookies.msg")}
-              <Link to="/privacy" className="underline text-[#5be3e3]">
+              <Link to={getLocalizedPath(locale, "privacy")} className="underline text-[#5be3e3]">
                 {t("cookies.privacyPolicy")}
               </Link>
               .

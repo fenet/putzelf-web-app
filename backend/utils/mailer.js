@@ -115,6 +115,31 @@ function formatYesNo(value) {
   return value ? "Ja" : "Nein";
 }
 
+function getBookingRecipient(location) {
+  const normalizedLocation = String(location || "vienna").trim().toLowerCase();
+  return normalizedLocation === "graz" ? "graz.booking@putzelf.com" : "wien.booking@putzelf.com";
+}
+
+function getBookingCustomerFields(booking = {}) {
+  const rawPhone = booking.phone || "N/A";
+  const rawEmail = booking.email || "N/A";
+  const rawName = booking.name || "";
+  const nameParts = String(rawName).trim().split(/\s+/).filter(Boolean);
+
+  return {
+    firstName: booking.firstName || nameParts[0] || "N/A",
+    lastName: booking.lastName || nameParts.slice(1).join(" ") || "N/A",
+    streetName: booking.streetName || "N/A",
+    houseNumber: booking.houseNumber || "N/A",
+    doorNumber: booking.doorNumber || "N/A",
+    buildingNumber: booking.buildingNumber || "N/A",
+    postalCode: booking.postalCode || "N/A",
+    city: booking.city || "N/A",
+    phone: rawPhone,
+    email: rawEmail,
+  };
+}
+
 /**
  * sendBookingConfirmation
  * Accepts either:
@@ -153,13 +178,12 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
   <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
       <div style="background: linear-gradient(90deg, #5be3e3, #0097b2); padding: 20px; text-align: center; color: #fff;">
-        <h1 style="margin: 0; font-size: 24px;">Buchungsbestätigung</h1>
+        <h1 style="margin: 0; font-size: 24px;">Anfragebestätigung</h1>
       </div>
       <div style="padding: 20px;">
         <p style="font-size: 16px;">Hallo <strong>${booking.name || "Customer"}</strong>,</p>
         <p style="font-size: 16px; line-height: 1.5;">
-          Deine Buchung wurde bestätigt.<strong> 🎉 </strong> 
-          Nachfolgend die Details.
+          Vielen Dank für Ihre Anfrage. Wir haben Ihre Anfrage erhalten und werden uns telefonisch bei Ihnen melden, um den Termin zu besprechen und zu bestätigen.
         </p>
         <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Standort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.location || "vienna").toLowerCase() === "graz" ? "Graz" : "Wien"}</td></tr>
@@ -175,14 +199,14 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🔄 Verlängerung möglich</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatYesNo(booking.renegotiate)}</td></tr>
         </table>
         <p style="margin-top: 20px; font-size: 15px;">
-          Wenn Sie Änderungen vornehmen möchten, antworten Sie einfach auf diese E-Mail – wir helfen Ihnen gerne weiter.
+          Vielen Dank für Ihre Anfrage. Wir haben Ihre Anfrage erhalten. Unser Team wird sich telefonisch bei Ihnen melden, um den Termin zu besprechen und zu bestätigen.
         </p>
         <p style="font-size: 15px; margin-top: 20px;">
           Mit freundlichen Grüßen,<br />
           <strong>PutzELF Team</strong>
         </p>
         <p style="font-size: 14px; margin-top: 20px; line-height: 1.5; color: #555;">
-          Bitte beachten Sie: Online-Buchungen werden spätestens am nächsten Werktag bearbeitet. Für eine sofortige Bestätigung kontaktieren Sie uns am besten telefonisch.
+          Bitte beachten Sie: Der Termin wird nach Rücksprache mit Ihnen telefonisch bestätigt.
         </p>
       </div>
       <div style="background: #f1f1f1; padding: 20px; text-align: center; font-size: 13px; color: #666;">
@@ -210,16 +234,17 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
 
   try {
     const transporter = await getTransporter();
+    const resolvedTo = targetRecipient;
     console.log("Sending booking confirmation email", {
       from: SMTP_FROM,
-      to: Array.isArray(to) ? to.join(", ") : to,
+      to: resolvedTo,
       subject: "Buchungsbestätigung – PutzELF",
     });
     const info = await transporter.sendMail({
       from: `"PutzELF" <${SMTP_FROM}>`,
-      to: Array.isArray(to) ? to.join(", ") : to,
-      subject: "Buchungsbestätigung – PutzELF",
-      text: "Ihre Buchung wurde bestätigt. Bitte prüfen Sie die Details in der E-Mail.",
+      to: resolvedTo,
+      subject: "Anfragebestätigung – PutzELF",
+      text: "Vielen Dank für Ihre Anfrage. Wir haben Ihre Anfrage erhalten. Unser Team meldet sich telefonisch bei Ihnen, um den Termin zu besprechen und zu bestätigen.",
       html: htmlContent,
     });
 
@@ -306,6 +331,8 @@ export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
     throw new Error("Missing recipient (to).");
   }
 
+  const bookingCustomerFields = getBookingCustomerFields(booking || {});
+
   const htmlContent = `
   <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
@@ -318,12 +345,17 @@ export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
           vielen Dank für Ihre Anfrage. Wir melden uns so schnell wie möglich bei Ihnen.
         </p>
         <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>👤 Name</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.name || "N/A"}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏢 Firma</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.company || "—"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>👤 Vorname</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${bookingCustomerFields.firstName}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>👤 Nachname</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${bookingCustomerFields.lastName}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏠 Straßenname</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${bookingCustomerFields.streetName}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏡 Hausnummer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${bookingCustomerFields.houseNumber}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🚪 Türnummer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${bookingCustomerFields.doorNumber}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏢 Gebäudenummer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${bookingCustomerFields.buildingNumber}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📮 Postleitzahl</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${bookingCustomerFields.postalCode}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Ort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${bookingCustomerFields.city}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Standort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking?.location || 'vienna').toLowerCase() === 'graz' ? 'Graz' : 'Wien'}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🏠 Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.address || "—"}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📧 E-Mail</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.email || "N/A"}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.phone || "N/A"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefonnummer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="tel:${bookingCustomerFields.phone}">${bookingCustomerFields.phone}</a></td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📧 E-Mail-Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="mailto:${bookingCustomerFields.email}">${bookingCustomerFields.email}</a></td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>💬 Nachricht</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking?.message || "").toString().trim().replace(/\n/g, "<br />") || "—"}</td></tr>
         </table>
         <p style="margin-top: 20px; font-size: 15px;">
@@ -339,14 +371,15 @@ export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
   `;
 
   const transporter = await getTransporter();
+  const resolvedTo = getBookingRecipient(booking?.location || "vienna");
   console.log("Sending quote request email", {
     from: SMTP_FROM,
-    to: Array.isArray(to) ? to.join(", ") : to,
+    to: resolvedTo,
     subject: "Ihre Anfrage bei PutzELF",
   });
   const info = await transporter.sendMail({
     from: `"PutzELF" <${SMTP_FROM}>`,
-    to: Array.isArray(to) ? to.join(", ") : to,
+    to: resolvedTo,
     subject: "Ihre Anfrage bei PutzELF",
     text: `Vielen Dank für Ihre Anfrage. Name: ${booking?.name || "N/A"}, Firma: ${booking?.company || "—"}, Standort: ${(booking?.location || 'vienna')}, Adresse: ${booking?.address || "—"}, E-Mail: ${booking?.email || "N/A"}, Telefon: ${booking?.phone || "N/A"}, Nachricht: ${booking?.message || "—"}`,
     html: htmlContent,

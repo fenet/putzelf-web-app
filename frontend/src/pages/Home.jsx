@@ -753,8 +753,8 @@ export default function Home() {
                 numberOfPieces={150}
               />
             )}
-            <h2 className="text-2xl font-bold mb-2">{t("home.successTitle", { defaultValue: "Booking confirmed" })}</h2>
-            <p className="mb-4">{t("home.successMessage", { defaultValue: "Thank you — your booking is confirmed." })}</p>
+            <h2 className="text-2xl font-bold mb-2">{t("home.successTitle", { defaultValue: "Inquiry sent successfully" })}</h2>
+            <p className="mb-4">{t("home.successMessage", { defaultValue: "Thank you! Your inquiry has been successfully submitted." })}</p>
             <p className="text-sm text-gray-600">{t("home.bookingId", { id: successBooking.id, defaultValue: `Booking ID: ${successBooking.id}` })}</p>
           </div>
         ) : (
@@ -843,7 +843,7 @@ export default function Home() {
     </div>
   </div>
 
-  {/* Soft alternative */}
+  {/* Soft alternative: hidden temporarily
   <div className="mt-3 flex items-center justify-center gap-2 text-sm text-gray-500">
     <span>
       {t("home.flow.calculatorPrompt", {
@@ -866,6 +866,7 @@ export default function Home() {
       <span className="ml-1">→</span>
     </button>
   </div>
+  */}
 </div>
           </div>
           <div>
@@ -1296,7 +1297,7 @@ export default function Home() {
             className="w-full py-3 text-lg font-semibold text-black rounded-lg"
             style={{ backgroundColor: "#5be3e3" }}
           >
-            {t("home.submit")}
+            {t("home.submitInquiry")}
           </button>
           </form>
         )}

@@ -32,11 +32,11 @@ import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from 
 
 const content = {
   en: {
-    navCta: "Start Booking",
+    navCta: "Start an Inquiry",
     heroTitle: "Professional Cleaning Services for Businesses",
     heroSubtitle: "Reliable cleaning for offices, restaurants, and retail spaces with consistent quality and flexible schedules.",
     heroPrimaryCta: "Start an Inquiry",
-    heroSecondaryCta: "Start Booking",
+    heroSecondaryCta: "Start an Inquiry",
     trust: ["4.9/5 Average Rating", "500+ Completed Jobs", "Trusted by Local Businesses"],
     socialTitle: "Trusted by Growing Teams",
     socialSubtitle: "Real feedback from businesses that rely on us every week.",
@@ -77,7 +77,7 @@ const content = {
     ],
     processTitle: "How It Works",
     process: [
-      "Booking",
+      "Inquiry",
       "Short call or on-site visit",
       "Receive a customized offer",
       "Cleaning service starts",
@@ -102,7 +102,7 @@ const content = {
       },
     ],
     finalTitle: "Ready for Reliable Cleaning?",
-    finalSubtitle: "Book your free consultation or contact us directly.",
+    finalSubtitle: "Request your free consultation or contact us directly.",
     finalCta: "Start an Inquiry",
     heroSecondaryNote: "Call or request a consultation for quick scheduling.",
     callNow: "Call now",
@@ -120,13 +120,13 @@ const content = {
     gdprText: "GDPR-compliant processes",
   },
   de: {
-    navCta: "Buchung starten",
+    navCta: "Anfrage starten",
     heroTitle: "Professionelle Reinigung:",
     heroTitleLine2: "Putzfrau in Wien gesucht? PutzELF gefunden",
     heroSubtitle:
       "Zuverlässige Unterhaltsreinigung für Büro, Gastro und Praxis – mit gleichbleibender Qualität und flexiblen Zeiten.",
     heroPrimaryCta: "Anfrage starten",
-    heroSecondaryCta: "Buchung starten",
+    heroSecondaryCta: "Anfrage starten",
     trust: ["4,9/5 Durchschnittsbewertung", "500+ Abgeschlossene Aufträge", "Vertrauen von lokalen Unternehmen"],
     socialTitle: "Vertrauen von wachsenden Teams",
     socialSubtitle: "Echtes Feedback von Unternehmen, die wöchentlich auf uns setzen.",
@@ -164,7 +164,7 @@ const content = {
     ],
     processTitle: "So funktioniert es",
     process: [
-      "Buchung",
+      "Anfrage",
       "Kurzer Anruf oder Vor-Ort-Termin",
       "Individuelles Angebot erhalten",
       "Reinigungsservice startet",
@@ -189,7 +189,7 @@ const content = {
       },
     ],
     finalTitle: "Bereit für zuverlässige Reinigung?",
-    finalSubtitle: "Buchen Sie Ihre kostenlose Beratung oder kontaktieren Sie uns direkt.",
+    finalSubtitle: "Fordern Sie Ihre kostenlose Beratung an oder kontaktieren Sie uns direkt.",
     finalCta: "Anfrage starten",
     heroSecondaryNote: "Rufen Sie uns an oder fordern Sie eine Beratung für schnelle Terminvereinbarung an.",
     callNow: "Jetzt anrufen",
@@ -624,7 +624,7 @@ export default function LandingAlternative() {
           <div className="bg-white p-6 rounded-xl shadow-lg max-w-md text-center space-y-4">
             <p className="text-gray-700">
               {t("cookies.msg")}
-              <Link to="/privacy" className="underline text-[#5be3e3]">
+              <Link to={getLocalizedPath(lang, "privacy")} className="underline text-[#5be3e3]">
                 {t("cookies.privacyPolicy")}
               </Link>
               .

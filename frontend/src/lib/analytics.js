@@ -1,17 +1,23 @@
 import { apiFetch } from "./api";
 
+const COOKIE_CONSENT_KEY = "cookieConsent";
+
 let initialized = false;
 let gaId = null;
 let fbId = null;
-let consentGranted = null; // null=unknown, true/false stored
+let consentGranted = false;
 
-function getStoredConsent() {
+export function hasAnalyticsConsent() {
   try {
-    const val = localStorage.getItem('cookieConsent');
-    return val === 'true';
+    const value = String(localStorage.getItem(COOKIE_CONSENT_KEY) || "").trim().toLowerCase();
+    return value === "true" || value === "accepted" || value === "yes";
   } catch (_) {
     return false;
   }
+}
+
+function getStoredConsent() {
+  return hasAnalyticsConsent();
 }
 
 function loadGa(measurementId) {
@@ -69,7 +75,7 @@ export function initAnalytics({ gaMeasurementId, fbPixelId }) {
 }
 
 export function trackPageview(pathname) {
-  if (!pathname) return;
+  if (!pathname || !hasAnalyticsConsent()) return;
   try {
     if (window.gtag && gaId) {
       window.gtag('event', 'page_view', { page_path: pathname });
@@ -101,7 +107,7 @@ export function trackPageview(pathname) {
 }
 
 export function trackEvent(eventName, params = {}) {
-  if (!eventName) return;
+  if (!eventName || !hasAnalyticsConsent()) return;
   try {
     if (window.gtag && gaId) {
       window.gtag('event', eventName, params || {});

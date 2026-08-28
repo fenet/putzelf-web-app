@@ -23,6 +23,7 @@ import Home from "./pages/Home";
 import Order from "./pages/Order";
 import Search from "./pages/Search";
 import Imprint from "./pages/Imprint";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 // Profile page removed; redirects will send users elsewhere
 import Footer from "./components/Footer";
 import LogoHeader from "./components/LogoHeader";
@@ -98,6 +99,8 @@ export default function App() {
         <Route path="/kontakt" element={<LegacyRedirect to="/de/kontakt" />} />
         <Route path="/job-opening" element={<LegacyRedirect to="/de/karriere" />} />
         <Route path="/get-partners" element={<LegacyRedirect to="/de/partner-werden" />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/datenschutz" element={<LegacyRedirect to="/privacy" />} />
         <Route path="/imprint" element={<LegacyRedirect to="/de/impressum" />} />
         <Route path="/book" element={<LegacyRedirect to="/de/booking" />} />
         <Route path="/search" element={<LegacyRedirect to="/de/search" />} />
@@ -137,6 +140,7 @@ export default function App() {
           <Route path="kontakt" element={<Contact />} />
           <Route path="karriere" element={<JobOpening />} />
           <Route path="partner-werden" element={<GetPartners />} />
+          <Route path="datenschutz" element={<PrivacyPolicy />} />
           <Route path="impressum" element={<Imprint />} />
 
           <Route path="booking" element={<Layout><Home /></Layout>} />
@@ -180,6 +184,7 @@ export default function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="job-opening" element={<JobOpening />} />
           <Route path="get-partners" element={<GetPartners />} />
+          <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="imprint" element={<Imprint />} />
           <Route path="booking" element={<Layout><Home /></Layout>} />
           <Route path="order/:id" element={<Layout><Order /></Layout>} />

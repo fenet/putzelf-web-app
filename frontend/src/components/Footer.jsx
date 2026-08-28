@@ -77,11 +77,13 @@ export default function Footer() {
                   {t("footer.customers.links.priceList")}
                 </a>
               </li>
+              {/*
               <li>
                 <Link to={getLocalizedPath(locale, "calculator")} className="hover:text-gray-900 transition-colors">
                   {t("footer.customers.links.priceCalculator", { defaultValue: "Price Calculator" })}
                 </Link>
               </li>
+              */}
               <li>
                 <a href="/files/Contract.pdf" download className="hover:text-gray-900 transition-colors">
                   {t("footer.customers.links.serviceContract")}
