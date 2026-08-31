@@ -264,7 +264,7 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
 
   try {
     const transporter = await getTransporter();
-    const resolvedTo = targetRecipient;
+    const resolvedTo = to;
     console.log("Sending booking confirmation email", {
       from: SMTP_FROM,
       to: resolvedTo,

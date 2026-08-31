@@ -112,11 +112,11 @@ app.get("/api/availability/slots", async (req, res) => {
 
     const durationHours = Math.max(MIN_HOURS, Number(durationHoursRaw) || MIN_HOURS);
 
-    // Generate hourly slots 07:00 - 19:00 inclusive, but ensure slot start + duration <= 17:00
-    const closingHour = 19;
+    // Generate hourly slots 06:00 - 22:00 inclusive, but ensure slot start + duration <= 22:00
+    const closingHour = 24;
     const slotLength = Math.max(1, Math.ceil(durationHours));
     const baseSlots = [];
-    for (let h = 7; h <= 17; h += 1) {
+    for (let h = 6; h <= 24; h += 1) {
       baseSlots.push(String(h).padStart(2, "0") + ":00");
     }
 
@@ -346,22 +346,34 @@ app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
           notes: typeof notes === "string" ? notes : "",
           windows: windowsCount,
           subcategories,
+          // include structured contact/address fields from the original request so mailers can use them
+          firstName: req.body.firstName || booking.firstName || null,
+          lastName: req.body.lastName || booking.lastName || null,
+          streetName: req.body.streetName || null,
+          houseNumber: req.body.houseNumber || null,
+          doorNumber: req.body.doorNumber || null,
+          buildingNumber: req.body.buildingNumber || null,
+          postalCode: req.body.postalCode || null,
+          city: req.body.city || null,
         };
         // determine office recipient based on booking.location (server-side source of truth)
-        const officeEmail = (booking.location || "vienna").toLowerCase() === "graz" ? "office.stmk@putzelf.com" : "office@putzelf.com";
+        const officeEmailForOffice = (booking.location || "vienna").toLowerCase() === "graz" ? "office.stmk@putzelf.com" : "office@putzelf.com";
+        // Booking-specific recipient (new dedicated booking inboxes)
+        const bookingRecipient = (booking.location || "vienna").toLowerCase() === "graz" ? "graz.booking@putzelf.com" : "wien.booking@putzelf.com";
+
         if (isQuoteRequest) {
           // send only to office recipient (single recipient requirement)
           try {
-            await sendQuoteRequestConfirmation(officeEmail, emailBooking);
+            await sendQuoteRequestConfirmation(officeEmailForOffice, emailBooking);
           } catch (err) {
             console.warn("Failed to send quote request email to office:", err && (err.message || err));
           }
         } else {
-          // First send to office
+          // First send to the dedicated booking inbox
           try {
-            await sendBookingConfirmation(officeEmail, emailBooking);
+            await sendBookingConfirmation(bookingRecipient, emailBooking);
           } catch (err) {
-            console.warn("Failed to send booking email to office:", err && (err.message || err));
+            console.warn("Failed to send booking email to booking inbox:", err && (err.message || err));
           }
 
           // Then send a confirmation to the customer if email present
@@ -482,6 +494,15 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
     const emailBooking = {
       ...booking,
       notes: typeof notes === "string" ? notes : "",
+      // include structured contact/address fields from the confirmation request
+      firstName: req.body.firstName || booking.firstName || null,
+      lastName: req.body.lastName || booking.lastName || null,
+      streetName: req.body.streetName || null,
+      houseNumber: req.body.houseNumber || null,
+      doorNumber: req.body.doorNumber || null,
+      buildingNumber: req.body.buildingNumber || null,
+      postalCode: req.body.postalCode || null,
+      city: req.body.city || null,
     };
 
     const isQuoteRequest =
@@ -489,18 +510,19 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
       (existing.typeOfCleaning || "").toLowerCase() === "angebot anfragen";
 
     // determine office recipient based on booking.location (server-side)
-    const officeEmail = (booking.location || "vienna").toLowerCase() === "graz" ? "office.stmk@putzelf.com" : "office@putzelf.com";
+    const officeEmailForOffice = (booking.location || "vienna").toLowerCase() === "graz" ? "office.stmk@putzelf.com" : "office@putzelf.com";
+    const bookingRecipient = (booking.location || "vienna").toLowerCase() === "graz" ? "graz.booking@putzelf.com" : "wien.booking@putzelf.com";
     if (isQuoteRequest) {
       try {
-        await sendQuoteRequestConfirmation(officeEmail, emailBooking);
+        await sendQuoteRequestConfirmation(officeEmailForOffice, emailBooking);
       } catch (err) {
         console.warn("Failed to send quote request email to office:", err && (err.message || err));
       }
     } else {
       try {
-        await sendBookingConfirmation(officeEmail, emailBooking);
+        await sendBookingConfirmation(bookingRecipient, emailBooking);
       } catch (err) {
-        console.warn("Failed to send booking email to office:", err && (err.message || err));
+        console.warn("Failed to send booking email to booking inbox:", err && (err.message || err));
       }
 
       if (emailBooking.email) {

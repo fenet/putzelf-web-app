@@ -59,6 +59,7 @@ export default function Home() {
   const [lastNameError, setLastNameError] = useState("");
   const [streetError, setStreetError] = useState("");
   const [houseNumberError, setHouseNumberError] = useState("");
+  const [doorNumberError, setDoorNumberError] = useState("");
   const [postalError, setPostalError] = useState("");
   const [cityError, setCityError] = useState("");
   const [gdprError, setGdprError] = useState("");
@@ -163,6 +164,16 @@ export default function Home() {
       return false;
     }
     setHouseNumberError("");
+    return true;
+  };
+
+  const validateDoorNumber = (value) => {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) {
+      setDoorNumberError(t("order.errors.requiredDoorNumber", { defaultValue: "Door number is required" }));
+      return false;
+    }
+    setDoorNumberError("");
     return true;
   };
 
@@ -399,6 +410,7 @@ export default function Home() {
       if (name === "lastName") validateLastName(updatedValue);
       if (name === "streetName") validateStreetName(updatedValue);
       if (name === "houseNumber") validateHouseNumber(updatedValue);
+      if (name === "doorNumber") validateDoorNumber(updatedValue);
       if (name === "postalCode") validatePostalCode(updatedValue);
       if (name === "city") validateCity(updatedValue);
       if (name === "gdprConsent") setGdprConsent(Boolean(updatedValue));
@@ -553,14 +565,11 @@ export default function Home() {
     const sanitizedEmail = String(form.email || "").trim().replace(/\.{2,}/g, ".");
     if (sanitizedEmail !== form.email) setForm((prev) => ({ ...prev, email: sanitizedEmail }));
 
-    const nameOk = validateName(form.name) || (validateFirstName(form.firstName) && validateLastName(form.lastName));
+    const nameOk = validateFirstName(form.firstName) && validateLastName(form.lastName);
     const phoneOk = validatePhone(form.phone);
     const emailOk = validateEmail(sanitizedEmail);
     const addressOk = (
-      // accept legacy free-text OR structured address
-      validateAddress(form.location) || (
-        validateStreetName(form.streetName) && validateHouseNumber(form.houseNumber) && validatePostalCode(form.postalCode) && validateCity(form.city)
-      )
+      validateStreetName(form.streetName) && validateHouseNumber(form.houseNumber) && validatePostalCode(form.postalCode) && validateCity(form.city)
     );
     const gdprOk = gdprConsent === true;
     if (!gdprOk) {
@@ -766,47 +775,79 @@ export default function Home() {
           <div>
             <h3 className="text-lg font-medium mb-3">{t("home.contactTitle", { defaultValue: "Your contact details" })}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {/* 1. Title (optional) */}
               <div>
+                <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.title")}</label>
                 <input name="title" value={form.title} onChange={handleChange} placeholder={t("contact.bookingContact.title", { defaultValue: "Title (optional)" })} className="p-3 border rounded w-full" />
               </div>
-              <div />
 
+              {/* 2. First Name * */}
               <div>
-                <input name="firstName" value={form.firstName} onChange={handleChange} placeholder={t("contact.bookingContact.firstName", { defaultValue: "First Name" })} className="p-3 border rounded w-full" />
+                <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.firstName")}<span className="text-red-600 ml-1">*</span></label>
+                <input name="firstName" value={form.firstName} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.firstName", { defaultValue: "First Name" })} className="p-3 border rounded w-full" />
                 {firstNameError ? <p className="text-sm text-red-600 mt-1">{firstNameError}</p> : null}
               </div>
 
+              {/* 3. Last Name * */}
               <div>
-                <input name="lastName" value={form.lastName} onChange={handleChange} placeholder={t("contact.bookingContact.lastName", { defaultValue: "Last Name" })} className="p-3 border rounded w-full" />
+                <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.lastName")}<span className="text-red-600 ml-1">*</span></label>
+                <input name="lastName" value={form.lastName} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.lastName", { defaultValue: "Last Name" })} className="p-3 border rounded w-full" />
                 {lastNameError ? <p className="text-sm text-red-600 mt-1">{lastNameError}</p> : null}
               </div>
 
+              {/* 4. Street Name * and 5. House No. * */}
               <div className="flex gap-3">
-                <input name="streetName" value={form.streetName} onChange={handleChange} placeholder={t("contact.bookingContact.streetName", { defaultValue: "Street Name" })} className="p-3 border rounded w-full" />
-                <input name="houseNumber" value={form.houseNumber} onChange={handleChange} placeholder={t("contact.bookingContact.houseNumber", { defaultValue: "House Number" })} className="p-3 border rounded w-32" />
-              </div>
-              <div className="flex gap-3">
-                <input name="doorNumber" value={form.doorNumber} onChange={handleChange} placeholder={t("contact.bookingContact.doorNumber", { defaultValue: "Door Number" })} className="p-3 border rounded w-32" />
-                <input name="buildingNumber" value={form.buildingNumber} onChange={handleChange} placeholder={t("contact.bookingContact.buildingNumber", { defaultValue: "Building Number (optional)" })} className="p-3 border rounded w-full" />
-              </div>
-              <div className="flex gap-3">
-                <input name="postalCode" value={form.postalCode} onChange={handleChange} placeholder={t("contact.bookingContact.postalCode", { defaultValue: "Postal Code" })} className="p-3 border rounded w-32" />
-                <input name="city" value={form.city} onChange={handleChange} placeholder={t("contact.bookingContact.city", { defaultValue: "City" })} className="p-3 border rounded w-full" />
+                <div className="flex-1">
+                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.streetName")}<span className="text-red-600 ml-1">*</span></label>
+                  <input name="streetName" value={form.streetName} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.streetName", { defaultValue: "Street Name" })} className="p-3 border rounded w-full" />
+                  {streetError ? <p className="text-sm text-red-600 mt-1">{streetError}</p> : null}
+                </div>
+                <div className="w-32">
+                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.houseNumber")}<span className="text-red-600 ml-1">*</span></label>
+                  <input name="houseNumber" value={form.houseNumber} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.houseNumber", { defaultValue: "House No." })} className="p-3 border rounded w-full" />
+                  {houseNumberError ? <p className="text-sm text-red-600 mt-1">{houseNumberError}</p> : null}
+                </div>
               </div>
 
+              {/* 6. Door No. * and 7. Building No. * */}
+              <div className="flex gap-3">
+                <div className="w-32">
+                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.doorNumber")}<span className="text-red-600 ml-1">*</span></label>
+                  <input name="doorNumber" value={form.doorNumber} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.doorNumber", { defaultValue: "Door No." })} className="p-3 border rounded w-full" />
+                  {doorNumberError ? <p className="text-sm text-red-600 mt-1">{doorNumberError}</p> : null}
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.buildingNumber")}</label>
+                    <input name="buildingNumber" value={form.buildingNumber} onChange={handleChange} placeholder={t("contact.bookingContact.buildingNumber", { defaultValue: "Building No." })} className="p-3 border rounded w-full" />
+                </div>
+              </div>
+
+              {/* 8. Postal Code * and 9. City * */}
+              <div className="flex gap-3">
+                <div className="w-32">
+                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.postalCode")}<span className="text-red-600 ml-1">*</span></label>
+                  <input name="postalCode" value={form.postalCode} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.postalCode", { defaultValue: "Postal Code" })} className="p-3 border rounded w-full" />
+                  {postalError ? <p className="text-sm text-red-600 mt-1">{postalError}</p> : null}
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.city")}<span className="text-red-600 ml-1">*</span></label>
+                  <input name="city" value={form.city} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.city", { defaultValue: "City" })} className="p-3 border rounded w-full" />
+                  {cityError ? <p className="text-sm text-red-600 mt-1">{cityError}</p> : null}
+                </div>
+              </div>
+
+              {/* 10. Phone Number * */}
               <div>
-                <input name="phone" value={form.phone} onChange={handleChange} placeholder={t("home.contact.phone", { defaultValue: "Phone number" })} className="p-3 border rounded w-full" />
+                <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.phone")}<span className="text-red-600 ml-1">*</span></label>
+                <input name="phone" value={form.phone} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.phone", { defaultValue: "Phone number" })} className="p-3 border rounded w-full" />
                 {phoneError ? <p className="text-sm text-red-600 mt-1">{phoneError}</p> : null}
               </div>
-              <div>
-                <input name="email" value={form.email} onChange={handleChange} onBlur={handleEmailBlur} placeholder={t("home.contact.email", { defaultValue: "Email address" })} className="p-3 border rounded w-full" />
-                {emailError ? <p className="text-sm text-red-600 mt-1">{emailError}</p> : null}
-              </div>
 
-              {/* legacy free-text address fallback (hidden if structured provided) */}
-              <div className="md:col-span-2">
-                <input name="location" value={form.location} onChange={handleChange} placeholder={t("home.contact.address", { defaultValue: "Address" })} className="p-3 border rounded w-full" />
-                {addressError ? <p className="text-sm text-red-600 mt-1">{addressError}</p> : null}
+              {/* 11. Email Address * */}
+              <div>
+                <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.email")}<span className="text-red-600 ml-1">*</span></label>
+                <input name="email" value={form.email} onChange={handleChange} onBlur={handleEmailBlur} required aria-required="true" placeholder={t("contact.bookingContact.email", { defaultValue: "Email address" })} className="p-3 border rounded w-full" />
+                {emailError ? <p className="text-sm text-red-600 mt-1">{emailError}</p> : null}
               </div>
             </div>
           </div>

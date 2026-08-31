@@ -58,60 +58,119 @@
     <!-- Fallback for browsers with JavaScript disabled -->
     <noscript>
       <style>
-        .ns-container{box-sizing:border-box;padding:24px;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#ffffff;color:#0f172a}
-        .ns-card{max-width:900px;width:100%;border-radius:12px;padding:28px;border:1px solid #e6eef0;box-shadow:0 12px 30px rgba(0,0,0,0.06)}
-        .ns-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
-        .ns-logo{width:52px;height:52px;border-radius:10px;background:#0097b2;flex:0 0 52px}
-        .ns-title{font-size:20px;margin:0;color:#03393b;font-weight:700}
-        .ns-sub{margin:6px 0 14px;color:#374151}
-        .ns-actions{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
-        .ns-btn{display:inline-block;background:#0097b2;color:#fff;padding:10px 14px;border-radius:9px;text-decoration:none;font-weight:600}
-        .ns-link{display:inline-block;background:#f1f7f8;color:#0097b2;padding:10px 14px;border-radius:9px;text-decoration:none;border:1px solid #e6eef0}
-        .ns-contact{margin-top:12px;color:#475569}
+        .ns-root{box-sizing:border-box;padding:28px;min-height:100vh;background:#fff;color:#0f172a;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+        .ns-wrap{max-width:980px;margin:0 auto}
+        .ns-card{background:#fff;border-radius:12px;padding:28px;border:1px solid #e6eef0}
+        .ns-hero{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+        .ns-logo{width:56px;height:56px;border-radius:10px;background:#0097b2;flex:0 0 56px}
+        .ns-h1{font-size:22px;margin:0;color:#03393b;font-weight:800}
+        .ns-lead{margin:6px 0 14px;color:#374151}
+        .ns-section{margin-top:18px}
+        .ns-h2{font-size:16px;margin:0 0 8px;color:#03393b;font-weight:700}
+        .ns-list{margin:8px 0 0;padding-left:20px;color:#374151}
+        .ns-contact{margin-top:12px;color:#0f172a}
+        .ns-cta{display:inline-block;margin-top:14px;background:#0097b2;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+        .ns-secondary{display:inline-block;margin-left:10px;padding:10px 14px;border-radius:10px;text-decoration:none;color:#0097b2;border:1px solid #e6eef0;background:#f8fbfb}
         .ns-small{color:#6b7280;font-size:14px;margin-top:12px}
+        .ns-meta{margin-top:16px;font-size:13px;color:#475569}
+        .ns-imprint{margin-top:18px;padding-top:12px;border-top:1px dashed #e6eef0;color:#374151}
         .ns-lang{display:none}
         :root:lang(de) .ns-de{display:block}
         :root:lang(en) .ns-en{display:block}
-        @media (max-width:640px){.ns-card{padding:18px}.ns-title{font-size:18px}}
+        @media (max-width:640px){.ns-hero{flex-direction:row}.ns-h1{font-size:20px}}
       </style>
-      <div class="ns-container" role="region" aria-label="JavaScript required">
-        <div class="ns-card ns">
-          <div class="ns-head">
-            <div class="ns-logo" aria-hidden="true"></div>
-            <div>
-              <h1 class="ns-title">PutzELF</h1>
-              <div class="ns-sub">Wir benötigen JavaScript für die volle Funktionalität</div>
-            </div>
-          </div>
 
-          <div class="ns-de ns-lang">
-            <p>Diese Website benötigt JavaScript, um interaktive Funktionen wie Buchungen, Preise und Standortauswahl zu ermöglichen. Bitte aktivieren Sie JavaScript in Ihrem Browser, um die Website vollständig nutzen zu können.</p>
-            <ul>
-              <li class="ns-small">So aktivieren Sie JavaScript: Einstellungen → Datenschutz & Sicherheit → Website-Einstellungen → JavaScript einschalten</li>
-            </ul>
-            <div class="ns-contact">Kontakt: <a href="tel:+436766300167">+43 676 6300167</a> · <a href="mailto:office@putzelf.com">office@putzelf.com</a></div>
-            <div class="ns-actions">
-              <a class="ns-btn" href="mailto:office@putzelf.com?subject=Anfrage%20ohne%20JavaScript">E-Mail senden</a>
-              <a class="ns-link" href="/imprint">Impressum</a>
-            </div>
-            <p class="ns-small">Hinweis: Wenn Sie Hilfe beim Aktivieren von JavaScript benötigen, kontaktieren Sie uns bitte per Telefon oder E‑Mail. Die Seite bleibt ohne JavaScript eingeschränkt.</p>
-          </div>
+      <div class="ns-root" role="main" aria-label="PutzELF – no-JavaScript fallback">
+        <div class="ns-wrap">
+          <div class="ns-card">
+            <header class="ns-hero">
+              <div class="ns-logo" aria-hidden="true"></div>
+              <div>
+                <h1 class="ns-h1">PutzELF</h1>
+                <p class="ns-lead">Professionelle Reinigungsdienste in Wien und Graz — für Unternehmen und Privatkunden.</p>
+              </div>
+            </header>
 
-          <div class="ns-en ns-lang">
-            <p>This website requires JavaScript for full functionality such as booking, pricing and location selection. Please enable JavaScript in your browser to use the site.</p>
-            <ul>
-              <li class="ns-small">How to enable JavaScript: Settings → Privacy & security → Site settings → JavaScript (enable)</li>
-            </ul>
-            <div class="ns-contact">Contact: <a href="tel:+436766300167">+43 676 6300167</a> · <a href="mailto:office@putzelf.com">office@putzelf.com</a></div>
-            <div class="ns-actions">
-              <a class="ns-btn" href="mailto:office@putzelf.com?subject=Request%20without%20JavaScript">Send e‑mail</a>
-              <a class="ns-link" href="/imprint">Imprint</a>
-            </div>
-            <p class="ns-small">Note: If you need help enabling JavaScript, please contact us by phone or email. The site is limited without JavaScript.</p>
+            <!-- German content (default) -->
+            <section class="ns-de ns-lang">
+              <h2 class="ns-h2">Was wir tun</h2>
+              <p>PutzELF bietet zuverlässige, gut geschulte Reinigungsteams für Unterhalts-, Büro- und Sonderreinigungen. Wir übernehmen Termine, Großraumpflege, Grundreinigungen und individuelle Einsätze nach Absprache.</p>
+
+              <h2 class="ns-h2 ns-section">Warum PutzELF?</h2>
+              <p>Unsere Leistungen zeichnen sich durch hohe Zuverlässigkeit, professionelles Arbeiten und flexible Lösungen aus. Wir passen Reinigungspläne an Ihre Bedürfnisse an, arbeiten diskret und legen Wert auf sorgfältige Ausführung. PutzELF ist in Wien und Graz für private Haushalte sowie Firmenkunden verfügbar.</p>
+
+              <h2 class="ns-h2 ns-section">Unsere Services (Auszug)</h2>
+              <ul class="ns-list">
+                <li>Büroreinigung</li>
+                <li>Unterhaltsreinigung</li>
+                <li>Grund- / Tiefenreinigung</li>
+                <li>Restaurantreinigung</li>
+                <li>Glas- &amp; Rahmenreinigung</li>
+                <li>Treppenhausreinigung</li>
+                <li>Bauendreinigung / Grobreinigung</li>
+                <li>Industriereinigung &amp; Maschinen</li>
+                <li>Wohnreinigung</li>
+              </ul>
+
+              <h2 class="ns-h2 ns-section">Kontakt</h2>
+              <p class="ns-contact">Telefon: <a href="tel:+436766300167">+43 676 6300167</a><br/>E‑Mail: <a href="mailto:office@putzelf.com">office@putzelf.com</a><br/>Servicegebiete: Wien, Graz</p>
+
+              <div class="ns-actions">
+                <a class="ns-cta" href="mailto:office@putzelf.com?subject=Anfrage%20ohne%20JavaScript">Sie benötigen eine professionelle Reinigung? Kontakt per E‑Mail</a>
+                <a class="ns-secondary" href="tel:+436766300167">Telefon kontaktieren</a>
+                <a class="ns-secondary" href="/imprint">Impressum</a>
+              </div>
+
+              <p class="ns-small">Hinweis: Einige Funktionen dieser Website (z. B. Online-Buchung und Preisrechner) erfordern JavaScript. Sie können uns jederzeit per Telefon oder E‑Mail kontaktieren.</p>
+
+              <div class="ns-imprint">
+                <strong>Impressum</strong>
+                <div class="ns-meta">Sebastijan Aleksandar Kerculj — PutzELF<br/>Waagner-Biro-Straße, Graz<br/>E‑Mail: <a href="mailto:office@putzelf.com">office@putzelf.com</a> · Tel: <a href="tel:+436766300167">+43 676 6300167</a></div>
+              </div>
+            </section>
+
+            <!-- English content -->
+            <section class="ns-en ns-lang">
+              <h2 class="ns-h2">What we do</h2>
+              <p>PutzELF provides professional cleaning teams in Vienna and Graz for businesses and private households. We deliver regular maintenance cleaning, office and restaurant cleaning, deep cleans and tailored services on request.</p>
+
+              <h2 class="ns-h2 ns-section">Why choose PutzELF?</h2>
+              <p>We are known for reliable scheduling, careful workmanship and flexible cleaning solutions. Our teams adapt to your individual requirements and operate discreetly for both commercial and private clients across Vienna and Graz.</p>
+
+              <h2 class="ns-h2 ns-section">Our services (selection)</h2>
+              <ul class="ns-list">
+                <li>Office cleaning</li>
+                <li>Maintenance cleaning</li>
+                <li>Deep / intensive cleaning</li>
+                <li>Restaurant cleaning</li>
+                <li>Glass &amp; frame cleaning</li>
+                <li>Staircase cleaning</li>
+                <li>Construction / final cleaning</li>
+                <li>Industrial cleaning &amp; machinery</li>
+                <li>Home cleaning</li>
+              </ul>
+
+              <h2 class="ns-h2 ns-section">Contact</h2>
+              <p class="ns-contact">Phone: <a href="tel:+436766300167">+43 676 6300167</a><br/>E‑mail: <a href="mailto:office@putzelf.com">office@putzelf.com</a><br/>Service areas: Vienna, Graz</p>
+
+              <div class="ns-actions">
+                <a class="ns-cta" href="mailto:office@putzelf.com?subject=Request%20without%20JavaScript">Need a professional cleaning? Contact us by e‑mail</a>
+                <a class="ns-secondary" href="tel:+436766300167">Call us</a>
+                <a class="ns-secondary" href="/imprint">Imprint</a>
+              </div>
+
+              <p class="ns-small">Note: Some site features (booking, price calculator) require JavaScript. Please contact us by phone or email if you prefer not to enable JavaScript.</p>
+
+              <div class="ns-imprint">
+                <strong>Imprint</strong>
+                <div class="ns-meta">Sebastijan Aleksandar Kerculj — PutzELF<br/>Waagner-Biro-Straße, Graz<br/>E‑mail: <a href="mailto:office@putzelf.com">office@putzelf.com</a> · Tel: <a href="tel:+436766300167">+43 676 6300167</a></div>
+              </div>
+            </section>
+
           </div>
         </div>
       </div>
-      </noscript>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
