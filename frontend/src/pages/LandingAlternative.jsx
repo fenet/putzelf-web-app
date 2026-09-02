@@ -360,25 +360,19 @@ export default function LandingAlternative() {
                 ) : (
                   <div className="flex h-full min-h-[300px] items-center justify-center bg-gray-100 p-6 text-center">
                     <div>
-                      <p className="mb-2 text-sm text-gray-600">Map unavailable</p>
-                      <p className="mb-4 text-xs text-gray-500">Enable marketing consent to load Google Maps.</p>
+                      <p className="mb-2 text-sm text-gray-600">Karte nicht verfügbar</p>
+                      <p className="mb-4 text-xs text-gray-500">Aktivieren Sie die Marketing‑Einwilligung, um Google Maps zu laden.</p>
                       <button
                         type="button"
                         onClick={openSettings}
                         className="rounded px-4 py-2 bg-[#0097b2] text-white"
                       >
-                        Open cookie settings
+                        Cookie‑Einstellungen öffnen
                       </button>
                     </div>
                   </div>
                 )}
-                <a className="map-chip absolute right-4 top-4 bg-white/80 p-2 rounded" href="https://www.google.com/maps/search/?api=1&query=Waagner-Biro-Stra%C3%9Fe+Graz" target="_blank" rel="noopener noreferrer" aria-label={c.mapAria}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                    <path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 12 6 12s6-6.75 6-12c0-3.314-2.686-6-6-6z" stroke="#0f172a" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="12" cy="8" r="2.2" fill="#0f172a" />
-                  </svg>
-                  <span className="ml-2">Waagner‑Biro‑Straße, Graz</span>
-                </a>
+                
               </div>
             </div>
           </div>
