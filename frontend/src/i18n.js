@@ -16,6 +16,27 @@ const resources = {
         cancel: "Cancel",
         ok: "OK"
       },
+      cookies: {
+        heading: "Your privacy matters",
+        msg: "We use technically necessary cookies to ensure the security of our website. With your consent, we also use analytics tools (such as Google Analytics and Leadinfo) to improve our services and analyze visits. Tracking only takes place after you have given your consent. You can grant or decline your consent, or find out more in our <0>Privacy Policy</0>.",
+        /* oneTimeCleaning removed */
+        privacyPolicy: "Privacy Policy",
+        settings: "Cookie settings",
+        necessary: "Necessary only",
+        acceptAll: "Accept all",
+        preferencesTitle: "Cookie preferences",
+        preferencesIntro: "Choose which cookies you want to allow. Necessary cookies are always enabled because they are required for the website to function properly.",
+        necessaryTitle: "Necessary cookies",
+        necessaryDesc: "These cookies are required for essential website functions, security, and basic operation.",
+        alwaysOn: "Always active",
+        analyticsTitle: "Analytics cookies",
+        analyticsDesc: "These cookies help us understand how visitors use our website so we can improve our services and user experience.",
+        enable: "Enable",
+        marketingTitle: "Marketing cookies",
+        marketingDesc: "These cookies help us measure and improve our marketing activities and understand how visitors interact with our website.",
+        save: "Save preferences",
+        cancel: "Cancel"
+      },
       imprint: {
         title: "Imprint",
         companyNameTitle: "Company name",
@@ -77,6 +98,10 @@ const resources = {
         }
       },
       services: {
+        expectations: {
+          kicker: "What you can expect",
+          title: "What You Can Expect"
+        },
         standard: { title: "Standard Cleaning", desc: "Quick and efficient regular cleaning." },
         deep: { title: "Deep Cleaning", desc: "Detailed cleaning for every corner." },
         office: { title: "Office Cleaning", desc: "Professional cleaning for your office spaces." },
@@ -94,29 +119,37 @@ const resources = {
           officeCta: "Book Office Cleaning",
           // New structured services translations (private + business)
           private: {
+            expectations: [
+              { key: "analysis", title: "Individual Assessment", desc: "We assess your home and propose the right cleaning scope for lasting results." },
+              { key: "fairPrice", title: "Fair Pricing", desc: "Transparent rates with no hidden fees so you know what to expect." },
+              { key: "qualifiedStaff", title: "Qualified Staff", desc: "Experienced cleaners trained to treat your home with care and respect." },
+              { key: "fixedTeams", title: "Consistent Teams", desc: "Familiar teams deliver steady results and understand your preferences." },
+              { key: "excellentQuality", title: "Excellent Quality", desc: "High cleaning standards and checklists ensure thorough, reliable work." },
+              { key: "desiredTimes", title: "Preferred Times", desc: "Flexible appointment windows to suit your daily routine and needs." }
+            ],
             maintenance: {
               title: "Home Maintenance Cleaning",
-              description: "Regular cleaning for private homes, tailored to your routine and preferred schedule.",
-              features: ["Regular room cleaning", "Kitchen and bathroom care", "Flexible time slots to suit your routine"],
-              painTitle: "When regular home upkeep matters",
-              painPoints: ["A busy routine leaves too little time for thorough cleaning", "Kitchens, bathrooms and hallways quickly become visibly untidy", "Comfort and hygiene decline when cleaning is inconsistent"],
-              solutionTitle: "Our solution for a calm, clean home",
-              solutionPoints: ["Regular cleaning intervals that fit your schedule", "Clear room-by-room checklists", "Reliable appointments with professional attention to detail"],
+              description: "Regular, dependable cleaning for private homes — scheduled to match your rhythm and priorities.",
+              features: ["Room-by-room checklists", "Kitchen & bathroom care", "Flexible appointment windows"],
+              painTitle: "Typical household challenges",
+              painPoints: ["Too little time for thorough cleaning in a busy week", "Kitchens and bathrooms get untidy quickly", "Inconsistent cleaning lowers comfort and hygiene"],
+              solutionTitle: "What we do to help",
+              solutionPoints: ["Agree a clear scope and checklist for each visit", "Schedule regular visits that fit your life", "Reliable teams who know your home and preferences"],
               processTitle: "How the service works",
               process: [
-                { title: "Inquiry & scope", desc: "You share your preferences and the ideal cleaning rhythm." },
-                { title: "Appointment planning", desc: "We confirm time slots, tasks and access details with you." },
-                { title: "Cleaning on site", desc: "Our team cleans the agreed areas carefully and on time." }
+                { title: "Inquiry & scope", desc: "Tell us which rooms and tasks matter most and the frequency you prefer." },
+                { title: "Plan & confirm", desc: "We propose time windows, tasks and any product preferences for your approval." },
+                { title: "Recurring visits", desc: "Our team performs the agreed checklist and reports back after each visit." }
               ],
               faqTitle: "Frequently asked questions",
               faqs: [
-                { q: "How often should home maintenance cleaning be done?", a: "The ideal frequency depends on how the home is used. For private households, we usually recommend 1 to 4 cleaning visits per month." },
-                { q: "Can certain areas be prioritized?", a: "Yes. In your inquiry, you can tell us which rooms or tasks matter most to you." },
-                { q: "Who supplies the cleaning products?", a: "If requested, our team can bring suitable cleaning products. Please let us know in advance." },
-                { q: "Can the cleaning be scheduled flexibly?", a: "Yes. We coordinate time windows and access arrangements to suit your everyday routine." }
+                { q: "How often should I book maintenance cleaning?", a: "Most households choose between weekly and monthly visits depending on use and preference." },
+                { q: "Can I prioritise certain rooms?", a: "Yes. You can specify priorities in the inquiry so teams focus where it matters most." },
+                { q: "Do you bring cleaning products?", a: "We can bring professional supplies or use your products on request — please tell us beforehand." },
+                { q: "Can appointment times be adjusted?", a: "Yes. We offer flexible windows and will coordinate times that work for you." }
               ],
               metaTitle: "Home Cleaning Vienna | Regular Domestic Cleaning – PutzELF",
-              metaDescription: "Home maintenance cleaning in Vienna: regular cleaning according to your schedule, flexible appointments and clear quality standards."
+              metaDescription: "Reliable home maintenance cleaning in Vienna: recurring visits, clear checklists and flexible appointment windows."
             },
             deep: {
               title: "Deep Cleaning",
@@ -166,6 +199,44 @@ const resources = {
               metaTitle: "Residential Cleaning Vienna | Reliable Home Cleaning – PutzELF",
               metaDescription: "Residential cleaning in Vienna: thorough, reliable and punctual service for apartments, homes and one-off cleans."
             },
+          overview: {
+            title: "Unsere Services – Reinigungsleistungen für Privat und Gewerbe",
+            subtitle: "übersichtliche, verlässliche Reinigungsangebote für Haushalte und Unternehmen in Wien und Graz. Wählen Sie eine Leistung, um Details, Umfang und mögliche Termine zu sehen.",
+            cards: [
+              { key: "privateMaintenance", title: "Unterhaltsreinigung (Privat)", desc: "Regelmäßige Reinigung nach Wunsch – passend zu Ihrem Haushalt und Rhythmus." },
+              { key: "privateDeep", title: "Grundreinigung", desc: "Intensive, einmalige Reinigung bei starker Verschmutzung oder nach Renovierungen." },
+              { key: "businessMaintenance", title: "Unterhaltsreinigung (Gewerbe)", desc: "Flexible, planbare Reinigung für Büros und gewerbliche Flächen außerhalb der Betriebszeiten." },
+              { key: "businessDeep", title: "Gewerbliche Grundreinigung", desc: "Gründliche Reinigung für Übergaben, Renovationsrückstände und stark frequentierte Bereiche." },
+              { key: "window", title: "Glas- & Rahmenreinigung", desc: "Professionelle Fenster- und Rahmenpflege für klare Sicht und gepflegtes Erscheinungsbild." }
+            ],
+            whoForTitle: "Für wen sind unsere Services geeignet?",
+            whoForText: "Wir betreuen Privatkundinnen und -kunden, Vermieter sowie Unternehmen jeder Größe. Ob einmalige Spezialreinigung oder regelmäßiger Unterhalt – wir passen Leistungen, Intervalle und Termine an Ihre Situation an.",
+            challengesTitle: "Häufige Reinigungsprobleme",
+            challenges: [
+              "Zu wenig Zeit für gründliche Reinigung im Alltag",
+              "Hartnäckiger Schmutz nach Renovierungen oder Veranstaltungen",
+              "Anforderungen an Hygiene und Erscheinungsbild für Kundschaft und Mitarbeitende"
+            ],
+            approachTitle: "Unsere Arbeitsweise",
+            approach: [
+              "Klare Leistungsbeschreibungen und Raum-für-Raum-Checklisten",
+              "Flexible Terminfenster, abgestimmt auf Ihren Tagesablauf oder Betriebszeiten",
+              "Erfahrene Teams mit standardisierten Abläufen und Qualitätskontrolle"
+            ],
+            benefitsTitle: "Ihre Vorteile",
+            benefits: [
+              "Planbare Termine und transparente Preise",
+              "Konstante Reinigungsqualität dank Checklisten und Nachkontrollen",
+              "Klare Kommunikation und einfache Anfrageprozesse"
+            ],
+            includedTitle: "Was ist enthalten",
+            included: [
+              "Raum-für-Raum-Checkliste entsprechend der Anfrage",
+              "Sanitär- und Küchenpflege, wo vereinbart",
+              "Optionale Zusatzleistungen (z. B. Fenster oder Teppichpflege) auf Anfrage"
+            ],
+            conclusion: ""
+          },
             construction: {
               title: "Post-Construction / Rough Cleaning",
               description: "Cleaning after construction or renovation work, with a focus on debris, dust and visible residue.",
@@ -240,29 +311,50 @@ const resources = {
             }
           },
           business: {
+            expectations: [
+              { key: "analysis", title: "Individual Assessment", desc: "Site assessment and tailored cleaning scope for business spaces." },
+              { key: "fairPrice", title: "Fair Pricing", desc: "Transparent, contract-ready pricing with clear scope and intervals." },
+              { key: "qualifiedStaff", title: "Qualified Staff", desc: "Trained teams that follow operational rules and confidentiality requirements." },
+              { key: "fixedTeams", title: "Consistent Teams", desc: "Stable teams ensure consistent standards and efficient handovers." },
+              { key: "excellentQuality", title: "Excellent Quality", desc: "Standardised checklists and inspections for reliable results." },
+              { key: "desiredTimes", title: "Preferred Times", desc: "Flexible scheduling to avoid disruption to your operations." }
+            ],
             maintenance: {
-              title: "Commercial Maintenance Cleaning",
-              description: "Regular cleaning for businesses, offices and commercial spaces with clear processes and flexible scheduling.",
-              features: ["Cleaning of work areas and offices", "Sanitary and kitchen upkeep", "Flexible time windows outside business hours"],
-              painTitle: "Why regular commercial cleaning matters",
-              painPoints: ["Visible dirt in customer or staff areas makes a poor impression", "High-touch surfaces quickly become neglected in daily use", "Hygiene and comfort deteriorate when cleaning is inconsistent"],
-              solutionTitle: "Our solution for business premises",
-              solutionPoints: ["Discreet scheduled visits outside opening hours", "Space-specific checklists and quality control", "Clear communication and reliable service standards"],
-              processTitle: "How we work",
-              process: [
-                { title: "Inquiry", desc: "You share your location, opening hours and specific requirements." },
-                { title: "Tailored proposal", desc: "We build a cleaning plan that suits your operations." },
-                { title: "Regular service", desc: "Cleaning is carried out according to the agreed rhythm and checklist." }
-              ],
-              faqTitle: "Frequently asked questions",
-              faqs: [
-                { q: "Can cleaning take place outside business hours?", a: "Yes. We plan early morning or evening visits to minimise disruption." },
-                { q: "Do you offer long-term service contracts?", a: "Yes. Recurring service agreements with clear scope and transparent pricing are available." },
-                { q: "Can sensitive areas be cleaned?", a: "Yes. Our teams respect access rules, confidentiality and operational requirements." },
-                { q: "How is quality assured?", a: "Through checklists, routine inspections and documented handovers." }
-              ],
-              metaTitle: "Commercial Cleaning Vienna | Business Maintenance – PutzELF",
-              metaDescription: "Commercial maintenance cleaning in Vienna: flexible schedules, clear quality standards and clean business premises."
+                title: "Commercial Maintenance Cleaning",
+                description: "Recurring cleaning for offices and commercial spaces with agreed routines, clear responsibilities and documented quality checks.",
+                features: [
+                  "Workplace & communal area cleaning",
+                  "Sanitary & kitchen upkeep",
+                  "Flexible scheduling to avoid operational disruption"
+                ],
+                painTitle: "Typical business challenges",
+                painPoints: [
+                  "Visible dirt in customer or staff areas",
+                  "High-touch surfaces that require regular disinfection",
+                  "Variable cleaning quality and unclear responsibilities",
+                  "Scheduling that conflicts with operating hours"
+                ],
+                solutionTitle: "Our approach for reliable service",
+                solutionPoints: [
+                  "Room-by-room checklists and clear task owners",
+                  "Fixed visit rhythms with transparent scheduling",
+                  "Regular quality checks, documented handovers and concise communication"
+                ],
+                processTitle: "How it works",
+                process: [
+                  { title: "Inquiry & requirements", desc: "Share site details, opening hours and prioritised areas so we can plan efficiently." },
+                  { title: "Proposal & schedule", desc: "We create a tailored plan, agree time windows and define responsibilities." },
+                  { title: "Execution & oversight", desc: "Recurring teams deliver tasks according to the checklist with routine inspections." }
+                ],
+                faqTitle: "Frequently asked questions",
+                faqs: [
+                  { q: "Can cleaning be scheduled outside business hours?", a: "Yes. We arrange early-morning, evening or weekend slots to minimise disruption." },
+                  { q: "Do you offer service agreements?", a: "Yes. We provide recurring contracts with transparent scopes and pricing." },
+                  { q: "Can confidential areas be included?", a: "Yes. We follow security and access rules for sensitive zones." },
+                  { q: "How is quality maintained?", a: "Through checklists, inspections and documented handovers after visits." }
+                ],
+                metaTitle: "Commercial Cleaning Vienna | Business Maintenance – PutzELF",
+                metaDescription: "Structured commercial cleaning in Vienna: tailored schedules, documented quality checks and minimal operational impact."
             },
             deep: {
               title: "Commercial Deep Cleaning",
@@ -385,7 +477,45 @@ const resources = {
               metaDescription: "Industrial cleaning and machinery cleaning in Vienna: safe, documented and efficient work for commercial operating spaces."
             }
           }
-        },
+            },
+            overview: {
+              title: "Cleaning Services for Homes & Businesses",
+              subtitle: "Practical, reliable cleaning services for private households and commercial customers in Vienna and Graz. Select a service to see what’s included and request a quote.",
+              cards: [
+                { key: "privateMaintenance", title: "Home Maintenance", desc: "Recurring cleaning visits adapted to your household and schedule." },
+                { key: "privateDeep", title: "Deep Cleaning", desc: "Intensive one‑off cleaning for heavy soiling or post‑renovation." },
+                { key: "businessMaintenance", title: "Business Maintenance", desc: "Flexible, scheduled cleaning for offices and commercial premises." },
+                { key: "businessDeep", title: "Commercial Deep Cleaning", desc: "Thorough cleaning for handovers, renovations and high‑traffic areas." },
+                { key: "window", title: "Window & Frame Cleaning", desc: "Professional window and frame care for clear views and a tidy appearance." }
+              ],
+              whoForTitle: "Who we serve",
+              whoForText: "Private households, landlords, property managers and businesses of all sizes. We tailor scope, frequency and timing to your specific needs.",
+              challengesTitle: "Common cleaning challenges",
+              challenges: [
+                "Limited time for regular, detailed cleaning",
+                "Stubborn dirt and renovation residue",
+                "Maintaining hygiene and a presentable appearance for customers and staff"
+              ],
+              approachTitle: "Our approach",
+              approach: [
+                "Clear room‑by‑room checklists and transparent scopes",
+                "Flexible appointment windows to reduce disruption",
+                "Experienced teams working with standardised routines and quality checks"
+              ],
+              benefitsTitle: "Why choose PutzELF",
+              benefits: [
+                "Reliable, scheduled visits and transparent pricing",
+                "Consistent results through checklists and follow‑ups",
+                "Straightforward communication and an easy inquiry process"
+              ],
+              includedTitle: "What’s included",
+              included: [
+                "Room‑by‑room checklist as agreed in the inquiry",
+                "Sanitary and kitchen care where applicable",
+                "Optional extras on request (windows, carpets)"
+              ],
+              conclusion: "Request a free, no‑obligation quote or start an inquiry. We’ll propose a suitable time window and a clear scope so you know exactly what to expect."
+            },
       whatWeOffer: "What we offer",
       benefitsTitle: "Benefits",
       benefit1: "Vetted cleaning professionals",
@@ -502,12 +632,7 @@ const resources = {
           success: "Your message has been sent successfully. We will get back to you soon."
         }
       },
-      cookies: {
-        msg: "We only activate analytics and marketing tools after your explicit consent. No tracking is active until you accept. Please review our ",
-        privacyPolicy: "Privacy Policy",
-        decline: "Decline",
-        accept: "Accept"
-      },
+      
       privacyPolicy: {
         title: "Privacy Policy",
         intro: "This website privacy notice explains which personal data we may process, for which purposes, how long we keep it, and what choices you have regarding consent and tracking.",
@@ -517,6 +642,14 @@ const resources = {
             title: "1. Overview",
             body: "We process personal data only to the extent necessary to provide and improve our cleaning services, respond to inquiries, and manage bookings. We do not use non-essential tracking tools until you explicitly accept cookies and tracking.",
           },
+          expectations: [
+            { key: "analysis", title: "Individuelle Analyse", desc: "Wir prüfen Ihre Räumlichkeiten und schlagen den passenden Leistungsumfang vor." },
+            { key: "fairPrice", title: "Faire Preise", desc: "Transparente Preise ohne versteckte Kosten – klar und nachvollziehbar." },
+            { key: "qualifiedStaff", title: "Qualifiziertes Personal", desc: "Erfahrene Teams, die professionell und sorgfältig arbeiten." },
+            { key: "fixedTeams", title: "Feste Teams", desc: "Konstante Teams sorgen für gleichbleibende Qualität und Vertrautheit." },
+            { key: "excellentQuality", title: "Exzellente Qualität", desc: "Standardisierte Checklisten und Kontrollen sichern zuverlässig hohe Standards." },
+            { key: "desiredTimes", title: "Wunschzeiten", desc: "Flexible Zeitfenster, abgestimmt auf Ihre betrieblichen Anforderungen." }
+          ],
           data: {
             title: "2. Data we process",
             body: "Depending on the service request, we may process your name, phone number, email address, address details, preferred date and time, cleaning type, and any additional notes you provide in the contact or booking form.",
@@ -690,6 +823,27 @@ const resources = {
         cancel: "Abbrechen",
         ok: "OK"
       },
+      cookies: {
+        heading: "Ihre Privatsphäre ist uns wichtig",
+        msg: "Wir verwenden technisch notwendige Cookies, um die Sicherheit unserer Website zu gewährleisten. Mit Ihrer Einwilligung nutzen wir zudem Analyse-Tools (wie Google Analytics und Leadinfo), um unser Angebot zu verbessern und Unternehmensbesuche zu analysieren. Ein Tracking erfolgt erst nach Ihrer Zustimmung. Sie können Ihre Einwilligung erteilen, ablehnen oder in unserer <0>Datenschutzerklärung</0> mehr dazu erfahren.",
+        decline: "Ablehnen",
+        privacyPolicy: "Datenschutzerklärung",
+        settings: "Cookie-Einstellungen",
+        necessary: "Nur notwendige",
+        acceptAll: "Alle akzeptieren",
+        preferencesTitle: "Cookie-Einstellungen",
+        preferencesIntro: "Wählen Sie aus, welche Cookies Sie zulassen möchten. Notwendige Cookies sind immer aktiviert, da sie für die grundlegende Funktion und Sicherheit der Website erforderlich sind.",
+        necessaryTitle: "Notwendige Cookies",
+        necessaryDesc: "Diese Cookies sind für grundlegende Funktionen, die Sicherheit und den ordnungsgemäßen Betrieb der Website erforderlich.",
+        alwaysOn: "Immer aktiv",
+        analyticsTitle: "Analyse-Cookies",
+        analyticsDesc: "Diese Cookies helfen uns zu verstehen, wie Besucher unsere Website nutzen, damit wir unsere Dienstleistungen und das Nutzererlebnis verbessern können.",
+        enable: "Aktivieren",
+        marketingTitle: "Marketing-Cookies",
+        marketingDesc: "Diese Cookies helfen uns, unsere Marketingaktivitäten zu messen und zu verbessern und zu verstehen, wie Besucher mit unserer Website interagieren.",
+        save: "Einstellungen speichern",
+        cancel: "Abbrechen"
+      },
       imprint: {
         title: "Impressum",
         companyNameTitle: "Firmenname",
@@ -754,6 +908,10 @@ const resources = {
         callNow: "Rufen Sie uns an"
       },
       services: {
+        expectations: {
+          kicker: "Was Sie erwartet",
+          title: "Was Sie erwartet"
+        },
         standard: { title: "Standardreinigung", desc: "Schnelle und effiziente Regelreinigung." },
         deep: { title: "Grundreinigung", desc: "Gründliche Reinigung bis in jede Ecke." },
         office: { title: "Büroreinigung", desc: "Professionelle Reinigung für Ihre Büroräume." },
@@ -769,7 +927,15 @@ const resources = {
         officeTitle: "Büroreinigung",
         officeDesc: "Ein sauberes Büro bedeutet einen produktiven Tag. Wir halten Ihre Arbeitsräume sauber, hygienisch und professionell.",
         officeCta: "Buchung starten",
-        private: {
+          private: {
+            expectations: [
+              { key: "analysis", title: "Individuelle Analyse", desc: "Wir prüfen Ihre Wohnung und empfehlen den passenden Reinigungsumfang." },
+              { key: "fairPrice", title: "Faire Preise", desc: "Klare Preise ohne versteckte Kosten für planbare Haushaltsreinigungen." },
+              { key: "qualifiedStaff", title: "Qualifiziertes Personal", desc: "Erfahrene Reinigungskräfte, die auf Sorgfalt und Diskretion achten." },
+              { key: "fixedTeams", title: "Feste Teams", desc: "Konstante Teams sorgen für Vertrautheit und gleichbleibende Qualität." },
+              { key: "excellentQuality", title: "Exzellente Qualität", desc: "Checklisten und Nachkontrollen sichern zuverlässige Ergebnisse." },
+              { key: "desiredTimes", title: "Wunschzeiten", desc: "Flexible Termine, angepasst an Ihren Alltag und Ihre Bedürfnisse." }
+            ],
           maintenance: {
             title: "Unterhaltsreinigung",
             description: "Regelmäßige Reinigung für Privathaushalte, abgestimmt auf Ihre Abläufe.",
@@ -888,7 +1054,7 @@ const resources = {
               { q: "Welche Reinigungsmittel verwenden Sie?", a: "Wir verwenden professionelle und umweltverträgliche Mittel; ökologische Optionen möglich." }
             ],
             metaTitle: "Glasreinigung Wien | Fenster & Rahmen – PutzELF",
-            metaDescription: "Glas- und Rahmenreinigung in Wien: streifenfreie Fenster, fachgerechte Rahmepflege und Hebebühneneinsatz bei Bedarf."
+            metaDescription: "Glas- und Rahmenreinigung in Wien: streifenfreie Fenster, fachgerechte RahmeNpflege und Hebebühneneinsatz bei Bedarf."
           },
           industrial: {
             title: "Industriereinigung & Maschinen",
@@ -916,29 +1082,50 @@ const resources = {
           }
         },
         business: {
+          expectations: [
+            { key: "analysis", title: "Individuelle Analyse" },
+            { key: "fairPrice", title: "Faire Preise" },
+            { key: "qualifiedStaff", title: "Qualifiziertes Personal" },
+            { key: "fixedTeams", title: "Feste Teams" },
+            { key: "excellentQuality", title: "Exzellente Qualität" },
+            { key: "desiredTimes", title: "Wunschzeiten" }
+          ],
           maintenance: {
-            title: "Unterhaltsreinigung (Gewerbe)",
-            description: "Regelmäßige Reinigungspläne für Büros, Praxen und gewerbliche Flächen.",
-            features: ["Arbeitsplatzreinigung und Hygiene", "Sanitär- und Küchenpflege", "Flexible, nach Betrieb angepasste Zeitfenster"],
-            painTitle: "Warum Unterhaltsreinigung für Unternehmen wichtig ist",
-            painPoints: ["Sichtbare Verschmutzung im Kunden- oder Mitarbeiterbereich", "Infektionsrisiken durch Kontaktflächen", "Unprofessioneller Eindruck bei Kundenbesuch"],
-            solutionTitle: "Unsere Lösung für Unternehmen",
-            solutionPoints: ["Diskrete, planbare Einsätze außerhalb der Geschäftszeiten", "Checklisten abgestimmt auf Betriebsbereiche", "Dokumentierte Übergabe und Qualitätskontrolle"],
+            title: "Unterhaltsreinigung für Unternehmen",
+            description: "Regelmäßige, strukturierte Reinigung für Büros, Praxen und gewerbliche Flächen. Wir sorgen für hygienische Arbeitsbereiche, planbare Einsätze und transparente Qualitätskontrollen.",
+            features: [
+              "Reinigung von Arbeitsplätzen und Gemeinschaftsflächen",
+              "Sanitär- und Küchenpflege nach Vereinbarung",
+              "Flexible Zeitfenster, abgestimmt auf Ihre Betriebszeiten"
+            ],
+            painTitle: "Herausforderungen im Betriebsalltag",
+            painPoints: [
+              "Sichtbare Verschmutzung in Kunden‑ und Mitarbeiterbereichen",
+              "Anhaftender Schmutz an häufig berührten Kontaktflächen",
+              "Schwankende Reinigungsqualität oder unzuverlässige Zeitpläne",
+              "Unklare Zuständigkeiten und mangelhafte Kommunikation mit Dienstleistern"
+            ],
+            solutionTitle: "Wie PutzELF wiederkehrende Reinigung organisiert",
+            solutionPoints: [
+              "Klare Raum‑für‑Raum‑Checklisten und festgelegte Verantwortlichkeiten",
+              "Regelmässige Einsätze nach vereinbartem Rhythmus und transparenter Planung",
+              "Qualitätskontrollen, dokumentierte Übergaben und eindeutige Kommunikation"
+            ],
             processTitle: "So arbeiten wir",
             process: [
-              { title: "Anfrage", desc: "Sie senden Angaben zu Fläche, Betriebszeiten und Wünschen." },
-              { title: "Individuelles Angebot", desc: "Wir erstellen einen auf Ihren Betrieb abgestimmten Plan." },
-              { title: "Regelmäßiger Einsatz", desc: "Wir führen die Reinigung gemäß vereinbartem Rhythmus und Checkliste durch." }
+              { title: "Anfrage & Anforderungen", desc: "Sie nennen Standort, Betriebszeiten und welche Bereiche für Sie Priorität haben." },
+              { title: "Individuelles Angebot", desc: "Wir erstellen einen Reinigungsplan mit Aufgaben, Rhythmus und passenden Zeitfenstern." },
+              { title: "Regelmäßiger Einsatz", desc: "Unsere Teams führen die vereinbarten Aufgaben anhand der Checkliste und des Zeitplans durch." }
             ],
             faqTitle: "Häufige Fragen (Gewerbe)",
             faqs: [
-              { q: "Können Reinigungen ausserhalb der Geschäftszeiten stattfinden?", a: "Ja, wir koordinieren Einsätze frühmorgens oder abends, um Ihren Betrieb nicht zu stören." },
-              { q: "Gibt es Serviceverträge?", a: "Ja, wir bieten wiederkehrende Serviceverträge mit klaren Leistungen und Preisen." },
-              { q: "Können Sie vertrauliche Bereiche reinigen?", a: "Unsere Teams sind geschult und halten Betriebsgeheimnisse und Diskretion ein." },
-              { q: "Wie wird die Qualität sichergestellt?", a: "Durch Checklisten, Stichproben und auf Wunsch Übergabeprotokolle." }
+              { q: "Können Reinigungen außerhalb der Geschäftszeiten stattfinden?", a: "Ja. Wir koordinieren Einsätze frühmorgens oder abends, um Ihren Betrieb nicht zu stören." },
+              { q: "Bieten Sie wiederkehrende Verträge an?", a: "Ja. Wir bieten Servicevereinbarungen mit klar definiertem Leistungsumfang und transparenter Preisgestaltung." },
+              { q: "Können vertrauliche Bereiche einbezogen werden?", a: "Ja. Unsere Teams arbeiten diskret und beachten Zugangs‑ sowie Sicherheitsregeln." },
+              { q: "Wie wird Qualität geprüft?", a: "Durch Checklisten, stichprobenartige Kontrollen und auf Wunsch dokumentierte Übergaben nach Einsätzen." }
             ],
             metaTitle: "Unterhaltsreinigung Wien | Gewerbliche Reinigung – PutzELF",
-            metaDescription: "Unterhaltsreinigung für Unternehmen in Wien: flexible Einsatzzeiten, dokumentierte Abläufe und hygienische Standards für Büros, Praxen und Betriebe."
+            metaDescription: "Unterhaltsreinigung für Unternehmen in Wien: strukturierte Reinigungspläne, Qualitätskontrollen und flexible Zeitfenster für Büros und Praxen."
           },
           deep: {
             title: "Grundreinigung (Gewerbe)",
@@ -1024,14 +1211,14 @@ const resources = {
             process: [
               { title: "Anfrage", desc: "Beschreiben Sie Fläche, Etage und besondere Anforderungen." },
               { title: "Einsatzplanung", desc: "Wir schlagen sichere und effiziente Maßnahmen vor." },
-              { title: "Reinigung", desc: "Fachgerechte Reinigung inklusive Rahmepflege und, falls nötig, Hebebühnenarbeiten." }
+              { title: "Reinigung", desc: "Fachgerechte Reinigung inklusive RahmeNpflege und, falls nötig, Hebebühnenarbeiten." }
             ],
             faqTitle: "FAQ Glasreinigung Gewerbe",
             faqs: [
               { q: "Können Sie Fassadenfenster großflächig reinigen?", a: "Ja, wir planen Hebebühnen- oder Gerüstarbeiten je nach Anforderung." },
               { q: "Wie erfolgt die Preisgestaltung?", a: "Nach Fläche, Zugang und benötigtem Gerät; Pauschalen möglich." },
               { q: "Gibt es Sicherheitszertifikate?", a: "Unsere Teams arbeiten gemäß aktueller Sicherheitsstandards." },
-              { q: "Kann die Reinigung ausserhalb der Geschäftszeiten stattfinden?", a: "Ja, wir koordinieren Einsätze, um Ihren Betrieb nicht zu stören." }
+              { q: "Kann die Reinigung außerhalb der Geschäftszeiten stattfinden?", a: "Ja, wir koordinieren Einsätze, um Ihren Betrieb nicht zu stören." }
             ],
             metaTitle: "Glasreinigung Wien | Gewerbliche Fensterreinigung – PutzELF",
             metaDescription: "Glas- und Rahmenreinigung für Geschäftsfassaden in Wien: Hebebühnen-Einsatz, Rah- menpflege und sichere Durchführung für Unternehmen."
@@ -1186,12 +1373,7 @@ const resources = {
           success: "Ihre Nachricht wurde erfolgreich gesendet. Wir melden uns bald bei Ihnen."
         }
       },
-      cookies: {
-        msg: "Wir verwenden technisch notwendige Cookies, um die Sicherheit unserer Website zu gewährleisten. Mit Ihrer Einwilligung nutzen wir zudem Analyse-Tools (wie Google Analytics und Leadinfo), um unser Angebot zu verbessern und Unternehmensbesuche zu analysieren. Ein Tracking erfolgt erst nach Ihrer Zustimmung. Sie können Ihre Einwilligung erteilen, ablehnen oder in unserer Datenschutzerklärung mehr dazu erfahren.",
-        privacyPolicy: "Datenschutzerklärung",
-        decline: "Ablehnen",
-        accept: "Akzeptieren"
-      },
+      
       privacyPolicy: {
         title: "Datenschutzerklärung",
         intro: "Diese Datenschutzerklärung erklärt, welche personenbezogenen Daten wir verarbeiten, zu welchen Zwecken, wie lange wir sie aufbewahren und welche Rechte Sie in Bezug auf Einwilligungen und Tracking haben.",
@@ -1381,6 +1563,90 @@ const resources = {
       }
     }
   }
+};
+
+// Ensure `services.overview` exists at the top-level `services` key for both locales.
+// This guards against accidental nesting of `overview` inside sub-objects.
+resources.en.translation.services = resources.en.translation.services || {};
+resources.en.translation.services.overview = {
+  title: "Cleaning Services for Homes & Businesses",
+  subtitle: "Practical, reliable cleaning services for private households and commercial customers in Vienna and Graz. Select a service to see what’s included and request a quote.",
+  cards: [
+    /* oneTimeCleaning removed */
+    { key: "privateMaintenance", title: "Home Maintenance", desc: "Recurring cleaning visits adapted to your household and schedule." },
+    { key: "privateDeep", title: "Deep Cleaning", desc: "Intensive one‑off cleaning for heavy soiling or post‑renovation." },
+    { key: "businessMaintenance", title: "Business Maintenance", desc: "Flexible, scheduled cleaning for offices and commercial premises." },
+    { key: "businessDeep", title: "Commercial Deep Cleaning", desc: "Thorough cleaning for handovers, renovations and high‑traffic areas." },
+    { key: "window", title: "Window & Frame Cleaning", desc: "Professional window and frame care for clear views and a tidy appearance." }
+  ],
+  whoForTitle: "Who we serve",
+  whoForText: "Private households, landlords, property managers and businesses of all sizes. We tailor scope, frequency and timing to your specific needs.",
+  challengesTitle: "Common cleaning challenges",
+  challenges: [
+    "Limited time for regular, detailed cleaning",
+    "Stubborn dirt and renovation residue",
+    "Maintaining hygiene and a presentable appearance for customers and staff"
+  ],
+  approachTitle: "Our approach",
+  approach: [
+    "Clear room‑by‑room checklists and transparent scopes",
+    "Flexible appointment windows to reduce disruption",
+    "Experienced teams working with standardised routines and quality checks"
+  ],
+  benefitsTitle: "Why choose PutzELF",
+  benefits: [
+    "Reliable, scheduled visits and transparent pricing",
+    "Consistent results through checklists and follow‑ups",
+    "Straightforward communication and an easy inquiry process"
+  ],
+  includedTitle: "What’s included",
+  included: [
+    "Room‑by‑room checklist as agreed in the inquiry",
+    "Sanitary and kitchen care where applicable",
+    "Optional extras on request (windows, carpets)"
+  ],
+  conclusion: ""
+};
+
+resources.de.translation.services = resources.de.translation.services || {};
+resources.de.translation.services.overview = {
+  title: "Unsere Services – Reinigungsleistungen für Privat und Gewerbe",
+  subtitle: "Übersichtliche, verlässliche Reinigungsangebote für Haushalte und Unternehmen in Wien und Graz. Wählen Sie eine Leistung, um Details, Umfang und mögliche Termine zu sehen.",
+  cards: [
+    /* oneTimeCleaning removed */
+    { key: "privateMaintenance", title: "Unterhaltsreinigung (Privat)", desc: "Regelmäßige Reinigung nach Wunsch – passend zu Ihrem Haushalt und Rhythmus." },
+    { key: "privateDeep", title: "Grundreinigung", desc: "Intensive, einmalige Reinigung bei starker Verschmutzung oder nach Renovierungen." },
+    { key: "businessMaintenance", title: "Unterhaltsreinigung (Gewerbe)", desc: "Flexible, planbare Reinigung für Büros und gewerbliche Flächen außerhalb der Betriebszeiten." },
+    { key: "businessDeep", title: "Gewerbliche Grundreinigung", desc: "Gründliche Reinigung für Übergaben, Renovationsrückstände und stark frequentierte Bereiche." },
+    { key: "window", title: "Glas- & Rahmenreinigung", desc: "Professionelle Fenster- und Rahmenpflege für klare Sicht und gepflegtes Erscheinungsbild." }
+  ],
+  whoForTitle: "Für wen sind unsere Services geeignet?",
+  whoForText: "Wir betreuen Privatkundinnen und -kunden, Vermieter sowie Unternehmen jeder Größe. Ob einmalige Spezialreinigung oder regelmäßiger Unterhalt – wir passen Leistungen, Intervalle und Termine an Ihre Situation an.",
+  challengesTitle: "Häufige Reinigungsprobleme",
+  challenges: [
+    "Zu wenig Zeit für gründliche Reinigung im Alltag",
+    "Hartnäckiger Schmutz nach Renovierungen oder Veranstaltungen",
+    "Anforderungen an Hygiene und Erscheinungsbild für Kundschaft und Mitarbeitende"
+  ],
+  approachTitle: "Unsere Arbeitsweise",
+  approach: [
+    "Klare Leistungsbeschreibungen und Raum-für-Raum-Checklisten",
+    "Flexible Terminfenster, abgestimmt auf Ihren Tagesablauf oder Betriebszeiten",
+    "Erfahrene Teams mit standardisierten Abläufen und Qualitätskontrolle"
+  ],
+  benefitsTitle: "Ihre Vorteile",
+  benefits: [
+    "Planbare Termine und transparente Preise",
+    "Konstante Reinigungsqualität dank Checklisten und Nachkontrollen",
+    "Klare Kommunikation und einfache Anfrageprozesse"
+  ],
+  includedTitle: "Was ist enthalten",
+  included: [
+    "Raum-für-Raum-Checkliste entsprechend der Anfrage",
+    "Sanitär- und Küchenpflege, wo vereinbart",
+    "Optionale Zusatzleistungen (z. B. Fenster oder Teppichpflege) auf Anfrage"
+  ],
+  conclusion: ""
 };
 
 i18n.use(initReactI18next).init({

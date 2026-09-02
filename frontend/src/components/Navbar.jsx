@@ -16,9 +16,7 @@ import { getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 const Unternehmen = [
   { key: "businessMaintenance" },
   { key: "businessDeep" },
-  { key: "businessOneTime" },
   { key: "businessStaircase" },
-  { key: "businessConstruction" },
   { key: "businessWindow" },
   { key: "businessIndustrial" },
 ];
@@ -26,7 +24,6 @@ const Unternehmen = [
 const Privatkunden = [
   { key: "privateMaintenance" },
   { key: "privateDeep" },
-  { key: "privateOneTime" },
   { key: "privateResidential" },
   { key: "privateConstruction" },
   { key: "privateWindow" },
@@ -48,7 +45,7 @@ const copy = {
     officeCleaning: "Büroreinigung",
     deepCleaning: "Tiefenreinigung",
     restaurantCleaning: "Restaurantreinigung",
-    oneTimeCleaning: "Einmalreinigung",
+      /* oneTimeCleaning removed */
     permanentCleaning: "Regelmäßige Reinigung",
     // new private labels
     privateMaintenance: "Unterhaltsreinigung",
@@ -58,12 +55,12 @@ const copy = {
     privateWindow: "Glas- & Rahmenreinigung",
     privateIndustrial: "Industriereinigung & Maschinen",
     // new business labels
-    businessMaintenance: "Unterhaltsreinigung (Gewerbe)",
-    businessDeep: "Grundreinigung (Gewerbe)",
-    businessStaircase: "Treppenhausreinigung",
-    businessConstruction: "Bauendreinigung / Grobreinigung (Gewerbe)",
-    businessWindow: "Glas- & Rahmenreinigung (Gewerbe)",
-    businessIndustrial: "Industriereinigung & Maschinen (Gewerbe)",
+    businessMaintenance: "Unterhaltsreinigung",
+    businessDeep: "Grundreinigung",
+    businessStaircase: "Stiegenhausreingung",
+    businessConstruction: "Bauendreinigung / Grobreinigung",
+    businessWindow: "Glas- & Rahmenreinigung",
+    businessIndustrial: "Industriereinigung & Maschinen",
 
     // Contact
     contact: "Kontakt",
@@ -88,7 +85,7 @@ const copy = {
     officeCleaning: "Office Cleaning",
     deepCleaning: "Deep Cleaning",
     restaurantCleaning: "Restaurant Cleaning",
-    oneTimeCleaning: "One-time Cleaning",
+      /* oneTimeCleaning removed */
     permanentCleaning: "Permanent Cleaning",
     // new private labels
     privateMaintenance: "Maintenance Cleaning",
@@ -725,3 +722,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+export { Unternehmen, Privatkunden, copy };

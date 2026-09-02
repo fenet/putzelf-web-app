@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { trackEvent } from "../lib/analytics";
+import { writeConsent } from "../lib/consent";
 import Seo from "../components/Seo";
 import Navbar from "../components/Navbar";
 import {
@@ -22,8 +23,6 @@ export default function Imprint() {
 
   const locale = getLocaleFromPathname(location.pathname);
 
-  const [showBanner, setShowBanner] = useState(false);
-
   useEffect(() => {
     // Ensure navigation lands at the top
     try {
@@ -34,54 +33,10 @@ export default function Imprint() {
     } catch (_) {
       window.scrollTo(0, 0);
     }
-
-    const storedConsent = localStorage.getItem("cookieConsent");
-    const storedTime = localStorage.getItem("cookieConsentTime");
-
-    if (!storedConsent || !storedTime) {
-      setShowBanner(true);
-      return;
-    }
-
-    const now = Date.now();
-    const oneDay = 24 * 60 * 60 * 1000;
-
-    if (now - parseInt(storedTime, 10) > oneDay) {
-      setShowBanner(true);
-    }
   }, []);
 
-  const acceptCookies = () => {
-    localStorage.setItem("cookieConsent", "true");
-    localStorage.setItem(
-      "cookieConsentTime",
-      Date.now().toString()
-    );
-
-    setShowBanner(false);
-
-    window.dispatchEvent(
-      new CustomEvent("consentChanged", {
-        detail: { consent: true },
-      })
-    );
-  };
-
-  const declineCookies = () => {
-    localStorage.setItem("cookieConsent", "false");
-    localStorage.setItem(
-      "cookieConsentTime",
-      Date.now().toString()
-    );
-
-    setShowBanner(false);
-
-    window.dispatchEvent(
-      new CustomEvent("consentChanged", {
-        detail: { consent: false },
-      })
-    );
-  };
+  const acceptCookies = () => writeConsent({ analytics: true, marketing: true });
+  const declineCookies = () => writeConsent({ analytics: false, marketing: false });
 
   return (
     <div className="flex flex-col min-h-screen pb-24 md:pb-0 bg-gray-50">

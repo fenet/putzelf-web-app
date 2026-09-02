@@ -7,11 +7,7 @@ const routeDefs = {
   home: { de: "/", en: "/" },
   landingAlt: { de: "/landing-alt", en: "/landing-alt" },
   servicesOverview: { de: "/services", en: "/services" },
-  servicesWien: { de: "/services/wien", en: "/services/wien" },
-  servicesGraz: { de: "/services/graz", en: "/services/graz" },
-  officeCleaning: { de: "/services/buero-reinigung", en: "/services/office-cleaning" },
-  deepCleaning: { de: "/services/tiefenreinigung", en: "/services/deep-cleaning" },
-  restaurantCleaning: { de: "/services/restaurantreinigung", en: "/services/restaurant-cleaning" },
+  // Removed specific city/service pages per request
   // New service pages (private)
   privateMaintenance: { de: "/services/unterhaltsreinigung", en: "/services/maintenance-cleaning" },
   privateDeep: { de: "/services/grundreinigung", en: "/services/deep-cleaning-private" },
@@ -20,17 +16,14 @@ const routeDefs = {
   privateWindow: { de: "/services/glas-rahmenreinigung", en: "/services/window-cleaning" },
   privateIndustrial: { de: "/services/industriereinigung-maschinen", en: "/services/industrial-cleaning" },
   // one-time cleaning split: private and business
-  privateOneTime: { de: "/services/einmalreinigung", en: "/services/one-time-cleaning" },
   // New service pages (business)
   businessMaintenance: { de: "/services/unterhaltsreinigung-gewerbe", en: "/services/maintenance-cleaning-business" },
   businessDeep: { de: "/services/grundreinigung-gewerbe", en: "/services/deep-cleaning-business" },
   businessStaircase: { de: "/services/treppenhausreinigung", en: "/services/staircase-cleaning" },
-  businessConstruction: { de: "/services/bauendreinigung-grobreinigung-gewerbe", en: "/services/construction-cleaning-business" },
+  // businessConstruction removed
   businessWindow: { de: "/services/glas-rahmenreinigung-gewerbe", en: "/services/window-cleaning-business" },
   businessIndustrial: { de: "/services/industriereinigung-maschinen-gewerbe", en: "/services/industrial-cleaning-business" },
-  businessOneTime: { de: "/services/einmalreinigung-gewerbe", en: "/services/one-time-cleaning-business" },
-  oneTimeCleaning: { de: "/services/einmalreinigung", en: "/services/one-time-cleaning" },
-  permanentCleaning: { de: "/services/regelmaessige-reinigung", en: "/services/permanent-cleaning" },
+  // businessOneTime & oneTimeCleaning removed per request
   contact: { de: "/kontakt", en: "/contact" },
   jobOpening: { de: "/karriere", en: "/job-opening" },
   getPartners: { de: "/partner-werden", en: "/get-partners" },
@@ -50,13 +43,9 @@ const legacyPathToKey = {
   "/": "home",
   "/landing-alt": "landingAlt",
   "/services": "servicesOverview",
-  "/services/wien": "servicesWien",
-  "/services/graz": "servicesGraz",
-  "/services/office-cleaning": "officeCleaning",
-  "/services/deep-cleaning": "deepCleaning",
-  "/services/restaurant-cleaning": "restaurantCleaning",
-  "/services/one-time-cleaning": "oneTimeCleaning",
-  "/services/permanent-cleaning": "permanentCleaning",
+  
+  
+  
   "/kontakt": "contact",
   "/contact": "contact",
   "/job-opening": "jobOpening",

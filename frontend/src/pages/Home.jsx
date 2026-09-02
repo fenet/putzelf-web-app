@@ -309,10 +309,12 @@ export default function Home() {
       try {
         setMonthLoading(true);
         setMonthError(null);
-        const res = await apiFetch(`/api/availability/month?${params.toString()}`, {
+        const url = `/api/availability/month?${params.toString()}`;
+        const res = await apiFetch(url, {
           signal: controller.signal,
         });
         const data = await parseJsonSafe(res);
+        try { console.debug && console.debug("availability:month", { url, status: res.status, ok: res.ok, data, monthCursor, location: form.location }); } catch (_) {}
         if (!res.ok) {
           throw new Error(data?.error || "Failed to load availability");
         }
@@ -330,6 +332,7 @@ export default function Home() {
           setMonthAvailableDays(new Set());
           const msg = err?.message ? String(err.message) : null;
           const base = t("home.calendar.errorFetchDates", { defaultValue: "Failed to fetch dates." });
+          try { console.error && console.error("availability:month:error", err); } catch (_) {}
           setMonthError(msg ? `${base} ${msg}` : base);
       } finally {
         setMonthLoading(false);
@@ -441,10 +444,12 @@ export default function Home() {
       try {
         setSlotsLoading(true);
         setSlotsError(null);
-        const res = await apiFetch(`/api/availability/slots?${params.toString()}`, {
+        const url = `/api/availability/slots?${params.toString()}`;
+        const res = await apiFetch(url, {
           signal: controller.signal,
         });
         const data = await parseJsonSafe(res);
+        try { console.debug && console.debug("availability:slots", { url, status: res.status, ok: res.ok, data, day: form.date, location: form.location }); } catch (_) {}
         if (!res.ok) {
           throw new Error(data?.error || "Failed to load available times");
         }
@@ -462,6 +467,7 @@ export default function Home() {
           setAvailableSlots([]);
           const msg = err?.message ? String(err.message) : null;
           const base = t("home.calendar.errorFetchSlots", { defaultValue: "Failed to fetch available times." });
+          try { console.error && console.error("availability:slots:error", err); } catch (_) {}
           setSlotsError(msg ? `${base} ${msg}` : base);
       } finally {
         setSlotsLoading(false);

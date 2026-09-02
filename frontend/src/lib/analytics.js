@@ -1,79 +1,202 @@
 import { apiFetch } from "./api";
-
-const COOKIE_CONSENT_KEY = "cookieConsent";
+import { readConsent } from "./consent";
 
 let initialized = false;
 let gaId = null;
 let fbId = null;
-let consentGranted = false;
+let gtmId = null;
+let leadinfoId = null;
+
+let consentState = {
+  analytics: false,
+  marketing: false,
+};
 
 export function hasAnalyticsConsent() {
   try {
-    const value = String(localStorage.getItem(COOKIE_CONSENT_KEY) || "").trim().toLowerCase();
-    return value === "true" || value === "accepted" || value === "yes";
+    return !!readConsent().analytics;
   } catch (_) {
     return false;
   }
 }
 
-function getStoredConsent() {
-  return hasAnalyticsConsent();
+function getStoredConsentState() {
+  try {
+    const stored = readConsent();
+
+    return {
+      analytics: !!stored.analytics,
+      marketing: !!stored.marketing,
+    };
+  } catch (_) {
+    return {
+      analytics: false,
+      marketing: false,
+    };
+  }
 }
 
 function loadGa(measurementId) {
-  if (!measurementId || document.getElementById('ga4-src')) return;
-  const s = document.createElement('script');
+  if (!measurementId) return;
+  if (document.getElementById("ga4-src")) return;
+
+  const s = document.createElement("script");
+
   s.async = true;
   s.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-  s.id = 'ga4-src';
+  s.id = "ga4-src";
+
   document.head.appendChild(s);
 
   window.dataLayer = window.dataLayer || [];
-  function gtag(){ window.dataLayer.push(arguments); }
+
+  function gtag() {
+    window.dataLayer.push(arguments);
+  }
+
   window.gtag = window.gtag || gtag;
-  window.gtag('js', new Date());
-  window.gtag('config', measurementId);
+
+  window.gtag("js", new Date());
+  window.gtag("config", measurementId, {
+    anonymize_ip: true,
+  });
 }
 
 function loadFb(pixelId) {
   if (!pixelId) return;
-  if (window.fbq) {
-    try { window.fbq('init', pixelId); } catch (_) {}
-    return;
-  }
-  if (document.getElementById('fb-pixel-src')) return;
-  !(function(f,b,e,v,n,t,s){
-    if(f.fbq) return; n=f.fbq=function(){ n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments) };
-    if(!f._fbq) f._fbq=n; n.push=n; n.loaded=!0; n.version='2.0'; n.queue=[];
-    t=b.createElement(e); t.async=!0; t.src=v; t.id='fb-pixel-src';
-    s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);
-  })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-  window.fbq('init', pixelId);
-  window.fbq('track', 'PageView');
+  if (document.getElementById("fb-pixel-src")) return;
+
+  !(function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+
+    n = f.fbq = function () {
+      n.callMethod
+        ? n.callMethod.apply(n, arguments)
+        : n.queue.push(arguments);
+    };
+
+    if (!f._fbq) f._fbq = n;
+
+    n.push = n;
+    n.loaded = true;
+    n.version = "2.0";
+    n.queue = [];
+
+    t = b.createElement(e);
+    t.async = true;
+    t.src = v;
+    t.id = "fb-pixel-src";
+
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s);
+  })(
+    window,
+    document,
+    "script",
+    "https://connect.facebook.net/en_US/fbevents.js"
+  );
+
+  window.fbq("init", pixelId);
+  window.fbq("track", "PageView");
+}
+
+function loadGtm(gtmId) {
+  if (!gtmId) return;
+  if (document.getElementById("gtm-src")) return;
+
+  window.dataLayer = window.dataLayer || [];
+
+  window.dataLayer.push({
+    "gtm.start": new Date().getTime(),
+    event: "gtm.js",
+  });
+
+  const s = document.createElement("script");
+
+  s.async = true;
+  s.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
+  s.id = "gtm-src";
+
+  document.head.appendChild(s);
+}
+
+function loadLeadinfo(id) {
+  if (!id) return;
+  // Prevent duplicate initialization
+  if (typeof window.leadinfo !== "undefined") return;
+  if (document.getElementById("leadinfo-init")) return;
+
+  const initCode = `(function(l,e,a,d,i,n,f,o){if(!l[i]){l.GlobalLeadinfoNamespace=l.GlobalLeadinfoNamespace||[];l.GlobalLeadinfoNamespace.push(i);l[i]=function(){(l[i].q=l[i].q||[]).push(arguments)};l[i].t=l[i].t||n;l[i].q=l[i].q||[];o=e.createElement(a);f=e.getElementsByTagName(a)[0];o.async=1;o.src=d;f.parentNode.insertBefore(o,f);} }(window,document,'script','https://cdn.leadinfo.net/ping.js','leadinfo','${id}'));`;
+
+  const s = document.createElement("script");
+  s.type = "text/javascript";
+  s.id = "leadinfo-init";
+  s.text = initCode;
+  document.head.appendChild(s);
 }
 
 export function initAnalytics({ gaMeasurementId, fbPixelId }) {
   if (initialized) return;
+
   initialized = true;
+
   gaId = gaMeasurementId || null;
   fbId = fbPixelId || null;
-  consentGranted = getStoredConsent();
+  gtmId = import.meta.env.VITE_GTM_ID || null;
+  leadinfoId = import.meta.env.VITE_LEADINFO_ID || "LI-6A5A69438E145";
 
-  if (consentGranted) {
-    if (gaId) loadGa(gaId);
-    if (fbId) loadFb(fbId);
+  // Read existing consent.
+  consentState = getStoredConsentState();
+
+  // IMPORTANT:
+  // Nothing is loaded unless the corresponding consent exists.
+  if (consentState.analytics && gaId) {
+    loadGa(gaId);
   }
 
-  window.addEventListener('consentChanged', (e) => {
-    const granted = !!(e && e.detail && e.detail.consent);
-    consentGranted = granted;
-    if (granted) {
-      if (gaId) loadGa(gaId);
-      if (fbId) loadFb(fbId);
+  // Leadinfo is classified under analytics consent
+  if (consentState.analytics && leadinfoId) {
+    loadLeadinfo(leadinfoId);
+  }
+
+  if (consentState.marketing) {
+    if (fbId) {
+      loadFb(fbId);
+    }
+
+    if (gtmId) {
+      loadGtm(gtmId);
+    }
+  }
+
+  // Listen for future consent changes.
+  window.addEventListener("consentChanged", (event) => {
+    const detail = event?.detail || {};
+
+    consentState = {
+      analytics: !!detail.analytics,
+      marketing: !!detail.marketing,
+    };
+
+    if (consentState.analytics && gaId) {
+      loadGa(gaId);
+    }
+
+    if (consentState.analytics && leadinfoId) {
+      loadLeadinfo(leadinfoId);
+    }
+
+    if (consentState.marketing) {
+      if (fbId) {
+        loadFb(fbId);
+      }
+
+      if (gtmId) {
+        loadGtm(gtmId);
+      }
     }
   });
 }
-
 export function trackPageview(pathname) {
   if (!pathname || !hasAnalyticsConsent()) return;
   try {
@@ -86,7 +209,7 @@ export function trackPageview(pathname) {
           ? crypto.randomUUID()
           : `evt_${Date.now()}_${Math.random().toString(16).slice(2)}`;
       window.fbq('track', 'PageView', {}, { eventID: eventId });
-      if (consentGranted) {
+      if (consentState.marketing) {
         try {
           apiFetch("/api/meta/event", {
             method: "POST",
@@ -125,7 +248,7 @@ export function trackEvent(eventName, params = {}) {
       const metaOptions = eventId ? { eventID: eventId } : undefined;
       window.fbq('track', metaEventName, metaParams, metaOptions);
 
-      if (consentGranted && metaEventName !== 'Lead') {
+      if (consentState.marketing && metaEventName !== 'Lead') {
         try {
           apiFetch("/api/meta/event", {
             method: "POST",

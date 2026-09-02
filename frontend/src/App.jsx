@@ -5,16 +5,7 @@ import { trackPageview } from "./lib/analytics";
 import i18n from "./i18n";
 import Landing from "./pages/Landing";
 import LandingAlternative from "./pages/LandingAlternative";
-import ServicesWien from "./pages/ServicesWien";
-import ServicesGraz from "./pages/ServicesGraz";
 import ServicesOverview from "./pages/ServicesOverview";
-import OfficeCleaning from "./pages/OfficeCleaning";
-import DeepCleaning from "./pages/DeepCleaning";
-import RestaurantCleaning from "./pages/RestaurantCleaning";
-import OneTimeCleaning from "./pages/OneTimeCleaning";
-import OneTimePrivate from "./pages/OneTimePrivate";
-import OneTimeBusiness from "./pages/OneTimeBusiness";
-import PermanentCleaning from "./pages/PermanentCleaning";
 import ServiceGeneric from "./pages/ServiceGeneric";
 import Contact from "./pages/Contact";
 import JobOpening from "./pages/JobOpening";
@@ -35,6 +26,7 @@ import Admin from "./pages/Admin";
 import { AuthProvider } from "./lib/auth";
 import { AdminRoute } from "./components/ProtectedRoute";
 import { getLocalizedPath } from "./lib/localeRoutes";
+import CookieConsent from "./components/CookieConsent";
 
 function LocaleBoundary({ locale }) {
   const location = useLocation();
@@ -84,17 +76,13 @@ export default function App() {
 
   return (
     <AuthProvider>
+      <CookieConsent />
       <Routes>
         <Route path="/" element={<LegacyRedirect to="/de/" />} />
         <Route path="/landing-alt" element={<LegacyRedirect to="/de/landing-alt" />} />
         <Route path="/services" element={<LegacyRedirect to="/de/services" />} />
-        <Route path="/services/wien" element={<LegacyRedirect to="/de/services/wien" />} />
-        <Route path="/services/graz" element={<LegacyRedirect to="/de/services/graz" />} />
-        <Route path="/services/office-cleaning" element={<LegacyRedirect to="/de/services/buero-reinigung" />} />
-        <Route path="/services/deep-cleaning" element={<LegacyRedirect to="/de/services/tiefenreinigung" />} />
-        <Route path="/services/restaurant-cleaning" element={<LegacyRedirect to="/de/services/restaurantreinigung" />} />
-        <Route path="/services/one-time-cleaning" element={<LegacyRedirect to="/de/services/einmalreinigung" />} />
-        <Route path="/services/permanent-cleaning" element={<LegacyRedirect to="/de/services/regelmaessige-reinigung" />} />
+        
+        
         <Route path="/contact" element={<LegacyRedirect to="/de/kontakt" />} />
         <Route path="/kontakt" element={<LegacyRedirect to="/de/kontakt" />} />
         <Route path="/job-opening" element={<LegacyRedirect to="/de/karriere" />} />
@@ -115,11 +103,7 @@ export default function App() {
           <Route index element={<LandingAlternative />} />
           <Route path="landing-alt" element={<Landing />} />
           <Route path="services" element={<ServicesOverview />} />
-          <Route path="services/wien" element={<ServicesWien />} />
-          <Route path="services/graz" element={<ServicesGraz />} />
-          <Route path="services/buero-reinigung" element={<OfficeCleaning />} />
-          <Route path="services/tiefenreinigung" element={<DeepCleaning />} />
-          <Route path="services/restaurantreinigung" element={<RestaurantCleaning />} />
+          {/* Removed specific service pages per request */}
           {/* new private service routes */}
           <Route path="services/unterhaltsreinigung" element={<ServiceGeneric />} />
           <Route path="services/grundreinigung" element={<ServiceGeneric />} />
@@ -127,8 +111,8 @@ export default function App() {
           <Route path="services/bauendreinigung-grobreinigung" element={<ServiceGeneric />} />
           <Route path="services/glas-rahmenreinigung" element={<ServiceGeneric />} />
           <Route path="services/industriereinigung-maschinen" element={<ServiceGeneric />} />
-          <Route path="services/einmalreinigung" element={<OneTimePrivate />} />
-          <Route path="services/regelmaessige-reinigung" element={<PermanentCleaning />} />
+          {/* one-time private removed */}
+          
           {/* new business service routes */}
           <Route path="services/unterhaltsreinigung-gewerbe" element={<ServiceGeneric />} />
           <Route path="services/grundreinigung-gewerbe" element={<ServiceGeneric />} />
@@ -136,7 +120,7 @@ export default function App() {
           <Route path="services/bauendreinigung-grobreinigung-gewerbe" element={<ServiceGeneric />} />
           <Route path="services/glas-rahmenreinigung-gewerbe" element={<ServiceGeneric />} />
           <Route path="services/industriereinigung-maschinen-gewerbe" element={<ServiceGeneric />} />
-          <Route path="services/einmalreinigung-gewerbe" element={<OneTimeBusiness />} />
+          {/* one-time business removed */}
           <Route path="kontakt" element={<Contact />} />
           <Route path="karriere" element={<JobOpening />} />
           <Route path="partner-werden" element={<GetPartners />} />
@@ -159,11 +143,7 @@ export default function App() {
           <Route index element={<LandingAlternative />} />
           <Route path="landing-alt" element={<Landing />} />
           <Route path="services" element={<ServicesOverview />} />
-          <Route path="services/wien" element={<ServicesWien />} />
-          <Route path="services/graz" element={<ServicesGraz />} />
-          <Route path="services/office-cleaning" element={<OfficeCleaning />} />
-          <Route path="services/deep-cleaning" element={<DeepCleaning />} />
-          <Route path="services/restaurant-cleaning" element={<RestaurantCleaning />} />
+          {/* Removed specific service pages per request */}
           {/* new private service routes (en) */}
           <Route path="services/maintenance-cleaning" element={<ServiceGeneric />} />
           <Route path="services/deep-cleaning-private" element={<ServiceGeneric />} />
@@ -171,8 +151,7 @@ export default function App() {
           <Route path="services/construction-cleaning" element={<ServiceGeneric />} />
           <Route path="services/window-cleaning" element={<ServiceGeneric />} />
           <Route path="services/industrial-cleaning" element={<ServiceGeneric />} />
-          <Route path="services/one-time-cleaning" element={<OneTimePrivate />} />
-          <Route path="services/permanent-cleaning" element={<PermanentCleaning />} />
+          {/* one-time private removed (en) */}
           {/* new business service routes (en) */}
           <Route path="services/maintenance-cleaning-business" element={<ServiceGeneric />} />
           <Route path="services/deep-cleaning-business" element={<ServiceGeneric />} />
@@ -180,7 +159,7 @@ export default function App() {
           <Route path="services/construction-cleaning-business" element={<ServiceGeneric />} />
           <Route path="services/window-cleaning-business" element={<ServiceGeneric />} />
           <Route path="services/industrial-cleaning-business" element={<ServiceGeneric />} />
-          <Route path="services/one-time-cleaning-business" element={<OneTimeBusiness />} />
+          {/* one-time business removed (en) */}
           <Route path="contact" element={<Contact />} />
           <Route path="job-opening" element={<JobOpening />} />
           <Route path="get-partners" element={<GetPartners />} />

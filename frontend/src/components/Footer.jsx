@@ -10,7 +10,8 @@ export default function Footer() {
   const locale = getLocaleFromPathname(location.pathname);
   return (
            <footer className="bg-white text-gray-700 mt-auto border-t border-gray-200">
-        <div className="container mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="container mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/*
           <div>
             <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
               {t("footer.staff.title")}
@@ -77,13 +78,6 @@ export default function Footer() {
                   {t("footer.customers.links.priceList")}
                 </a>
               </li>
-              {/*
-              <li>
-                <Link to={getLocalizedPath(locale, "calculator")} className="hover:text-gray-900 transition-colors">
-                  {t("footer.customers.links.priceCalculator", { defaultValue: "Price Calculator" })}
-                </Link>
-              </li>
-              */}
               <li>
                 <a href="/files/Contract.pdf" download className="hover:text-gray-900 transition-colors">
                   {t("footer.customers.links.serviceContract")}
@@ -91,6 +85,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
+          */}
 
           <div>
             <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
@@ -137,9 +132,18 @@ export default function Footer() {
                 </li>
               </ul>
 
-              <Link to={getLocalizedPath(locale, "imprint")} className="hover:text-gray-900 transition-colors">
-                {t("footer.connect.links.imprint")}
-              </Link>
+              <div className="mt-2">
+                <Link to={getLocalizedPath(locale, "imprint")} className="hover:text-gray-900 transition-colors mr-4">
+                  {t("footer.connect.links.imprint")}
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => window.dispatchEvent(new Event('openCookieSettings'))}
+                  className="hover:text-gray-900 underline"
+                >
+                  {locale === 'de' ? 'Cookie-Einstellungen' : 'Cookie Settings'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

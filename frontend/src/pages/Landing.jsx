@@ -10,13 +10,12 @@ import officeImg from "../assets/office.jpg";
 import Seo from "../components/Seo";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
+import { writeConsent } from "../lib/consent";
 
 export default function Landing() {
   const { t, i18n } = useTranslation();
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
-  const [showBanner, setShowBanner] = useState(false);
-
   const seoTitle = locale === "de"
     ? "Reinigungsfirma Wien – Putzfrau & Reinigungskraft buchen"
     : "Cleaning Company Vienna – Book a Cleaner Online";
@@ -24,34 +23,13 @@ export default function Landing() {
     ? "Reinigung in Wien: Putzfrau Wien & Reinigungskraft Wien – schnell online buchen. Reinigungsfirma Wien für Haushalt & Büro. Geprüfte Reinigungskräfte."
     : "Cleaning in Vienna: book a cleaner online for home and office cleaning with vetted staff and flexible scheduling.";
 
-  useEffect(() => {
-    const storedConsent = localStorage.getItem("cookieConsent");
-    const storedTime = localStorage.getItem("cookieConsentTime");
-
-    if (!storedConsent || !storedTime) {
-      setShowBanner(true);
-      return;
-    }
-
-    const now = Date.now();
-    const oneDay = 24 * 60 * 60 * 1000;
-    if (now - parseInt(storedTime, 10) > oneDay) {
-      setShowBanner(true);
-    }
-  }, []);
-
+  // Cookie consent is centralized in CookieConsent component / lib/consent
   const acceptCookies = () => {
-    localStorage.setItem("cookieConsent", "true");
-    localStorage.setItem("cookieConsentTime", Date.now().toString());
-    setShowBanner(false);
-    window.dispatchEvent(new CustomEvent("consentChanged", { detail: { consent: true } }));
+    writeConsent({ analytics: true, marketing: true });
   };
 
   const declineCookies = () => {
-    localStorage.setItem("cookieConsent", "false");
-    localStorage.setItem("cookieConsentTime", Date.now().toString());
-    setShowBanner(false);
-    window.dispatchEvent(new CustomEvent("consentChanged", { detail: { consent: false } }));
+    writeConsent({ analytics: false, marketing: false });
   };
 
   return (

@@ -29,6 +29,8 @@ import Seo from "../components/Seo";
 import GoogleReviewsCarousel from "../components/GoogleReviewsCarousel";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
+// static map preview removed — we rely on iframe + consent
+import { readConsent, openSettings } from "../lib/consent";
 
 const content = {
   en: {
@@ -211,14 +213,12 @@ const content = {
 const serviceIcons = [Building2, UtensilsCrossed, Store, Stethoscope];
 
 const Unternehmen = [
-  { key: "officeCleaning" },
-  { key: "deepCleaning" },
-  { key: "restaurantCleaning" },
+  { key: "businessMaintenance" },
+  { key: "businessStaircase" },
 ];
 
 const Privatkunden = [
-  { key: "oneTimeCleaning" },
-  { key: "permanentCleaning" },
+  { key: "privateMaintenance" },
 ];
 
 const navCopy = {
@@ -232,7 +232,7 @@ const navCopy = {
     officeCleaning: "Büroreinigung",
     deepCleaning: "Tiefenreinigung",
     restaurantCleaning: "Restaurantreinigung",
-    oneTimeCleaning: "Einmalreinigung",
+    /* oneTimeCleaning removed */
     permanentCleaning: "Regelmäßige Reinigung",
     wienServices: "Services in Wien",
     grazServices: "Services in Graz",
@@ -249,7 +249,7 @@ const navCopy = {
     officeCleaning: "Office Cleaning",
     deepCleaning: "Deep Cleaning",
     restaurantCleaning: "Restaurant Cleaning",
-    oneTimeCleaning: "One-time Cleaning",
+    /* oneTimeCleaning removed */
     permanentCleaning: "Permanent Cleaning",
     wienServices: "Vienna Services",
     grazServices: "Graz Services",
@@ -264,45 +264,35 @@ export default function LandingAlternative() {
   const c = useMemo(() => content[lang], [lang]);
   const n = navCopy[lang];
 
-  // Cookie banner state (migrated from Profile.jsx)
   const { t } = useTranslation();
-  const [showCookieBanner, setShowCookieBanner] = useState(false);
+
+  const [marketingConsent, setMarketingConsent] = useState(() => readConsent().marketing);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
-    const storedConsent = localStorage.getItem("cookieConsent");
-    const storedTime = localStorage.getItem("cookieConsentTime");
+    const handleConsentChange = (event) => {
+      setMarketingConsent(!!event.detail?.marketing);
+    };
 
-    // Debug: log stored values so we can see why banner may not render
-    try {
-      console.debug("cookieConsent:", storedConsent, "cookieConsentTime:", storedTime);
-    } catch (e) {}
+    window.addEventListener("consentChanged", handleConsentChange);
 
-    if (!storedConsent || !storedTime) {
-      setShowCookieBanner(true);
-      console.debug("Showing cookie banner: missing consent or time");
-      return;
-    }
-
-    const now = Date.now();
-    const oneDay = 24 * 60 * 60 * 1000;
-    if (now - parseInt(storedTime, 10) > oneDay) {
-      setShowCookieBanner(true);
-      console.debug("Showing cookie banner: consent expired");
-    }
+    return () => {
+      window.removeEventListener("consentChanged", handleConsentChange);
+    };
   }, []);
 
-  const acceptCookies = () => {
-    localStorage.setItem("cookieConsent", "true");
-    localStorage.setItem("cookieConsentTime", Date.now().toString());
-    setShowCookieBanner(false);
-    window.dispatchEvent(new CustomEvent("consentChanged", { detail: { consent: true } }));
-  };
-
-  const declineCookies = () => {
-    localStorage.setItem("cookieConsent", "false");
-    localStorage.setItem("cookieConsentTime", Date.now().toString());
-    setShowCookieBanner(false);
-    window.dispatchEvent(new CustomEvent("consentChanged", { detail: { consent: false } }));
+  const handleLoadMap = () => {
+    try {
+      const parsed = readConsent();
+      const marketing = parsed ? !!parsed.marketing : false;
+      if (!marketing) {
+        window.dispatchEvent(new Event("openCookieSettings"));
+        return;
+      }
+      setMapLoaded(true);
+    } catch (_) {
+      window.dispatchEvent(new Event("openCookieSettings"));
+    }
   };
 
   // controlled services menu (desktop + mobile)
@@ -358,22 +348,38 @@ export default function LandingAlternative() {
             </div>
 
             <div className="w-full md:w-80 mt-4 md:mt-0 relative">
-              <div className="map-card w-full h-48 md:h-56">
-                <iframe
-                  title={c.mapTitle}
-                  src="https://www.google.com/maps?q=Waagner-Biro-Stra%C3%9Fe,+Graz&output=embed"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  aria-label={c.mapAria}
-                />
+              <div className="map-card w-full h-48 md:h-56 relative">
+                {marketingConsent ? (
+                  <iframe
+                    src="https://www.google.com/maps?q=Waagner-Biro-Stra%C3%9Fe,+Graz&output=embed"
+                    title="Google Maps"
+                    className="w-full h-full border-0"
+                    loading="lazy"
+                    onLoad={handleLoadMap}
+                  />
+                ) : (
+                  <div className="flex h-full min-h-[300px] items-center justify-center bg-gray-100 p-6 text-center">
+                    <div>
+                      <p className="mb-2 text-sm text-gray-600">Map unavailable</p>
+                      <p className="mb-4 text-xs text-gray-500">Enable marketing consent to load Google Maps.</p>
+                      <button
+                        type="button"
+                        onClick={openSettings}
+                        className="rounded px-4 py-2 bg-[#0097b2] text-white"
+                      >
+                        Open cookie settings
+                      </button>
+                    </div>
+                  </div>
+                )}
+                <a className="map-chip absolute right-4 top-4 bg-white/80 p-2 rounded" href="https://www.google.com/maps/search/?api=1&query=Waagner-Biro-Stra%C3%9Fe+Graz" target="_blank" rel="noopener noreferrer" aria-label={c.mapAria}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 12 6 12s6-6.75 6-12c0-3.314-2.686-6-6-6z" stroke="#0f172a" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="8" r="2.2" fill="#0f172a" />
+                  </svg>
+                  <span className="ml-2">Waagner‑Biro‑Straße, Graz</span>
+                </a>
               </div>
-                <a className="map-chip" href="https://www.google.com/maps/search/?api=1&query=Waagner-Biro-Stra%C3%9Fe+Graz" target="_blank" rel="noopener noreferrer" aria-label={c.mapAria}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                  <path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 12 6 12s6-6.75 6-12c0-3.314-2.686-6-6-6z" stroke="#0f172a" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="12" cy="8" r="2.2" fill="#0f172a" />
-                </svg>
-                <span>Waagner‑Biro‑Straße, Graz</span>
-              </a>
             </div>
           </div>
         </div>
@@ -618,40 +624,6 @@ export default function LandingAlternative() {
           </div>
         </div>
       </section>
-
-      {showCookieBanner && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl shadow-lg max-w-md text-center space-y-4">
-            <p className="text-gray-700">
-              {t("cookies.msg")}
-              <Link to={getLocalizedPath(lang, "privacy")} className="underline text-[#5be3e3]">
-                {t("cookies.privacyPolicy")}
-              </Link>
-              .
-            </p>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => {
-                  declineCookies();
-                  trackEvent("Cookie_Decline_Click", { consent: false, source: "banner" });
-                }}
-                className="bg-gray-300 text-black px-6 py-2 rounded-md font-semibold hover:opacity-90 transition"
-              >
-                {t("cookies.decline")}
-              </button>
-              <button
-                onClick={() => {
-                  acceptCookies();
-                  trackEvent("Cookie_Accept_Click", { consent: true, source: "banner" });
-                }}
-                className="bg-[#5be3e3] text-black px-6 py-2 rounded-md font-semibold hover:opacity-90 transition"
-              >
-                {t("cookies.accept")}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <Footer />
 

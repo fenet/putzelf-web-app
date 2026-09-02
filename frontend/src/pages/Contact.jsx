@@ -155,7 +155,7 @@ export default function Contact() {
                   <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
                     {t("contact.locationsLabel")}
                   </div>
-                  <div className="mt-1 text-base font-medium text-slate-900">Vienna</div>
+                  <div className="mt-1 text-base font-medium text-slate-900">Wien</div>
                   <div className="mt-1 text-sm text-slate-600">office@putzelf.com</div>
                   <div className="mt-4 text-base font-medium text-slate-900">Graz</div>
                   <div className="mt-1 text-sm text-slate-600">office.stmk@putzelf.com</div>

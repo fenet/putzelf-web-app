@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import StructuredData from "../components/StructuredData";
 import GoogleReviewsCarousel from "../components/GoogleReviewsCarousel";
+import ExpectationsSection from "../components/ExpectationsSection";
 import { getRouteKeyFromPathname, getLocalizedPath, getLocalizedAlternates, getLocaleFromPathname } from "../lib/localeRoutes";
 
 const CheckIcon = () => (
@@ -235,6 +236,8 @@ export default function ServiceGeneric() {
     ? locale === "de" ? "Fensterreinigung" : "Window Cleaning"
     : locale === "de" ? "Service" : "Service";
 
+  
+
   return (
     <>
       <Navbar />
@@ -403,6 +406,8 @@ export default function ServiceGeneric() {
             <GoogleReviewsCarousel />
           </div>
         </section>
+        
+        <ExpectationsSection tBase={tBase} locale={locale} bookingHref={getLocalizedPath(locale, "booking")} />
 
         {faqs.length > 0 && (
           <section className="border-t border-slate-200 bg-white">
