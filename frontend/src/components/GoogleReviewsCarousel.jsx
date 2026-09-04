@@ -12,6 +12,39 @@ const GOOGLE_RATING_MAP = {
   FIVE: 5,
 };
 
+const FALLBACK_REVIEWS = [
+  {
+    reviewId: "nhp-wien",
+    reviewerName: "NHP Wien",
+    relativeDate: "a week ago",
+    rating: 5,
+    comment:
+      "Für die dreiwöchige Urlaubsvertretung unserer Reinigungskraft wurde uns über Putzelf eine nette und zuverlässige Mitarbeiterin vermittelt. Sie arbeitet selbstständig und sorgfältig und versteht ihre Aufgaben schnell. Besonders positiv finden wir, dass sie mitdenkt und aufmerksam auf Dinge hinweist. Wir sind sehr zufrieden und können Putzelf absolut weiterempfehlen!",
+    reviewUrl:
+      "https://www.google.com/search?sa=X&sca_esv=c01d00c7c27b7017&hl=en-GB&authuser=0&biw=1296&bih=654&sxsrf=APpeQnuDl8aLAKyatGWp4_khekMJspvlxQ:1787480182109&q=PutzELF%20Reviews&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxK2NDQzszAGkoaWZiamRqdGxhYbGBlfMfIHlJZUufq4KQSllmWmlhcvYkUXAQCg_bs7PgAAAA&rldimm=9166839161964525238&tbm=lcl&ved=0CA4Q5foLahcKEwiYwL_LwraWAxUAAAAAHQAAAAAQBQ#lkt=LocalPoiReviews&arid=Ci9DQUlRQUNvZENodHljRjlvT2w4elNuTmZTVk5FWjJzNVEyc3RhV1EwYTFoWFZrRRAB",
+  },
+  {
+    reviewId: "sophia-volpini",
+    reviewerName: "Sophia Volpini",
+    relativeDate: "a month ago",
+    rating: 5,
+    comment:
+      "Putzelf liefert sehr professionellen und zuvorkommenden Service! Ich war begeistert von Koordination, Qualität der Reinigungskraft und der einfachen Kommunikation. Preisleistungsverhältnis ist Top und man fühlt sich rundum wohl aufgehoben! Werde 100% wieder dort den Service in Anspruch nehmen.",
+    reviewUrl:
+      "https://www.google.com/search?sa=X&sca_esv=c01d00c7c27b7017&hl=en-GB&authuser=0&biw=1296&bih=654&sxsrf=APpeQnuDl8aLAKyatGWp4_khekMJspvlxQ:1787480182109&q=PutzELF%20Reviews&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxK2NDQzszAGkoaWZiamRqdGxhYbGBlfMfIHlJZUufq4KQSllmWmlhcvYkUXAQCg_bs7PgAAAA&rldimm=9166839161964525238&tbm=lcl&ved=0CA4Q5foLahcKEwiYwL_LwraWAxUAAAAAHQAAAAAQBQ#lkt=LocalPoiReviews&arid=Ci9DQUlRQUNvZENodHljRjlvT2w4elNuTmZTVk5FWjJzNVEyc3RhV1EwYTFoWFZrRRAB",
+  },
+  {
+    reviewId: "stadtkino-buero",
+    reviewerName: "Stadtkino Büro",
+    relativeDate: "2 months ago",
+    rating: 5,
+    comment:
+      "Wir waren sehr zufrieden mit dem Service - freundlich, zuverlässig und gründlich. Vielen Dank und bis bald im Kino!",
+    reviewUrl:
+      "https://www.google.com/search?sa=X&sca_esv=c01d00c7c27b7017&hl=en-GB&authuser=0&biw=1296&bih=654&sxsrf=APpeQnuDl8aLAKyatGWp4_khekMJspvlxQ:1787480182109&q=PutzELF%20Reviews&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxK2NDQzszAGkoaWZiamRqdGxhYbGBlfMfIHlJZUufq4KQSllmWmlhcvYkUXAQCg_bs7PgAAAA&rldimm=9166839161964525238&tbm=lcl&ved=0CA4Q5foLahcKEwiYwL_LwraWAxUAAAAAHQAAAAAQBQ#lkt=LocalPoiReviews&arid=Ci9DQUlRQUNvZENodHljRjlvT2w4elNuTmZTVk5FWjJzNVEyc3RhV1EwYTFoWFZrRRAB",
+  },
+];
+
 function Stars({ rating = 0, label }) {
   const safeRating = Number(rating) || 0;
 
@@ -61,21 +94,38 @@ function pickReviewText(comment, locale) {
 }
 
 function normalizeReview(review, locale) {
-  const reviewerName = review.reviewerName || review.reviewer?.displayName || "Google Reviewer";
+  if (!review || typeof review !== "object") {
+    return null;
+  }
+
+  const reviewerName = (review.reviewerName || review.reviewer?.displayName || "Google Reviewer").trim();
   const rawRating = review.rating ?? review.starRating ?? 5;
   const ratingValue =
     typeof rawRating === "string"
       ? GOOGLE_RATING_MAP[rawRating.toUpperCase()] || Number(rawRating) || 5
       : Number(rawRating) || 5;
 
+  const comment = pickReviewText(review.comment || review.text || "", locale);
+  if (!reviewerName || !comment.trim() || !Number.isFinite(ratingValue) || ratingValue <= 0) {
+    return null;
+  }
+
   return {
     reviewId: review.reviewId || review.name || `${reviewerName}-${review.createTime || "review"}`,
     reviewerName,
     relativeDate: formatReviewDate(review.createTime, locale),
     rating: ratingValue,
-    comment: pickReviewText(review.comment || review.text || "", locale),
-    reviewUrl: GOOGLE_REVIEWS_URL,
+    comment,
+    reviewUrl: review.reviewUrl || review.url || GOOGLE_REVIEWS_URL,
   };
+}
+
+function getUsableReviews(rawReviews, locale) {
+  if (!Array.isArray(rawReviews)) return [];
+
+  return rawReviews
+    .map((review) => normalizeReview(review, locale))
+    .filter(Boolean);
 }
 
 export default function GoogleReviewsCarousel() {
@@ -98,26 +148,36 @@ export default function GoogleReviewsCarousel() {
         const response = await apiFetch("/api/google/locations/6668503191043696321/reviews");
 
         if (!response.ok) {
-          let message = "Unable to load Google reviews.";
-          try {
-            const payload = await response.json();
-            if (payload?.error) message = payload.error;
-          } catch {
-            // keep default message
-          }
-          throw new Error(message);
+          throw new Error(`Google Reviews API error: ${response.status}`);
         }
 
-        const payload = await response.json();
-        const nextReviews = Array.isArray(payload?.reviews) ? payload.reviews : [];
+        let payload;
+        try {
+          payload = await response.json();
+        } catch (parseError) {
+          throw new Error("Malformed Google Reviews API response");
+        }
+
+        if (payload && typeof payload === "object" && payload.error) {
+          throw new Error(payload.error);
+        }
+
+        const nextReviews = getUsableReviews(payload?.reviews, i18n.language);
+
+        if (!nextReviews.length) {
+          throw new Error("Google Reviews API returned no usable reviews");
+        }
 
         if (isMounted) {
-          setReviews(nextReviews.map((review) => normalizeReview(review, i18n.language)));
+          setReviews(nextReviews);
         }
       } catch (err) {
         if (isMounted) {
-          setReviews([]);
+          setReviews(FALLBACK_REVIEWS);
           setError(err?.message || "Unable to load Google reviews.");
+          if (typeof console !== "undefined" && console.warn) {
+            console.warn("Google Reviews API unavailable, using fallback reviews.", err);
+          }
         }
       } finally {
         if (isMounted) setIsLoading(false);
@@ -228,19 +288,7 @@ export default function GoogleReviewsCarousel() {
           </div>
         )}
 
-        {!isLoading && error && !reviews.length && (
-          <div className="rounded-[24px] border border-slate-200/70 bg-white/80 p-6 text-sm text-slate-600 shadow-[0_14px_30px_rgba(15,23,42,0.04)]">
-            {error}
-          </div>
-        )}
-
-        {!isLoading && !error && !reviews.length && (
-          <div className="rounded-[24px] border border-slate-200/70 bg-white/80 p-6 text-sm text-slate-600 shadow-[0_14px_30px_rgba(15,23,42,0.04)]">
-            {t("reviews.empty", "No reviews available yet.")}
-          </div>
-        )}
-
-        {!isLoading && !error && reviews.length > 0 && (
+        {!isLoading && reviews.length > 0 && (
           <div className="overflow-hidden rounded-[28px] bg-slate-50/70 px-1 py-1 md:bg-transparent md:px-0">
             <div
               className="flex transition-transform duration-700 ease-out"
