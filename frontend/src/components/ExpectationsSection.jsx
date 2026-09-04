@@ -41,21 +41,21 @@ export default function ExpectationsSection({ tBase, locale, bookingHref }) {
             const Icon = iconMap[key] || Star;
 
             return (
-              <div key={key} className="flex flex-col items-start gap-3 rounded-lg border border-slate-200 bg-white p-4">
-                <div className="flex items-center gap-4">
+              <div key={key} className="flex flex-col items-center justify-center gap-3 rounded-lg border border-slate-200 bg-white p-4 text-center">
+                <div className="flex items-center justify-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-md bg-slate-50 text-cyan-700">
                     <Icon aria-hidden className="w-10 h-10" />
                   </div>
-                  <div className="text-base font-semibold text-slate-900">{title}</div>
                 </div>
+                <div className="text-base font-semibold text-slate-900">{title}</div>
                 {desc ? <div className="mt-1 text-sm text-slate-600">{desc}</div> : null}
               </div>
             );
           })}
         </div>
 
-        <div className="mt-8">
-          <a href={bookingHref} className="inline-flex items-center justify-center rounded-full bg-[#0097b2] px-8 py-3 text-base font-semibold text-white transition hover:bg-[#007f95] mx-auto">
+        <div className="mt-8 flex justify-center">
+          <a href={bookingHref} className="inline-flex items-center justify-center rounded-full bg-[#0097b2] px-8 py-3 text-base font-semibold text-white transition hover:bg-[#007f95]">
             {t("services.cta", { defaultValue: locale === "de" ? "Jetzt Anfragen" : "Request an Offer" })}
           </a>
         </div>

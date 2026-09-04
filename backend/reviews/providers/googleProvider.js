@@ -2,7 +2,7 @@ import qs from "querystring";
 import { getTokens, saveTokens } from "../../google/tokenStore.js";
 
 const TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token";
-const REVIEWS_BASE = "https://mybusinessbusinessinformation.googleapis.com/v1";
+const REVIEWS_BASE = "https://mybusiness.googleapis.com/v4";
 
 function ensureEnv() {
   const missing = [];
@@ -53,9 +53,34 @@ async function refreshAccessTokenIfNeeded(tokens) {
 }
 
 async function callReviewsApi(locationResourceName, accessToken, pageSize = 50, pageToken) {
-  const url = `${REVIEWS_BASE}/${encodeURIComponent(locationResourceName)}/reviews?pageSize=${pageSize}${pageToken ? `&pageToken=${encodeURIComponent(pageToken)}` : ""}`;
+  const encodedResourceName = locationResourceName
+    .split("/")
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+
+  const url = `${REVIEWS_BASE}/${encodedResourceName}/reviews?pageSize=${pageSize}${pageToken ? `&pageToken=${encodeURIComponent(pageToken)}` : ""}`;
+  console.info("GoogleProvider: reviews request", {
+    locationResourceName,
+    url,
+    pageSize,
+    pageToken: pageToken || null,
+  });
+
   const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
   const body = await res.json().catch(() => null);
+
+  const error = body && body.error ? body.error : null;
+  if (!res.ok) {
+    console.error("GoogleProvider: upstream Google API error", {
+      httpStatus: res.status,
+      googleErrorCode: error?.code ?? null,
+      googleErrorMessage: error?.message ?? null,
+      googleErrorStatus: error?.status ?? null,
+      responseBody: body ?? null,
+      requestUrl: url,
+    });
+  }
+
   return { status: res.status, body };
 }
 
@@ -75,14 +100,36 @@ export async function getReviews({ location, rating, sort, limit = 10, page = 1 
   const { status, body } = await callReviewsApi(location, valid.access_token, pageSize, pageToken);
 
   if (status === 429) {
-    // quota not granted yet
-    console.warn("GoogleProvider: API returned 429 — likely quota not granted", { body });
+    const error = body && body.error ? body.error : null;
+    console.warn("GoogleProvider: API returned 429 — likely quota not granted", {
+      httpStatus: status,
+      googleErrorCode: error?.code ?? null,
+      googleErrorMessage: error?.message ?? null,
+      googleErrorStatus: error?.status ?? null,
+      responseBody: body ?? null,
+    });
     throw { code: "QUOTA", message: "Google Business Profile API access not granted or quota exhausted", details: body };
   }
   if (status === 401) {
+    const error = body && body.error ? body.error : null;
+    console.error("GoogleProvider: token-related upstream error", {
+      httpStatus: status,
+      googleErrorCode: error?.code ?? null,
+      googleErrorMessage: error?.message ?? null,
+      googleErrorStatus: error?.status ?? null,
+      responseBody: body ?? null,
+    });
     throw { code: "TOKEN_INVALID", message: "Access token invalid or expired" };
   }
   if (status >= 400) {
+    const error = body && body.error ? body.error : null;
+    console.error("GoogleProvider: upstream API error", {
+      httpStatus: status,
+      googleErrorCode: error?.code ?? null,
+      googleErrorMessage: error?.message ?? null,
+      googleErrorStatus: error?.status ?? null,
+      responseBody: body ?? null,
+    });
     throw { code: "API_ERROR", message: "Google API error", status, body };
   }
 

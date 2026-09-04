@@ -77,10 +77,7 @@ export default function ServiceGeneric() {
     "/resedential/a2.jpg",
     "/resedential/a3.jpg",
     "/resedential/a4.jpg",
-    "/resedential/a5.jpg",
-    "/resedential/a6.jpg",
-    "/resedential/a7.jpg",
-    "/resedential/a8.jpg",
+    "/resedential/a5.jpg"
   ];
 
   const isResidential = key === "privateResidential" || key === "businessResidential";
@@ -88,11 +85,14 @@ export default function ServiceGeneric() {
   // Keep residential behavior unchanged above.
   const serviceImages = {
     privateMaintenance: {
-      hero: "/services/privateMaintenance/hero.svg",
-      solution: "/services/privateMaintenance/solution.svg",
+      hero: "/services/privateMaintenance/pm1.jpg",
+      solution: "/services/privateMaintenance/pm2.jpg",
       gallery: [
-        "/services/privateMaintenance/gallery1.svg",
-        "/services/privateMaintenance/gallery2.svg",
+        "/services/privateMaintenance/pm3.jpg",
+        "/services/privateMaintenance/pm4.jpeg",
+        "/services/privateMaintenance/pm5.jpeg",
+        "/services/privateMaintenance/pm6.jpg",
+        "/services/privateMaintenance/pm7.avif",
       ],
     },
     privateDeep: {
@@ -125,11 +125,14 @@ export default function ServiceGeneric() {
       ],
     },
     privateIndustrial: {
-      hero: "/services/privateIndustrial/hero.svg",
-      solution: "/services/privateIndustrial/solution.svg",
+      hero: "/services/privateIndustrial/pi1.avif",
+      solution: "/services/privateIndustrial/pi2.jpg",
       gallery: [
-        "/services/privateIndustrial/gallery1.svg",
-        "/services/privateIndustrial/gallery2.svg",
+        "/services/privateIndustrial/pi3.jpg",
+        "/services/privateIndustrial/pi4.jpeg",
+        "/services/privateIndustrial/pi5.avif",
+        "/services/privateIndustrial/pi6.jpg",
+        "/services/privateIndustrial/pi7.jpg",
       ],
     },
     businessMaintenance: {
@@ -189,11 +192,13 @@ export default function ServiceGeneric() {
       ],
     },
     businessIndustrial: {
-      hero: "/services/businessIndustrial/hero.svg",
-      solution: "/services/businessIndustrial/solution.svg",
+      hero: "/services/businessIndustrial/bi1.jpg",
+      solution: "/services/businessIndustrial/bi2.jpg",
       gallery: [
-        "/services/businessIndustrial/gallery1.svg",
-        "/services/businessIndustrial/gallery2.svg",
+        "/services/businessIndustrial/bi3.jpeg",
+        "/services/businessIndustrial/bi4.jpg",
+        "/services/businessIndustrial/bi5.jpg",
+        "/services/businessIndustrial/bi6.jpg",
       ],
     },
   };

@@ -23,6 +23,7 @@ import PriceCalculator from "./pages/PriceCalculator";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
+import { BlogPage, BlogPostPage } from "./pages/Blog";
 import { AuthProvider } from "./lib/auth";
 import { AdminRoute } from "./components/ProtectedRoute";
 import { getLocalizedPath } from "./lib/localeRoutes";
@@ -74,6 +75,34 @@ export default function App() {
     trackPageview(location.pathname);
   }, [location.pathname]);
 
+  useEffect(() => {
+    // Global HTML5 validation handler: set localized messages for required fields
+    const onInvalid = (e) => {
+      try {
+        const el = e.target;
+        if (!el || !el.validity) return;
+        if (el.validity.valueMissing) {
+          const msg = i18n.t("form.requiredField", { defaultValue: "Please fill out this field." });
+          el.setCustomValidity(msg);
+        }
+      } catch (_) {}
+    };
+
+    const onInput = (e) => {
+      try {
+        const el = e.target;
+        if (el && typeof el.setCustomValidity === "function") el.setCustomValidity("");
+      } catch (_) {}
+    };
+
+    document.addEventListener("invalid", onInvalid, true);
+    document.addEventListener("input", onInput, true);
+    return () => {
+      document.removeEventListener("invalid", onInvalid, true);
+      document.removeEventListener("input", onInput, true);
+    };
+  }, []);
+
   return (
     <AuthProvider>
       <CookieConsent />
@@ -94,6 +123,8 @@ export default function App() {
         <Route path="/search" element={<LegacyRedirect to="/de/search" />} />
         <Route path="/profile" element={<LegacyRedirect to="/de/profile" />} />
         <Route path="/calculator" element={<LegacyRedirect to="/de/calculator" />} />
+        <Route path="/blog" element={<LegacyRedirect to="/de/blog" />} />
+        <Route path="/blog/:slug" element={<LegacyRedirect to={location.pathname.replace(/^\//, "/de/")} />} />
         <Route path="/login" element={<LegacyRedirect to="/de/login" />} />
         <Route path="/register" element={<LegacyRedirect to="/de/register" />} />
         <Route path="/admin" element={<LegacyRedirect to="/de/admin" />} />
@@ -132,6 +163,8 @@ export default function App() {
           <Route path="search" element={<Layout><Search /></Layout>} />
           <Route path="profile" element={<Layout><Home /></Layout>} />
           <Route path="calculator" element={<PriceCalculator />} />
+          <Route path="blog" element={<BlogPage />} />
+          <Route path="blog/:slug" element={<BlogPostPage />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="admin" element={<AdminRoute><Admin /></AdminRoute>} />
@@ -170,6 +203,8 @@ export default function App() {
           <Route path="search" element={<Layout><Search /></Layout>} />
           <Route path="profile" element={<Layout><Home /></Layout>} />
           <Route path="calculator" element={<PriceCalculator />} />
+          <Route path="blog" element={<BlogPage />} />
+          <Route path="blog/:slug" element={<BlogPostPage />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="admin" element={<AdminRoute><Admin /></AdminRoute>} />

@@ -1061,13 +1061,6 @@ export default function Home() {
                 {t("home.dateLabel") || "Date"}
               </label>
               <div className="w-full p-3 border rounded-lg bg-white">
-                {!form.location ? (
-                  <p className="text-sm text-gray-500 mb-3">
-                    {t("home.slots.enterAddress", {
-                      defaultValue: "Enter your address to see available days.",
-                    })}
-                  </p>
-                ) : null}
                 {monthLoading ? (
                   <p className="text-sm text-gray-600">
                     {t("home.calendar.loading", {

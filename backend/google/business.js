@@ -109,6 +109,7 @@ export async function listLocations(accountId) {
     do {
       const params = new URLSearchParams();
       params.set("pageSize", "50");
+      params.set("readMask", "name,title,storefrontAddress");
       if (pageToken) params.set("pageToken", pageToken);
       const url = `${LOCATIONS_BASE}/accounts/${encodeURIComponent(accountId)}/locations?${params.toString()}`;
       const { status, body } = await callGoogleApi(url, valid.access_token);
@@ -120,7 +121,8 @@ export async function listLocations(accountId) {
         locations.push({
           name: l.name,
           title: l.title || l.locationName || null,
-          address: l.address || null,
+          address: l.storefrontAddress || l.address || null,
+          storefrontAddress: l.storefrontAddress || null,
           storeCode: l.storeCode || null,
           primaryCategory: l.primaryCategory || null,
         });

@@ -16,6 +16,9 @@ const resources = {
         cancel: "Cancel",
         ok: "OK"
       },
+      form: {
+        requiredField: "Please fill out this field."
+      },
       cookies: {
         heading: "Your privacy matters",
         msg: "We use technically necessary cookies to ensure the security of our website. With your consent, we also use analytics tools (such as Google Analytics and Leadinfo) to improve our services and analyze visits. Tracking only takes place after you have given your consent. You can grant or decline your consent, or find out more in our <0>Privacy Policy</0>.",
@@ -822,6 +825,9 @@ const resources = {
       common: {
         cancel: "Abbrechen",
         ok: "OK"
+      },
+      form: {
+        requiredField: "Bitte füllen Sie dieses Feld aus."
       },
       cookies: {
         heading: "Ihre Privatsphäre ist uns wichtig",

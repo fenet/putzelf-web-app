@@ -33,6 +33,7 @@ const Privatkunden = [
 const copy = {
   de: {
     services: "Leistungen",
+    blog: "Blog",
     jobOpening: "Jobs",
     getPartners: "Partner werden",
 
@@ -73,6 +74,7 @@ const copy = {
 
   en: {
     services: "Services",
+    blog: "Blog",
     jobOpening: "Job Opening",
     getPartners: "Get Partners",
 
@@ -348,6 +350,16 @@ const Navbar = () => {
             </div>
 
             {/* =========================
+                BLOG
+            ========================== */}
+            <Link
+              to={getLocalizedPath(locale, "blog")}
+              className="text-gray-700 hover:text-[#0097b2] font-medium"
+            >
+              {c.blog}
+            </Link>
+
+            {/* =========================
                 JOBS
             ========================== */}
             <Link
@@ -598,6 +610,17 @@ const Navbar = () => {
               ))}
             </ul>
           )}
+
+          {/* =========================
+              BLOG
+          ========================== */}
+          <Link
+            to={getLocalizedPath(locale, "blog")}
+            className="mt-2 block rounded-xl px-4 py-3 font-semibold text-slate-800 hover:bg-slate-50"
+            onClick={() => setMobileOpen(false)}
+          >
+            {c.blog}
+          </Link>
 
           {/* =========================
               JOBS
