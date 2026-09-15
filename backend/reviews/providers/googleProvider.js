@@ -33,7 +33,32 @@ async function refreshAccessTokenIfNeeded(tokens) {
       });
       const data = await res.json().catch(() => null);
       if (!res.ok) {
-        console.error("GoogleProvider: failed to refresh token", { status: res.status });
+        // Redact sensitive fields before logging
+        const redact = (obj) => {
+          if (!obj || typeof obj !== "object") return obj;
+          if (Array.isArray(obj)) return obj.map(redact);
+          const copy = {};
+          for (const k of Object.keys(obj)) {
+            try {
+              if (/refresh_token|access_token|client_secret|id_token|authorization_code/i.test(k)) {
+                copy[k] = "[REDACTED]";
+              } else if (obj[k] && typeof obj[k] === "object") {
+                copy[k] = redact(obj[k]);
+              } else {
+                copy[k] = obj[k];
+              }
+            } catch (e) {
+              copy[k] = "[REDACTED]";
+            }
+          }
+          return copy;
+        };
+
+        const safeBody = redact(data || {});
+        console.error("GoogleProvider: failed to refresh token", {
+          status: res.status,
+          response: safeBody,
+        });
         return null;
       }
       const updated = {

@@ -10,7 +10,7 @@ import officeImg from "../assets/office.jpg";
 import Seo from "../components/Seo";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
-import { writeConsent } from "../lib/consent";
+// Cookie consent is centralized in CookieConsent component / lib/consent
 
 export default function Landing() {
   const { t, i18n } = useTranslation();
@@ -23,14 +23,7 @@ export default function Landing() {
     ? "Reinigung in Wien: Putzfrau Wien & Reinigungskraft Wien – schnell online buchen. Reinigungsfirma Wien für Haushalt & Büro. Geprüfte Reinigungskräfte."
     : "Cleaning in Vienna: book a cleaner online for home and office cleaning with vetted staff and flexible scheduling.";
 
-  // Cookie consent is centralized in CookieConsent component / lib/consent
-  const acceptCookies = () => {
-    writeConsent({ analytics: true, marketing: true });
-  };
-
-  const declineCookies = () => {
-    writeConsent({ analytics: false, marketing: false });
-  };
+  // Cookie consent is handled globally by `CookieConsent` mounted in App.jsx
 
   return (
     <div className="flex flex-col min-h-screen pb-24 md:pb-0">
@@ -364,39 +357,7 @@ export default function Landing() {
         </div>
       </footer>
 
-      {showBanner && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl shadow-lg max-w-md text-center space-y-4">
-            <p className="text-gray-700">
-              {t("cookies.msg")}
-              <Link to={getLocalizedPath(locale, "privacy")} className="underline text-[#5be3e3]">
-                {t("cookies.privacyPolicy")}
-              </Link>
-              .
-            </p>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => {
-                  declineCookies();
-                  trackEvent("Cookie_Decline_Click", { consent: false, source: "banner" });
-                }}
-                className="bg-gray-300 text-black px-6 py-2 rounded-md font-semibold hover:opacity-90 transition"
-              >
-                {t("cookies.decline")}
-              </button>
-              <button
-                onClick={() => {
-                  acceptCookies();
-                  trackEvent("Cookie_Accept_Click", { consent: true, source: "banner" });
-                }}
-                className="bg-[#5be3e3] text-black px-6 py-2 rounded-md font-semibold hover:opacity-90 transition"
-              >
-                {t("cookies.accept")}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Cookie consent is centralized in `CookieConsent` (mounted in App.jsx) */}
     </div>
   );
 }
