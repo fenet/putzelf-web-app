@@ -111,6 +111,9 @@ export function BlogPage() {
             </div>
           )}
         </section>
+        {/* Soro AI SEO content creator embed */}
+        <div id="soro-blog"></div>
+        <script src="https://app.trysoro.com/api/embed/e4c69aa4-7949-4a9b-ad85-15a282915ff5" defer></script>
       </main>
       <Footer />
     </>
