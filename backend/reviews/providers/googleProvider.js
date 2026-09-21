@@ -163,7 +163,7 @@ export async function getReviews({ location, rating, sort, limit = 10, page = 1 
   const reviews = items.map(r => ({
     reviewId: r.name || r.reviewId || null,
     reviewerName: r.reviewer?.displayName || r.reviewer?.profileName || null,
-    rating: r.starRating || r.starRating || null,
+    rating: (r.starRating || r.starRating || null) && Number(String(r.starRating || r.starRating).replace(/[^0-9.]/g, "")),
     comment: r.comment || null,
     createTime: r.createTime || r.create_time || null,
     location: location,
@@ -171,7 +171,16 @@ export async function getReviews({ location, rating, sort, limit = 10, page = 1 
     reply: r.reviewReply || null,
   }));
 
-  return { total: reviews.length, page: pageIndex, limit: pageSize, reviews };
+  // Apply minimum rating filter: default >=4 if `rating` param provided, else return all
+  const minRating = (rating === undefined || rating === null) ? 0 : Number(rating);
+  const effectiveMin = Number.isFinite(minRating) && minRating > 0 ? minRating : 4; // default to 4 when caller didn't specify
+
+  const filtered = reviews.filter(r => {
+    if (!r || r.rating == null) return false;
+    return Number(r.rating) >= effectiveMin;
+  });
+
+  return { total: filtered.length, page: pageIndex, limit: pageSize, reviews: filtered };
 }
 
 export default { getReviews };
