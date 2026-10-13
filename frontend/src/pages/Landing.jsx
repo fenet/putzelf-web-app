@@ -9,6 +9,7 @@ import homeImg from "../assets/home.jpg";
 import officeImg from "../assets/office.jpg";
 import Seo from "../components/Seo";
 import LanguageSwitcher from "../components/LanguageSwitcher";
+import Footer from "../components/Footer";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 // Cookie consent is centralized in CookieConsent component / lib/consent
 
@@ -17,17 +18,18 @@ export default function Landing() {
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
   const seoTitle = locale === "de"
-    ? "Reinigungsfirma Wien – Putzfrau & Reinigungskraft buchen"
-    : "Cleaning Company Vienna – Book a Cleaner Online";
+    ? "Reinigungsfirma Wien & Graz – Putzfrau & Reinigungskraft buchen"
+    : "Cleaning Company Vienna & Graz – Book a Cleaner Online";
   const seoDescription = locale === "de"
-    ? "Reinigung in Wien: Putzfrau Wien & Reinigungskraft Wien – schnell online buchen. Reinigungsfirma Wien für Haushalt & Büro. Geprüfte Reinigungskräfte."
-    : "Cleaning in Vienna: book a cleaner online for home and office cleaning with vetted staff and flexible scheduling.";
+    ? "Reinigung in Wien und Graz: Putzfrau und Reinigungskraft online buchen. Geprüfte Reinigungskräfte für Haushalt und Büro."
+    : "Cleaning in Vienna and Graz: book a vetted cleaner online for home or office cleaning with flexible scheduling.";
 
   // Cookie consent is handled globally by `CookieConsent` mounted in App.jsx
 
   return (
     <div className="flex flex-col min-h-screen pb-24 md:pb-0">
             <Seo
+              title={seoTitle}
               to={getLocalizedPath(locale, "booking")}
               description={seoDescription}
               path={getLocalizedPath(locale, "landingAlt")}
@@ -88,7 +90,7 @@ export default function Landing() {
             <>
               Professionelle Reinigung:
               <br />
-              Putzfrau in Wien gesucht? PutzELF gefunden
+              Putzfrau in Wien oder Graz gesucht? PutzELF gefunden
             </>
           ) : (
             t("hero.title")
@@ -125,7 +127,7 @@ export default function Landing() {
       <section className="max-w-6xl mx-auto px-6 py-16 space-y-12">
         <div className="grid sm:grid-cols-3 gap-8">
           <Link
-            to={getLocalizedPath(locale, "booking")}
+            to={getLocalizedPath(locale, "privateMaintenance")}
             className="bg-gradient-to-r from-[#5be3e3] to-[#0097b2] text-black font-semibold rounded-2xl p-8 text-center hover:scale-105 hover:shadow-xl transition"
             onClick={() => trackEvent("Service_Standard_Click", { service_type: "Standard", source: "landing_grid" })}
           >
@@ -133,7 +135,7 @@ export default function Landing() {
             <p>{t("services.standard.desc")}</p>
           </Link>
           <Link
-            to={getLocalizedPath(locale, "booking")}
+            to={getLocalizedPath(locale, "privateDeep")}
             className="bg-gradient-to-r from-[#48c6ef] to-[#006994] text-white font-semibold rounded-2xl p-8 text-center hover:scale-105 hover:shadow-xl transition"
             onClick={() => trackEvent("Service_Deep_Click", { service_type: "Deep", source: "landing_grid" })}
           >
@@ -141,7 +143,7 @@ export default function Landing() {
             <p>{t("services.deep.desc")}</p>
           </Link>
           <Link
-            to={getLocalizedPath(locale, "booking")}
+            to={getLocalizedPath(locale, "businessMaintenance")}
             className="bg-gradient-to-r from-[#3acfd5] to-[#3a7bd5] text-black font-semibold rounded-2xl p-8 text-center hover:scale-105 hover:shadow-xl transition"
             onClick={() => trackEvent("Service_Office_Click", { service_type: "Office", source: "landing_grid" })}
           >
@@ -156,206 +158,22 @@ export default function Landing() {
             <h3 className="text-xl font-bold text-[#000000] mb-2">{t("services.reliable")}</h3>
             <p className="text-gray-600">{t("services.reliableLine")}</p>
           </div>
+
           <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition flex flex-col items-center">
             <DollarSign size={48} className="text-[#0097b2] mb-4" />
             <h3 className="text-xl font-bold text-[#000000] mb-2">{t("services.pricing")}</h3>
-            <p className="text-gray-600">{t("services.priceLine")}</p>
+            <p className="text-gray-600">{t("services.pricingLine")}</p>
           </div>
+
           <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition flex flex-col items-center">
-            <CalendarDays size={48} className="text-[#5be3e3] mb-4" />
-            <h3 className="text-xl font-bold text-[#000000] mb-2">{t("services.easy")}</h3>
-            <p className="text-gray-600">{t("services.easyLine")}</p>
+            <CalendarDays size={48} className="text-[#f59e0b] mb-4" />
+            <h3 className="text-xl font-bold text-[#000000] mb-2">{t("services.schedule")}</h3>
+            <p className="text-gray-600">{t("services.scheduleLine")}</p>
           </div>
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 py-16 space-y-16">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="overflow-hidden rounded-2xl shadow-lg">
-            <img
-              src={homeImg}
-              alt={t("alt.homeCleaning")}
-              className="w-full h-[400px] object-cover transition-transform duration-500 hover:scale-105"
-            />
-          </div>
-          <div className="space-y-4">
-            <h3 className="text-3xl font-bold text-[#000000]">{t("services.homeTitle")}</h3>
-            <p className="text-gray-600 text-lg">{t("services.homeDesc")}</p>
-            <Link
-              to={getLocalizedPath(locale, "booking")}
-              className="inline-block bg-[#0097b2] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:scale-105 transition"
-              onClick={() => trackEvent("Service_Home_Click", { service_type: "Home", source: "premium_section" })}
-            >
-              {t("services.homeCta")}
-            </Link>
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-4 order-2 md:order-1">
-            <h3 className="text-3xl font-bold text-[#000000]">{t("services.officeTitle")}</h3>
-            <p className="text-gray-600 text-lg">{t("services.officeDesc")}</p>
-            <Link
-              to={getLocalizedPath(locale, "booking")}
-              className="inline-block bg-[#5be3e3] text-black px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:scale-105 transition"
-              onClick={() => trackEvent("Service_Office_Premium_Click", { service_type: "Office", source: "premium_section" })}
-            >
-              {t("services.officeCta")}
-            </Link>
-          </div>
-          <div className="overflow-hidden rounded-2xl shadow-lg order-1 md:order-2">
-            <img
-              src={officeImg}
-              alt={t("alt.officeCleaning")}
-              className="w-full h-[400px] object-cover transition-transform duration-500 hover:scale-105"
-            />
-          </div>
-        </div>
-      </section>
-
-           <footer className="bg-white text-gray-700 mt-auto border-t border-gray-200">
-        <div className="container mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              {t("footer.staff.title")}
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a href="/files/Datenschutzblat.pdf" download className="hover:text-gray-900 transition-colors">
-                  {t("footer.staff.links.privacySheet")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Dienstliste.pdf" download className="hover:text-gray-900 transition-colors">
-                  {t("footer.staff.links.dutyRoster")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Stammdatenblatt.pdf" download className="hover:text-gray-900 transition-colors">
-                  {t("footer.staff.links.masterData")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Urlaubsschein_Zeitausgleich.pdf" download className="hover:text-gray-900 transition-colors">
-                  {t("footer.staff.links.leaveForm")}
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              {t("footer.partners.title")}
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a href="/files/Partnerantrag.pdf" download className="hover:text-gray-900 transition-colors">
-                  {t("footer.partners.links.partnerApplication")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Dienstleistungsvertrag.pdf" download className="hover:text-gray-900 transition-colors">
-                  {t("footer.partners.links.serviceContract")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Subvertrag.pdf" download className="hover:text-gray-900 transition-colors">
-                  {t("footer.partners.links.subcontract")}
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              {t("footer.customers.title")}
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a href="/files/Dienstleistungsvertrag1.pdf" download className="hover:text-gray-900 transition-colors">
-                  {t("footer.customers.links.cleaningStandards")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Pricelist.pdf" download className="hover:text-gray-900 transition-colors">
-                  {t("footer.customers.links.priceList")}
-                </a>
-              </li>
-              <li>
-                <a href="/files/Contract.pdf" download className="hover:text-gray-900 transition-colors">
-                  {t("footer.customers.links.serviceContract")}
-                </a>
-              </li>
-              <li>
-                <Link to={getLocalizedPath(locale, "calculator")} className="hover:text-gray-900 transition-colors">
-                  {t("footer.customers.links.calculator")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              {t("footer.connect.title")}
-            </h4>
-            <div className="flex space-x-4 mb-6">
-              <a
-                href="https://www.instagram.com/putzelf11/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-900 transition-colors"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://www.facebook.com/profile.php?id=61580613673114"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-900 transition-colors"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/putz-elf-wien1110/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-900 transition-colors"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-            </div>
-
-            <div className="flex flex-col space-y-2 text-sm">
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf" download className="hover:text-gray-900 transition-colors">
-                    {t("footer.connect.links.terms")}
-                  </a>
-                </li>
-                <li>
-                  <a href="/files/Datenschutzbestimmungen.pdf" download className="hover:text-gray-900 transition-colors">
-                    {t("footer.connect.links.privacy")}
-                  </a>
-                </li>
-              </ul>
-
-              <Link to={getLocalizedPath(locale, "imprint")} className="hover:text-gray-900 transition-colors">
-                {t("footer.connect.links.imprint")}
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-200 mt-8 py-4 text-center text-sm text-gray-500">
-          <span>© {new Date().getFullYear()} PutzELF — Alle Rechte vorbehalten.</span>
-          <a
-            href="https://marketing.putzelf.com"
-            className="inline-flex items-center justify-center rounded-lg bg-[#0097b2] px-4 py-2 text-sm font-semibold text-white shadow-md hover:shadow-lg transition"
-          >
-            Login
-          </a>
-        </div>
-      </footer>
+        <Footer />
 
       {/* Cookie consent is centralized in `CookieConsent` (mounted in App.jsx) */}
     </div>

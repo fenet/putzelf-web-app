@@ -1,5 +1,5 @@
 import express from "express";
-import { listAccounts, listLocations } from "./business.js";
+import { listAccounts, listLocations, refreshTokens } from "./business.js";
 import { getReviews } from "../reviews/providers/googleProvider.js";
 
 const router = express.Router();
@@ -143,3 +143,17 @@ router.get("/test/locations/:locationId/reviews", async (req, res) => {
 });
 
 export default router;
+
+// Force-refresh endpoint (convenience for development)
+router.get("/refresh-token", async (_req, res) => {
+  try {
+    const refreshed = await refreshTokens();
+    return res.json({ refreshed: true, obtained_at: refreshed.obtained_at, expires_in: refreshed.expires_in });
+  } catch (err) {
+    console.error("Error refreshing Google tokens:", err && (err.message || err));
+    if (err?.code === "NO_TOKENS" || err?.code === "REFRESH_FAILED") {
+      return res.status(401).json({ error: "Google OAuth required or token refresh failed" });
+    }
+    return res.status(500).json({ error: "Failed to refresh tokens" });
+  }
+});

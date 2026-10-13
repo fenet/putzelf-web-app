@@ -1,6 +1,6 @@
 import express from "express";
 import qs from "querystring";
-import { saveTokens } from "./tokenStore.js";
+import { getTokens, saveTokens } from "./tokenStore.js";
 
 const router = express.Router();
 
@@ -77,7 +77,9 @@ router.get("/oauth/callback", async (req, res) => {
     }
 
     // tokenJson contains access_token, expires_in, refresh_token (if granted), scope, token_type
-    // Save tokens in development token store under a key; here we can use a simple key 'google_business'
+    const existing = getTokens("google_business");
+    const refreshToken = tokenJson.refresh_token || existing?.refresh_token || null;
+
     const safeToStore = {
       scope: tokenJson.scope,
       token_type: tokenJson.token_type,
@@ -88,7 +90,7 @@ router.get("/oauth/callback", async (req, res) => {
     // Save full tokens in dev store (tokens themselves are NOT returned to frontend)
     saveTokens("google_business", {
       access_token: tokenJson.access_token,
-      refresh_token: tokenJson.refresh_token || null,
+      refresh_token: refreshToken,
       scope: tokenJson.scope,
       token_type: tokenJson.token_type,
       expires_in: tokenJson.expires_in,

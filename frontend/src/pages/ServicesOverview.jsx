@@ -88,8 +88,7 @@ export default function ServicesOverview() {
             <ChevronDown className={`w-5 h-5 transition-transform ${openGroup === 'business' ? 'rotate-180' : ''}`} />
           </button>
 
-          {openGroup === 'business' && (
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={`mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 ${openGroup === "business" ? "" : "hidden"}`}>
               {Unternehmen.map((s) => {
                 const raw = t('services.overview.cards', { returnObjects: true }) || [];
                 const card = raw.find((c) => c.key === s.key) || {};
@@ -114,7 +113,6 @@ export default function ServicesOverview() {
                 );
               })}
             </div>
-          )}
         </div>
 
         {/* Private Accordion */}
@@ -132,8 +130,7 @@ export default function ServicesOverview() {
             <ChevronDown className={`w-5 h-5 transition-transform ${openGroup === 'private' ? 'rotate-180' : ''}`} />
           </button>
 
-          {openGroup === 'private' && (
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={`mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 ${openGroup === "private" ? "" : "hidden"}`}>
               {Privatkunden.map((s) => {
                 const raw = t('services.overview.cards', { returnObjects: true }) || [];
                 const card = raw.find((c) => c.key === s.key) || {};
@@ -158,7 +155,6 @@ export default function ServicesOverview() {
                 );
               })}
             </div>
-          )}
         </div>
       </section>
 

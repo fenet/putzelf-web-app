@@ -3,7 +3,6 @@ import { Routes, Route, useLocation, Navigate, Outlet, useParams } from "react-r
 import { useEffect } from "react";
 import { trackPageview } from "./lib/analytics";
 import i18n from "./i18n";
-import Landing from "./pages/Landing";
 import LandingAlternative from "./pages/LandingAlternative";
 import ServicesOverview from "./pages/ServicesOverview";
 import ServiceGeneric from "./pages/ServiceGeneric";
@@ -108,7 +107,7 @@ export default function App() {
       <CookieConsent />
       <Routes>
         <Route path="/" element={<LegacyRedirect to="/de/" />} />
-        <Route path="/landing-alt" element={<LegacyRedirect to="/de/landing-alt" />} />
+        <Route path="/landing-alt" element={<LegacyRedirect to="/de/" />} />
         <Route path="/services" element={<LegacyRedirect to="/de/services" />} />
         
         
@@ -116,12 +115,12 @@ export default function App() {
         <Route path="/kontakt" element={<LegacyRedirect to="/de/kontakt" />} />
         <Route path="/job-opening" element={<LegacyRedirect to="/de/karriere" />} />
         <Route path="/get-partners" element={<LegacyRedirect to="/de/partner-werden" />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/datenschutz" element={<LegacyRedirect to="/privacy" />} />
+        <Route path="/privacy" element={<LegacyRedirect to="/de/datenschutz" />} />
+        <Route path="/datenschutz" element={<LegacyRedirect to="/de/datenschutz" />} />
         <Route path="/imprint" element={<LegacyRedirect to="/de/impressum" />} />
         <Route path="/book" element={<LegacyRedirect to="/de/booking" />} />
         <Route path="/search" element={<LegacyRedirect to="/de/search" />} />
-        <Route path="/profile" element={<LegacyRedirect to="/de/profile" />} />
+        <Route path="/profile" element={<LegacyRedirect to="/de/booking" />} />
         <Route path="/calculator" element={<LegacyRedirect to="/de/calculator" />} />
         <Route path="/blog" element={<LegacyRedirect to="/de/blog" />} />
         <Route path="/blog/:slug" element={<LegacyRedirect to={location.pathname.replace(/^\//, "/de/")} />} />
@@ -132,7 +131,7 @@ export default function App() {
 
         <Route path="/de" element={<LocaleBoundary locale="de" />}>
           <Route index element={<LandingAlternative />} />
-          <Route path="landing-alt" element={<Landing />} />
+          <Route path="landing-alt" element={<LegacyRedirect to="/de/" />} />
           <Route path="services" element={<ServicesOverview />} />
           {/* Removed specific service pages per request */}
           {/* new private service routes */}
@@ -161,7 +160,7 @@ export default function App() {
           <Route path="booking" element={<Layout><Home /></Layout>} />
           <Route path="order/:id" element={<Layout><Order /></Layout>} />
           <Route path="search" element={<Layout><Search /></Layout>} />
-          <Route path="profile" element={<Layout><Home /></Layout>} />
+          <Route path="profile" element={<LegacyRedirect to="/de/booking" />} />
           <Route path="calculator" element={<PriceCalculator />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:slug" element={<BlogPostPage />} />
@@ -174,7 +173,7 @@ export default function App() {
 
         <Route path="/en" element={<LocaleBoundary locale="en" />}>
           <Route index element={<LandingAlternative />} />
-          <Route path="landing-alt" element={<Landing />} />
+          <Route path="landing-alt" element={<LegacyRedirect to="/en/" />} />
           <Route path="services" element={<ServicesOverview />} />
           {/* Removed specific service pages per request */}
           {/* new private service routes (en) */}
@@ -201,7 +200,7 @@ export default function App() {
           <Route path="booking" element={<Layout><Home /></Layout>} />
           <Route path="order/:id" element={<Layout><Order /></Layout>} />
           <Route path="search" element={<Layout><Search /></Layout>} />
-          <Route path="profile" element={<Layout><Home /></Layout>} />
+          <Route path="profile" element={<LegacyRedirect to="/en/booking" />} />
           <Route path="calculator" element={<PriceCalculator />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:slug" element={<BlogPostPage />} />
@@ -212,10 +211,9 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
         {/* Top-level fallback to localized 404 */}
-        <Route path="*" element={<Navigate to="/de/404" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
   );
 }
-
 

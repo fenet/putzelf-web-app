@@ -1,45 +1,10 @@
 import { generatePath, matchPath } from "react-router-dom";
+import { locales, routeRegistry } from "../data/routeRegistry.mjs";
 
-export const locales = ["de", "en"];
+export { locales };
 export const defaultLocale = "de";
 
-const routeDefs = {
-  home: { de: "/", en: "/" },
-  landingAlt: { de: "/landing-alt", en: "/landing-alt" },
-  servicesOverview: { de: "/services", en: "/services" },
-  // Removed specific city/service pages per request
-  // New service pages (private)
-  privateMaintenance: { de: "/services/unterhaltsreinigung", en: "/services/maintenance-cleaning" },
-  privateDeep: { de: "/services/grundreinigung", en: "/services/deep-cleaning-private" },
-  privateResidential: { de: "/services/wohnreinigung", en: "/services/residential-cleaning" },
-  privateConstruction: { de: "/services/bauendreinigung-grobreinigung", en: "/services/construction-cleaning" },
-  privateWindow: { de: "/services/glas-rahmenreinigung", en: "/services/window-cleaning" },
-  privateIndustrial: { de: "/services/industriereinigung-maschinen", en: "/services/industrial-cleaning" },
-  // one-time cleaning split: private and business
-  // New service pages (business)
-  businessMaintenance: { de: "/services/unterhaltsreinigung-gewerbe", en: "/services/maintenance-cleaning-business" },
-  businessDeep: { de: "/services/grundreinigung-gewerbe", en: "/services/deep-cleaning-business" },
-  businessStaircase: { de: "/services/treppenhausreinigung", en: "/services/staircase-cleaning" },
-  // businessConstruction removed
-  businessWindow: { de: "/services/glas-rahmenreinigung-gewerbe", en: "/services/window-cleaning-business" },
-  businessIndustrial: { de: "/services/industriereinigung-maschinen-gewerbe", en: "/services/industrial-cleaning-business" },
-  // businessOneTime & oneTimeCleaning removed per request
-  contact: { de: "/kontakt", en: "/contact" },
-  jobOpening: { de: "/karriere", en: "/job-opening" },
-  getPartners: { de: "/partner-werden", en: "/get-partners" },
-  privacy: { de: "/datenschutz", en: "/privacy" },
-  imprint: { de: "/impressum", en: "/imprint" },
-  booking: { de: "/booking", en: "/booking" },
-  order: { de: "/order/:id", en: "/order/:id" },
-  search: { de: "/search", en: "/search" },
-  profile: { de: "/profile", en: "/profile" },
-  calculator: { de: "/calculator", en: "/calculator" },
-  blog: { de: "/blog", en: "/blog" },
-  blogPost: { de: "/blog/:slug", en: "/blog/:slug" },
-  login: { de: "/login", en: "/login" },
-  register: { de: "/register", en: "/register" },
-  admin: { de: "/admin", en: "/admin" },
-};
+const routeDefs = routeRegistry;
 
 const legacyPathToKey = {
   "/": "home",

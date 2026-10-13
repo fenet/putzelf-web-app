@@ -1,13 +1,13 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Seo from "../components/Seo";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import StructuredData from "../components/StructuredData";
 import GoogleReviewsCarousel from "../components/GoogleReviewsCarousel";
 import ExpectationsSection from "../components/ExpectationsSection";
 import { getRouteKeyFromPathname, getLocalizedPath, getLocalizedAlternates, getLocaleFromPathname } from "../lib/localeRoutes";
+import { schemaIds, siteOrigin } from "../lib/seoStructuredData";
 
 const CheckIcon = () => (
   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0 text-cyan-700">
@@ -53,19 +53,18 @@ export default function ServiceGeneric() {
   const metaDescription = t(`${tBase}.metaDescription`, { defaultValue: description });
 
   const canonical = getLocalizedPath(locale, key);
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
-  const canonicalUrl = origin ? `${origin}${canonical}` : canonical;
+  const canonicalUrl = new URL(canonical, `${siteOrigin}/`).href;
 
   const serviceJsonLd = {
-    "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${canonicalUrl}#service`,
     name: title,
+    serviceType: title,
     description: description || undefined,
-    provider: {
-      "@type": "LocalBusiness",
-      name: "PutzELF",
-      url: origin || undefined,
-    },
+    provider: { "@id": schemaIds.localBusiness },
+    areaServed: locale === "en"
+      ? ["Vienna and surrounding areas", "Graz and surrounding areas"]
+      : ["Wien samt Umgebung", "Graz samt Umgebung"],
     url: canonicalUrl,
     inLanguage: locale,
   };
@@ -240,15 +239,47 @@ export default function ServiceGeneric() {
   const serviceLabel = isWindowService
     ? locale === "de" ? "Fensterreinigung" : "Window Cleaning"
     : locale === "de" ? "Service" : "Service";
-
-  
+  const relatedServiceGroup = key?.startsWith("business")
+    ? ["businessMaintenance", "businessDeep", "businessStaircase", "businessConstruction", "businessWindow", "businessIndustrial"]
+    : ["privateMaintenance", "privateDeep", "privateResidential", "privateConstruction", "privateWindow", "privateIndustrial"];
+  const relatedServices = relatedServiceGroup
+    .filter((relatedKey) => relatedKey !== key)
+    .slice(0, 3)
+    .map((relatedKey) => ({
+      key: relatedKey,
+      title: t(`${(translationMap[relatedKey] || []).join(".")}.title`),
+    }));
 
   return (
     <>
       <Navbar />
 
       <main className="bg-[#f5f4f1] text-slate-900">
-        <Seo title={metaTitle} description={metaDescription} path={canonical} lang={locale} alternates={getLocalizedAlternates(location.pathname)} xDefaultPath={getLocalizedPath("de", key)} />
+        <Seo
+          title={metaTitle}
+          description={metaDescription}
+          path={canonical}
+          lang={locale}
+          alternates={getLocalizedAlternates(location.pathname)}
+          xDefaultPath={getLocalizedPath("de", key)}
+          pageSchemas={[serviceJsonLd, ...(faqJson ? [faqJson] : [])]}
+          mainEntityId={serviceJsonLd["@id"]}
+          breadcrumbs={[
+            { name: locale === "de" ? "Startseite" : "Home", url: getLocalizedPath(locale, "home") },
+            { name: "Services", url: getLocalizedPath(locale, "servicesOverview") },
+            { name: title, url: canonical },
+          ]}
+        />
+
+        <nav aria-label={locale === "de" ? "Brotkrümelnavigation" : "Breadcrumb"} className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+          <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+            <li><Link to={getLocalizedPath(locale, "home")} className="hover:text-[#0097b2]">{locale === "de" ? "Startseite" : "Home"}</Link></li>
+            <li aria-hidden="true">/</li>
+            <li><Link to={getLocalizedPath(locale, "servicesOverview")} className="hover:text-[#0097b2]">{locale === "de" ? "Services" : "Services"}</Link></li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="font-medium text-slate-700">{title}</li>
+          </ol>
+        </nav>
 
         <style>{`
           @keyframes marquee {
@@ -436,6 +467,23 @@ export default function ServiceGeneric() {
           </section>
         )}
 
+        {relatedServices.length > 0 && (
+          <section className="border-t border-slate-200 bg-white">
+            <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+              <h2 className="text-2xl font-semibold tracking-[-0.04em] text-slate-900">
+                {locale === "de" ? "Weitere Services" : "Related services"}
+              </h2>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {relatedServices.map((service) => (
+                  <Link key={service.key} to={getLocalizedPath(locale, service.key)} className="rounded-xl border border-slate-200 bg-[#f7f7f5] p-4 font-medium text-slate-800 transition hover:border-cyan-300 hover:text-[#0097b2]">
+                    {service.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         <section className="bg-[#0b2f39] text-white">
           <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-16 sm:px-6 lg:flex-row lg:items-center lg:px-8">
             <div>
@@ -449,9 +497,6 @@ export default function ServiceGeneric() {
           </div>
         </section>
       </main>
-
-      <StructuredData json={serviceJsonLd} id={`service-jsonld-${key || "unknown"}`} />
-      {faqJson ? <StructuredData json={faqJson} id={`service-faq-${key || "unknown"}`} /> : null}
 
       <Footer />
     </>

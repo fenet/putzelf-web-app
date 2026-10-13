@@ -211,7 +211,7 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
       </div>
       <div style="background: #f1f1f1; padding: 20px; text-align: center; font-size: 13px; color: #666;">
         <div style="margin-bottom: 15px;">
-          <a href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf" style="margin: 0 10px; color: #666; text-decoration: none;">AGB</a> |
+          <a href="/files/AllgemeineGeschäftsbedingungen.pdf" style="margin: 0 10px; color: #666; text-decoration: none;">AGB</a> |
           <a href="/files/Datenschutzbestimmungen.pdf" style="margin: 0 10px; color: #666; text-decoration: none;">Datenschutz</a> |
           <a href="https://putzelf.com/imprint" style="margin: 0 10px; color: #666; text-decoration: none;">Impressum</a>
         </div>

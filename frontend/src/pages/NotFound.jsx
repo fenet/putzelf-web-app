@@ -37,10 +37,11 @@ export default function NotFound() {
       <Seo
         title={`${c.title} – PutzELF`}
         description={c.message}
-        path={getLocalizedPath(locale, "home")}
+        path={getLocalizedPath(locale, "notFound")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}
-        xDefaultPath={getLocalizedPath("de", "home")}
+        xDefaultPath={getLocalizedPath("de", "notFound")}
+        noindex
       />
 
       <main className="min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-16 bg-gradient-to-b from-white via-slate-50 to-[#eaf9fc]">

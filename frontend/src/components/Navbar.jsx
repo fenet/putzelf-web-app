@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import {
   Briefcase,
@@ -17,6 +17,7 @@ const Unternehmen = [
   { key: "businessMaintenance" },
   { key: "businessDeep" },
   { key: "businessStaircase" },
+  { key: "businessConstruction" },
   { key: "businessWindow" },
   { key: "businessIndustrial" },
 ];
@@ -129,9 +130,16 @@ const Navbar = () => {
 
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
+  const isServicesRoute = /^\/(de|en)\/services(?:\/|$)/.test(location.pathname);
 
   // Fallback to English if an unexpected locale is returned
   const c = copy[locale] || copy.en;
+
+  const navItemClass = ({ isActive }) =>
+    `text-gray-700 hover:text-[#0097b2] font-medium ${isActive ? "!text-[#0097b2] font-semibold" : ""}`;
+
+  const dropdownItemClass = ({ isActive }) =>
+    `block px-3 py-2 text-sm rounded ${isActive ? "!bg-cyan-50 !text-[#0097b2] font-semibold" : "text-slate-800 hover:bg-slate-50"}`;
 
   useEffect(() => {
     return () => {
@@ -235,12 +243,15 @@ const Navbar = () => {
               onMouseEnter={openMenu}
               onMouseLeave={closeMenu}
             >
-              <button
-                type="button"
-                className="text-[#0097b2] font-semibold hover:underline flex items-center"
+              <NavLink
+                to={getLocalizedPath(locale, "servicesOverview")}
+                className={`flex items-center gap-1 font-medium hover:underline ${isServicesRoute ? "!text-[#0097b2] font-semibold" : "text-gray-700"}`}
+                aria-haspopup="true"
+                aria-expanded={open}
               >
                 {c.services}
-              </button>
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
+              </NavLink>
 
               {open && (
                 <div
@@ -288,13 +299,13 @@ const Navbar = () => {
                           }}
                         >
                           {Unternehmen.map((s) => (
-                            <Link
+                            <NavLink
                               key={s.key}
                               to={getLocalizedPath(locale, s.key)}
-                              className="block px-3 py-2 text-sm text-slate-800 hover:bg-slate-50 rounded"
+                              className={dropdownItemClass}
                             >
                               {c[s.key]}
-                            </Link>
+                            </NavLink>
                           ))}
                         </div>
                       )}
@@ -332,13 +343,13 @@ const Navbar = () => {
                           }}
                         >
                           {Privatkunden.map((s) => (
-                            <Link
+                            <NavLink
                               key={s.key}
                               to={getLocalizedPath(locale, s.key)}
-                              className="block px-3 py-2 text-sm text-slate-800 hover:bg-slate-50 rounded"
+                              className={dropdownItemClass}
                             >
                               {c[s.key]}
-                            </Link>
+                            </NavLink>
                           ))}
                         </div>
                       )}
@@ -352,32 +363,32 @@ const Navbar = () => {
             {/* =========================
                 BLOG
             ========================== */}
-            <Link
+            <NavLink
               to={getLocalizedPath(locale, "blog")}
-              className="text-gray-700 hover:text-[#0097b2] font-medium"
+              className={navItemClass}
             >
               {c.blog}
-            </Link>
+            </NavLink>
 
             {/* =========================
                 JOBS
             ========================== */}
-            <Link
+            <NavLink
               to={getLocalizedPath(locale, "jobOpening")}
-              className="text-gray-700 hover:text-[#0097b2] font-medium"
+              className={navItemClass}
             >
               {c.jobOpening}
-            </Link>
+            </NavLink>
 
             {/* =========================
                 PARTNERS
             ========================== */}
-            <Link
+            <NavLink
               to={getLocalizedPath(locale, "getPartners")}
-              className="text-gray-700 hover:text-[#0097b2] font-medium"
+              className={navItemClass}
             >
               {c.getPartners}
-            </Link>
+            </NavLink>
 
             {/* =========================
                 CONTACT DROPDOWN
@@ -387,12 +398,13 @@ const Navbar = () => {
               onMouseEnter={openContactMenu}
               onMouseLeave={closeContactMenu}
             >
-              <button
-                type="button"
-                className="text-gray-700 hover:text-[#0097b2] font-medium flex items-center"
+              <NavLink
+                to={getLocalizedPath(locale, "contact")}
+                className={navItemClass}
+                onClick={() => setContactOpen(false)}
               >
                 {c.contact}
-              </button>
+              </NavLink>
 
               {contactOpen && (
                 <div
@@ -400,9 +412,9 @@ const Navbar = () => {
                   onMouseEnter={openContactMenu}
                   onMouseLeave={closeContactMenu}
                 >
-                  <Link
+                  <NavLink
                     to={getLocalizedPath(locale, "contact")}
-                    className="flex items-center gap-3 px-3 py-3 text-sm text-slate-800 hover:bg-slate-50 rounded-lg transition-colors"
+                    className={({ isActive }) => `flex items-center gap-3 px-3 py-3 text-sm rounded-lg transition-colors ${isActive ? "!bg-cyan-50 !text-[#0097b2]" : "text-slate-800 hover:bg-slate-50"}`}
                     onClick={() => setContactOpen(false)}
                   >
                     <span className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-50 text-[#0097b2]">
@@ -412,7 +424,7 @@ const Navbar = () => {
                       <div className="font-medium">{c.contact}</div>
                       <div className="text-gray-500">{locale === "de" ? "Kontaktseite" : "Contact page"}</div>
                     </div>
-                  </Link>
+                  </NavLink>
 
                   {/* PHONE */}
                   <a
@@ -526,6 +538,13 @@ const Navbar = () => {
         }`}
       >
         <div className="p-4">
+          <NavLink
+            to={getLocalizedPath(locale, "servicesOverview")}
+            className={({ isActive }) => `block rounded-xl px-4 py-3 font-semibold ${isActive ? "!bg-cyan-50 !text-[#0097b2]" : "text-slate-800 hover:bg-slate-50"}`}
+            onClick={() => setMobileOpen(false)}
+          >
+            {c.services}
+          </NavLink>
 
           {/* =========================
               BUSINESS
@@ -557,13 +576,13 @@ const Navbar = () => {
             <ul className="mt-2 space-y-2 pl-4">
               {Unternehmen.map((s) => (
                 <li key={s.key}>
-                  <Link
+                  <NavLink
                     to={getLocalizedPath(locale, s.key)}
-                    className="block rounded-lg px-3 py-2 text-sm text-slate-800 hover:bg-slate-50"
+                    className={dropdownItemClass}
                     onClick={() => setMobileOpen(false)}
                   >
                     {c[s.key]}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>
@@ -599,13 +618,13 @@ const Navbar = () => {
             <ul className="mt-2 space-y-2 pl-4">
               {Privatkunden.map((s) => (
                 <li key={s.key}>
-                  <Link
+                  <NavLink
                     to={getLocalizedPath(locale, s.key)}
-                    className="block rounded-lg px-3 py-2 text-sm text-slate-800 hover:bg-slate-50"
+                    className={dropdownItemClass}
                     onClick={() => setMobileOpen(false)}
                   >
                     {c[s.key]}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>
@@ -614,35 +633,35 @@ const Navbar = () => {
           {/* =========================
               BLOG
           ========================== */}
-          <Link
+          <NavLink
             to={getLocalizedPath(locale, "blog")}
-            className="mt-2 block rounded-xl px-4 py-3 font-semibold text-slate-800 hover:bg-slate-50"
+            className={({ isActive }) => `mt-2 block rounded-xl px-4 py-3 font-semibold ${isActive ? "!bg-cyan-50 !text-[#0097b2]" : "text-slate-800 hover:bg-slate-50"}`}
             onClick={() => setMobileOpen(false)}
           >
             {c.blog}
-          </Link>
+          </NavLink>
 
           {/* =========================
               JOBS
           ========================== */}
-          <Link
+          <NavLink
             to={getLocalizedPath(locale, "jobOpening")}
-            className="mt-2 block rounded-xl px-4 py-3 font-semibold text-slate-800 hover:bg-slate-50"
+            className={({ isActive }) => `mt-2 block rounded-xl px-4 py-3 font-semibold ${isActive ? "!bg-cyan-50 !text-[#0097b2]" : "text-slate-800 hover:bg-slate-50"}`}
             onClick={() => setMobileOpen(false)}
           >
             {c.jobOpening}
-          </Link>
+          </NavLink>
 
           {/* =========================
               PARTNERS
           ========================== */}
-          <Link
+          <NavLink
             to={getLocalizedPath(locale, "getPartners")}
-            className="mt-2 block rounded-xl px-4 py-3 font-semibold text-slate-800 hover:bg-slate-50"
+            className={({ isActive }) => `mt-2 block rounded-xl px-4 py-3 font-semibold ${isActive ? "!bg-cyan-50 !text-[#0097b2]" : "text-slate-800 hover:bg-slate-50"}`}
             onClick={() => setMobileOpen(false)}
           >
             {c.getPartners}
-          </Link>
+          </NavLink>
 
           {/* =========================
               CONTACT
@@ -670,14 +689,14 @@ const Navbar = () => {
 
           {mobileContactOpen && (
             <div className="mt-2 space-y-2 pl-4">
-              <Link
+              <NavLink
                 to={getLocalizedPath(locale, "contact")}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                className={({ isActive }) => `flex items-center gap-3 rounded-lg px-3 py-2 text-sm ${isActive ? "!bg-cyan-50 !text-[#0097b2]" : "text-slate-700 hover:bg-slate-50"}`}
                 onClick={() => setMobileOpen(false)}
               >
                 <MessageSquareText className="h-4 w-4 text-[#0097b2]" />
                 <span>{c.contact}</span>
-              </Link>
+              </NavLink>
 
               {/* Mobile phone */}
               <a

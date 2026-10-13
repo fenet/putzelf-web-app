@@ -685,26 +685,6 @@ export default function Home() {
         xDefaultPath={getLocalizedPath("de", "book")}
         noindex
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            name: "PutzELF",
-            telephone: "+43 676 6300167",
-            email: "office@putzelf.com",
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "Waagner-Biro-Straße",
-              addressLocality: "Graz",
-              addressCountry: "AT",
-            },
-            url: getLocalizedPath(locale, "booking"),
-          }),
-        }}
-      />
-
       {/* Graz CTA moved to LandingAlternative.jsx */}
       <div className="w-full max-w-2xl">
         {/* Location modal */}

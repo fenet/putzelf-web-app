@@ -145,7 +145,7 @@ export default function GoogleReviewsCarousel() {
       setError("");
 
       try {
-        const response = await apiFetch("/api/google/locations/6668503191043696321/reviews");
+        const response = await apiFetch("/api/google/locations/6668503191043696321/reviews?rating=4");
 
         if (!response.ok) {
           throw new Error(`Google Reviews API error: ${response.status}`);

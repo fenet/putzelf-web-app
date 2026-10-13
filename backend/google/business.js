@@ -9,6 +9,7 @@ function ensureEnv() {
   const missing = [];
   if (!process.env.GOOGLE_CLIENT_ID) missing.push("GOOGLE_CLIENT_ID");
   if (!process.env.GOOGLE_CLIENT_SECRET) missing.push("GOOGLE_CLIENT_SECRET");
+  if (!process.env.GOOGLE_REDIRECT_URI) missing.push("GOOGLE_REDIRECT_URI");
   if (missing.length) throw new Error(`Missing env vars: ${missing.join(", ")}`);
 }
 
@@ -135,4 +136,13 @@ export async function listLocations(accountId) {
   }
 }
 
-export default { listAccounts, listLocations };
+export async function refreshTokens() {
+  const tokens = getTokens("google_business");
+  if (!tokens) throw { code: "NO_TOKENS", message: "No Google OAuth tokens found" };
+
+  const valid = await refreshAccessTokenIfNeeded(tokens);
+  if (!valid) throw { code: "REFRESH_FAILED", message: "Failed to refresh access token" };
+  return valid;
+}
+
+export default { listAccounts, listLocations, refreshTokens };

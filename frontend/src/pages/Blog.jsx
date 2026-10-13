@@ -3,15 +3,33 @@ import { Link, useLocation, useParams, useSearchParams } from "react-router-dom"
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Seo from "../components/Seo";
+import { copy as navCopy } from "../components/Navbar";
 import { getBlogPosts } from "../lib/blog";
 import { getLocaleFromPathname, getLocalizedAlternates, getLocalizedPath } from "../lib/localeRoutes";
+import { schemaIds, siteOrigin } from "../lib/seoStructuredData";
 
 const PAGE_SIZE = 6;
+const relatedServicesByPost = {
+  "so-pflegen-sie-buero-und-arbeitsraeume-effektiv": ["businessMaintenance"],
+  "gruenere-arbeitsplaetze-dank-gesunder-reinigungsroutine": ["businessMaintenance"],
+  "fensterreinigung-fuer-mehr-licht-und-wohlfuehlen": ["businessWindow", "privateWindow"],
+};
 
 function formatDate(dateValue) {
   const date = new Date(dateValue);
   if (Number.isNaN(date.getTime())) return "";
   return new Intl.DateTimeFormat("de-AT", { day: "2-digit", month: "2-digit", year: "numeric" }).format(date);
+}
+
+function getLocalizedPost(post, locale) {
+  if (locale !== "en") return post;
+  return {
+    ...post,
+    title: post.titleEn || post.title,
+    excerpt: post.excerptEn || post.excerpt,
+    content: post.contentEn || post.content,
+    category: post.categoryEn || post.category,
+  };
 }
 
 export function BlogPage() {
@@ -65,25 +83,28 @@ export function BlogPage() {
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {pagePosts.map((post) => (
-                <article key={post.id} className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-                  <img src={post.image} alt={post.title} className="h-56 w-full object-cover" />
-                  <div className="p-6">
-                    <div className="mb-3 flex items-center justify-between gap-3 text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
-                      <span>{post.category}</span>
-                      <span>{formatDate(post.publishedAt)}</span>
+              {pagePosts.map((post) => {
+                const localizedPost = getLocalizedPost(post, locale);
+                return (
+                  <article key={post.id} className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                    <img src={post.image} alt={localizedPost.title} className="h-56 w-full object-cover" />
+                    <div className="p-6">
+                      <div className="mb-3 flex items-center justify-between gap-3 text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
+                        <span>{localizedPost.category}</span>
+                        <span>{formatDate(post.publishedAt)}</span>
+                      </div>
+                      <h2 className="text-2xl font-semibold tracking-[-0.04em] text-slate-900">{localizedPost.title}</h2>
+                      <p className="mt-3 text-base leading-7 text-slate-600">{localizedPost.excerpt}</p>
+                      <Link
+                        to={getLocalizedPath(locale, "blogPost", { slug: post.slug })}
+                        className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#0097b2] hover:text-[#007f95]"
+                      >
+                        {locale === "de" ? "Weiterlesen" : "Read more"}
+                      </Link>
                     </div>
-                    <h2 className="text-2xl font-semibold tracking-[-0.04em] text-slate-900">{post.title}</h2>
-                    <p className="mt-3 text-base leading-7 text-slate-600">{post.excerpt}</p>
-                    <Link
-                      to={getLocalizedPath(locale, "blogPost", { slug: post.slug })}
-                      className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#0097b2] hover:text-[#007f95]"
-                    >
-                      {locale === "de" ? "Weiterlesen" : "Read more"}
-                    </Link>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           )}
 
@@ -145,19 +166,48 @@ export function BlogPostPage() {
     );
   }
 
-  const paragraphs = (post.content || "").split(/\n\s*\n/).filter(Boolean);
+  const localizedPost = getLocalizedPost(post, locale);
+  const paragraphs = (localizedPost.content || "").split(/\n\s*\n/).filter(Boolean);
+  const relatedServices = (relatedServicesByPost[post.slug] || []).map((key) => ({
+    key,
+    label: navCopy[locale]?.[key] || navCopy.en[key],
+  }));
+  const canonical = getLocalizedPath(locale, "blogPost", { slug: post.slug });
+  const canonicalUrl = new URL(canonical, `${siteOrigin}/`).href;
+  const blogPostingJsonLd = {
+    "@type": "BlogPosting",
+    "@id": `${canonicalUrl}#blogposting`,
+    headline: localizedPost.title,
+    description: localizedPost.excerpt,
+    image: post.image,
+    datePublished: post.publishedAt,
+    articleBody: localizedPost.content,
+    author: { "@type": "Organization", name: post.author || "PutzELF" },
+    publisher: { "@id": schemaIds.organization },
+    mainEntityOfPage: { "@id": `${canonicalUrl}#webpage` },
+  };
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen bg-[#f5f4f1] text-slate-900">
         <Seo
-          title={`${post.title} | PutzELF`}
-          description={post.excerpt}
-          path={getLocalizedPath(locale, "blogPost", { slug: post.slug })}
+          title={`${localizedPost.title} | PutzELF`}
+          description={localizedPost.excerpt}
+          path={canonical}
           lang={locale}
           alternates={getLocalizedAlternates(location.pathname)}
           xDefaultPath={getLocalizedPath("de", "blogPost", { slug: post.slug })}
+          imagePath={post.image}
+          imageAlt={localizedPost.title}
+          type="article"
+          pageSchemas={[blogPostingJsonLd]}
+          mainEntityId={blogPostingJsonLd["@id"]}
+          breadcrumbs={[
+            { name: locale === "de" ? "Startseite" : "Home", url: getLocalizedPath(locale, "home") },
+            { name: "Blog", url: getLocalizedPath(locale, "blog") },
+            { name: localizedPost.title, url: canonical },
+          ]}
         />
 
         <article className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
@@ -167,22 +217,39 @@ export function BlogPostPage() {
             </Link>
           </div>
 
-          <img src={post.image} alt={post.title} className="h-[280px] w-full rounded-[28px] object-cover shadow-sm sm:h-[420px]" />
+          <img src={post.image} alt={localizedPost.title} className="h-[280px] w-full rounded-[28px] object-cover shadow-sm sm:h-[420px]" />
 
           <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
-            <span>{post.category}</span>
+            <span>{localizedPost.category}</span>
             <span>•</span>
             <span>{formatDate(post.publishedAt)}</span>
           </div>
 
-          <h1 className="mt-5 text-4xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-5xl">{post.title}</h1>
-          <p className="mt-4 text-lg leading-8 text-slate-600">{post.excerpt}</p>
+          <h1 className="mt-5 text-4xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-5xl">{localizedPost.title}</h1>
+          <p className="mt-4 text-lg leading-8 text-slate-600">{localizedPost.excerpt}</p>
 
           <div className="mt-8 space-y-6 text-lg leading-8 text-slate-700">
             {paragraphs.map((paragraph, index) => (
               <p key={`${paragraph.slice(0, 18)}-${index}`}>{paragraph}</p>
             ))}
           </div>
+
+          {relatedServices.length > 0 && (
+            <nav aria-label={locale === "de" ? "Passende Services" : "Related services"} className="mt-10 border-t border-slate-200 pt-6">
+              <h2 className="text-lg font-semibold text-slate-900">
+                {locale === "de" ? "Passende Services" : "Related services"}
+              </h2>
+              <ul className="mt-3 flex flex-wrap gap-3">
+                {relatedServices.map((service) => (
+                  <li key={service.key}>
+                    <Link to={getLocalizedPath(locale, service.key)} className="inline-flex rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-cyan-300 hover:text-[#0097b2]">
+                      {service.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
         </article>
       </main>
       <Footer />

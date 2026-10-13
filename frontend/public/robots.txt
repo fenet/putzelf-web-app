@@ -1,14 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /login
-Disallow: /register
-Disallow: /de/book
-Disallow: /en/book
-Disallow: /de/order
-Disallow: /en/order
-Disallow: /de/search
-Disallow: /en/search
-Disallow: /de/profile
-Disallow: /en/profile
+Disallow: /api/
+Disallow: /_not-found
 Sitemap: https://putzelf.com/sitemap.xml

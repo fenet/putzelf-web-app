@@ -185,6 +185,7 @@ export default function PriceCalculator() {
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}
         xDefaultPath={getLocalizedPath("de", "calculator")}
+        noindex
       />
 
       <Navbar />

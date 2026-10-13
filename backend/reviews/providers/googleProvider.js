@@ -1,4 +1,5 @@
 import qs from "querystring";
+import { google } from "googleapis";
 import { getTokens, saveTokens } from "../../google/tokenStore.js";
 
 const TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token";
@@ -8,6 +9,7 @@ function ensureEnv() {
   const missing = [];
   if (!process.env.GOOGLE_CLIENT_ID) missing.push("GOOGLE_CLIENT_ID");
   if (!process.env.GOOGLE_CLIENT_SECRET) missing.push("GOOGLE_CLIENT_SECRET");
+  if (!process.env.GOOGLE_REDIRECT_URI) missing.push("GOOGLE_REDIRECT_URI");
   if (missing.length) throw new Error(`Missing env vars: ${missing.join(", ")}`);
 }
 
@@ -20,53 +22,25 @@ async function refreshAccessTokenIfNeeded(tokens) {
   if (!tokens.access_token || !tokens.refresh_token || now + 60000 >= willExpireAt) {
     try {
       ensureEnv();
-      const body = {
-        client_id: process.env.GOOGLE_CLIENT_ID,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        refresh_token: tokens.refresh_token,
-        grant_type: "refresh_token",
-      };
-      const res = await fetch(TOKEN_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: qs.stringify(body),
-      });
-      const data = await res.json().catch(() => null);
-      if (!res.ok) {
-        // Redact sensitive fields before logging
-        const redact = (obj) => {
-          if (!obj || typeof obj !== "object") return obj;
-          if (Array.isArray(obj)) return obj.map(redact);
-          const copy = {};
-          for (const k of Object.keys(obj)) {
-            try {
-              if (/refresh_token|access_token|client_secret|id_token|authorization_code/i.test(k)) {
-                copy[k] = "[REDACTED]";
-              } else if (obj[k] && typeof obj[k] === "object") {
-                copy[k] = redact(obj[k]);
-              } else {
-                copy[k] = obj[k];
-              }
-            } catch (e) {
-              copy[k] = "[REDACTED]";
-            }
-          }
-          return copy;
-        };
 
-        const safeBody = redact(data || {});
-        console.error("GoogleProvider: failed to refresh token", {
-          status: res.status,
-          response: safeBody,
-        });
-        return null;
-      }
+      const oauth2Client = new google.auth.OAuth2(
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+        process.env.GOOGLE_REDIRECT_URI,
+      );
+
+      oauth2Client.setCredentials({
+        refresh_token: tokens.refresh_token,
+      });
+
+      const { credentials } = await oauth2Client.refreshAccessToken();
       const updated = {
-        access_token: data.access_token,
-        refresh_token: data.refresh_token || tokens.refresh_token,
-        expires_in: data.expires_in,
+        access_token: credentials.access_token,
+        refresh_token: credentials.refresh_token || tokens.refresh_token,
+        expires_in: credentials.expiry_date ? Math.max(1, Math.floor((credentials.expiry_date - Date.now()) / 1000)) : tokens.expires_in,
         obtained_at: new Date().toISOString(),
       };
+
       saveTokens("google_business", updated);
       return updated;
     } catch (err) {
@@ -160,10 +134,40 @@ export async function getReviews({ location, rating, sort, limit = 10, page = 1 
 
   const items = Array.isArray(body.reviews) ? body.reviews : [];
   // map to safe shape
-  const reviews = items.map(r => ({
+  function parseRating(raw) {
+    if (raw == null) return null;
+    if (typeof raw === "number") return Number.isFinite(raw) ? raw : null;
+    if (typeof raw === "object") {
+      if (typeof raw.value === "number") return raw.value;
+      if (typeof raw.value === "string") return parseRating(raw.value);
+      if (typeof raw.rating === "number") return raw.rating;
+      if (typeof raw.rating === "string") return parseRating(raw.rating);
+      if (typeof raw.starRating === "number") return raw.starRating;
+      if (typeof raw.starRating === "string") return parseRating(raw.starRating);
+      return null;
+    }
+    const s = String(raw).trim();
+    if (!s) return null;
+    // Numeric-like string
+    const numeric = Number(s.replace(/[^0-9.]/g, ""));
+    if (Number.isFinite(numeric) && numeric > 0) return numeric;
+    // Word forms like ONE, TWO, THREE, FOUR, FIVE
+    const map = {
+      ONE: 1,
+      TWO: 2,
+      THREE: 3,
+      FOUR: 4,
+      FIVE: 5,
+    };
+    const up = s.toUpperCase();
+    if (map[up]) return map[up];
+    return null;
+  }
+
+  const reviews = items.map((r) => ({
     reviewId: r.name || r.reviewId || null,
     reviewerName: r.reviewer?.displayName || r.reviewer?.profileName || null,
-    rating: (r.starRating || r.starRating || null) && Number(String(r.starRating || r.starRating).replace(/[^0-9.]/g, "")),
+    rating: parseRating(r.starRating ?? r.rating ?? r.reviewRating ?? null),
     comment: r.comment || null,
     createTime: r.createTime || r.create_time || null,
     location: location,
@@ -171,11 +175,10 @@ export async function getReviews({ location, rating, sort, limit = 10, page = 1 
     reply: r.reviewReply || null,
   }));
 
-  // Apply minimum rating filter: default >=4 if `rating` param provided, else return all
-  const minRating = (rating === undefined || rating === null) ? 0 : Number(rating);
-  const effectiveMin = Number.isFinite(minRating) && minRating > 0 ? minRating : 4; // default to 4 when caller didn't specify
+  const requestedMin = rating == null ? null : Number(rating);
+  const effectiveMin = Number.isFinite(requestedMin) && requestedMin > 0 ? requestedMin : 4;
 
-  const filtered = reviews.filter(r => {
+  const filtered = reviews.filter((r) => {
     if (!r || r.rating == null) return false;
     return Number(r.rating) >= effectiveMin;
   });

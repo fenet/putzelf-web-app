@@ -10,6 +10,7 @@ import {
 import { trackEvent } from "../lib/analytics";
 import Seo from "../components/Seo";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import {
   getLocalizedAlternates,
   getLocalizedPath,
@@ -43,8 +44,8 @@ export default function Imprint() {
           SEO
       ========================================================== */}
       <Seo
-        title="Impressum"
-        description="Impressum und Kontaktinformationen von PutzELF (Wien)."
+        title={t("imprint.title")}
+        description={t("imprint.seoDescription")}
         path={getLocalizedPath(locale, "imprint")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}
@@ -67,110 +68,72 @@ export default function Imprint() {
 
         <div className="bg-white rounded-2xl shadow p-6 md:p-10 space-y-6">
 
-          {/* Company */}
+          <p>{t("imprint.legalIntro")}</p>
+
+          {/* Media owner and service provider */}
           <section className="space-y-2">
-            <h2 className="text-xl font-semibold">
-              {t("imprint.companyNameTitle")}
-            </h2>
-
-            <p>
-              {t("imprint.companyNameLine1")}
-            </p>
-
-            <p>
-              {t("imprint.companyNameLine2")}
-            </p>
-          </section>
-
-          {/* Founder */}
-          <section className="space-y-2">
-            <h2 className="text-xl font-semibold">
-              {t("imprint.founderTitle")}
-            </h2>
-
-            <p>
-              {t("imprint.founderName")}
-            </p>
-          </section>
-
-          {/* Purpose */}
-          <section className="space-y-2">
-            <h2 className="text-xl font-semibold">
-              {t("imprint.purposeTitle")}
-            </h2>
-
-            <p>
-              {t("imprint.purposeBody")}
-            </p>
-          </section>
-
-          {/* Company details */}
-          <section className="grid md:grid-cols-2 gap-6">
-
-            <div className="space-y-1">
-              <h3 className="font-semibold">
-                {t("imprint.vatTitle")}
-              </h3>
-
-              <p>
-                {t("imprint.vatValue")}
-              </p>
-            </div>
-
-            <div className="space-y-1">
-              <h3 className="font-semibold">
-                {t("imprint.regNoTitle")}
-              </h3>
-
-              <p>
-                {t("imprint.regNoValue")}
-              </p>
-            </div>
-
-            <div className="space-y-1 md:col-span-2">
-              <h3 className="font-semibold">
-                {t("imprint.courtTitle")}
-              </h3>
-
-              <p>
-                {t("imprint.courtValue")}
-              </p>
-            </div>
-
-            <div className="space-y-1 md:col-span-2">
-              <h3 className="font-semibold">
-                {t("imprint.hqTitle")}
-              </h3>
-
-              <p>
-                {t("imprint.hqValue")}
-              </p>
-            </div>
-
+            <h2 className="text-xl font-semibold">{t("imprint.providerTitle")}</h2>
+            <p><strong>{t("imprint.nameLabel")}:</strong> {t("imprint.nameValue")}</p>
+            <p><strong>{t("imprint.businessNameLabel")}:</strong> {t("imprint.businessNameValue")}</p>
+            <p><strong>{t("imprint.businessPurposeLabel")}:</strong> {t("imprint.businessPurposeValue")}</p>
+            <p><strong>{t("imprint.addressLabel")}:</strong> {t("imprint.hqValue")}</p>
+            <p><strong>{t("imprint.serviceAreaLabel")}:</strong> {t("imprint.serviceAreaValue")}</p>
           </section>
 
           {/* Contact */}
           <section className="space-y-2">
-            <h2 className="text-xl font-semibold">
-              {t("imprint.contactTitle")}
-            </h2>
+            <h2 className="text-xl font-semibold">{t("imprint.contactTitle")}</h2>
+            <p><strong>{t("imprint.phoneLabel")}:</strong> {t("imprint.phoneValue")}</p>
+            <p><strong>{t("imprint.emailLabel")}:</strong> {t("imprint.emailValue")}</p>
+            <p><strong>{t("imprint.grazEmailLabel")}:</strong> {t("imprint.grazEmailValue")}</p>
+          </section>
 
-            <p>
-              {t("imprint.phoneLabel")}:{" "}
-              {t("imprint.phoneValue")}
-            </p>
+          {/* Company details */}
+          <section className="space-y-2">
+            <h2 className="text-xl font-semibold">{t("imprint.companyDetailsTitle")}</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-1">
+                <h3 className="font-semibold">{t("imprint.vatTitle")}</h3>
+                <p>{t("imprint.vatValue")}</p>
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-semibold">{t("imprint.gisaTitle")}</h3>
+                <p>{t("imprint.gisaValue")}</p>
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-semibold">{t("imprint.authorityTitle")}</h3>
+                <p>{t("imprint.authorityValue")}</p>
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-semibold">{t("imprint.membershipTitle")}</h3>
+                <p>{t("imprint.membershipValue")}</p>
+              </div>
+              <div className="space-y-1 md:col-span-2">
+                <h3 className="font-semibold">{t("imprint.associationsTitle")}</h3>
+                <p>{t("imprint.associationsValue")}</p>
+              </div>
+              <div className="space-y-1 md:col-span-2">
+                <h3 className="font-semibold">{t("imprint.lawTitle")}</h3>
+                <p>
+                  {t("imprint.lawBeforeLink")} <a href="https://www.ris.bka.gv.at/" className="text-[#0097b2] underline">{t("imprint.lawLinkText")}</a>{t("imprint.lawAfterLink")}
+                </p>
+              </div>
+            </div>
+          </section>
 
+          {/* Consumer dispute resolution */}
+          <section className="space-y-2">
+            <h2 className="text-xl font-semibold">{t("imprint.disputeTitle")}</h2>
+            <p>{t("imprint.disputeBody")}</p>
             <p>
-              {t("imprint.emailLabel")}:{" "}
-              {t("imprint.emailValue")}
+              {t("imprint.generalInfoLabel")} <a href="https://www.verbraucherschlichtung.at/" className="text-[#0097b2] underline">{t("imprint.arbitrationLinkText")}</a>
             </p>
           </section>
 
-          {/* Membership */}
+          {/* Disclosure pursuant to Section 25 of the Media Act */}
           <section className="space-y-2">
-            <p>
-              {t("imprint.membership")}
-            </p>
+            <h2 className="text-xl font-semibold">{t("imprint.disclosureTitle")}</h2>
+            <p>{t("imprint.disclosureBody")}</p>
           </section>
 
         </div>
@@ -178,237 +141,7 @@ export default function Imprint() {
 
       {/* No BreadcrumbList injected: Imprint has no visible breadcrumb navigation. */}
 
-      {/* =========================================================
-          FOOTER
-      ========================================================== */}
-      <footer className="bg-white text-gray-700 mt-auto border-t border-gray-200">
-
-        <div className="container mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-12">
-
-          {/* =====================================================
-              STAFF
-          ====================================================== */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              {t("footer.staff.title")}
-            </h4>
-
-            <ul className="space-y-2 text-sm">
-
-              <li>
-                <a
-                  href="/files/Datenschutzblat.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  {t("footer.staff.links.privacySheet")}
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="/files/Dienstliste.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  {t("footer.staff.links.dutyRoster")}
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="/files/Stammdatenblatt.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  {t("footer.staff.links.masterData")}
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="/files/Urlaubsschein_Zeitausgleich.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  {t("footer.staff.links.leaveForm")}
-                </a>
-              </li>
-
-            </ul>
-          </div>
-
-          {/* =====================================================
-              PARTNERS
-          ====================================================== */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              {t("footer.partners.title")}
-            </h4>
-
-            <ul className="space-y-2 text-sm">
-
-              <li>
-                <a
-                  href="/files/Partnerantrag.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  {t("footer.partners.links.partnerApplication")}
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="/files/Dienstleistungsvertrag.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  {t("footer.partners.links.serviceContract")}
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="/files/Subvertrag.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  {t("footer.partners.links.subcontract")}
-                </a>
-              </li>
-
-            </ul>
-          </div>
-
-          {/* =====================================================
-              CUSTOMERS
-          ====================================================== */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              {t("footer.customers.title")}
-            </h4>
-
-            <ul className="space-y-2 text-sm">
-
-              <li>
-                <a
-                  href="/files/Dienstleistungsvertrag1.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  {t("footer.customers.links.cleaningStandards")}
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="/files/Pricelist.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  {t("footer.customers.links.priceList")}
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="/files/Contract.pdf"
-                  download
-                  className="hover:text-gray-900 transition-colors"
-                >
-                  {t("footer.customers.links.serviceContract")}
-                </a>
-              </li>
-
-            </ul>
-          </div>
-
-          {/* =====================================================
-              CONNECT
-          ====================================================== */}
-          <div>
-
-            <h4 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
-              {t("footer.connect.title")}
-            </h4>
-
-            {/* Social media */}
-            <div className="flex space-x-4 mb-6">
-
-              <a
-                href="https://www.instagram.com/putzelf11/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-900 transition-colors"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-
-              <a
-                href="https://www.facebook.com/profile.php?id=61580613673114"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-900 transition-colors"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-
-              <a
-                href="https://www.linkedin.com/in/putz-elf-wien1110/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-900 transition-colors"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-
-            </div>
-
-            <div className="flex flex-col space-y-2 text-sm">
-
-              <ul className="space-y-2 text-sm">
-
-                <li>
-                  <a
-                    href="/files/Allgemeine_Geschäftsbedingungen_ Neu.pdf"
-                    download
-                    className="hover:text-gray-900 transition-colors"
-                  >
-                    {t("footer.connect.links.terms")}
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="/files/Datenschutzbestimmungen.pdf"
-                    download
-                    className="hover:text-gray-900 transition-colors"
-                  >
-                    {t("footer.connect.links.privacy")}
-                  </a>
-                </li>
-
-              </ul>
-
-              <Link
-                to={getLocalizedPath(locale, "imprint")}
-                className="hover:text-gray-900 transition-colors"
-              >
-                {t("footer.connect.links.imprint")}
-              </Link>
-
-            </div>
-
-          </div>
-        </div>
-
-        {/* Copyright */}
-        <div className="border-t border-gray-200 mt-8 py-4 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} PutzELF — Alle Rechte vorbehalten.
-        </div>
-
-      </footer>
+      <Footer />
 
       {/* Cookie consent is centralized in `CookieConsent` (mounted in App.jsx) */}
 

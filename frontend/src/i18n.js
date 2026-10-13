@@ -42,31 +42,51 @@ const resources = {
       },
       imprint: {
         title: "Imprint",
-        companyNameTitle: "Company name",
-        companyNameLine1: "Sebastijan Aleksandar Kerculj",
-        companyNameLine2: "PutzELF",
-        founderTitle: "Founder and owner",
-        founderName: "Sebastijan Aleksandar Kerculj",
-        purposeTitle: "Corporate purpose",
-        purposeBody: "Exceptional Cleaning Services.",
-        vatTitle: "VAT number",
+        seoDescription: "Legal notice, company details and contact information for PutzELF in Vienna and Graz.",
+        legalIntro: "Information pursuant to Section 5 of the E-Commerce Act (ECG), Section 63 of the Trade Regulation Act 1994 (GewO 1994), and disclosure pursuant to Section 25 of the Media Act.",
+        providerTitle: "Media owner and service provider",
+        nameLabel: "Name",
+        nameValue: "Sebastijan-Aleksandar Kerčulj, sole proprietor",
+        businessNameLabel: "Business name",
+        businessNameValue: "PutzELF",
+        businessPurposeLabel: "Business purpose",
+        businessPurposeValue: "Monument, façade and building cleaning, as well as property care",
+        addressLabel: "Registered office and address",
+        serviceAreaLabel: "Service area",
+        serviceAreaValue: "Vienna and Graz and surrounding areas; there is no branch office in Graz",
+        vatTitle: "UID number",
         vatValue: "ATU78448967",
-        regNoTitle: "Company registration number",
-        regNoValue: "-",
-        courtTitle: "Commercial Register Court",
-        courtValue: "Vienna Commercial Court, Marxergasse 1a, A-1030 Vienna",
-        hqTitle: "Company headquarters",
-        hqValue: "Simmeringer Hauptstraße 24, 1110 Vienna",
-        contactTitle: "Contact details",
+        gisaTitle: "GISA number",
+        gisaValue: "38010538",
+        authorityTitle: "Trade authority",
+        authorityValue: "Magistratisches Bezirksamt für den 3. und 5. Bezirk",
+        membershipTitle: "Membership",
+        membershipValue: "Vienna Economic Chamber (Wirtschaftskammer Wien)",
+        associationsTitle: "Professional associations",
+        associationsValue: "Landesinnung Wien der Denkmal-, Fassaden- und Gebäudereiniger; Fachgruppe Wien der gewerblichen Dienstleister; Fachgruppe Wien der persönlichen Dienstleister; Fachgruppe Werbung und Marktkommunikation Wien",
+        lawTitle: "Applicable legislation",
+        lawBeforeLink: "Trade Regulation Act 1994 (GewO), available in the",
+        lawLinkText: "Federal Legal Information System",
+        lawAfterLink: ".",
+        hqValue: "Simmeringer Hauptstraße 24, 1110 Vienna, Austria",
+        contactTitle: "Contact",
         phoneLabel: "Phone",
-        phoneValue: "+43 (0)676 6300167",
+        phoneValue: "+43 676 630 01 67",
         emailLabel: "Email",
         emailValue: "office@putzelf.com",
-        membership: "Member of the Vienna Economic Chamber, Vienna Commercial Service Providers Section"
+        grazEmailLabel: "Email for Graz and Styria",
+        grazEmailValue: "office.stmk@putzelf.com",
+        companyDetailsTitle: "Company details",
+        disputeTitle: "Consumer dispute resolution",
+        disputeBody: "We are neither obliged nor willing to participate in dispute resolution proceedings before a consumer arbitration body. If a dispute with a consumer cannot be resolved directly, we will inform the consumer, in accordance with the Alternative Dispute Resolution Act, on a durable medium about the competent body and whether we will participate in proceedings.",
+        generalInfoLabel: "General information:",
+        arbitrationLinkText: "Consumer Arbitration for Business Transactions",
+        disclosureTitle: "Disclosure pursuant to Section 25 of the Media Act",
+        disclosureBody: "Media owner: Sebastijan-Aleksandar Kerčulj, sole proprietor. Registered office: Vienna. Business purpose: as stated above. This website provides information about the company and its services and facilitates the initiation of orders, partnerships and employment relationships."
       },
       hero: {
-        title: "Professional Cleaning at Your Fingertips",
-        subtitle: "Book reliable and affordable cleaning services in just a few clicks.",
+        title: "Professional Cleaning in Vienna and Graz",
+        subtitle: "Book reliable and affordable home or office cleaning in Vienna or Graz.",
         cta: "Start an Inquiry",
         jobCta: "Looking for a Job?",
         jobModalTitle: "Join the PutzELF team",
@@ -561,6 +581,7 @@ const resources = {
           title: "Connect",
           links: {
             terms: "Terms & Conditions",
+            withdrawal: "Right of Withdrawal",
             privacy: "Privacy Policy",
             imprint: "Imprint"
           }
@@ -638,48 +659,99 @@ const resources = {
       
       privacyPolicy: {
         title: "Privacy Policy",
-        intro: "This website privacy notice explains which personal data we may process, for which purposes, how long we keep it, and what choices you have regarding consent and tracking.",
-        lastUpdated: "Last updated",
+        intro: "Information pursuant to Articles 13 and 14 of the General Data Protection Regulation (GDPR)",
         sections: {
-          overview: {
-            title: "1. Overview",
-            body: "We process personal data only to the extent necessary to provide and improve our cleaning services, respond to inquiries, and manage bookings. We do not use non-essential tracking tools until you explicitly accept cookies and tracking.",
+          controller: {
+            title: "Controller",
+            identity: "Sebastijan-Aleksandar Kerčulj, sole proprietor (PutzELF)",
+            address: "Simmeringer Hauptstraße 24, 1110 Vienna, Austria",
+            phone: "Phone: +43 676 630 01 67",
+            email: "Email: office@putzelf.com",
           },
-          expectations: [
-            { key: "analysis", title: "Individuelle Analyse", desc: "Wir prüfen Ihre Räumlichkeiten und schlagen den passenden Leistungsumfang vor." },
-            { key: "fairPrice", title: "Faire Preise", desc: "Transparente Preise ohne versteckte Kosten – klar und nachvollziehbar." },
-            { key: "qualifiedStaff", title: "Qualifiziertes Personal", desc: "Erfahrene Teams, die professionell und sorgfältig arbeiten." },
-            { key: "fixedTeams", title: "Feste Teams", desc: "Konstante Teams sorgen für gleichbleibende Qualität und Vertrautheit." },
-            { key: "excellentQuality", title: "Exzellente Qualität", desc: "Standardisierte Checklisten und Kontrollen sichern zuverlässig hohe Standards." },
-            { key: "desiredTimes", title: "Wunschzeiten", desc: "Flexible Zeitfenster, abgestimmt auf Ihre betrieblichen Anforderungen." }
-          ],
-          data: {
-            title: "2. Data we process",
-            body: "Depending on the service request, we may process your name, phone number, email address, address details, preferred date and time, cleaning type, and any additional notes you provide in the contact or booking form.",
+          generalPrinciples: {
+            title: "General principles",
+            body: "We process personal data only insofar as this is necessary for the purposes described below. The legal bases are in particular the performance of pre-contractual measures and contracts, legal obligations, legitimate interests and—in the case of optional services—your consent. Data is deleted or anonymized as soon as the purpose no longer applies and no statutory retention or evidentiary obligations remain.",
           },
-          purposes: {
-            title: "3. Purpose of processing",
-            body: "We use your data to answer your inquiry, prepare an offer, coordinate a cleaning appointment, communicate with you about the request, and maintain our service quality and operational records."
+          hosting: {
+            title: "Hosting and server log files",
+            body: "The website is hosted by Hetzner Online GmbH, Industriestraße 25, 91710 Gunzenhausen, Germany. When the website is accessed, the server processes, in particular, the IP address, date and time, page or file accessed, amount of data transferred, browser type, operating system and referrer URL. The processing serves the secure, stable and error-free operation of the website and is based on Article 6(1)(f) GDPR. Our legitimate interest lies in the secure operation of our online offering. Server log files are generally deleted no later than 14 days, unless a security-relevant incident makes longer retention necessary. An agreement on processing on our behalf pursuant to Article 28 GDPR is in place with the hosting provider."
           },
-          tracking: {
-            title: "4. Cookies and tracking",
-            body: "Tracking, analytics, marketing, and advertising tools are disabled by default. These services are only initialized after you explicitly accept cookies. Until then, we do not activate Google Analytics, Google Ads, Meta Pixel or similar tools, and we do not create tracking cookies for non-essential marketing and analytics purposes."
-          },
-          retention: {
-            title: "5. Retention and sharing",
-            body: "We keep information only as long as necessary for the relevant service, legal obligations, and operational records. We do not share personal data with third parties for marketing purposes without your consent. If a service provider is involved, they only receive the minimum data required to fulfill the request."
-          },
-          rights: {
-            title: "6. Your rights",
-            body: "You may ask for access, correction, deletion, or restriction of your personal data, and you may withdraw consent at any time where processing is based on consent. Please contact us using the details listed below if you want to exercise these rights."
+          appointments: {
+            title: "Appointment inquiries and offer preparation",
+            data: "If you submit a non-binding appointment inquiry through the website, we process the contact details you entered, the address of the property to be cleaned, information about the requested service, the requested appointment and the estimated duration, as well as voluntary comments. In addition, the IP address and time of receipt may be logged to detect technical errors and misuse.",
+            purpose: "The processing serves to handle your inquiry, check availability, prepare an offer and—after conclusion of a contract—perform and invoice the order. The legal basis is Article 6(1)(b) GDPR; for technical security, Article 6(1)(f) GDPR.",
+            retention: "Inquiries that do not lead to a contract are generally deleted after six months, unless longer storage is necessary to handle an open matter or to defend or pursue claims. Contract and invoice documents are retained in accordance with statutory retention obligations, generally for seven years.",
           },
           contact: {
-            title: "7. Contact",
-            body: "If you have questions about this privacy policy or your personal data, please contact us by email at office@putzelf.com or by phone at +43 676 6300167."
+            title: "Contact",
+            body: "When you contact us by telephone, email or contact form, we process the contact details you provided and the content of your message to handle your request and for any necessary follow-up questions. The legal basis is Article 6(1)(b) GDPR if the inquiry is directed at a contract or pre-contractual measures; otherwise, Article 6(1)(f) GDPR. Our legitimate interest lies in handling business and other inquiries. The data is deleted when the matter has been dealt with and no statutory retention or evidentiary interests stand in the way."
           },
-          disclaimer: {
-            title: "8. Important note",
-            body: "This page is a website privacy notice and not a substitute for formal legal advice. Exact legal requirements may vary by case and jurisdiction."
+          serviceDelivery: {
+            title: "Service teams and subcontractors",
+            body: "To plan and perform an order, the employees or contractually engaged subcontractors assigned to it receive only the information required for this purpose, in particular name, property address, appointment, access information and service-related instructions. The legal basis is Article 6(1)(b) GDPR. Assigned personnel are required to maintain confidentiality. Where a service provider processes personal data exclusively on our behalf, an agreement pursuant to Article 28 GDPR is concluded."
+          },
+          applications: {
+            title: "Job applications",
+            body: "If you apply for a job, we process the contact, CV, qualification and application data you provided to carry out the application procedure on the basis of Article 6(1)(b) GDPR and the relevant employment-law provisions. After the procedure has ended, we store the documents for up to seven months on the basis of Article 6(1)(f) GDPR. Our legitimate interest lies in documenting the selection procedure and establishing or defending possible claims. Longer retention on file takes place only with your separate consent."
+          },
+          partners: {
+            title: "Inquiries from prospective business partners",
+            body: "For an inquiry through “Become a partner” or another channel, we process, in particular, company name, contact person, contact details, location and message to assess and initiate a collaboration. The legal basis is Article 6(1)(b) GDPR insofar as pre-contractual measures are concerned; otherwise, Article 6(1)(f) GDPR. Inquiries that are not pursued are generally deleted after six months, unless statutory retention or evidentiary interests stand in the way."
+          },
+          cookies: {
+            title: "Cookies and consent management",
+            necessary: "Strictly necessary cookies or comparable storage technologies may be used for the technical operation of the website. This includes, in particular, storing your language, location selection and consent decision. The legal basis is Section 165(3) TKG 2021; insofar as personal data is processed, Article 6(1)(f) GDPR.",
+            optional: "Optional analytics, marketing and map services are activated only after you have consented through the consent banner. The legal bases are Article 6(1)(a) GDPR and Section 165(3) TKG 2021. You may change or withdraw your consent at any time with effect for the future through “Cookie settings” in the footer. The overview there contains the specific technologies, providers, purposes and storage periods used in each case.",
+          },
+          googleAds: {
+            title: "Google Tag Manager and Google Ads",
+            service: "After you consent, we use Google Tag Manager and Google Ads, provided by Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland. Tag Manager is used to manage website tags. Google Ads measures the effectiveness of our advertising and, where selected, creates audiences for personalized advertising or remarketing. Information sent to Google may include your IP address, device and browser information, pages visited, referrer, timestamps, interactions and cookie or other online identifiers.",
+            legalBasis: "The legal bases are your consent under Article 6(1)(a) GDPR and Section 165(3) TKG 2021. These marketing services are not activated before you consent. Processing by Google LLC in the United States cannot be ruled out. Google may rely on applicable adequacy decisions, in particular the EU–US Data Privacy Framework, or standard contractual clauses.",
+            moreInfo: "More information: <googlePrivacy>Google Privacy Policy</googlePrivacy> and <googlePartnerSites>Data use in embedded Google services</googlePartnerSites>.",
+          },
+          analytics: {
+            title: "Google Analytics 4",
+            service: "After you consent, we use Google Analytics 4, a web analytics service provided by Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland. Google Analytics evaluates how our website is used, including pages visited, time spent, approximate region, device and browser used, and interactions, helping us improve our services. Cookies may be set, in particular “_ga” and “_ga_*”, with storage periods of up to two years; the current details in Cookie settings apply. According to Google, Google Analytics 4 does not log or store IP addresses. We do not use it to identify individual visitors.",
+            legalBasis: "The legal bases are your consent under Article 6(1)(a) GDPR and Section 165(3) TKG 2021. Google Analytics is not activated without your consent. Processing by Google LLC in the United States cannot be ruled out. Google may rely on applicable adequacy decisions, in particular the EU–US Data Privacy Framework, or standard contractual clauses. You can withdraw your consent at any time through Cookie settings.",
+            moreInfo: "More information: <googlePrivacy>Google Privacy Policy</googlePrivacy> and <googlePartnerSites>Data use in embedded Google services</googlePartnerSites>.",
+          },
+          metaPixel: {
+            title: "Meta Pixel",
+            service: "After you consent, we use the Meta Pixel, a service provided by Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Ireland (“Meta”). The Meta Pixel measures whether visitors reach our website through our Facebook or Instagram ads and which actions they take here (conversion measurement). Where enabled, it may also be used to create advertising audiences (Custom Audiences, remarketing). Cookies may be set, in particular “_fbp” for approximately 90 days, and information such as your IP address, device and browser information, pages visited and timestamps may be sent to Meta. The current details in Cookie settings apply.",
+            legalBasis: "We and Meta are joint controllers under Article 26 GDPR for collecting and transmitting this data; Meta is responsible for its subsequent processing. The legal bases are your consent under Article 6(1)(a) GDPR and Section 165(3) TKG 2021. The Meta Pixel is not activated without your consent. Processing by Meta Platforms, Inc. in the United States cannot be ruled out; Meta Platforms, Inc. is certified under the EU–US Data Privacy Framework. You can withdraw your consent at any time through Cookie settings.",
+            moreInfo: "More information: <metaPrivacy>Meta Privacy Policy</metaPrivacy>.",
+          },
+          leadinfo: {
+            title: "Leadinfo",
+            service: "After you consent, we use the lead generation service of Leadinfo B.V., Rivium Quadrant 141, 2909 LC Capelle aan den IJssel, the Netherlands. Leadinfo compares a website visitor’s IP address with company data from publicly available sources to associate visits with companies, and provides us with company information and details about pages visited. Leadinfo also processes domains entered in forms to improve the matching of IP addresses to companies and the service.",
+            cookies: "When the analytics function is enabled, two first-party cookies may be used: “_li_id.*” distinguishes new and returning visits for up to two years, and “_li_ses.*” groups pages visited during a session for the duration of that session. The current details in Cookie settings apply.",
+            legalBasis: "The legal bases are your consent under Article 6(1)(a) GDPR and Section 165(3) TKG 2021. Leadinfo is not activated on our website without your consent. You can withdraw consent through Cookie settings and can also use Leadinfo’s opt-out option.",
+            moreInfo: "More information: <leadinfoPrivacy>Privacy at Leadinfo</leadinfoPrivacy>; <leadinfoOptOut>Leadinfo opt-out</leadinfoOptOut>.",
+          },
+          maps: {
+            title: "Google Maps",
+            body: "We may embed Google Maps, provided by Google Ireland Limited, to show our service area. The interactive map loads only after you consent to the “External media” category or activate the map using the provided two-click solution. Only then is information such as your IP address, device and browser information, and the page visited sent to Google. The legal bases are Article 6(1)(a) GDPR and Section 165(3) TKG 2021. Processing by Google LLC in the United States cannot be ruled out. Without consent, only a local placeholder or a simple <maps>link to Google Maps</maps> is shown."
+          },
+          socialMedia: {
+            title: "Social media links",
+            body: "Our website may contain simple links to Instagram, Facebook and LinkedIn. Until you click one of these links, the link itself does not transmit data to the relevant provider. After clicking, you leave our website; the provider’s privacy information applies to subsequent processing."
+          },
+          recipients: {
+            title: "Recipients and transfers to third countries",
+            body: "Where necessary for the relevant purpose, recipients of personal data may include hosting and IT service providers, communications providers, assigned employees and subcontractors, tax advisors, public authorities and the providers named in this notice. Data is transferred only to the extent necessary. For transfers to countries outside the European Economic Area, we use safeguards provided for under the GDPR, in particular adequacy decisions or standard contractual clauses, unless a statutory exception applies."
+          },
+          rights: {
+            title: "Your rights",
+            body: "Subject to the statutory requirements, you have the right to access, rectification, erasure, restriction of processing and data portability. You may object to processing based on Article 6(1)(f) GDPR for reasons arising from your particular situation. You may withdraw consent you have given at any time with effect for the future. To exercise your rights, a message to office@putzelf.com is sufficient.",
+            complaint: "You also have the right to lodge a complaint with the <supervisoryAuthority>Austrian Data Protection Authority</supervisoryAuthority>, Barichgasse 40-42, 1030 Vienna, telephone +43 1 52 152-0, email dsb@dsb.gv.at."
+          },
+          security: {
+            title: "Data security",
+            body: "We take appropriate technical and organizational measures to protect personal data against loss, unauthorized access, alteration and disclosure. The website is transmitted using TLS/SSL encryption."
+          },
+          updates: {
+            title: "Updates",
+            body: "We update this privacy notice when the services used, processing procedures or the legal situation change. As of: September 10, 2026."
           }
         }
       },
@@ -852,27 +924,47 @@ const resources = {
       },
       imprint: {
         title: "Impressum",
-        companyNameTitle: "Firmenname",
-        companyNameLine1: "Sebastijan Aleksandar Kerculj",
-        companyNameLine2: "PutzELF",
-        founderTitle: "Gründer und Eigentümer",
-        founderName: "Sebastijan Aleksandar Kerculj",
-        purposeTitle: "Unternehmensgegenstand",
-        purposeBody: "Außergewöhnliche Reinigungsdienste.",
-        vatTitle: "USt-IdNr.",
+        seoDescription: "Impressum, Unternehmensdaten und Kontaktinformationen von PutzELF in Wien und Graz.",
+        legalIntro: "Informationen gemäß § 5 ECG, § 63 GewO 1994 und Offenlegung gemäß § 25 Mediengesetz",
+        providerTitle: "Medieninhaber und Diensteanbieter",
+        nameLabel: "Name",
+        nameValue: "Sebastijan-Aleksandar Kerčulj, Einzelunternehmer",
+        businessNameLabel: "Geschäftsbezeichnung",
+        businessNameValue: "PutzELF",
+        businessPurposeLabel: "Unternehmensgegenstand",
+        businessPurposeValue: "Denkmal-, Fassaden- und Gebäudereinigung sowie Hausbetreuung",
+        addressLabel: "Sitz und Anschrift",
+        serviceAreaLabel: "Einsatzgebiet",
+        serviceAreaValue: "Wien und Graz samt Umgebung; in Graz besteht keine Niederlassung",
+        vatTitle: "UID-Nummer",
         vatValue: "ATU78448967",
-        regNoTitle: "Firmenbuchnummer",
-        regNoValue: "-",
-        courtTitle: "Firmenbuchgericht",
-        courtValue: "Handelsgericht Wien, Marxergasse 1a, A-1030 Wien",
-        hqTitle: "Firmensitz",
-        hqValue: "Simmeringer Hauptstraße 24, 1110 Wien",
-        contactTitle: "Kontaktdaten",
+        gisaTitle: "GISA-Zahl",
+        gisaValue: "38010538",
+        authorityTitle: "Gewerbebehörde",
+        authorityValue: "Magistratisches Bezirksamt für den 3. und 5. Bezirk",
+        membershipTitle: "Mitgliedschaft",
+        membershipValue: "Wirtschaftskammer Wien",
+        associationsTitle: "Fachorganisationen",
+        associationsValue: "Landesinnung Wien der Denkmal-, Fassaden- und Gebäudereiniger; Fachgruppe Wien der gewerblichen Dienstleister; Fachgruppe Wien der persönlichen Dienstleister; Fachgruppe Werbung und Marktkommunikation Wien",
+        lawTitle: "Anwendbare Rechtsvorschriften",
+        lawBeforeLink: "Gewerbeordnung 1994 (GewO), abrufbar im",
+        lawLinkText: "Rechtsinformationssystem des Bundes",
+        lawAfterLink: ".",
+        hqValue: "Simmeringer Hauptstraße 24, 1110 Wien, Österreich",
+        contactTitle: "Kontakt",
         phoneLabel: "Telefon",
-        phoneValue: "+43 (0)676 6300167",
+        phoneValue: "+43 676 630 01 67",
         emailLabel: "E-Mail",
         emailValue: "office@putzelf.com",
-        membership: "Mitglied der Wirtschaftskammer Wien, Fachgruppe Gewerbliche Dienstleister"
+        grazEmailLabel: "E-Mail für Graz und die Steiermark",
+        grazEmailValue: "office.stmk@putzelf.com",
+        companyDetailsTitle: "Unternehmensdaten",
+        disputeTitle: "Verbraucherstreitbeilegung",
+        disputeBody: "Wir sind weder verpflichtet noch bereit, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen. Kommt es zu einer Streitigkeit mit einem Verbraucher, die wir nicht unmittelbar beilegen können, informieren wir den Verbraucher nach Maßgabe des Alternative-Streitbeilegung-Gesetzes auf einem dauerhaften Datenträger über die zuständige Stelle und darüber, ob wir an einem Verfahren teilnehmen.",
+        generalInfoLabel: "Allgemeine Informationen:",
+        arbitrationLinkText: "Schlichtung für Verbrauchergeschäfte",
+        disclosureTitle: "Offenlegung gemäß § 25 Mediengesetz",
+        disclosureBody: "Medieninhaber: Sebastijan-Aleksandar Kerčulj, Einzelunternehmer. Sitz: Wien. Unternehmensgegenstand: wie oben. Die Website informiert über das Unternehmen und seine Dienstleistungen und dient der Anbahnung von Aufträgen, Kooperationen und Beschäftigungsverhältnissen."
       },
       profile: {
         title: "Putzfrau in Wien gesucht?",
@@ -901,8 +993,8 @@ const resources = {
         }
       },
       hero: {
-        title: "Reinigung in Wien – schnell & extra sauber",
-        subtitle: "Buchen Sie Ihre Reinigungskraft in Wien in wenigen Klicks: Haushaltsreinigung, Grundreinigung, Fensterreinigung oder Büroreinigung.",
+        title: "Reinigung in Wien und Graz – schnell & extra sauber",
+        subtitle: "Buchen Sie Ihre Reinigungskraft in Wien oder Graz in wenigen Klicks: Haushaltsreinigung, Grundreinigung, Fensterreinigung oder Büroreinigung.",
         cta: "Anfrage starten",
         jobCta: "Job gesucht?",
         jobModalTitle: "Werden Sie Teil des PutzELF-Teams",
@@ -1297,6 +1389,7 @@ const resources = {
           title: "Connect",
           links: {
             terms: "AGB",
+            withdrawal: "Rücktrittsbelehrung",
             privacy: "Datenschutz",
             imprint: "Impressum"
           }
@@ -1382,40 +1475,134 @@ const resources = {
       
       privacyPolicy: {
         title: "Datenschutzerklärung",
-        intro: "Diese Datenschutzerklärung erklärt, welche personenbezogenen Daten wir verarbeiten, zu welchen Zwecken, wie lange wir sie aufbewahren und welche Rechte Sie in Bezug auf Einwilligungen und Tracking haben.",
-        lastUpdated: "Stand",
+        intro: "Informationen gemäß Art. 13 und 14 Datenschutz-Grundverordnung (DSGVO)",
+        exactGerman: {
+          identity: "Sebastijan-Aleksandar Kerčulj, Einzelunternehmer (PutzELF)",
+          address: "Simmeringer Hauptstraße 24, 1110 Wien, Österreich",
+          phone: "Telefon: +43 676 630 01 67",
+          email: "E-Mail: office@putzelf.com",
+          processing: "Wir verarbeiten personenbezogene Daten nur, soweit dies für die nachfolgend beschriebenen Zwecke erforderlich ist. Rechtsgrundlagen sind insbesondere die Durchführung vorvertraglicher Maßnahmen und von Verträgen, gesetzliche Verpflichtungen, berechtigte Interessen sowie - bei optionalen Diensten - Ihre Einwilligung. Daten werden gelöscht oder anonymisiert, sobald der Zweck entfällt und keine gesetzlichen Aufbewahrungs- oder Nachweispflichten mehr bestehen.",
+          hosting: "Die Website wird bei der Hetzner Online GmbH, Industriestraße 25, 91710 Gunzenhausen, Deutschland, gehostet. Beim Aufruf der Website verarbeitet der Server insbesondere IP-Adresse, Datum und Uhrzeit, aufgerufene Seite oder Datei, übertragene Datenmenge, Browsertyp, Betriebssystem und Referrer-URL. Die Verarbeitung dient dem sicheren, stabilen und fehlerfreien Betrieb der Website und beruht auf Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt im sicheren Betrieb unseres Online-Angebots. Server-Logfiles werden grundsätzlich spätestens nach 14 Tagen gelöscht, sofern kein sicherheitsrelevanter Vorfall eine längere Aufbewahrung erforderlich macht. Mit dem Hostinganbieter besteht eine Vereinbarung zur Auftragsverarbeitung gemäß Art. 28 DSGVO.",
+          appointmentData: "Wenn Sie über die Website eine unverbindliche Terminanfrage stellen, verarbeiten wir die von Ihnen eingegebenen Kontaktdaten, die Adresse des zu reinigenden Objekts, Angaben zur gewünschten Leistung, zum gewünschten Termin und zur geschätzten Dauer sowie freiwillige Anmerkungen. Zusätzlich können IP-Adresse und Eingangszeitpunkt zur technischen Fehler- und Missbrauchserkennung protokolliert werden.",
+          appointmentPurpose: "Die Verarbeitung dient der Bearbeitung Ihrer Anfrage, der Prüfung der Verfügbarkeit, der Angebotserstellung und - nach Vertragsabschluss - der Durchführung und Abrechnung des Auftrags. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO; für die technische Sicherheit Art. 6 Abs. 1 lit. f DSGVO.",
+          appointmentRetention: "Anfragen, die nicht zu einem Vertrag führen, werden grundsätzlich nach sechs Monaten gelöscht, sofern keine längere Speicherung zur Bearbeitung einer offenen Angelegenheit oder zur Abwehr oder Durchsetzung von Ansprüchen erforderlich ist. Vertrags- und Rechnungsunterlagen werden nach Maßgabe der gesetzlichen Aufbewahrungspflichten, insbesondere grundsätzlich sieben Jahre, aufbewahrt.",
+          contact: "Bei einer Kontaktaufnahme per Telefon, E-Mail oder Kontaktformular verarbeiten wir die übermittelten Kontaktdaten und den Inhalt der Nachricht zur Bearbeitung Ihres Anliegens und für erforderliche Rückfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, wenn die Anfrage auf einen Vertrag oder vorvertragliche Maßnahmen gerichtet ist, im Übrigen Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in der Bearbeitung geschäftlicher und sonstiger Anfragen. Die Daten werden gelöscht, wenn die Angelegenheit erledigt ist und keine gesetzlichen Aufbewahrungs- oder Nachweisinteressen entgegenstehen.",
+          serviceDelivery: "Zur Planung und Durchführung eines Auftrags erhalten die eingesetzten Mitarbeiter oder vertraglich gebundenen Subunternehmer nur die hierfür erforderlichen Angaben, insbesondere Name, Objektadresse, Termin, Zutrittsinformationen und leistungsbezogene Hinweise. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO. Einsatzkräfte werden zur Vertraulichkeit verpflichtet. Soweit ein Dienstleister personenbezogene Daten ausschließlich in unserem Auftrag verarbeitet, wird eine Vereinbarung gemäß Art. 28 DSGVO geschlossen.",
+          applications: "Bei einer Bewerbung verarbeiten wir die von Ihnen übermittelten Kontakt-, Lebenslauf-, Qualifikations- und Bewerbungsdaten zur Durchführung des Bewerbungsverfahrens auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO und den einschlägigen arbeitsrechtlichen Bestimmungen. Nach Abschluss des Verfahrens speichern wir die Unterlagen für bis zu sieben Monate auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in der Dokumentation des Auswahlverfahrens und der Abwehr oder Durchsetzung möglicher Ansprüche. Eine längere Evidenzhaltung erfolgt nur mit Ihrer gesonderten Einwilligung.",
+          partners: "Bei einer Anfrage über „Partner werden“ oder auf anderem Weg verarbeiten wir insbesondere Unternehmensname, Ansprechpartner, Kontaktdaten, Standort und Nachricht zur Prüfung und Anbahnung einer Zusammenarbeit. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit es um vorvertragliche Maßnahmen geht, im Übrigen Art. 6 Abs. 1 lit. f DSGVO. Nicht weiterverfolgte Anfragen werden grundsätzlich nach sechs Monaten gelöscht, sofern keine gesetzlichen Aufbewahrungs- oder Nachweisinteressen entgegenstehen.",
+          necessaryCookies: "Für den technischen Betrieb der Website können unbedingt erforderliche Cookies oder vergleichbare Speichertechnologien eingesetzt werden. Hierzu gehört insbesondere die Speicherung Ihrer Sprache, Standortauswahl und Einwilligungsentscheidung. Rechtsgrundlage ist § 165 Abs. 3 TKG 2021; soweit personenbezogene Daten verarbeitet werden, Art. 6 Abs. 1 lit. f DSGVO.",
+          optionalServices: "Optionale Analyse-, Marketing- und Kartendienste werden erst aktiviert, nachdem Sie über das Einwilligungs-Banner zugestimmt haben. Rechtsgrundlagen sind Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft über „Cookie-Einstellungen“ im Footer ändern oder widerrufen. Die dortige Übersicht enthält die jeweils konkret eingesetzten Technologien, Anbieter, Zwecke und Speicherdauern.",
+          googleAds: "Nach Ihrer Einwilligung verwenden wir Google Tag Manager und Google Ads, bereitgestellt durch Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Der Tag Manager dient der Verwaltung von Website-Tags. Google Ads dient der Erfolgsmessung unserer Werbung und - soweit ausgewählt - der Bildung von Zielgruppen für personalisierte Werbung oder Remarketing. Dabei können insbesondere IP-Adresse, Geräte- und Browserinformationen, aufgerufene Seiten, Referrer, Zeitstempel, Interaktionen sowie Cookie- oder sonstige Online-Kennungen an Google übermittelt werden.",
+          googleAdsLegalBasis: "Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Vor Ihrer Einwilligung werden diese Marketingdienste nicht aktiviert. Eine Verarbeitung durch Google LLC in den USA kann nicht ausgeschlossen werden. Google kann hierfür anwendbare Angemessenheitsbeschlüsse, insbesondere das EU-US Data Privacy Framework, oder Standardvertragsklauseln einsetzen.",
+          googleAdsMoreInfo: "Weitere Informationen: <googlePrivacy>Datenschutzerklärung von Google</googlePrivacy> und <googlePartnerSites>Datennutzung bei eingebundenen Google-Diensten</googlePartnerSites>.",
+          googleAnalytics: "Nach Ihrer Einwilligung setzen wir Google Analytics 4 ein, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Google Analytics wertet die Nutzung unserer Website aus, insbesondere aufgerufene Seiten, Verweildauer, ungefähre Region, verwendetes Gerät und Browser sowie Interaktionen, und hilft uns so, unser Angebot zu verbessern. Dabei können Cookies gesetzt werden (insbesondere „_ga“ und „_ga_*“, Speicherdauer bis zu zwei Jahre); maßgeblich sind die aktuellen Angaben in den Cookie-Einstellungen. IP-Adressen werden von Google Analytics 4 nach Angaben von Google nicht protokolliert oder gespeichert. Wir identifizieren einzelne Besucher dabei nicht.",
+          googleAnalyticsLegalBasis: "Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Ihre Einwilligung wird Google Analytics nicht aktiviert. Eine Verarbeitung durch Google LLC in den USA kann nicht ausgeschlossen werden. Google kann hierfür anwendbare Angemessenheitsbeschlüsse, insbesondere das EU-US Data Privacy Framework, oder Standardvertragsklauseln einsetzen. Sie können Ihre Einwilligung jederzeit über die Cookie-Einstellungen widerrufen.",
+          googleAnalyticsMoreInfo: "Weitere Informationen: <googlePrivacy>Datenschutzerklärung von Google</googlePrivacy> und <googlePartnerSites>Datennutzung bei eingebundenen Google-Diensten</googlePartnerSites>.",
+          metaPixel: "Nach Ihrer Einwilligung setzen wir den Meta-Pixel ein, einen Dienst der Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland („Meta“). Der Meta-Pixel misst, ob Besucher über unsere Werbeanzeigen bei Facebook oder Instagram auf unsere Website gelangen und welche Aktionen sie hier ausführen (Conversion-Messung); er kann außerdem - soweit aktiviert - zur Bildung von Zielgruppen für Werbung (Custom Audiences, Remarketing) eingesetzt werden. Dabei können Cookies gesetzt werden (insbesondere „_fbp“, Speicherdauer ca. 90 Tage) und insbesondere IP-Adresse, Geräte- und Browserinformationen, aufgerufene Seiten und Zeitstempel an Meta übermittelt werden. Maßgeblich sind die aktuellen Angaben in den Cookie-Einstellungen.",
+          metaPixelLegalBasis: "Für die Erhebung und Übermittlung dieser Daten sind wir mit Meta gemeinsam verantwortlich im Sinne des Art. 26 DSGVO; die weitere Verarbeitung durch Meta erfolgt in deren eigener Verantwortung. Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Ihre Einwilligung wird der Meta-Pixel nicht aktiviert. Eine Verarbeitung durch Meta Platforms, Inc. in den USA kann nicht ausgeschlossen werden; Meta Platforms, Inc. ist nach dem EU-US Data Privacy Framework zertifiziert. Sie können Ihre Einwilligung jederzeit über die Cookie-Einstellungen widerrufen.",
+          metaPixelMoreInfo: "Weitere Informationen: <metaPrivacy>Datenschutzrichtlinie von Meta</metaPrivacy>.",
+          leadinfo: "Nach Ihrer Einwilligung nutzen wir den Lead-Generation-Dienst der Leadinfo B.V., Rivium Quadrant 141, 2909 LC Capelle aan den IJssel, Niederlande. Leadinfo gleicht die IP-Adresse eines Websitebesuchs mit Unternehmensdaten aus öffentlich zugänglichen Quellen ab, um Besuche Unternehmen zuzuordnen, und stellt uns hierzu Unternehmensinformationen und Angaben über besuchte Seiten zur Verfügung. Leadinfo verarbeitet außerdem Domains aus Formulareingaben, um die Zuordnung von IP-Adressen zu Unternehmen und den Dienst zu verbessern.",
+          leadinfoCookies: "Soweit die Analysefunktion aktiviert ist, können zwei First-Party-Cookies eingesetzt werden: „_li_id.*“ zur Unterscheidung neuer und wiederkehrender Besuche für bis zu zwei Jahre und „_li_ses.*“ zur Zusammenfassung der während einer Sitzung besuchten Seiten für die Dauer der Sitzung. Maßgeblich sind die aktuellen Angaben in den Cookie-Einstellungen.",
+          leadinfoLegalBasis: "Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Einwilligung wird Leadinfo auf unserer Website nicht aktiviert. Sie können die Einwilligung über die Cookie-Einstellungen widerrufen und zusätzlich die Opt-out-Möglichkeit von Leadinfo verwenden.",
+          leadinfoMoreInfo: "Weitere Informationen: <leadinfoPrivacy>Datenschutz bei Leadinfo</leadinfoPrivacy>; <leadinfoOptOut>Leadinfo Opt-out</leadinfoOptOut>.",
+          maps: "Zur Darstellung unseres Einsatzgebiets können wir Google Maps von Google Ireland Limited einbinden. Die interaktive Karte wird erst geladen, wenn Sie in die Kategorie „Externe Medien“ einwilligen oder die Karte über die vorgesehene Zwei-Klick-Lösung aktivieren. Erst dann werden insbesondere Ihre IP-Adresse, Geräte- und Browserinformationen sowie Informationen über die aufgerufene Seite an Google übermittelt. Rechtsgrundlagen sind Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Eine Verarbeitung durch Google LLC in den USA kann nicht ausgeschlossen werden. Ohne Einwilligung wird lediglich ein lokaler Platzhalter oder ein einfacher <maps>Link zu Google Maps</maps> angezeigt.",
+          socialLinks: "Unsere Website kann einfache Links zu Auftritten bei Instagram, Facebook und LinkedIn enthalten. Solange Sie einen solchen Link nicht anklicken, werden über den Link selbst keine Daten an den jeweiligen Anbieter übertragen. Nach dem Anklicken verlassen Sie unsere Website; für die weitere Verarbeitung gelten die Datenschutzhinweise des jeweiligen Anbieters.",
+          recipients: "Empfänger personenbezogener Daten können - soweit für den jeweiligen Zweck erforderlich - Hosting- und IT-Dienstleister, Kommunikationsdienstleister, eingesetzte Mitarbeiter und Subunternehmer, Steuerberatung, Behörden sowie die in dieser Erklärung genannten Anbieter sein. Daten werden nur im erforderlichen Umfang übermittelt. Bei Übermittlungen in Staaten außerhalb des Europäischen Wirtschaftsraums nutzen wir die nach der DSGVO vorgesehenen Garantien, insbesondere Angemessenheitsbeschlüsse oder Standardvertragsklauseln, soweit keine gesetzliche Ausnahme greift.",
+          rights: "Sie haben nach Maßgabe der gesetzlichen Voraussetzungen das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit. Gegen eine Verarbeitung auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO können Sie aus Gründen, die sich aus Ihrer besonderen Situation ergeben, Widerspruch einlegen. Eine erteilte Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen. Zur Ausübung Ihrer Rechte genügt eine Nachricht an office@putzelf.com.",
+          complaint: "Sie haben außerdem das Recht auf Beschwerde bei der <supervisoryAuthority>Österreichischen Datenschutzbehörde</supervisoryAuthority>, Barichgasse 40-42, 1030 Wien, Telefon +43 1 52 152-0, E-Mail dsb@dsb.gv.at.",
+          security: "Wir treffen angemessene technische und organisatorische Maßnahmen, um personenbezogene Daten vor Verlust, unbefugtem Zugriff, Veränderung und Offenlegung zu schützen. Die Website wird verschlüsselt über TLS/SSL übertragen.",
+          updates: "Wir aktualisieren diese Datenschutzerklärung, wenn sich eingesetzte Dienste, Verarbeitungsabläufe oder die Rechtslage ändern. Stand: 10.09.2026."
+        },
         sections: {
-          overview: {
-            title: "1. Überblick",
-            body: "Wir verarbeiten personenbezogene Daten nur insoweit, wie dies für die Bereitstellung und Verbesserung unserer Reinigungsleistungen, die Beantwortung von Anfragen und die Verwaltung von Buchungen erforderlich ist. Nicht notwendige Tracking-Tools werden erst aktiviert, wenn Sie Cookies und Tracking ausdrücklich akzeptieren."
+          controller: {
+            title: "Verantwortlicher",
+            details: "Sebastijan-Aleksandar Kerčulj, Einzelunternehmer (PutzELF). Anschrift: Simmeringer Hauptstraße 24, 1110 Wien, Österreich. Telefon: +43 676 630 01 67. E-Mail: office@putzelf.com.",
+            processing: "Wir verarbeiten personenbezogene Daten nur, soweit dies für die nachfolgend beschriebenen Zwecke erforderlich ist. Rechtsgrundlagen sind insbesondere die Durchführung vorvertraglicher Maßnahmen und von Verträgen, gesetzliche Verpflichtungen, berechtigte Interessen sowie - bei optionalen Diensten - Ihre Einwilligung. Daten werden gelöscht oder anonymisiert, sobald der Zweck entfällt und keine gesetzlichen Aufbewahrungs- oder Nachweispflichten mehr bestehen.",
           },
-          data: {
-            title: "2. Verarbeitete Daten",
-            body: "Je nach Anfrage können wir Ihren Namen, Ihre Telefonnummer, Ihre E-Mail-Adresse, Adressdaten, bevorzugtes Datum und Uhrzeit, die gewünschte Reinigungsart sowie zusätzliche Hinweise aus dem Kontakt- oder Buchungsformular verarbeiten."
+          generalPrinciples: {
+            title: "Allgemeine Grundsätze",
+            body: ""
           },
-          purposes: {
-            title: "3. Zwecke der Verarbeitung",
-            body: "Wir nutzen Ihre Daten, um Ihre Anfrage zu beantworten, ein Angebot vorzubereiten, einen Reinigungstermin zu koordinieren, mit Ihnen zu kommunizieren und die Qualität und Organisation unserer Leistungen zu gewährleisten."
+          hosting: {
+            title: "Hosting und Server-Logfiles",
+            body: "Die Website wird bei der Hetzner Online GmbH, Industriestraße 25, 91710 Gunzenhausen, Deutschland, gehostet. Beim Aufruf der Website verarbeitet der Server insbesondere IP-Adresse, Datum und Uhrzeit, aufgerufene Seite oder Datei, übertragene Datenmenge, Browsertyp, Betriebssystem und Referrer-URL. Die Verarbeitung dient dem sicheren, stabilen und fehlerfreien Betrieb der Website und beruht auf Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt im sicheren Betrieb unseres Online-Angebots. Server-Logfiles werden grundsätzlich spätestens nach 14 Tagen gelöscht, sofern kein sicherheitsrelevanter Vorfall eine längere Aufbewahrung erforderlich macht. Mit dem Hostinganbieter besteht eine Vereinbarung zur Auftragsverarbeitung gemäß Art. 28 DSGVO."
           },
-          tracking: {
-            title: "4. Cookies und Tracking",
-            body: "Tracking, Analyse- und Marketing-Tools sind standardmäßig deaktiviert. Diese Dienste werden erst nach Ihrer ausdrücklichen Cookie-Einwilligung initialisiert. Bis dahin aktivieren wir kein Google Analytics, Google Ads, Meta Pixel oder ähnliche Tools und erstellen keine nicht notwendigen Tracking-Cookies für Marketing oder Analysezwecke."
-          },
-          retention: {
-            title: "5. Aufbewahrung und Weitergabe",
-            body: "Wir speichern Informationen nur so lange, wie es für den jeweiligen Service, rechtliche Verpflichtungen und interne Betriebsabläufe erforderlich ist. Wir geben personenbezogene Daten nicht ohne Ihre Einwilligung an Dritte für Marketingzwecke weiter. Falls ein Dienstleister beteiligt ist, erhält dieser nur die minimal erforderlichen Daten zur Aufgabenerfüllung."
-          },
-          rights: {
-            title: "6. Ihre Rechte",
-            body: "Sie können Auskunft, Berichtigung, Löschung oder Einschränkung Ihrer personenbezogenen Daten verlangen und Ihre Einwilligung jederzeit widerrufen, soweit die Verarbeitung auf Einwilligung beruht. Bitte kontaktieren Sie uns über die unten genannten Angaben, wenn Sie Ihre Rechte ausüben möchten."
+          appointments: {
+            title: "Terminanfragen und Angebotserstellung",
+            data: "Wenn Sie über die Website eine unverbindliche Terminanfrage stellen, verarbeiten wir die von Ihnen eingegebenen Kontaktdaten, die Adresse des zu reinigenden Objekts, Angaben zur gewünschten Leistung, zum gewünschten Termin und zur geschätzten Dauer sowie freiwillige Anmerkungen. Zusätzlich können IP-Adresse und Eingangszeitpunkt zur technischen Fehler- und Missbrauchserkennung protokolliert werden.",
+            purpose: "Die Verarbeitung dient der Bearbeitung Ihrer Anfrage, der Prüfung der Verfügbarkeit, der Angebotserstellung und - nach Vertragsabschluss - der Durchführung und Abrechnung des Auftrags. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO; für die technische Sicherheit Art. 6 Abs. 1 lit. f DSGVO.",
+            retention: "Anfragen, die nicht zu einem Vertrag führen, werden grundsätzlich nach sechs Monaten gelöscht, sofern keine längere Speicherung zur Bearbeitung einer offenen Angelegenheit oder zur Abwehr oder Durchsetzung von Ansprüchen erforderlich ist. Vertrags- und Rechnungsunterlagen werden nach Maßgabe der gesetzlichen Aufbewahrungspflichten, insbesondere grundsätzlich sieben Jahre, aufbewahrt."
           },
           contact: {
-            title: "7. Kontakt",
-            body: "Wenn Sie Fragen zur Datenschutzerklärung oder zu Ihren personenbezogenen Daten haben, erreichen Sie uns per E-Mail unter office@putzelf.com oder telefonisch unter +43 676 6300167."
+            title: "Kontaktaufnahme",
+            body: "Bei einer Kontaktaufnahme per Telefon, E-Mail oder Kontaktformular verarbeiten wir die übermittelten Kontaktdaten und den Inhalt der Nachricht zur Bearbeitung Ihres Anliegens und für erforderliche Rückfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, wenn die Anfrage auf einen Vertrag oder vorvertragliche Maßnahmen gerichtet ist, im Übrigen Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in der Bearbeitung geschäftlicher und sonstiger Anfragen. Die Daten werden gelöscht, wenn die Angelegenheit erledigt ist und keine gesetzlichen Aufbewahrungs- oder Nachweisinteressen entgegenstehen."
           },
-          disclaimer: {
-            title: "8. Wichtiger Hinweis",
-            body: "Diese Seite dient als Website-Information und ersetzt keine fachliche Rechtsberatung. Die genauen rechtlichen Anforderungen können je nach Fall und Rechtsprechung variieren."
+          serviceDelivery: {
+            title: "Einsatzteams und Subunternehmer",
+            body: "Zur Planung und Durchführung eines Auftrags erhalten die eingesetzten Mitarbeiter oder vertraglich gebundenen Subunternehmer nur die hierfür erforderlichen Angaben, insbesondere Name, Objektadresse, Termin, Zutrittsinformationen und leistungsbezogene Hinweise. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO. Einsatzkräfte werden zur Vertraulichkeit verpflichtet. Soweit ein Dienstleister personenbezogene Daten ausschließlich in unserem Auftrag verarbeitet, wird eine Vereinbarung gemäß Art. 28 DSGVO geschlossen."
+          },
+          applications: {
+            title: "Bewerbungen",
+            body: "Bei einer Bewerbung verarbeiten wir die von Ihnen übermittelten Kontakt-, Lebenslauf-, Qualifikations- und Bewerbungsdaten zur Durchführung des Bewerbungsverfahrens auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO und den einschlägigen arbeitsrechtlichen Bestimmungen. Nach Abschluss des Verfahrens speichern wir die Unterlagen für bis zu sieben Monate auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in der Dokumentation des Auswahlverfahrens und der Abwehr oder Durchsetzung möglicher Ansprüche. Eine längere Evidenzhaltung erfolgt nur mit Ihrer gesonderten Einwilligung."
+          },
+          partners: {
+            title: "Anfrage potenzieller Geschäftspartner",
+            body: "Bei einer Anfrage über „Partner werden“ oder auf anderem Weg verarbeiten wir insbesondere Unternehmensname, Ansprechpartner, Kontaktdaten, Standort und Nachricht zur Prüfung und Anbahnung einer Zusammenarbeit. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit es um vorvertragliche Maßnahmen geht, im Übrigen Art. 6 Abs. 1 lit. f DSGVO. Nicht weiterverfolgte Anfragen werden grundsätzlich nach sechs Monaten gelöscht, sofern keine gesetzlichen Aufbewahrungs- oder Nachweisinteressen entgegenstehen."
+          },
+          cookies: {
+            title: "Cookies und Einwilligungsverwaltung",
+            necessary: "Für den technischen Betrieb der Website können unbedingt erforderliche Cookies oder vergleichbare Speichertechnologien eingesetzt werden. Hierzu gehört insbesondere die Speicherung Ihrer Sprache, Standortauswahl und Einwilligungsentscheidung. Rechtsgrundlage ist § 165 Abs. 3 TKG 2021; soweit personenbezogene Daten verarbeitet werden, Art. 6 Abs. 1 lit. f DSGVO.",
+            optional: "Optionale Analyse-, Marketing- und Kartendienste werden erst aktiviert, nachdem Sie über das Einwilligungs-Banner zugestimmt haben. Rechtsgrundlagen sind Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft über „Cookie-Einstellungen“ im Footer ändern oder widerrufen. Die dortige Übersicht enthält die jeweils konkret eingesetzten Technologien, Anbieter, Zwecke und Speicherdauern."
+          },
+          googleAds: {
+            title: "Google Tag Manager und Google Ads",
+            service: "Nach Ihrer Einwilligung verwenden wir Google Tag Manager und Google Ads, bereitgestellt durch Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Der Tag Manager dient der Verwaltung von Website-Tags. Google Ads dient der Erfolgsmessung unserer Werbung und - soweit ausgewählt - der Bildung von Zielgruppen für personalisierte Werbung oder Remarketing. Dabei können insbesondere IP-Adresse, Geräte- und Browserinformationen, aufgerufene Seiten, Referrer, Zeitstempel, Interaktionen sowie Cookie- oder sonstige Online-Kennungen an Google übermittelt werden.",
+            legalBasis: "Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Vor Ihrer Einwilligung werden diese Marketingdienste nicht aktiviert. Eine Verarbeitung durch Google LLC in den USA kann nicht ausgeschlossen werden. Google kann hierfür anwendbare Angemessenheitsbeschlüsse, insbesondere das EU-US Data Privacy Framework, oder Standardvertragsklauseln einsetzen.",
+            moreInfo: "Weitere Informationen: <googlePrivacy>Datenschutzerklärung von Google</googlePrivacy> und <googlePartnerSites>Datennutzung bei eingebundenen Google-Diensten</googlePartnerSites>.",
+          },
+          analytics: {
+            title: "Google Analytics 4",
+            service: "Nach Ihrer Einwilligung setzen wir Google Analytics 4 ein, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Google Analytics wertet die Nutzung unserer Website aus, insbesondere aufgerufene Seiten, Verweildauer, ungefähre Region, verwendetes Gerät und Browser sowie Interaktionen, und hilft uns so, unser Angebot zu verbessern. Dabei können Cookies gesetzt werden (insbesondere „_ga“ und „_ga_*“, Speicherdauer bis zu zwei Jahre); maßgeblich sind die aktuellen Angaben in den Cookie-Einstellungen. IP-Adressen werden von Google Analytics 4 nach Angaben von Google nicht protokolliert oder gespeichert. Wir identifizieren einzelne Besucher dabei nicht.",
+            legalBasis: "Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Ihre Einwilligung wird Google Analytics nicht aktiviert. Eine Verarbeitung durch Google LLC in den USA kann nicht ausgeschlossen werden. Google kann hierfür anwendbare Angemessenheitsbeschlüsse, insbesondere das EU-US Data Privacy Framework, oder Standardvertragsklauseln einsetzen. Sie können Ihre Einwilligung jederzeit über die Cookie-Einstellungen widerrufen.",
+            moreInfo: "Weitere Informationen: <googlePrivacy>Datenschutzerklärung von Google</googlePrivacy> und <googlePartnerSites>Datennutzung bei eingebundenen Google-Diensten</googlePartnerSites>.",
+          },
+          metaPixel: {
+            title: "Meta-Pixel",
+            service: "Nach Ihrer Einwilligung setzen wir den Meta-Pixel ein, einen Dienst der Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland („Meta“). Der Meta-Pixel misst, ob Besucher über unsere Werbeanzeigen bei Facebook oder Instagram auf unsere Website gelangen und welche Aktionen sie hier ausführen (Conversion-Messung); er kann außerdem - soweit aktiviert - zur Bildung von Zielgruppen für Werbung (Custom Audiences, Remarketing) eingesetzt werden. Dabei können Cookies gesetzt werden (insbesondere „_fbp“, Speicherdauer ca. 90 Tage) und insbesondere IP-Adresse, Geräte- und Browserinformationen, aufgerufene Seiten und Zeitstempel an Meta übermittelt werden. Maßgeblich sind die aktuellen Angaben in den Cookie-Einstellungen.",
+            legalBasis: "Für die Erhebung und Übermittlung dieser Daten sind wir mit Meta gemeinsam verantwortlich im Sinne des Art. 26 DSGVO; die weitere Verarbeitung durch Meta erfolgt in deren eigener Verantwortung. Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Ihre Einwilligung wird der Meta-Pixel nicht aktiviert. Eine Verarbeitung durch Meta Platforms, Inc. in den USA kann nicht ausgeschlossen werden; Meta Platforms, Inc. ist nach dem EU-US Data Privacy Framework zertifiziert. Sie können Ihre Einwilligung jederzeit über die Cookie-Einstellungen widerrufen.",
+            moreInfo: "Weitere Informationen: <metaPrivacy>Datenschutzrichtlinie von Meta</metaPrivacy>.",
+          },
+          leadinfo: {
+            title: "Leadinfo",
+            service: "Nach Ihrer Einwilligung nutzen wir den Lead-Generation-Dienst der Leadinfo B.V., Rivium Quadrant 141, 2909 LC Capelle aan den IJssel, Niederlande. Leadinfo gleicht die IP-Adresse eines Websitebesuchs mit Unternehmensdaten aus öffentlich zugänglichen Quellen ab, um Besuche Unternehmen zuzuordnen, und stellt uns hierzu Unternehmensinformationen und Angaben über besuchte Seiten zur Verfügung. Leadinfo verarbeitet außerdem Domains aus Formulareingaben, um die Zuordnung von IP-Adressen zu Unternehmen und den Dienst zu verbessern.",
+            cookies: "Soweit die Analysefunktion aktiviert ist, können zwei First-Party-Cookies eingesetzt werden: „_li_id.*“ zur Unterscheidung neuer und wiederkehrender Besuche für bis zu zwei Jahre und „_li_ses.*“ zur Zusammenfassung der während einer Sitzung besuchten Seiten für die Dauer der Sitzung. Maßgeblich sind die aktuellen Angaben in den Cookie-Einstellungen.",
+            legalBasis: "Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Einwilligung wird Leadinfo auf unserer Website nicht aktiviert. Sie können die Einwilligung über die Cookie-Einstellungen widerrufen und zusätzlich die Opt-out-Möglichkeit von Leadinfo verwenden.",
+            moreInfo: "Weitere Informationen: <leadinfoPrivacy>Datenschutz bei Leadinfo</leadinfoPrivacy>; <leadinfoOptOut>Leadinfo Opt-out</leadinfoOptOut>.",
+          },
+          maps: {
+            title: "Google Maps",
+            body: ""
+          },
+          socialMedia: {
+            title: "Social-Media-Links",
+            body: ""
+          },
+          recipients: {
+            title: "Empfänger und Drittlandübermittlungen",
+            body: "Empfänger personenbezogener Daten können - soweit für den jeweiligen Zweck erforderlich - Hosting- und IT-Dienstleister, Kommunikationsdienstleister, eingesetzte Mitarbeiter und Subunternehmer, Steuerberatung, Behörden sowie die in dieser Erklärung genannten Anbieter sein. Daten werden nur im erforderlichen Umfang übermittelt. Bei Übermittlungen in Staaten außerhalb des Europäischen Wirtschaftsraums nutzen wir die nach der DSGVO vorgesehenen Garantien, insbesondere Angemessenheitsbeschlüsse oder Standardvertragsklauseln, soweit keine gesetzliche Ausnahme greift."
+          },
+          rights: {
+            title: "Ihre Rechte",
+            body: "Sie haben nach Maßgabe der gesetzlichen Voraussetzungen das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit. Gegen eine Verarbeitung auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO können Sie aus Gründen, die sich aus Ihrer besonderen Situation ergeben, Widerspruch einlegen. Eine erteilte Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen. Zur Ausübung Ihrer Rechte genügt eine Nachricht an office@putzelf.com.",
+            complaint: "Sie haben außerdem das Recht auf Beschwerde bei der <supervisoryAuthority>Österreichischen Datenschutzbehörde</supervisoryAuthority>, Barichgasse 40-42, 1030 Wien, Telefon +43 1 52 152-0, E-Mail dsb@dsb.gv.at."
+          },
+          security: {
+            title: "Datensicherheit",
+            body: "Wir treffen angemessene technische und organisatorische Maßnahmen, um personenbezogene Daten vor Verlust, unbefugtem Zugriff, Veränderung und Offenlegung zu schützen. Die Website wird verschlüsselt über TLS/SSL übertragen."
+          },
+          updates: {
+            title: "Aktualisierung",
+            body: "Wir aktualisieren diese Datenschutzerklärung, wenn sich eingesetzte Dienste, Verarbeitungsabläufe oder die Rechtslage ändern."
           }
         }
       },

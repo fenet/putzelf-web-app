@@ -5,43 +5,61 @@ const demoPosts = [
     id: "maintenance-cleaning-basics",
     slug: "so-pflegen-sie-buero-und-arbeitsraeume-effektiv",
     title: "So pflegen Sie Büro- und Arbeitsräume effektiv",
+    titleEn: "How to Maintain Offices and Workspaces Effectively",
     excerpt:
       "Ein kurzer Leitfaden, wie regelmäßige Reinigung das Wohlbefinden steigert und den Eindruck Ihres Unternehmens aufwertet.",
+    excerptEn:
+      "A short guide to how regular cleaning supports wellbeing and strengthens the impression your business makes.",
     content:
       "Regelmäßige Reinigung schafft nicht nur ein angenehmes Ambiente, sondern schützt auch hochwertige Möbel, technische Geräte und Böden vor vorzeitiger Abnutzung.\n\nEin gut strukturierter Ablauf beginnt mit klaren Verantwortlichkeiten, festen Reinigungsintervalle und einer verständlichen Priorisierung der Bereiche. Besonders in Büroräumen ist die tägliche Ordnung entscheidend: Flächen, Sanitärbereiche und gemeinsame Nutzungsebenen sollten konsequent gepflegt werden.\n\nWenn Sie die Reinigung in feste Zeitfenster legen, vermeiden Sie Unterbrechungen und schaffen eine nachhaltige, professionell wirkende Atmosphäre für Mitarbeitende und Gäste.",
+    contentEn:
+      "Regular cleaning creates a pleasant atmosphere and protects quality furniture, equipment and floors from premature wear.\n\nAn effective routine starts with clear responsibilities, set cleaning intervals and a practical order for prioritizing areas. In offices, keeping spaces tidy each day matters: surfaces, washrooms and shared areas all need consistent care.\n\nScheduling cleaning at set times helps avoid interruptions and creates a lasting, professional atmosphere for employees and visitors.",
     image:
       "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80",
     author: "PutzELF Team",
     publishedAt: "2025-03-12T08:00:00.000Z",
     category: "Tipps",
+    categoryEn: "Tips",
   },
   {
     id: "green-cleaning",
     slug: "gruenere-arbeitsplaetze-dank-gesunder-reinigungsroutine",
     title: "Grünere Arbeitsplätze dank gesunder Reinigungsroutine",
+    titleEn: "Healthier Cleaning Routines for Greener Workplaces",
     excerpt:
       "Frische Luft, weniger Staub und eine angenehmere Atmosphäre sind oft die größten Vorteile einer durchdachten Reinigung.",
+    excerptEn:
+      "Cleaner air, less dust and a more pleasant atmosphere are among the main benefits of a thoughtful cleaning routine.",
     content:
       "Viele Unternehmen unterschätzen, wie stark die Qualität des Innenraums die Konzentration und das allgemeine Wohlbefinden beeinflusst. Regelmäßige Reinigung reduziert Allergene, verbessert die Luftqualität und verhindert unsaubere Ablagerungen an oft berührten Flächen.\n\nEine gute Routine kombiniert sensible Reinigungsprodukte, gezielte Frequenzen und ein klares Vorgehen in den Hauptbereiche. Dadurch bleiben Hygienestandards erhalten und der Raum wirkt zugleich gepflegt und einladend.",
+    contentEn:
+      "Many businesses underestimate how strongly indoor conditions can affect concentration and overall wellbeing. Regular cleaning reduces allergens, improves air quality and prevents dirt from building up on frequently touched surfaces.\n\nA good routine combines suitable cleaning products, carefully planned intervals and a clear process for the main areas. This helps maintain hygiene standards while keeping the workplace clean and welcoming.",
     image:
       "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
     author: "PutzELF Team",
     publishedAt: "2025-04-03T08:00:00.000Z",
     category: "Unternehmen",
+    categoryEn: "Business",
   },
   {
     id: "window-care",
     slug: "fensterreinigung-fuer-mehr-licht-und-wohlfuehlen",
     title: "Fensterreinigung für mehr Licht und Wohlgefühl",
+    titleEn: "Window Cleaning for Brighter, More Comfortable Spaces",
     excerpt:
       "Saubere Fenster machen Räume heller, professioneller und insgesamt angenehmer – auch im täglichen Arbeitsalltag.",
+    excerptEn:
+      "Clean windows make spaces brighter, more professional and more pleasant throughout the working day.",
     content:
       "Glasflächen sind im Alltag oft mit Spuren, Wasserflecken und Staub belastet. Gerade in gewerblichen Räumen wirkt eine saubere Glasfront sofort hochwertiger und einladender.\n\nEine professionelle Fensterreinigung schafft nicht nur optische Klarheit, sondern unterstützt auch die Lichtdurchlässigkeit und damit ein positives Raumgefühl. Für Unternehmen lohnt sich diese Maßnahme besonders bei regelmäßigen Wartungsintervallen.",
+    contentEn:
+      "Glass surfaces often collect marks, water spots and dust during everyday use. In commercial spaces especially, clean windows can immediately make a frontage look more polished and welcoming.\n\nProfessional window cleaning improves clarity and lets more natural light into a space, helping it feel brighter and more comfortable. For businesses, this is especially useful as part of a regular maintenance schedule.",
     image:
       "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
     author: "PutzELF Team",
     publishedAt: "2025-05-16T08:00:00.000Z",
     category: "Service",
+    categoryEn: "Services",
   },
 ];
 

@@ -1,8 +1,11 @@
 import fs from "fs";
 import path from "path";
+import { loadEnv } from "vite";
+import { blogPostSlugs, locales, routeRegistry } from "../src/data/routeRegistry.mjs";
 
 const projectRoot = path.resolve(process.cwd());
 const publicDir = path.join(projectRoot, "public");
+const fileEnv = loadEnv("production", projectRoot, "");
 
 function normalizeSiteUrl(value) {
   if (!value) return null;
@@ -15,36 +18,55 @@ const siteUrl =
   normalizeSiteUrl(process.env.SITE_URL) ||
   normalizeSiteUrl(process.env.VITE_SITE_URL) ||
   normalizeSiteUrl(process.env.PUBLIC_SITE_URL) ||
+  normalizeSiteUrl(fileEnv.SITE_URL) ||
+  normalizeSiteUrl(fileEnv.VITE_SITE_URL) ||
+  normalizeSiteUrl(fileEnv.PUBLIC_SITE_URL) ||
   // Fallback based on repo branding / email domain
   "https://putzelf.com";
 
-const routes = [
-  { path: "/de/", changefreq: "weekly", priority: 1.0 },
-  { path: "/en/", changefreq: "weekly", priority: 1.0 },
-  { path: "/de/landing-alt", changefreq: "monthly", priority: 0.4 },
-  { path: "/en/landing-alt", changefreq: "monthly", priority: 0.4 },
-  { path: "/de/services", changefreq: "monthly", priority: 0.8 },
-  { path: "/en/services", changefreq: "monthly", priority: 0.8 },
-  // specific service pages removed per request
-  // Removed permanent/recurring cleaning sitemap entries
-  { path: "/de/karriere", changefreq: "monthly", priority: 0.4 },
-  { path: "/en/job-opening", changefreq: "monthly", priority: 0.4 },
-  { path: "/de/partner-werden", changefreq: "monthly", priority: 0.4 },
-  { path: "/en/get-partners", changefreq: "monthly", priority: 0.4 },
-  { path: "/de/impressum", changefreq: "yearly", priority: 0.2 },
-  { path: "/en/imprint", changefreq: "yearly", priority: 0.2 },
-];
-
-function isoDate(date) {
-  return date.toISOString().slice(0, 10);
+function localizedPath(locale, template, params = {}) {
+  const rendered = template.replace(/:([A-Za-z0-9_]+)/g, (_, key) => {
+    if (!params[key]) throw new Error(`Missing route parameter ${key} for ${template}`);
+    return params[key];
+  });
+  return `/${locale}${rendered === "/" ? "/" : rendered}`;
 }
 
+function buildSitemapRoutes() {
+  const routes = [];
+  for (const [key, definition] of Object.entries(routeRegistry)) {
+    if (!definition.sitemap) continue;
+    if (!definition.prerender || definition.noindex || definition.status === 404) {
+      throw new Error(`Sitemap route ${key} must be prerendered, indexable, and return HTTP 200`);
+    }
+    for (const locale of locales) {
+      const template = definition[locale];
+      if (!template) throw new Error(`Sitemap route ${key} has no ${locale} path`);
+      const routeParams = key === "blogPost" ? blogPostSlugs.map((slug) => ({ slug })) : [{}];
+      for (const params of routeParams) {
+        routes.push({
+          path: localizedPath(locale, template, params),
+          ...definition.sitemap,
+        });
+      }
+    }
+  }
+
+  const seenPaths = new Set();
+  for (const route of routes) {
+    if (seenPaths.has(route.path)) throw new Error(`Duplicate sitemap route: ${route.path}`);
+    seenPaths.add(route.path);
+  }
+  return routes;
+}
+
+const routes = buildSitemapRoutes();
+
 function buildSitemapXml() {
-  const lastmod = isoDate(new Date());
   const urlset = routes
     .map((r) => {
       const loc = `${siteUrl}${r.path}`;
-      return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority.toFixed(1)}</priority>\n  </url>`;
+      return `  <url>\n    <loc>${loc}</loc>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority.toFixed(1)}</priority>\n  </url>`;
     })
     .join("\n");
 
@@ -52,21 +74,11 @@ function buildSitemapXml() {
 }
 
 function buildRobotsTxt() {
-  // Keep booking/account/admin routes out of index.
   return [
     "User-agent: *",
     "Allow: /",
-    "Disallow: /admin",
-    "Disallow: /login",
-    "Disallow: /register",
-    "Disallow: /de/book",
-    "Disallow: /en/book",
-    "Disallow: /de/order",
-    "Disallow: /en/order",
-    "Disallow: /de/search",
-    "Disallow: /en/search",
-    "Disallow: /de/profile",
-    "Disallow: /en/profile",
+    "Disallow: /api/",
+    "Disallow: /_not-found",
     `Sitemap: ${siteUrl}/sitemap.xml`,
     "",
   ].join("\n");
