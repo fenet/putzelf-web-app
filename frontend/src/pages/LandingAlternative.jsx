@@ -15,6 +15,10 @@ import {
   CheckCircle2,
   AlertTriangle,
   Star,
+  House,
+  Hammer,
+  Factory,
+  GlassWater,
   MapPin,
   Briefcase,
   Home,
@@ -40,7 +44,7 @@ const content = {
     heroSubtitle: "Reliable cleaning for offices, restaurants, and retail spaces in Vienna and Graz, with consistent quality and flexible schedules.",
     heroPrimaryCta: "Start an Inquiry",
     heroSecondaryCta: "Start an Inquiry",
-    trust: ["4.9/5 Average Rating", "500+ Completed Jobs", "Trusted by Local Businesses"],
+    trust: ["4.9/5 Average Rating"],
     socialTitle: "Trusted by Growing Teams",
     socialSubtitle: "Real feedback from businesses that rely on us every week.",
     testimonials: [
@@ -124,7 +128,7 @@ const content = {
       "Zuverlässige Unterhaltsreinigung für Büro, Gastro und Praxis in Wien und Graz – mit gleichbleibender Qualität und flexiblen Zeiten.",
     heroPrimaryCta: "Anfrage starten",
     heroSecondaryCta: "Anfrage starten",
-    trust: ["4,9/5 Durchschnittsbewertung", "500+ Abgeschlossene Aufträge", "Vertrauen von lokalen Unternehmen"],
+    trust: ["4,9/5 Durchschnittsbewertung"],
     socialTitle: "Vertrauen von wachsenden Teams",
     socialSubtitle: "Echtes Feedback von Unternehmen, die wöchentlich auf uns setzen.",
     testimonials: [
@@ -199,7 +203,14 @@ const content = {
   },
 };
 
-const serviceIcons = [Building2, Sparkles, Briefcase, UtensilsCrossed, Store, Stethoscope];
+const serviceIcons = {
+  businessMaintenance: Building2,
+  businessDeep: Sparkles,
+  businessStaircase: House,
+  businessConstruction: Hammer,
+  businessWindow: GlassWater,
+  businessIndustrial: Factory,
+};
 
 const Unternehmen = [
   { key: "businessMaintenance" },
@@ -326,25 +337,28 @@ export default function LandingAlternative() {
               </Link>
             </div>
 
-            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-1">
               {c.trust.map((item, idx) => {
-                const trustIconColors = [
-                  "text-amber-500",
-                  "text-teal-600",
-                  "text-indigo-600",
-                ];
-                const trustIcons = [Star, CheckCircle2, ShieldCheck];
-                const TrustIcon = trustIcons[idx] || ShieldCheck;
+                const trustIconColors = ["text-amber-500"];
+                const trustIcons = [Star];
+                const TrustIcon = trustIcons[idx] || Star;
 
-                return (
-                  <div
-                    key={item}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-transparent px-4 py-2.5 text-center text-sm font-semibold text-slate-700"
-                  >
-                    <TrustIcon className={`h-4 w-4 ${trustIconColors[idx] || trustIconColors[0]}`} />
-                    <span>{item}</span>
-                  </div>
-                );
+                if (idx === 0) {
+                  return (
+                    <a
+                      key={item}
+                      href="https://www.google.com/search?q=putzelf&oq=putzelf&gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg7MgYIARBFGDwyBggCEEUYOzIGCAMQRRg8MgYIBBBFGDzSAQg1MTUyajBqN6gCALACAA&sourceid=chrome&ie=UTF-8"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-transparent px-4 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-[#0097b2] hover:text-[#0097b2]"
+                    >
+                      <TrustIcon className={`h-4 w-4 ${trustIconColors[idx] || trustIconColors[0]}`} />
+                      <span>{item}</span>
+                    </a>
+                  );
+                }
+
+                return null;
               })}
             </div>
           </div>
@@ -440,8 +454,8 @@ export default function LandingAlternative() {
       <section className="mx-auto max-w-7xl px-4 py-14 md:px-6">
         <h3 className="text-center text-2xl font-bold">{c.servicesTitle}</h3>
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          {c.services.map((s, idx) => {
-            const Icon = serviceIcons[idx] || Building2;
+          {c.services.map((s) => {
+            const Icon = serviceIcons[s.key] || Building2;
             return (
               <Link key={s.key} to={getLocalizedPath(lang, s.key)} className="group flex flex-col items-center rounded-2xl bg-white p-5 text-center shadow transition hover:-translate-y-1 hover:shadow-lg">
                 <Icon className="h-8 w-8 text-[#0097b2]" />
@@ -544,7 +558,7 @@ export default function LandingAlternative() {
               <div>
                 <h4 className="text-xl font-bold">Graz</h4>
                 <p className="mt-1 text-sm font-medium text-[#0097b2]">
-                  {lang === "de" ? "Standort Graz" : "Graz location"}
+                  {lang === "de" ? "Graz-Filiale" : "Graz branch"}
                 </p>
                 <address className="mt-2 not-italic leading-relaxed text-slate-700">
                   Waagner-Biro-Straße 47<br />

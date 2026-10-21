@@ -583,7 +583,8 @@ const resources = {
             terms: "Terms & Conditions",
             withdrawal: "Right of Withdrawal",
             privacy: "Privacy Policy",
-            imprint: "Imprint"
+            imprint: "Imprint",
+            calculator: "Price Calculator"
           }
         }
       },
@@ -1391,7 +1392,8 @@ const resources = {
             terms: "AGB",
             withdrawal: "Rücktrittsbelehrung",
             privacy: "Datenschutz",
-            imprint: "Impressum"
+            imprint: "Impressum",
+            calculator: "Preiskalkulator"
           }
         }
       },

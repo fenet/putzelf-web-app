@@ -1,13 +1,89 @@
-Options -MultiViews
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+DirectorySlash Off
+
+ErrorDocument 404 /_not-found
+ErrorDocument 410 /_not-found
+
 RewriteEngine On
 
-# Serve existing files directly
-RewriteCond %{REQUEST_FILENAME} -f [OR]
+# Retired legacy PDFs were removed from the public files directory.
+RewriteRule ^files/(?:Contract|Datenschutzbestimmungen|Datenschutzblat|Dienstleistungsvertrag|Dienstliste|Partnerantrag|Pricelist|Stammdatenblatt|Subvertrag|Urlaubsschein_Zeitausgleich)\.pdf$ - [G,NC,L]
+
+# The review and www hostnames are aliases; consolidate them onto the canonical
+# production host while preserving the path and query string.
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{HTTP_HOST} ^(?:review|www)\.putzelf\.com(?::\d+)?$ [NC]
+RewriteRule ^ https://putzelf.com%{REQUEST_URI} [R=301,L,NE]
+
+# Keep private and transactional routes fetchable so crawlers can see noindex.
+<IfModule mod_setenvif.c>
+  SetEnvIfNoCase Request_URI "^/(?:de|en)/(?:booking|profile|calculator|login|register|admin|order)(?:/|$)" PutzELFNoIndex=1
+</IfModule>
+<IfModule mod_headers.c>
+  Header always set X-Robots-Tag "noindex, nofollow" env=PutzELFNoIndex
+  Header always set X-Robots-Tag "noindex, nofollow" env=REDIRECT_PutzELFNoIndex
+</IfModule>
+
+# Keep a localized branded error document while preserving the original status.
+RewriteCond %{ENV:REDIRECT_STATUS} ^(?:404|410)$
+RewriteCond %{THE_REQUEST} \s/+en/
+RewriteRule ^_not-found/?$ /en/404/index.html [END]
+RewriteCond %{ENV:REDIRECT_STATUS} ^(?:404|410)$
+RewriteRule ^_not-found/?$ /de/404/index.html [END]
+RewriteCond %{ENV:REDIRECT_STATUS} ^(?:404|410)$
+RewriteRule ^ - [END]
+
+# Removed city landing pages.
+RewriteRule ^de/services/(?:wien|graz)/?$ - [G,NC,L]
+
+# The error route itself must carry a real 404 status.
+RewriteRule ^(?:de|en)/404/?$ - [R=404,L]
+
+# Canonical locale home URLs retain their trailing slash.
+RewriteRule ^(de|en)$ /$1/ [R=301,L]
+
+# Permanent legacy URL replacements. These resolve directly to their final URL.
+RewriteRule ^$ /de/ [R=301,L]
+RewriteRule ^landing-alt/?$ /de/ [R=301,L]
+RewriteRule ^de/landing-alt/?$ /de/ [R=301,L]
+RewriteRule ^en/landing-alt/?$ /en/ [R=301,L]
+RewriteRule ^services/?$ /de/services [R=301,L]
+RewriteRule ^contact/?$ /de/kontakt [R=301,L]
+RewriteRule ^kontakt/?$ /de/kontakt [R=301,L]
+RewriteRule ^job-opening/?$ /de/karriere [R=301,L]
+RewriteRule ^get-partners/?$ /de/partner-werden [R=301,L]
+RewriteRule ^privacy/?$ /de/datenschutz [R=301,L]
+RewriteRule ^datenschutz/?$ /de/datenschutz [R=301,L]
+RewriteRule ^imprint/?$ /de/impressum [R=301,L]
+RewriteRule ^book/?$ /de/booking [R=301,L]
+RewriteRule ^profile/?$ /de/booking [R=301,L]
+RewriteRule ^calculator/?$ /de/calculator [R=301,L]
+RewriteRule ^blog/?$ /de/blog [R=301,L]
+RewriteRule ^blog/(.+?)/?$ /de/blog/$1 [R=301,L,NE]
+RewriteRule ^login/?$ /de/login [R=301,L]
+RewriteRule ^register/?$ /de/register [R=301,L]
+RewriteRule ^admin/?$ /de/admin [R=301,L]
+RewriteRule ^order/([^/]+)/?$ /de/order/$1 [R=301,L,NE]
+
+# The former profile URL was a duplicate of the booking form.
+RewriteRule ^de/profile/?$ /de/booking [R=301,L]
+RewriteRule ^en/profile/?$ /en/booking [R=301,L]
+
+# Order pages are client-rendered and have a dynamic id; serve the localized
+# app entry point without changing the requested URL.
+RewriteRule ^(de|en)/$ /$1/index.html [END]
+RewriteRule ^(de|en)/booking/?$ /index.html [END]
+RewriteRule ^(de|en)/admin/?$ /index.html [END]
+RewriteRule ^(de|en)/order/[^/]+/?$ /index.html [END]
+
+# The generated route directories are canonical without a trailing slash.
+# Keep the locale home URLs (/de/ and /en/) as-is.
+RewriteCond %{REQUEST_URI} !^/(?:de|en)/$
+RewriteCond %{THE_REQUEST} \s/+(.+?)/+\s
 RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+RewriteRule ^(.+)/$ /$1 [R=301,L,NE]
 
-# Redirect everything else to index.html (React SPA routing)
-RewriteRule ^ index.html [L]
-
-
-
+# Serve prerendered route directories on their canonical slashless URLs.
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.+)$ $1/index.html [END]

@@ -125,7 +125,6 @@ function validateNoindexServerHeaders() {
     `/${locale}/booking`,
     `/${locale}/profile`,
     `/${locale}/calculator`,
-    `/${locale}/search`,
     `/${locale}/login`,
     `/${locale}/register`,
     `/${locale}/admin`,
@@ -223,7 +222,6 @@ const permanentRedirects = [
   ["/datenschutz", "/de/datenschutz"],
   ["/imprint", "/de/impressum"],
   ["/book", "/de/booking"],
-  ["/search", "/de/search"],
   ["/profile", "/de/booking"],
   ["/calculator", "/de/calculator"],
   ["/blog", "/de/blog"],
@@ -275,7 +273,7 @@ function startStaticServer(routes) {
         response.end();
         return;
       }
-      if (/^\/(?:de|en)\/(?:booking|profile|calculator|search|login|register|admin|order)(?:\/|$)/i.test(normalizedPath)) {
+      if (/^\/(?:de|en)\/(?:booking|profile|calculator|login|register|admin|order)(?:\/|$)/i.test(normalizedPath)) {
         response.setHeader("X-Robots-Tag", "noindex, nofollow");
       }
       const redirectTarget = getPermanentRedirect(pathname);

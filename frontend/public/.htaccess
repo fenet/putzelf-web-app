@@ -18,7 +18,7 @@ RewriteRule ^ https://putzelf.com%{REQUEST_URI} [R=301,L,NE]
 
 # Keep private and transactional routes fetchable so crawlers can see noindex.
 <IfModule mod_setenvif.c>
-  SetEnvIfNoCase Request_URI "^/(?:de|en)/(?:booking|profile|calculator|search|login|register|admin|order)(?:/|$)" PutzELFNoIndex=1
+  SetEnvIfNoCase Request_URI "^/(?:de|en)/(?:booking|profile|calculator|login|register|admin|order)(?:/|$)" PutzELFNoIndex=1
 </IfModule>
 <IfModule mod_headers.c>
   Header always set X-Robots-Tag "noindex, nofollow" env=PutzELFNoIndex
@@ -57,7 +57,6 @@ RewriteRule ^privacy/?$ /de/datenschutz [R=301,L]
 RewriteRule ^datenschutz/?$ /de/datenschutz [R=301,L]
 RewriteRule ^imprint/?$ /de/impressum [R=301,L]
 RewriteRule ^book/?$ /de/booking [R=301,L]
-RewriteRule ^search/?$ /de/search [R=301,L]
 RewriteRule ^profile/?$ /de/booking [R=301,L]
 RewriteRule ^calculator/?$ /de/calculator [R=301,L]
 RewriteRule ^blog/?$ /de/blog [R=301,L]

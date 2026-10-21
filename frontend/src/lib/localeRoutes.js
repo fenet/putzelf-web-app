@@ -21,7 +21,6 @@ const legacyPathToKey = {
   "/datenschutz": "privacy",
   "/imprint": "imprint",
   "/book": "booking",
-  "/search": "search",
   "/profile": "profile",
   "/calculator": "calculator",
   "/blog": "blog",

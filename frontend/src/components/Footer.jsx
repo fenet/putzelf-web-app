@@ -86,6 +86,7 @@ export default function Footer() {
               <ul className="space-y-2 text-sm">
                 <li><Link to={getLocalizedPath(locale, "contact")} className="hover:text-gray-900 transition-colors">{c.contact}</Link></li>
                 <li><Link to={getLocalizedPath(locale, "blog")} className="hover:text-gray-900 transition-colors">{c.blog}</Link></li>
+                <li><Link to={getLocalizedPath(locale, "calculator")} className="hover:text-gray-900 transition-colors">{t("footer.connect.links.calculator")}</Link></li>
                 <li><Link to={getLocalizedPath(locale, "jobOpening")} className="hover:text-gray-900 transition-colors">{c.jobOpening}</Link></li>
                 <li><Link to={getLocalizedPath(locale, "getPartners")} className="hover:text-gray-900 transition-colors">{c.getPartners}</Link></li>
                 <li>

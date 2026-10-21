@@ -121,7 +121,6 @@ export const routeRegistry = {
   },
   booking: { de: "/booking", en: "/booking", prerender: false, noindex: true },
   order: { de: "/order/:id", en: "/order/:id", prerender: false, noindex: true },
-  search: { de: "/search", en: "/search", prerender: true, noindex: true },
   profile: { de: "/profile", en: "/profile", prerender: false, noindex: true },
   calculator: { de: "/calculator", en: "/calculator", prerender: true, noindex: true },
   blog: {

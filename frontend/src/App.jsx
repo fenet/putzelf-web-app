@@ -11,7 +11,6 @@ import JobOpening from "./pages/JobOpening";
 import GetPartners from "./pages/GetPartners";
 import Home from "./pages/Home";
 import Order from "./pages/Order";
-import Search from "./pages/Search";
 import Imprint from "./pages/Imprint";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 // Profile page removed; redirects will send users elsewhere
@@ -119,7 +118,7 @@ export default function App() {
         <Route path="/datenschutz" element={<LegacyRedirect to="/de/datenschutz" />} />
         <Route path="/imprint" element={<LegacyRedirect to="/de/impressum" />} />
         <Route path="/book" element={<LegacyRedirect to="/de/booking" />} />
-        <Route path="/search" element={<LegacyRedirect to="/de/search" />} />
+        <Route path="/search" element={<NotFound />} />
         <Route path="/profile" element={<LegacyRedirect to="/de/booking" />} />
         <Route path="/calculator" element={<LegacyRedirect to="/de/calculator" />} />
         <Route path="/blog" element={<LegacyRedirect to="/de/blog" />} />
@@ -159,7 +158,6 @@ export default function App() {
 
           <Route path="booking" element={<Layout><Home /></Layout>} />
           <Route path="order/:id" element={<Layout><Order /></Layout>} />
-          <Route path="search" element={<Layout><Search /></Layout>} />
           <Route path="profile" element={<LegacyRedirect to="/de/booking" />} />
           <Route path="calculator" element={<PriceCalculator />} />
           <Route path="blog" element={<BlogPage />} />
@@ -199,7 +197,6 @@ export default function App() {
           <Route path="imprint" element={<Imprint />} />
           <Route path="booking" element={<Layout><Home /></Layout>} />
           <Route path="order/:id" element={<Layout><Order /></Layout>} />
-          <Route path="search" element={<Layout><Search /></Layout>} />
           <Route path="profile" element={<LegacyRedirect to="/en/booking" />} />
           <Route path="calculator" element={<PriceCalculator />} />
           <Route path="blog" element={<BlogPage />} />
