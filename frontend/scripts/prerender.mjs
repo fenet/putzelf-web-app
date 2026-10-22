@@ -158,16 +158,39 @@ const retiredLegacyFilePaths = [
 
 function validateLegacyServerRules() {
   const apacheConfig = fs.readFileSync(path.join(ROOT, "public", ".htaccess"), "utf8");
+  const apacheLines = apacheConfig.split(/\r?\n/);
   const retiredPdfRule = apacheConfig.split(/\r?\n/).find((line) =>
     line.includes("RewriteRule ^files/") && line.includes("[G,NC,L]")
   );
   if (!retiredPdfRule || retiredLegacyFilePaths.some((filePath) => !retiredPdfRule.includes(path.basename(filePath, ".pdf")))) {
     throw new Error(".htaccess must return HTTP 410 for every retired legacy PDF URL");
   }
-  if (!apacheConfig.includes("RewriteCond %{ENV:REDIRECT_STATUS} ^$")
-    || !apacheConfig.includes("RewriteCond %{HTTP_HOST} ^(?:review|www)\\.putzelf\\.com(?::\\d+)?$ [NC]")
+  const reviewHostConditionIndex = apacheLines.findIndex((line) =>
+    line.includes("RewriteCond %{HTTP_HOST} ^review\\.putzelf\\.com(?::\\d+)?$ [NC]")
+  );
+  if (reviewHostConditionIndex < 0
+    || !apacheLines.slice(reviewHostConditionIndex, reviewHostConditionIndex + 3).some((line) => line === "RewriteRule ^ - [G,L]")) {
+    throw new Error(".htaccess must retire review.putzelf.com with HTTP 410");
+  }
+
+  if (apacheConfig.includes("(?:review|www)\\.putzelf\\.com")
+    || !apacheConfig.includes("RewriteCond %{HTTP_HOST} ^www\\.putzelf\\.com(?::\\d+)?$ [NC,OR]")
+    || !apacheConfig.includes("RewriteCond %{HTTPS} !=on")
     || !apacheConfig.includes("RewriteRule ^ https://putzelf.com%{REQUEST_URI} [R=301,L,NE]")) {
-    throw new Error(".htaccess must permanently redirect review and www host paths to the canonical host");
+    throw new Error(".htaccess must send www and HTTP requests to the canonical HTTPS host, without treating review as an alias");
+  }
+
+  for (const expectedRule of [
+    "RewriteRule ^$ https://putzelf.com/de/ [R=301,L]",
+    "RewriteRule ^imprint/?$ https://putzelf.com/de/impressum [R=301,L]",
+    "RewriteRule ^calculator/?$ https://putzelf.com/de/calculator [R=301,L]",
+    "RewriteRule ^login/?$ https://putzelf.com/de/login [R=301,L]",
+    "RewriteRule ^book/?$ https://putzelf.com/de/booking [R=301,L]",
+    "RewriteRule ^profile/?$ https://putzelf.com/de/booking [R=301,L]",
+  ]) {
+    if (!apacheLines.includes(expectedRule)) {
+      throw new Error(`.htaccess is missing a direct canonical redirect: ${expectedRule}`);
+    }
   }
 }
 
@@ -268,8 +291,24 @@ function startStaticServer(routes) {
         return;
       }
       const requestHost = String(request.headers["x-forwarded-host"] || request.headers.host || "").split(":")[0].toLowerCase();
-      if (requestHost === "review.putzelf.com" || requestHost === "www.putzelf.com") {
-        response.writeHead(301, { Location: `https://putzelf.com${pathname}${url.search}`, "Cache-Control": "no-cache" });
+      const requestProtocol = String(request.headers["x-forwarded-proto"] || "https").toLowerCase();
+      if (requestHost === "review.putzelf.com") {
+        response.writeHead(410, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-cache" });
+        response.end("Gone");
+        return;
+      }
+      const isNoncanonicalOrigin = requestHost === "www.putzelf.com" || requestProtocol !== "https";
+      const directAliasTargets = {
+        "/": "/de/",
+        "/imprint": "/de/impressum",
+        "/calculator": "/de/calculator",
+        "/login": "/de/login",
+        "/book": "/de/booking",
+        "/profile": "/de/booking",
+      };
+      if (isNoncanonicalOrigin) {
+        const targetPath = directAliasTargets[normalizedPath] || pathname;
+        response.writeHead(301, { Location: `https://putzelf.com${targetPath}${url.search}`, "Cache-Control": "no-cache" });
         response.end();
         return;
       }
@@ -712,8 +751,20 @@ async function verifyNoindexHttpRoutes(baseUrl, robotsTxt) {
     redirect: "manual",
     headers: { "X-Forwarded-Host": "www.putzelf.com" },
   });
-  if (wwwLogin.status !== 301 || wwwLogin.headers.get("location") !== "https://putzelf.com/login") {
-    throw new Error("www.putzelf.com/login - expected a crawlable host redirect to the canonical hostname");
+  if (wwwLogin.status !== 301 || wwwLogin.headers.get("location") !== "https://putzelf.com/de/login") {
+    throw new Error("www.putzelf.com/login - expected a direct crawlable redirect to the canonical login URL");
+  }
+  const canonicalLogin = await fetch(`${baseUrl}/de/login`, { redirect: "manual" });
+  if (canonicalLogin.status !== 200 || !/noindex/i.test(canonicalLogin.headers.get("x-robots-tag") || "")) {
+    throw new Error("/de/login - canonical login destination must remain fetchable with noindex");
+  }
+
+  const retiredReviewHost = await fetch(`${baseUrl}/`, {
+    redirect: "manual",
+    headers: { "X-Forwarded-Host": "review.putzelf.com" },
+  });
+  if (retiredReviewHost.status !== 410) {
+    throw new Error("review.putzelf.com - retired review host must return HTTP 410");
   }
 
   const clientOnlyPaths = locales.flatMap((locale) => [
@@ -770,6 +821,39 @@ async function verifyServerRouteMatrix(baseUrl, routes) {
     if (response.status !== 410) throw new Error(`${retiredPath} - expected HTTP 410, received ${response.status}`);
   }
 
+  const canonicalizationCases = [
+    ["/", "www.putzelf.com", "http", "https://putzelf.com/de/"],
+    ["/", "www.putzelf.com", "https", "https://putzelf.com/de/"],
+    ["/", "putzelf.com", "http", "https://putzelf.com/de/"],
+    ["/", "putzelf.com", "https", "/de/"],
+    ["/calculator", "www.putzelf.com", "https", "https://putzelf.com/de/calculator"],
+    ["/calculator", "putzelf.com", "http", "https://putzelf.com/de/calculator"],
+    ["/imprint", "www.putzelf.com", "https", "https://putzelf.com/de/impressum"],
+    ["/imprint", "putzelf.com", "http", "https://putzelf.com/de/impressum"],
+  ];
+  for (const [routePath, hostname, protocol, expectedLocation] of canonicalizationCases) {
+    const response = await fetch(`${baseUrl}${routePath}`, {
+      redirect: "manual",
+      headers: { "X-Forwarded-Host": hostname, "X-Forwarded-Proto": protocol },
+    });
+    if (response.status !== 301 || response.headers.get("location") !== expectedLocation) {
+      throw new Error(`${protocol}://${hostname}${routePath} - expected direct 301 to ${expectedLocation}`);
+    }
+    const destinationPath = new URL(expectedLocation, "https://putzelf.com").pathname;
+    const destination = await fetch(`${baseUrl}${destinationPath}`, { redirect: "manual" });
+    if (destination.status !== 200) {
+      throw new Error(`${protocol}://${hostname}${routePath} - final destination ${destinationPath} returned ${destination.status}`);
+    }
+  }
+
+  const retiredReviewResponse = await fetch(`${baseUrl}/`, {
+    redirect: "manual",
+    headers: { "X-Forwarded-Host": "review.putzelf.com" },
+  });
+  if (retiredReviewResponse.status !== 410) {
+    throw new Error("review.putzelf.com/ - expected HTTP 410 after retiring the review host");
+  }
+
   const duplicateCanonicalPaths = [
     "/de/",
     "/en/",
@@ -777,11 +861,11 @@ async function verifyServerRouteMatrix(baseUrl, routes) {
     "/de/partner-werden",
     ...blogPostSlugs.map((slug) => `/en/blog/${slug}`),
   ];
-  for (const hostname of ["review.putzelf.com", "www.putzelf.com"]) {
+  for (const hostname of ["www.putzelf.com"]) {
     for (const routePath of duplicateCanonicalPaths) {
       const response = await fetch(`${baseUrl}${routePath}`, {
         redirect: "manual",
-        headers: { "X-Forwarded-Host": hostname },
+        headers: { "X-Forwarded-Host": hostname, "X-Forwarded-Proto": "https" },
       });
       const expectedLocation = `https://putzelf.com${routePath}`;
       if (response.status !== 301 || response.headers.get("location") !== expectedLocation) {

@@ -7,13 +7,50 @@ ErrorDocument 410 /_not-found
 
 RewriteEngine On
 
+# The retired review hostname must not serve a duplicate copy of the site.
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{HTTP_HOST} ^review\.putzelf\.com(?::\d+)?$ [NC]
+RewriteRule ^ - [G,L]
+
 # Retired legacy PDFs were removed from the public files directory.
 RewriteRule ^files/(?:Contract|Datenschutzbestimmungen|Datenschutzblat|Dienstleistungsvertrag|Dienstliste|Partnerantrag|Pricelist|Stammdatenblatt|Subvertrag|Urlaubsschein_Zeitausgleich)\.pdf$ - [G,NC,L]
 
-# The review and www hostnames are aliases; consolidate them onto the canonical
-# production host while preserving the path and query string.
+# Send the listed legacy URLs directly to their final canonical pages when
+# requested through www or HTTP. Query strings are preserved by default.
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteCond %{HTTP_HOST} ^(?:review|www)\.putzelf\.com(?::\d+)?$ [NC]
+RewriteCond %{HTTP_HOST} ^www\.putzelf\.com(?::\d+)?$ [NC,OR]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^$ https://putzelf.com/de/ [R=301,L]
+
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{HTTP_HOST} ^www\.putzelf\.com(?::\d+)?$ [NC,OR]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^imprint/?$ https://putzelf.com/de/impressum [R=301,L]
+
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{HTTP_HOST} ^www\.putzelf\.com(?::\d+)?$ [NC,OR]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^calculator/?$ https://putzelf.com/de/calculator [R=301,L]
+
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{HTTP_HOST} ^www\.putzelf\.com(?::\d+)?$ [NC,OR]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^login/?$ https://putzelf.com/de/login [R=301,L]
+
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{HTTP_HOST} ^www\.putzelf\.com(?::\d+)?$ [NC,OR]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^book/?$ https://putzelf.com/de/booking [R=301,L]
+
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{HTTP_HOST} ^www\.putzelf\.com(?::\d+)?$ [NC,OR]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^profile/?$ https://putzelf.com/de/booking [R=301,L]
+
+# Canonicalize the remaining www and HTTP URLs while preserving path/query.
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{HTTP_HOST} ^www\.putzelf\.com(?::\d+)?$ [NC,OR]
+RewriteCond %{HTTPS} !=on
 RewriteRule ^ https://putzelf.com%{REQUEST_URI} [R=301,L,NE]
 
 # Keep private and transactional routes fetchable so crawlers can see noindex.
