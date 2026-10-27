@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "generate:seo": "node ./scripts/generate-seo.mjs",
+    "optimize:service-images": "python3 ./scripts/optimize-service-images.py",
     "build": "npm run generate:seo && vite build && npm run prerender",
     "prerender": "node ./scripts/prerender.mjs",
     "preview": "vite preview"

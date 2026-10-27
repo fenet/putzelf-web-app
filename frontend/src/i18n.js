@@ -7,14 +7,46 @@ const resources = {
       nav: {
         bookNow: "Start an Inquiry",
         phone: "+43 676 6300167",
-        email: "office@putzelf.com"
+        email: "office@putzelf.com",
+        services: "Services",
+        blog: "Blog",
+        jobOpening: "Job Opening",
+        getPartners: "Become a Partner",
+        book: "Start an Inquiry",
+        company: "Business",
+        private: "Private Customers",
+        privateMaintenance: "Maintenance Cleaning",
+        privateDeep: "Deep Cleaning (Private)",
+        privateResidential: "Residential Cleaning",
+        privateConstruction: "Construction / Post-Construction Cleaning",
+        privateWindow: "Window & Frame Cleaning",
+        privateIndustrial: "Industrial Cleaning & Machinery",
+        businessMaintenance: "Maintenance Cleaning (Business)",
+        businessDeep: "Deep Cleaning (Business)",
+        businessStaircase: "Staircase Cleaning",
+        businessConstruction: "Construction / Post-Construction Cleaning (Business)",
+        businessWindow: "Window & Frame Cleaning (Business)",
+        businessIndustrial: "Industrial Cleaning & Machinery (Business)",
+        contact: "Contact",
+        contactPage: "Contact page",
+        phoneLabel: "Phone",
+        emailLabel: "Email",
+        vienna: "Vienna",
+        graz: "Graz",
+        menu: "Menu",
+        homeAria: "Go to home page",
+        switchEnglish: "Switch to English",
+        switchGerman: "Switch to German",
+        englishFlag: "English flag",
+        germanFlag: "German flag"
       },
       contact: {
         callNow: "Call now"
       },
       common: {
         cancel: "Cancel",
-        ok: "OK"
+        ok: "OK",
+        backToHome: "Back to home"
       },
       form: {
         requiredField: "Please fill out this field."
@@ -22,6 +54,7 @@ const resources = {
       cookies: {
         heading: "Your privacy matters",
         msg: "We use technically necessary cookies to ensure the security of our website. With your consent, we also use analytics tools (such as Google Analytics and Leadinfo) to improve our services and analyze visits. Tracking only takes place after you have given your consent. You can grant or decline your consent, or find out more in our <0>Privacy Policy</0>.",
+        decline: "Decline",
         /* oneTimeCleaning removed */
         privacyPolicy: "Privacy Policy",
         settings: "Cookie settings",
@@ -42,7 +75,7 @@ const resources = {
       },
       imprint: {
         title: "Imprint",
-        seoDescription: "Legal notice, company details and contact information for PutzELF in Vienna and Graz.",
+        seoDescription: "Provider identification and contact details for PutzELF.",
         legalIntro: "Information pursuant to Section 5 of the E-Commerce Act (ECG), Section 63 of the Trade Regulation Act 1994 (GewO 1994), and disclosure pursuant to Section 25 of the Media Act.",
         providerTitle: "Media owner and service provider",
         nameLabel: "Name",
@@ -121,6 +154,26 @@ const resources = {
         }
       },
       services: {
+        cta: "Request an offer",
+        pricingLine: "Clear pricing with no hidden costs.",
+        schedule: "Flexible scheduling",
+        scheduleLine: "Choose appointment times that work for you.",
+        whatWeOffer: "Service scope",
+        relatedTitle: "Related services",
+        ui: {
+          home: "Home",
+          breadcrumb: "Breadcrumb",
+          service: "Service",
+          windowCleaning: "Window Cleaning",
+          challenge: "The challenge",
+          approach: "Our approach",
+          process: "Process",
+          gallery: "Gallery",
+          faq: "FAQ",
+          contact: "Get in touch",
+          coverageLabel: "Service area",
+          coverageText: "Vienna and surrounding areas, as well as Graz and surrounding areas."
+        },
         expectations: {
           kicker: "What you can expect",
           title: "What You Can Expect"
@@ -171,8 +224,8 @@ const resources = {
                 { q: "Do you bring cleaning products?", a: "We can bring professional supplies or use your products on request — please tell us beforehand." },
                 { q: "Can appointment times be adjusted?", a: "Yes. We offer flexible windows and will coordinate times that work for you." }
               ],
-              metaTitle: "Home Cleaning Vienna | Regular Domestic Cleaning – PutzELF",
-              metaDescription: "Reliable home maintenance cleaning in Vienna: recurring visits, clear checklists and flexible appointment windows."
+              metaTitle: "Home Cleaning Vienna & Graz | PutzELF",
+              metaDescription: "Reliable home maintenance cleaning in Vienna & Graz: recurring visits, clear checklists and flexible appointment windows."
             },
             deep: {
               title: "Deep Cleaning",
@@ -195,8 +248,8 @@ const resources = {
                 { q: "Do you use special cleaners for the kitchen?", a: "Yes. We use professional products suited to kitchen surfaces and sanitary areas." },
                 { q: "Can I book a one-off deep clean?", a: "Yes. A thorough deep clean is also available as a single service." }
               ],
-              metaTitle: "Deep Cleaning Vienna | Intensive House Cleaning – PutzELF",
-              metaDescription: "Deep cleaning in Vienna for stubborn dirt, renovation residue and intensive care for kitchens, bathrooms and living spaces."
+              metaTitle: "Deep Cleaning Vienna & Graz | PutzELF",
+              metaDescription: "Deep cleaning in Vienna & Graz for stubborn dirt, renovation residue and intensive care for kitchens, bathrooms and living spaces."
             },
             residential: {
               title: "Residential Cleaning",
@@ -219,8 +272,8 @@ const resources = {
                 { q: "How quickly can I book?", a: "Short-notice appointments are possible depending on availability." },
                 { q: "Is there a minimum booking length?", a: "Yes. The minimum booking duration is 2 hours." }
               ],
-              metaTitle: "Residential Cleaning Vienna | Reliable Home Cleaning – PutzELF",
-              metaDescription: "Residential cleaning in Vienna: thorough, reliable and punctual service for apartments, homes and one-off cleans."
+              metaTitle: "Residential Cleaning Vienna & Graz | PutzELF",
+              metaDescription: "Residential cleaning in Vienna & Graz: thorough, reliable and punctual service for apartments, homes and one-off cleans."
             },
           overview: {
             title: "Unsere Services – Reinigungsleistungen für Privat und Gewerbe",
@@ -281,8 +334,8 @@ const resources = {
                 { q: "Are protective measures used?", a: "Yes. We use dust protection and careful working methods to protect surfaces." },
                 { q: "How is billing handled?", a: "For smaller projects, billing is based on effort; for larger jobs, we provide clear flat-rate quotes." }
               ],
-              metaTitle: "Construction Cleaning Vienna | Rough & Final Cleaning – PutzELF",
-              metaDescription: "Construction cleaning in Vienna: safe and thorough cleaning after build or renovation work with clear planning and handover standards."
+              metaTitle: "Construction Cleaning Vienna & Graz | PutzELF",
+              metaDescription: "Construction cleaning in Vienna & Graz: safe and thorough cleaning after build or renovation work with clear planning and handover standards."
             },
             window: {
               title: "Window & Frame Cleaning",
@@ -305,8 +358,8 @@ const resources = {
                 { q: "Do you offer frame cleaning as well?", a: "Yes. Frame and groove cleaning is part of the service." },
                 { q: "Which products do you use?", a: "We work with professional, environmentally conscious cleaning products and take care with sensitive surfaces." }
               ],
-              metaTitle: "Glass Cleaning Vienna | Windows & Frames – PutzELF",
-              metaDescription: "Glass and frame cleaning in Vienna: streak-free windows, professional frame care and safe execution when needed."
+              metaTitle: "Glass Cleaning Vienna & Graz | PutzELF",
+              metaDescription: "Glass and frame cleaning in Vienna & Graz: streak-free windows, professional frame care and safe execution when needed."
             },
             industrial: {
               title: "Industrial Cleaning & Machinery",
@@ -329,8 +382,8 @@ const resources = {
                 { q: "Is there documentation after cleaning?", a: "Yes. We can provide cleaning and handover documentation on request." },
                 { q: "Do you offer regular cleaning plans?", a: "Yes. We can schedule recurring intervals based on production cycles and safety requirements." }
               ],
-              metaTitle: "Industrial Cleaning Vienna | Machinery Cleaning – PutzELF",
-              metaDescription: "Industrial cleaning in Vienna: safe cleaning for machines and production areas, with a focus on safety, documentation and efficiency."
+              metaTitle: "Industrial Cleaning Vienna & Graz | PutzELF",
+              metaDescription: "Industrial cleaning in Vienna & Graz: safe cleaning for machines and production areas, with a focus on safety, documentation and efficiency."
             }
           },
           business: {
@@ -376,8 +429,8 @@ const resources = {
                   { q: "Can confidential areas be included?", a: "Yes. We follow security and access rules for sensitive zones." },
                   { q: "How is quality maintained?", a: "Through checklists, inspections and documented handovers after visits." }
                 ],
-                metaTitle: "Commercial Cleaning Vienna | Business Maintenance – PutzELF",
-                metaDescription: "Structured commercial cleaning in Vienna: tailored schedules, documented quality checks and minimal operational impact."
+                metaTitle: "Maintenance Cleaning Vienna & Graz | PutzELF",
+                metaDescription: "Recurring cleaning for offices, practices and commercial spaces with clear routines, quality checks and flexible service times."
             },
             deep: {
               title: "Commercial Deep Cleaning",
@@ -400,8 +453,8 @@ const resources = {
                 { q: "Do you offer disinfection services?", a: "Yes. Targeted disinfection of contact points is available on request." },
                 { q: "How is billing handled?", a: "For smaller jobs, billing is based on effort; for larger projects, we provide clear fixed-price quotes." }
               ],
-              metaTitle: "Commercial Deep Cleaning Vienna | Business Cleaning – PutzELF",
-              metaDescription: "Commercial deep cleaning in Vienna: intensive cleaning, disinfection and carpet care for offices, hospitality and business premises."
+              metaTitle: "Commercial Deep Cleaning | PutzELF",
+              metaDescription: "Detailed deep cleaning after renovation or for periodic intensive requirements in Vienna and Graz. Request a proposal."
             },
             staircase: {
               title: "Staircase Cleaning",
@@ -424,8 +477,8 @@ const resources = {
                 { q: "Are add-ons available?", a: "Yes. Window or glass surfaces can be added when needed." },
                 { q: "How are invoices issued?", a: "Monthly or according to the agreed schedule, with transparent itemisation." }
               ],
-              metaTitle: "Staircase Cleaning Vienna | Property & Business – PutzELF",
-              metaDescription: "Staircase cleaning in Vienna for residential and commercial buildings: regular care, rail cleaning and waste room services."
+              metaTitle: "Staircase Cleaning Vienna & Graz | PutzELF",
+              metaDescription: "Scheduled cleaning for staircases and shared areas in residential and commercial buildings. Request a proposal."
             },
             construction: {
               title: "Post-Construction / Rough Cleaning (Commercial)",
@@ -448,8 +501,8 @@ const resources = {
                 { q: "Can interim cleanings be carried out?", a: "Yes. We can schedule several cleaning phases to match the build progress." },
                 { q: "How long does the final cleaning take?", a: "This depends on the condition and size of the area. After review, we provide a realistic estimate." }
               ],
-              metaTitle: "Construction Cleaning Vienna | Commercial Rough & Final Cleaning – PutzELF",
-              metaDescription: "Commercial construction cleaning in Vienna: planned rough and final cleaning up to handover quality."
+              metaTitle: "Construction Cleaning Vienna & Graz | PutzELF",
+              metaDescription: "Commercial construction cleaning in Vienna & Graz: planned rough and final cleaning up to handover quality."
             },
             window: {
               title: "Window & Frame Cleaning (Commercial)",
@@ -472,8 +525,8 @@ const resources = {
                 { q: "Are safety standards followed?", a: "Yes. All work is carried out in line with current safety regulations and working standards." },
                 { q: "Can the cleaning take place outside business hours?", a: "Yes. We coordinate the schedule so your operations are affected as little as possible." }
               ],
-              metaTitle: "Glass Cleaning Vienna | Commercial Window Cleaning – PutzELF",
-              metaDescription: "Commercial glass and frame cleaning in Vienna: professional execution, safety planning and clear pricing for business properties."
+              metaTitle: "Commercial Window Cleaning | PutzELF",
+              metaDescription: "Streak-free glass, frames and storefronts for businesses in Vienna and Graz, scheduled around operating hours."
             },
             industrial: {
               title: "Industrial Cleaning & Machinery (Commercial)",
@@ -496,8 +549,8 @@ const resources = {
                 { q: "Is cleaning documentation provided?", a: "Yes. We provide cleaning and handover documentation on request." },
                 { q: "Do you offer recurring cleaning plans?", a: "Yes. The schedule can be adapted to production cycles and safety requirements." }
               ],
-              metaTitle: "Industrial Cleaning Vienna | Machinery Cleaning – PutzELF",
-              metaDescription: "Industrial cleaning and machinery cleaning in Vienna: safe, documented and efficient work for commercial operating spaces."
+              metaTitle: "Industrial Cleaning Vienna & Graz | PutzELF",
+              metaDescription: "Safe, documented cleaning for machinery and production areas in Vienna and Graz, planned around operational and safety requirements."
             }
           }
             },
@@ -551,6 +604,8 @@ const resources = {
         officeCleaning: "Office Cleaning"
       },
       footer: {
+        allServices: "All services",
+        copyright: "All rights reserved.",
         staff: {
           title: "Employees",
           links: {
@@ -579,6 +634,8 @@ const resources = {
         },
         connect: {
           title: "Connect",
+          instagramAria: "PutzELF on Instagram",
+          facebookAria: "PutzELF on Facebook",
           links: {
             terms: "Terms & Conditions",
             withdrawal: "Right of Withdrawal",
@@ -599,12 +656,49 @@ const resources = {
         reviewBy: "Review by {{name}}",
         paginationLabel: "Review carousel",
         slide: "Review slide",
-        empty: "No reviews available yet."
+        empty: "No reviews available yet.",
+        loading: "Loading reviews...",
+        recently: "Recently",
+        weekAgo: "A week ago",
+        monthAgo: "A month ago",
+        twoMonthsAgo: "Two months ago",
+        reviewerFallback: "Google Reviewer"
+      },
+      blogUi: {
+        seoTitle: "Commercial Cleaning Blog | PutzELF",
+        seoDescription: "Practical guidance on office cleaning, hygiene, service planning and property care from the PutzELF team.",
+        title: "News & Tips",
+        empty: "No blog posts published yet.",
+        readMore: "Read more",
+        previous: "Previous",
+        next: "Next",
+        notFound: "Post not found",
+        back: "Back to blog",
+        home: "Home",
+        relatedServices: "Related services"
+      },
+      jobOpening: {
+        title: "Current Job Openings",
+        description: "Open roles at PutzELF: customer service representatives and cleaners in Graz.",
+        roles: [
+          {
+            title: "Customer Service Representative",
+            body: "Handle customer inquiries, schedule appointments, and support our booking process. Good German skills and a friendly manner are required.",
+            subject: "Application - Customer Service",
+            cta: "Apply / Contact"
+          },
+          {
+            title: "Cleaners - Graz",
+            body: "We are looking for cleaners in Graz. Experience is an advantage but not required. Flexible working hours and fair pay.",
+            subject: "Application - Cleaner Graz",
+            cta: "Apply / Contact"
+          }
+        ]
       },
       contact: {
         seo: {
-          title: "Contact – PutzELF",
-          description: "Contact PutzELF for cleaning inquiries, business requests, and information about our services."
+          title: "Contact PutzELF Vienna & Graz",
+          description: "Contact PutzELF by phone, email or form. We will respond promptly with clear next steps."
         },
         kicker: "Contact",
         title: "Contact",
@@ -616,6 +710,8 @@ const resources = {
         helpLabel: "How we can help",
         helpText: "We support both private households and businesses with fast, friendly guidance and clear next steps.",
         formLabel: "Contact form",
+        privacyNotice: "We use your details to handle your request. For details, see our",
+        privacyPolicyLink: "Privacy Policy",
         fields: {
           name: "Name",
           email: "Email",
@@ -770,6 +866,10 @@ const resources = {
         bookingId: "Booking ID: {{id}}",
         serviceLocationLabel: "Service location:",
         selectType: "Choose a cleaning type",
+        contactTitle: "Your contact details",
+        durationPlaceholder: "2+",
+        decreaseHours: "Decrease hours",
+        increaseHours: "Increase hours",
         types: {
           standard: "Home cleaning",
           office: "Office cleaning",
@@ -777,12 +877,14 @@ const resources = {
         },
         flow: {
           inquiry: "Start an Inquiry",
-          calculator: "Price Calculator"
+          calculator: "Price Calculator",
+          inquiryDescription: "Fill in the form below and we will get back to you with a personalized offer."
         },
         subcategories: {
           title: "Choose subcategory",
           intensive: "Intensive",
-          window: "Windows"
+          window: "Windows",
+          none: "—"
         },
         descriptions: {
           standard: "Regular maintenance clean for homes; surfaces, bathrooms, and floors.",
@@ -791,6 +893,8 @@ const resources = {
         },
         calendar: {
           loading: "Loading availability…",
+          prev: "Previous month",
+          next: "Next month",
           errorFetchDates: "Failed to fetch dates.",
           errorFetchSlots: "Failed to fetch available times.",
           available: "Available",
@@ -800,6 +904,11 @@ const resources = {
           dateHint: "Choose a date from the calendar."
         },
         durationLabel: "Estimated hours",
+        slots: {
+          chooseDate: "Pick a date to see available times.",
+          loading: "Loading available times…",
+          none: "No available times for this day. Please choose another date."
+        },
         dateLabel: "Date",
         timeLabel: "Time",
         renegotiate: "I understand the service is billed based on the actual time worked",
@@ -828,15 +937,19 @@ const resources = {
         subHeading: "Add premium services",
         durationLabel: "Duration (hours)",
         durationHelp: "Bookings start at 2 hours. Use the arrows to adjust.",
-        estimatedTotalLabel: "Estimated total",
+        estimatedTotalLabel: "Price breakdown",
         estimatedTotal: "Estimated total: €{{price}}",
-        hourlyRate: "Hourly rate: €{{rate}}/h",
+        hourlyRate: "Hourly rate: {{rate}}",
         premiumNotice: "Premium add-ons adjust the hourly rate.",
         renegotiateLabel: "Allow renegotiation if the job needs more time",
         resetBtn: "Reset selection",
         cta: "Request a Booking",
         disclaimer: "This is an estimate. Final pricing is confirmed after your inquiry is reviewed.",
-        taxLabel: "Tax (20%)"
+        netLabel: "Net",
+        vatLabel: "VAT (20%)",
+        grossLabel: "Gross",
+        decreaseHours: "Decrease hours",
+        increaseHours: "Increase hours"
       },
 
       windowModal: {
@@ -854,15 +967,20 @@ const resources = {
         duration: "Duration",
         durationUnit: "hours",
         price: "Price",
+        directInquiry: "Send a direct inquiry",
+        notesLabel: "Notes (optional)",
+        labels: { name: "Name", email: "Email", address: "Address", phone: "Phone" },
         enterDetails: "Enter your details to request a cleaning",
         placeholders: {
           name: "Full name",
           email: "Email",
           address: "Street name & House No. & Door No.",
-          phone: "Phone"
+          phone: "Phone",
+          notes: "Please add any additional notes or requests..."
         },
         errors: {
           invalidEmail: "Please enter a valid email address.",
+          invalidEmailDoubleDot: "Email cannot contain consecutive dots.",
           invalidPhone: "Please enter a valid phone number including country code."
           ,requiredFirstName: "Please enter your first name.",
           requiredLastName: "Please enter your last name.",
@@ -878,9 +996,12 @@ const resources = {
           requiredName: "Please enter your name."
         },
         gdprPrefix: "I agree to the processing of my personal data in accordance with the ",
+        gdprText: "I agree that my data will be processed for this inquiry and that I may be contacted about it.",
+        gdprFull: "I agree that my data will be processed for this inquiry and that I may be contacted about it.",
         gdprLink: "Privacy Policy (GDPR)",
         confirming: "Sending request...",
         confirmBtn: "Request a Booking",
+        submitBtn: "Send inquiry",
         confirmedTitle: "Inquiry sent successfully",
         confirmedMsg: "Thank you! Your inquiry has been successfully submitted. A member of our team will contact you to confirm the appointment.",
         bookingId: "Booking ID: {{id}}",
@@ -893,11 +1014,43 @@ const resources = {
       nav: {
         bookNow: "Anfrage starten",
         phone: "+43 676 6300167",
-        email: "office@putzelf.com"
+        email: "office@putzelf.com",
+        services: "Leistungen",
+        blog: "Blog",
+        jobOpening: "Jobs",
+        getPartners: "Partner werden",
+        book: "Anfrage starten",
+        company: "Unternehmen",
+        private: "Privatkunden",
+        privateMaintenance: "Unterhaltsreinigung",
+        privateDeep: "Grundreinigung",
+        privateResidential: "Wohnreinigung",
+        privateConstruction: "Bauendreinigung / Grobreinigung",
+        privateWindow: "Glas- & Rahmenreinigung",
+        privateIndustrial: "Industriereinigung & Maschinen",
+        businessMaintenance: "Unterhaltsreinigung",
+        businessDeep: "Grundreinigung",
+        businessStaircase: "Stiegenhausreinigung",
+        businessConstruction: "Bauendreinigung / Grobreinigung",
+        businessWindow: "Glas- & Rahmenreinigung",
+        businessIndustrial: "Industriereinigung & Maschinen",
+        contact: "Kontakt",
+        contactPage: "Kontaktseite",
+        phoneLabel: "Telefon",
+        emailLabel: "E-Mail",
+        vienna: "Wien",
+        graz: "Graz",
+        menu: "Menü",
+        homeAria: "Zur Startseite",
+        switchEnglish: "Auf Englisch umschalten",
+        switchGerman: "Auf Deutsch umschalten",
+        englishFlag: "Englische Flagge",
+        germanFlag: "Deutsche Flagge"
       },
       common: {
         cancel: "Abbrechen",
-        ok: "OK"
+        ok: "OK",
+        backToHome: "Zur Startseite"
       },
       form: {
         requiredField: "Bitte füllen Sie dieses Feld aus."
@@ -925,7 +1078,7 @@ const resources = {
       },
       imprint: {
         title: "Impressum",
-        seoDescription: "Impressum, Unternehmensdaten und Kontaktinformationen von PutzELF in Wien und Graz.",
+        seoDescription: "Anbieterkennzeichnung und Kontaktdaten von PutzELF.",
         legalIntro: "Informationen gemäß § 5 ECG, § 63 GewO 1994 und Offenlegung gemäß § 25 Mediengesetz",
         providerTitle: "Medieninhaber und Diensteanbieter",
         nameLabel: "Name",
@@ -1007,6 +1160,26 @@ const resources = {
         callNow: "Rufen Sie uns an"
       },
       services: {
+        cta: "Jetzt anfragen",
+        pricingLine: "Transparente Preise ohne versteckte Kosten.",
+        schedule: "Flexible Terminplanung",
+        scheduleLine: "Wählen Sie einen Termin, der zu Ihrem Alltag passt.",
+        whatWeOffer: "Leistungsumfang",
+        relatedTitle: "Weitere Services",
+        ui: {
+          home: "Startseite",
+          breadcrumb: "Brotkrümelnavigation",
+          service: "Leistung",
+          windowCleaning: "Fensterreinigung",
+          challenge: "Die Herausforderung",
+          approach: "Unsere Lösung",
+          process: "Ablauf",
+          gallery: "Bilder",
+          faq: "FAQ",
+          contact: "Kontakt",
+          coverageLabel: "Einsatzgebiet",
+          coverageText: "In Wien und Umgebung sowie in Graz und Umgebung."
+        },
         expectations: {
           kicker: "Was Sie erwartet",
           title: "Was Sie erwartet"
@@ -1056,8 +1229,8 @@ const resources = {
               { q: "Wer bringt die Reinigungsmittel mit?", a: "Auf Wunsch bringt unser Team geeignete Mittel mit; eigene Produkte sind möglich." },
               { q: "Gibt es eine Mindestbuchungsdauer?", a: "Die Mindestbuchung beträgt 2 Stunden." }
             ],
-            metaTitle: "Unterhaltsreinigung Wien | Regelmäßige Haushaltsreinigung – PutzELF",
-            metaDescription: "Unterhaltsreinigung in Wien: regelmäßige Haushaltsreinigung nach Ihrem Zeitplan. Flexible Termine, klare Checklisten und faire Preise."
+            metaTitle: "Unterhaltsreinigung Wien & Graz | PutzELF",
+            metaDescription: "Unterhaltsreinigung in Wien und Graz: regelmäßige Haushaltsreinigung nach Ihrem Zeitplan. Flexible Termine, klare Checklisten und faire Preise."
           },
           deep: {
             title: "Grundreinigung",
@@ -1080,8 +1253,8 @@ const resources = {
               { q: "Werden spezielle Reinigungsmittel eingesetzt?", a: "Wir verwenden professionelle Mittel, abgestimmt auf Oberfläche und Bedarf." },
               { q: "Kann ich eine einmalige Grundreinigung buchen?", a: "Ja, Grundreinigung ist als Einzeltermin möglich." }
             ],
-            metaTitle: "Grundreinigung Wien | Tiefenreinigung & Sanierung – PutzELF",
-            metaDescription: "Grundreinigung in Wien für hartnäckigen Schmutz, Renovationsrückstände und Allergien. Individuelle Angebote nach Besichtigung."
+            metaTitle: "Grundreinigung Wien & Graz | PutzELF",
+            metaDescription: "Grundreinigung in Wien und Graz für hartnäckigen Schmutz, Renovationsrückstände und Allergien. Individuelle Angebote nach Besichtigung."
           },
           residential: {
             title: "Wohnreinigung",
@@ -1104,8 +1277,8 @@ const resources = {
               { q: "Wie kurzfristig sind Termine möglich?", a: "Kurzfristige Termine sind abhängig von Verfügbarkeit möglich." },
               { q: "Gibt es eine Mindestbuchung?", a: "Ja, die Mindestbuchung beträgt 2 Stunden." }
             ],
-            metaTitle: "Wohnungsreinigung Wien | Zuverlässige Wohnungsreinigung – PutzELF",
-            metaDescription: "Wohnungsreinigung in Wien: gründlich, zuverlässig und termintreu. Ideal für regelmäßige Reinigungen oder einmalige Einsätze."
+            metaTitle: "Wohnungsreinigung Wien & Graz | PutzELF",
+            metaDescription: "Wohnungsreinigung in Wien und Graz: gründlich, zuverlässig und termintreu. Ideal für regelmäßige Reinigungen oder einmalige Einsätze."
           },
           construction: {
             title: "Bauendreinigung / Grobreinigung",
@@ -1128,8 +1301,8 @@ const resources = {
               { q: "Wer schützt empfindliche Oberflächen?", a: "Wir nutzen Schutzmaßnahmen und stellen Oberflächenschutz nach Bedarf bereit." },
               { q: "Wie erfolgt die Abrechnung?", a: "Nach Aufwand; für größere Objekte erstellen wir gern ein Pauschalangebot." }
             ],
-            metaTitle: "Bauendreinigung Wien | Grobreinigung & Feinreinigung – PutzELF",
-            metaDescription: "Bauendreinigung in Wien: sichere und gründliche Reinigung nach Bau- oder Renovierungsarbeiten. Angebote nach Besichtigung oder Fotoanalyse."
+            metaTitle: "Bauendreinigung Wien & Graz | PutzELF",
+            metaDescription: "Bauendreinigung in Wien und Graz: sichere und gründliche Reinigung nach Bau- oder Renovierungsarbeiten. Angebote nach Besichtigung oder Fotoanalyse."
           },
           window: {
             title: "Glas- & Rahmenreinigung",
@@ -1152,8 +1325,8 @@ const resources = {
               { q: "Ist Rahmenreinigung inklusive?", a: "Ja, Reinigung von Rahmen und Fälzen ist Teil unserer Leistung." },
               { q: "Welche Reinigungsmittel verwenden Sie?", a: "Wir verwenden professionelle und umweltverträgliche Mittel; ökologische Optionen möglich." }
             ],
-            metaTitle: "Glasreinigung Wien | Fenster & Rahmen – PutzELF",
-            metaDescription: "Glas- und Rahmenreinigung in Wien: streifenfreie Fenster, fachgerechte RahmeNpflege und Hebebühneneinsatz bei Bedarf."
+            metaTitle: "Glasreinigung Wien & Graz | PutzELF",
+            metaDescription: "Glas- und Rahmenreinigung in Wien und Graz: streifenfreie Fenster, fachgerechte RahmeNpflege und Hebebühneneinsatz bei Bedarf."
           },
           industrial: {
             title: "Industriereinigung & Maschinen",
@@ -1176,8 +1349,8 @@ const resources = {
               { q: "Gibt es Dokumentation?", a: "Auf Wunsch erstellen wir Übergabeprotokolle und Reinigungsdokumentationen." },
               { q: "Bieten Sie regelmäßige Pläne an?", a: "Ja, abgestimmt auf Produktionszyklen und Sicherheitsanforderungen." }
             ],
-            metaTitle: "Industriereinigung Wien | Maschinenreinigung – PutzELF",
-            metaDescription: "Industriereinigung in Wien: sichere Reinigung von Maschinen und Produktionsbereichen mit Fokus auf Betriebssicherheit und Dokumentation."
+            metaTitle: "Industriereinigung Wien & Graz | PutzELF",
+            metaDescription: "Industriereinigung in Wien und Graz: sichere Reinigung von Maschinen und Produktionsbereichen mit Fokus auf Betriebssicherheit und Dokumentation."
           }
         },
         business: {
@@ -1207,7 +1380,7 @@ const resources = {
             solutionTitle: "Wie PutzELF wiederkehrende Reinigung organisiert",
             solutionPoints: [
               "Klare Raum‑für‑Raum‑Checklisten und festgelegte Verantwortlichkeiten",
-              "Regelmässige Einsätze nach vereinbartem Rhythmus und transparenter Planung",
+            "Regelmäßige Einsätze nach vereinbartem Rhythmus und transparenter Planung",
               "Qualitätskontrollen, dokumentierte Übergaben und eindeutige Kommunikation"
             ],
             processTitle: "So arbeiten wir",
@@ -1223,8 +1396,8 @@ const resources = {
               { q: "Können vertrauliche Bereiche einbezogen werden?", a: "Ja. Unsere Teams arbeiten diskret und beachten Zugangs‑ sowie Sicherheitsregeln." },
               { q: "Wie wird Qualität geprüft?", a: "Durch Checklisten, stichprobenartige Kontrollen und auf Wunsch dokumentierte Übergaben nach Einsätzen." }
             ],
-            metaTitle: "Unterhaltsreinigung Wien | Gewerbliche Reinigung – PutzELF",
-            metaDescription: "Unterhaltsreinigung für Unternehmen in Wien: strukturierte Reinigungspläne, Qualitätskontrollen und flexible Zeitfenster für Büros und Praxen."
+            metaTitle: "Unterhaltsreinigung Wien & Graz | PutzELF",
+            metaDescription: "Regelmäßige Reinigung für Büros, Praxen und Gewerbeflächen mit festen Abläufen, Qualitätskontrollen und flexiblen Zeiten."
           },
           deep: {
             title: "Grundreinigung (Gewerbe)",
@@ -1247,8 +1420,8 @@ const resources = {
               { q: "Sind Desinfektionsmaßnahmen möglich?", a: "Ja, wir bieten gezielte Desinfektionen von Kontaktflächen an." },
               { q: "Wie wird abgerechnet?", a: "Je nach Umfang nach Aufwand oder als Pauschale bei größeren Objekten." }
             ],
-            metaTitle: "Grundreinigung Wien | Gewerbliche Tiefenreinigung – PutzELF",
-            metaDescription: "Grundreinigung für Geschäftsräume in Wien: intensive Reinigung, Desinfektion und Teppichpflege für Büros, Hotels und Gastronomie."
+            metaTitle: "Grundreinigung für Unternehmen | PutzELF",
+            metaDescription: "Intensive Grundreinigung nach Umbau, Renovierung oder bei besonderem Bedarf in Wien und Graz. Unverbindlich anfragen."
           },
           staircase: {
             title: "Treppenhausreinigung",
@@ -1271,8 +1444,8 @@ const resources = {
               { q: "Gibt es Zusatzleistungen?", a: "Fenster im Treppenhaus oder Glasflächen können optional gereinigt werden." },
               { q: "Wie wird die Rechnung gestellt?", a: "Monatlich oder nach Vereinbarung, mit transparenten Leistungen." }
             ],
-            metaTitle: "Treppenhausreinigung Wien | Hausverwaltung & Gewerbe – PutzELF",
-            metaDescription: "Treppenhausreinigung in Wien für Wohn- und Geschäftsgebäude. Regelmäßige Pflege, Geländerreinigung und Müllraumservice."
+            metaTitle: "Treppenhausreinigung Wien & Graz | PutzELF",
+            metaDescription: "Saubere Stiegenhäuser und Gemeinschaftsflächen in abgestimmten Intervallen. Angebot für Wien und Graz anfordern."
           },
           construction: {
             title: "Bauendreinigung / Grobreinigung (Gewerbe)",
@@ -1295,8 +1468,8 @@ const resources = {
               { q: "Können Sie Zwischenreinigungen durchführen?", a: "Ja, wir stimmen Reinigungsphasen mit dem Bauablauf ab." },
               { q: "Wie lange dauert die Feinreinigung?", a: "Abhängig vom Zustand; wir geben nach Sichtung eine realistische Zeitabschätzung." }
             ],
-            metaTitle: "Bauendreinigung Wien | Gewerbliche Grob- & Feinreinigung – PutzELF",
-            metaDescription: "Bauendreinigung für gewerbliche Objekte in Wien: staged Grob- und Feinreinigung bis zur Übergabequalität."
+            metaTitle: "Bauendreinigung Wien & Graz | PutzELF",
+            metaDescription: "Bauendreinigung für gewerbliche Objekte in Wien und Graz: staged Grob- und Feinreinigung bis zur Übergabequalität."
           },
           window: {
             title: "Glas- & Rahmenreinigung (Gewerbe)",
@@ -1319,8 +1492,8 @@ const resources = {
               { q: "Gibt es Sicherheitszertifikate?", a: "Unsere Teams arbeiten gemäß aktueller Sicherheitsstandards." },
               { q: "Kann die Reinigung außerhalb der Geschäftszeiten stattfinden?", a: "Ja, wir koordinieren Einsätze, um Ihren Betrieb nicht zu stören." }
             ],
-            metaTitle: "Glasreinigung Wien | Gewerbliche Fensterreinigung – PutzELF",
-            metaDescription: "Glas- und Rahmenreinigung für Geschäftsfassaden in Wien: Hebebühnen-Einsatz, Rah- menpflege und sichere Durchführung für Unternehmen."
+            metaTitle: "Glas- & Rahmenreinigung | PutzELF",
+            metaDescription: "Streifenfreie Glasflächen, Rahmen und Schaufronten für Unternehmen in Wien und Graz. Termine passend zu Ihren Betriebszeiten."
           },
           industrial: {
             title: "Industriereinigung & Maschinen (Gewerbe)",
@@ -1343,8 +1516,8 @@ const resources = {
               { q: "Gibt es eine Dokumentation der Reinigung?", a: "Ja, wir liefern auf Wunsch Reinigungsprotokolle." },
               { q: "Bieten Sie regelmäßige Reinigungspläne an?", a: "Ja, individuell abgestimmt auf Produktionszyklen." }
             ],
-            metaTitle: "Industriereinigung Wien | Maschinenreinigung – PutzELF",
-            metaDescription: "Industriereinigung in Wien: sichere Reinigung von Maschinen und Produktionsflächen mit Fokus auf Sicherheit und Dokumentation."
+            metaTitle: "Industriereinigung Wien & Graz | PutzELF",
+            metaDescription: "Industriereinigung in Wien und Graz: sichere Reinigung von Maschinen und Produktionsflächen mit Fokus auf Sicherheit und Dokumentation."
           }
         }
       },
@@ -1360,6 +1533,8 @@ const resources = {
         officeCleaning: "Büroreinigung"
       },
       footer: {
+        allServices: "Alle Leistungen",
+        copyright: "Alle Rechte vorbehalten.",
         staff: {
           title: "Mitarbeiter",
           links: {
@@ -1387,7 +1562,9 @@ const resources = {
           }
         },
         connect: {
-          title: "Connect",
+          title: "Kontakt & Rechtliches",
+          instagramAria: "PutzELF auf Instagram",
+          facebookAria: "PutzELF auf Facebook",
           links: {
             terms: "AGB",
             withdrawal: "Rücktrittsbelehrung",
@@ -1408,12 +1585,49 @@ const resources = {
         reviewBy: "Bewertung von {{name}}",
         paginationLabel: "Bewertungs-Carousel",
         slide: "Bewertungsfolie",
-        empty: "Noch keine Bewertungen verfügbar."
+        empty: "Noch keine Bewertungen verfügbar.",
+        loading: "Bewertungen werden geladen …",
+        recently: "Kürzlich",
+        weekAgo: "Vor einer Woche",
+        monthAgo: "Vor einem Monat",
+        twoMonthsAgo: "Vor zwei Monaten",
+        reviewerFallback: "Google-Rezensent:in"
+      },
+      blogUi: {
+        seoTitle: "Blog: Reinigung im Betrieb | PutzELF",
+        seoDescription: "Praktische Hinweise zu Büroreinigung, Hygiene, Reinigungsplanung und Werterhalt vom PutzELF-Team.",
+        title: "Neuigkeiten & Tipps",
+        empty: "Noch keine Blogbeiträge veröffentlicht.",
+        readMore: "Weiterlesen",
+        previous: "Zurück",
+        next: "Weiter",
+        notFound: "Beitrag nicht gefunden",
+        back: "Zurück zum Blog",
+        home: "Startseite",
+        relatedServices: "Passende Services"
+      },
+      jobOpening: {
+        title: "Aktuelle Jobangebote",
+        description: "Offene Stellen bei PutzELF: Mitarbeiter:in Kundenservice und Reinigungskräfte in Graz.",
+        roles: [
+          {
+            title: "Mitarbeiter:in Kundenservice",
+            body: "Bearbeitung von Kundenanfragen, Terminvereinbarungen und Unterstützung unseres Buchungsprozesses. Gute Deutschkenntnisse und ein freundliches Auftreten sind erforderlich.",
+            subject: "Bewerbung - Kundenservice",
+            cta: "Bewerben / Kontakt"
+          },
+          {
+            title: "Reinigungskräfte - Graz",
+            body: "Wir suchen Reinigungskräfte in Graz. Erfahrung ist von Vorteil, aber nicht erforderlich. Flexible Arbeitszeiten und faire Bezahlung.",
+            subject: "Bewerbung - Reinigung Graz",
+            cta: "Bewerben / Kontakt"
+          }
+        ]
       },
       contact: {
         seo: {
-          title: "Kontakt – PutzELF",
-          description: "Kontaktieren Sie PutzELF für Reinigungsanfragen, Geschäftsanfragen und weitere Informationen."
+          title: "Kontakt – PutzELF Wien & Graz",
+          description: "Kontaktieren Sie PutzELF per Telefon, E-Mail oder Formular. Wir melden uns rasch mit den nächsten Schritten."
         },
         kicker: "Kontakt",
         title: "Kontakt",
@@ -1425,6 +1639,8 @@ const resources = {
         helpLabel: "Wie wir helfen",
         helpText: "Wir unterstützen Privatkunden und Unternehmen mit schneller, freundlicher Beratung und klaren nächsten Schritten.",
         formLabel: "Kontaktformular",
+        privacyNotice: "Wir verwenden Ihre Angaben zur Bearbeitung Ihrer Anfrage. Einzelheiten finden Sie in unserer",
+        privacyPolicyLink: "Datenschutzerklärung",
         fields: {
           name: "Name",
           email: "E-Mail",
@@ -1631,7 +1847,8 @@ const resources = {
         subcategories: {
           title: "Unterkategorie wählen",
           intensive: "Intensiv",
-          window: "Fenster"
+          window: "Fenster",
+          none: "—"
         },
         flow: {
           inquiry: "Anfrage starten",
@@ -1658,6 +1875,8 @@ const resources = {
         },
         calendar: {
           loading: "Verfügbarkeit wird geladen…",
+          prev: "Vorheriger Monat",
+          next: "Nächster Monat",
           errorFetchDates: "Fehler beim Laden der verfügbaren Tage.",
           errorFetchSlots: "Fehler beim Laden der verfügbaren Zeiten.",
           available: "verfügbar",
@@ -1668,6 +1887,14 @@ const resources = {
         },
         
         durationLabel: "Geschätzte Arbeitszeit",
+        durationPlaceholder: "2+",
+        decreaseHours: "Weniger Stunden",
+        increaseHours: "Mehr Stunden",
+        slots: {
+          chooseDate: "Wählen Sie ein Datum, um verfügbare Zeiten anzuzeigen.",
+          loading: "Verfügbare Zeiten werden geladen …",
+          none: "Für diesen Tag sind keine Zeiten verfügbar. Bitte wählen Sie ein anderes Datum."
+        },
         dateLabel: "Datum",
         timeLabel: "Uhrzeit",
         renegotiate: "Wir nehmen zur Kenntnis, dass die Dienstleistung nach tatsächlicher Arbeitszeit verrechnet wird",
@@ -1696,15 +1923,19 @@ const resources = {
         subHeading: "Optionale Premium-Services",
         durationLabel: "Dauer (Stunden)",
         durationHelp: "Buchungen starten bei 2 Stunden. Verwenden Sie die Pfeile zur Anpassung.",
-        estimatedTotalLabel: "Geschätzte Gesamtkosten",
+        estimatedTotalLabel: "Preisübersicht",
         estimatedTotal: "Geschätzte Gesamtkosten: {{price}} €",
-        hourlyRate: "Stundensatz: {{rate}} €/h",
+        hourlyRate: "Stundensatz: {{rate}}",
         premiumNotice: "Premium-Extras beeinflussen den Stundensatz.",
         renegotiateLabel: "Nachverhandlung erlauben, falls mehr Zeit nötig ist",
         resetBtn: "Auswahl zurücksetzen",
         cta: "Buchung anfragen",
         disclaimer: "Dies ist eine Schätzung. Der finale Preis wird nach Prüfung Ihrer Anfrage bestätigt.",
-        taxLabel: "Umsatzsteuer (20%)"
+        netLabel: "Netto",
+        vatLabel: "Umsatzsteuer (20 %)",
+        grossLabel: "Brutto",
+        decreaseHours: "Weniger Stunden",
+        increaseHours: "Mehr Stunden"
       },
       windowModal: {
         title: "Wie viele Fenster möchten Sie gereinigt haben?"
@@ -1721,7 +1952,9 @@ const resources = {
         duration: "Dauer",
         durationUnit: "Stunden",
         price: "Preis",
+        directInquiry: "Direkt anfragen",
         notesLabel: "Anmerkungen",
+        labels: { name: "Name", email: "E-Mail", address: "Adresse", phone: "Telefon" },
         enterDetails: "Daten eingeben und bestätigen",
         placeholders: {
           name: "Vollständiger Name",
@@ -1733,6 +1966,7 @@ const resources = {
         },
         errors: {
           invalidEmail: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+          invalidEmailDoubleDot: "Die E-Mail-Adresse darf keine zwei aufeinanderfolgenden Punkte enthalten.",
           invalidPhone: "Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein.",
           requiredName: "Name ist erforderlich",
           requiredAddress: "Adresse ist erforderlich",
@@ -1748,8 +1982,10 @@ const resources = {
         },
         gdprPrefix: "Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäß ",
         gdprText: "Ich stimme zu, dass meine Daten für die Buchung verarbeitet und ich bezüglich dieser Buchung kontaktiert werde.",
+        gdprFull: "Ich stimme zu, dass meine Daten für die Buchung verarbeitet und ich bezüglich dieser Buchung kontaktiert werde.",
         gdprLink: "Datenschutzerklärung (DSGVO)",
         confirming: "Anfrage wird gesendet...",
+        submitBtn: "Jetzt anfragen",
         confirmBtn: "Buchung anfragen",
         confirmedTitle: "Anfrage erfolgreich gesendet",
         confirmedMsg: "Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt. Unser Team meldet sich telefonisch bei Ihnen, um den Termin zu besprechen und zu bestätigen.",
@@ -1846,7 +2082,7 @@ resources.de.translation.services.overview = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: "de",
+  lng: typeof window !== "undefined" && /^\/en(?:\/|$)/.test(window.location.pathname) ? "en" : "de",
   fallbackLng: "en",
   interpolation: {
     escapeValue: false

@@ -50,6 +50,17 @@ export default function PriceCalculator() {
   const { t } = useTranslation();
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
+  const numberFormatter = useMemo(
+    () => new Intl.NumberFormat(locale === "de" ? "de-AT" : "en-GB", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }),
+    [locale]
+  );
+  const formatCurrency = (amount) => {
+    const formattedAmount = numberFormatter.format(amount);
+    return locale === "de" ? `${formattedAmount} €` : `€${formattedAmount}`;
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -224,10 +235,7 @@ export default function PriceCalculator() {
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0097b2] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#007f96] hover:shadow-md active:scale-95 sm:px-6 sm:py-3 sm:text-base"
         >
           <span className="text-lg leading-none">←</span>
-          {t("common.backToHome", {
-            defaultValue:
-              locale === "de" ? "Zur Startseite" : "Back to home",
-          })}
+          {t("common.backToHome")}
         </Link>
       </div>
 
@@ -363,7 +371,7 @@ export default function PriceCalculator() {
                     type="button"
                     onClick={decrementDuration}
                     className="rounded-l-lg border border-r-0 bg-gray-50 px-4 hover:bg-gray-100"
-                    aria-label="Decrease hours"
+                    aria-label={t("calculator.decreaseHours")}
                   >
                     −
                   </button>
@@ -383,7 +391,7 @@ export default function PriceCalculator() {
                     type="button"
                     onClick={incrementDuration}
                     className="rounded-r-lg border border-l-0 bg-gray-50 px-4 hover:bg-gray-100"
-                    aria-label="Increase hours"
+                    aria-label={t("calculator.increaseHours")}
                   >
                     +
                   </button>
@@ -430,70 +438,29 @@ export default function PriceCalculator() {
               {/* Price */}
               <div className="rounded-2xl bg-gradient-to-br from-[#0097b2] to-[#007a90] p-5 text-white shadow-md">
                 <p className="text-sm uppercase tracking-wide opacity-80">
-                  {t("calculator.estimatedTotalLabel", {
-                    defaultValue: "Price breakdown",
-                  })}
+                  {t("calculator.estimatedTotalLabel")}
                 </p>
 
-                <div className="mt-3 rounded-xl bg-white/10 p-4 text-center">
-                  <p className="text-xs uppercase tracking-wider text-[#d8f7fb]">
-                    {t("calculator.bruttoLabelShort", {
-                      defaultValue: "Brutto",
-                    })}
-                  </p>
-
-                  <p className="mt-1 text-4xl font-bold md:text-5xl">
-                    €{grossPrice.toFixed(2)}
-                  </p>
-
-                  <p className="mt-1 text-xs text-[#d8f7fb]">
-                    {t("calculator.bruttoLabel", {
-                      defaultValue: "Includes 20% tax",
-                    })}
-                  </p>
-                </div>
-
-                <div className="mt-4 space-y-2 rounded-xl bg-white/10 p-4 text-sm">
+                <div className="mt-3 space-y-3 rounded-xl bg-white/10 p-4 text-sm">
                   <div className="flex items-center justify-between">
-                    <span className="opacity-90">
-                      {t("calculator.bruttoLabelShort", {
-                        defaultValue: "Brutto",
-                      })}
-                    </span>
-
-                    <span>
-                      €{grossPrice.toFixed(2)}
-                    </span>
+                    <span className="opacity-90">{t("calculator.netLabel")}</span>
+                    <span>{formatCurrency(netPrice)}</span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="opacity-90">
-                      {t("calculator.taxLabel", {
-                        defaultValue: "Tax (20%)",
-                      })}
-                    </span>
-
-                    <span>
-                      €{taxAmount.toFixed(2)}
-                    </span>
+                    <span className="opacity-90">{t("calculator.vatLabel")}</span>
+                    <span>{formatCurrency(taxAmount)}</span>
                   </div>
 
                   <div className="flex items-center justify-between border-t border-white/20 pt-2 text-base font-semibold">
-                    <span>
-                      {t("calculator.bruttoLabelShort", {
-                        defaultValue: "Brutto",
-                      })}
-                    </span>
-
-                    <span>
-                      €{grossPrice.toFixed(2)}
-                    </span>
+                    <span>{t("calculator.grossLabel")}</span>
+                    <span>{formatCurrency(grossPrice)}</span>
                   </div>
                 </div>
 
                 <p className="mt-3 text-sm text-[#d8f7fb]">
                   {t("calculator.hourlyRate", {
-                    rate: (hourlyRate * (1 + TAX_RATE)).toFixed(2),
+                    rate: `${formatCurrency(hourlyRate * (1 + TAX_RATE))}/h`,
                   })}
                 </p>
               </div>
@@ -524,9 +491,7 @@ export default function PriceCalculator() {
                           t(`home.subcategories.${key}`)
                         )
                         .join(", ")
-                    : t("home.subcategories.none", {
-                        defaultValue: "—",
-                      })}
+                    : t("home.subcategories.none")}
                 </li>
               </ul>
 

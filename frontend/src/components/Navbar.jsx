@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
+import { useTranslation } from "react-i18next";
 
 const Unternehmen = [
   { key: "businessMaintenance" },
@@ -31,91 +32,8 @@ const Privatkunden = [
   { key: "privateIndustrial" },
 ];
 
-const copy = {
-  de: {
-    services: "Leistungen",
-    blog: "Blog",
-    jobOpening: "Jobs",
-    getPartners: "Partner werden",
-
-    // Main CTA
-    book: "Anfrage starten",
-
-    company: "Unternehmen",
-    private: "Privatkunden",
-
-    officeCleaning: "Büroreinigung",
-    deepCleaning: "Tiefenreinigung",
-    restaurantCleaning: "Restaurantreinigung",
-      /* oneTimeCleaning removed */
-    permanentCleaning: "Regelmäßige Reinigung",
-    // new private labels
-    privateMaintenance: "Unterhaltsreinigung",
-    privateDeep: "Grundreinigung",
-    privateResidential: "Wohnreinigung",
-    privateConstruction: "Bauendreinigung / Grobreinigung",
-    privateWindow: "Glas- & Rahmenreinigung",
-    privateIndustrial: "Industriereinigung & Maschinen",
-    // new business labels
-    businessMaintenance: "Unterhaltsreinigung",
-    businessDeep: "Grundreinigung",
-    businessStaircase: "Stiegenhausreingung",
-    businessConstruction: "Bauendreinigung / Grobreinigung",
-    businessWindow: "Glas- & Rahmenreinigung",
-    businessIndustrial: "Industriereinigung & Maschinen",
-
-    // Contact
-    contact: "Kontakt",
-    phone: "Telefon",
-    email: "E-Mail",
-
-    // Mobile
-    menu: "Menü",
-  },
-
-  en: {
-    services: "Services",
-    blog: "Blog",
-    jobOpening: "Job Opening",
-    getPartners: "Get Partners",
-
-    // Main CTA
-    book: "Start an Inquiry",
-
-    company: "Business",
-    private: "Private Customers",
-
-    officeCleaning: "Office Cleaning",
-    deepCleaning: "Deep Cleaning",
-    restaurantCleaning: "Restaurant Cleaning",
-      /* oneTimeCleaning removed */
-    permanentCleaning: "Permanent Cleaning",
-    // new private labels
-    privateMaintenance: "Maintenance Cleaning",
-    privateDeep: "Deep Cleaning (Private)",
-    privateResidential: "Residential Cleaning",
-    privateConstruction: "Construction / Post-Construction Cleaning",
-    privateWindow: "Window & Frame Cleaning",
-    privateIndustrial: "Industrial Cleaning & Machinery",
-    // new business labels
-    businessMaintenance: "Maintenance Cleaning (Business)",
-    businessDeep: "Deep Cleaning (Business)",
-    businessStaircase: "Staircase Cleaning",
-    businessConstruction: "Construction / Post-Construction Cleaning (Business)",
-    businessWindow: "Window & Frame Cleaning (Business)",
-    businessIndustrial: "Industrial Cleaning & Machinery (Business)",
-
-    // Contact
-    contact: "Contact",
-    phone: "Phone",
-    email: "Email",
-
-    // Mobile
-    menu: "Menu",
-  },
-};
-
 const Navbar = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState("company");
 
@@ -132,8 +50,7 @@ const Navbar = () => {
   const locale = getLocaleFromPathname(location.pathname);
   const isServicesRoute = /^\/(de|en)\/services(?:\/|$)/.test(location.pathname);
 
-  // Fallback to English if an unexpected locale is returned
-  const c = copy[locale] || copy.en;
+  const c = t("nav", { returnObjects: true });
 
   const navItemClass = ({ isActive }) =>
     `text-gray-700 hover:text-[#0097b2] font-medium ${isActive ? "!text-[#0097b2] font-semibold" : ""}`;
@@ -196,6 +113,7 @@ const Navbar = () => {
             onClick={() => setMobileOpen((v) => !v)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-services"
+            aria-label={t("nav.menu")}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fillRule="evenodd" d="M3 5h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 1 0 110-2z" clipRule="evenodd" />
@@ -203,7 +121,7 @@ const Navbar = () => {
           </button>
 
           {/* Centered logo */}
-          <Link to={getLocalizedPath(locale, "home")} aria-label="Go to home page" className="absolute left-1/2 transform -translate-x-1/2">
+          <Link to={getLocalizedPath(locale, "home")} aria-label={t("nav.homeAria")} className="absolute left-1/2 transform -translate-x-1/2">
             <img src={logo} alt="PutzELF" className="h-10 w-auto" />
           </Link>
 
@@ -219,7 +137,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <Link
             to={getLocalizedPath(locale, "home")}
-            aria-label="Go to home page"
+            aria-label={t("nav.homeAria")}
           >
             <img
               src={logo}
@@ -422,7 +340,7 @@ const Navbar = () => {
                     </span>
                     <div className="text-left">
                       <div className="font-medium">{c.contact}</div>
-                      <div className="text-gray-500">{locale === "de" ? "Kontaktseite" : "Contact page"}</div>
+                      <div className="text-gray-500">{c.contactPage}</div>
                     </div>
                   </NavLink>
 
@@ -438,7 +356,7 @@ const Navbar = () => {
 
                     <div className="text-left">
                       <div className="font-medium">
-                        {c.phone}
+                        {c.phoneLabel}
                       </div>
 
                       <div className="text-gray-500">
@@ -459,7 +377,7 @@ const Navbar = () => {
 
                     <div className="text-left min-w-0">
                       <div className="font-medium">
-                        {c.email} · Wien
+                        {c.emailLabel} · {c.vienna}
                       </div>
 
                       <div className="text-gray-500 truncate">
@@ -480,7 +398,7 @@ const Navbar = () => {
 
                     <div className="text-left min-w-0">
                       <div className="font-medium">
-                        {c.email} · Graz
+                        {c.emailLabel} · {c.graz}
                       </div>
 
                       <div className="text-gray-500 truncate">
@@ -724,7 +642,7 @@ const Navbar = () => {
                 />
 
                 <span>
-                  office@putzelf.com · Wien
+                  office@putzelf.com · {c.vienna}
                 </span>
               </a>
 
@@ -739,7 +657,7 @@ const Navbar = () => {
                 />
 
                 <span>
-                  office.stmk@putzelf.com · Graz
+                  office.stmk@putzelf.com · {c.graz}
                 </span>
               </a>
 
@@ -764,4 +682,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
-export { Unternehmen, Privatkunden, copy };
+export { Unternehmen, Privatkunden };

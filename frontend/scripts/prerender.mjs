@@ -182,6 +182,17 @@ function validateLegacyServerRules() {
 
   for (const expectedRule of [
     "RewriteRule ^$ https://putzelf.com/de/ [R=301,L]",
+    "RewriteRule ^de/services/(?:wien|graz)/?$ https://putzelf.com/de/services [R=301,L,NC]",
+    "RewriteRule ^de/(?:wien|graz)/services/?$ https://putzelf.com/de/services [R=301,L,NC]",
+    "RewriteRule ^en/(?:vienna|graz)/services/?$ https://putzelf.com/en/services [R=301,L,NC]",
+    "RewriteRule ^landing-alt/?$ https://putzelf.com/de/ [R=301,L]",
+    "RewriteRule ^(de|en)/landing-alt/?$ https://putzelf.com/$1/ [R=301,L]",
+    "RewriteRule ^(de|en)/profile/?$ https://putzelf.com/$1/booking [R=301,L]",
+    "RewriteRule ^(de|en)/booking/?$ https://putzelf.com/$1/booking [R=301,L]",
+    "RewriteRule ^(de|en)/admin/?$ /$1/admin/index.html [END]",
+    "RewriteRule ^(de|en)/order/[^/]+/?$ /_private-routes/order-$1.html [END]",
+    "RewriteCond %{REQUEST_URI} ^/(?:de|en)/booking/+$ [NC]",
+    "RewriteRule ^((?:de|en)/booking)/+$ /$1 [R=301,L,NE]",
     "RewriteRule ^imprint/?$ https://putzelf.com/de/impressum [R=301,L]",
     "RewriteRule ^calculator/?$ https://putzelf.com/de/calculator [R=301,L]",
     "RewriteRule ^login/?$ https://putzelf.com/de/login [R=301,L]",
@@ -237,6 +248,12 @@ const permanentRedirects = [
   ["/", "/de/"],
   ["/landing-alt", "/de/"],
   ["/services", "/de/services"],
+  ["/de/services/wien", "/de/services"],
+  ["/de/services/graz", "/de/services"],
+  ["/de/wien/services", "/de/services"],
+  ["/de/graz/services", "/de/services"],
+  ["/en/vienna/services", "/en/services"],
+  ["/en/graz/services", "/en/services"],
   ["/contact", "/de/kontakt"],
   ["/kontakt", "/de/kontakt"],
   ["/job-opening", "/de/karriere"],
@@ -300,11 +317,24 @@ function startStaticServer(routes) {
       const isNoncanonicalOrigin = requestHost === "www.putzelf.com" || requestProtocol !== "https";
       const directAliasTargets = {
         "/": "/de/",
+        "/landing-alt": "/de/",
+        "/de/landing-alt": "/de/",
+        "/en/landing-alt": "/en/",
+        "/de/services/wien": "/de/services",
+        "/de/services/graz": "/de/services",
+        "/de/wien/services": "/de/services",
+        "/de/graz/services": "/de/services",
+        "/en/vienna/services": "/en/services",
+        "/en/graz/services": "/en/services",
         "/imprint": "/de/impressum",
         "/calculator": "/de/calculator",
         "/login": "/de/login",
         "/book": "/de/booking",
         "/profile": "/de/booking",
+        "/de/profile": "/de/booking",
+        "/en/profile": "/en/booking",
+        "/de/booking": "/de/booking",
+        "/en/booking": "/en/booking",
       };
       if (isNoncanonicalOrigin) {
         const targetPath = directAliasTargets[normalizedPath] || pathname;
@@ -322,12 +352,16 @@ function startStaticServer(routes) {
         return;
       }
 
+      if (/^\/(?:de|en)\/booking\/$/.test(pathname)) {
+        response.writeHead(301, { Location: `${normalizedPath}${url.search}`, "Cache-Control": "no-cache" });
+        response.end();
+        return;
+      }
+
       const isGone = /^\/de\/services\/(?:wien|graz)$/i.test(normalizedPath);
       const route = routeByPath.get(normalizedPath);
       const isNotFoundRoute = route?.status === 404 || /^\/(?:de|en)\/404$/.test(normalizedPath);
-      const isDynamicOrder = /^\/(de|en)\/order\/[^/]+$/.test(normalizedPath);
-      const isClientOnlyBooking = /^\/(?:de|en)\/booking$/.test(normalizedPath);
-      const isClientOnlyAdmin = /^\/(?:de|en)\/admin$/.test(normalizedPath);
+      const dynamicOrder = normalizedPath.match(/^\/(de|en)\/order\/[^/]+$/);
       if (isGone || isNotFoundRoute) {
         const localizedErrorPath = route ? normalizeOutputPath(route.path) : null;
         const filePath = isNotFoundRoute && localizedErrorPath && fs.existsSync(localizedErrorPath)
@@ -340,7 +374,7 @@ function startStaticServer(routes) {
         return;
       }
 
-      if (pathname.endsWith("/") && !/^\/(?:de|en)\/$/.test(pathname) && !isDynamicOrder) {
+      if (pathname.endsWith("/") && !/^\/(?:de|en)\/$/.test(pathname) && !dynamicOrder) {
         const directoryPath = resolveRequestPath(request.url || "/");
         if (directoryPath && fs.existsSync(directoryPath) && fs.statSync(directoryPath).isDirectory()) {
           response.writeHead(301, { Location: normalizedPath, "Cache-Control": "no-cache" });
@@ -349,8 +383,8 @@ function startStaticServer(routes) {
         }
       }
 
-      const requestPath = isDynamicOrder || isClientOnlyBooking || isClientOnlyAdmin
-        ? shellPath
+      const requestPath = dynamicOrder
+        ? path.join(DIST, "_private-routes", `order-${dynamicOrder[1]}.html`)
         : resolveRequestPath(request.url || "/");
       if (!requestPath) {
         response.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
@@ -599,6 +633,65 @@ function addPrerenderMarker(html) {
   return html.replace(/(<head\b[^>]*>)/i, "$1\n    <meta name=\"prerender-owner\" content=\"putzelf\">");
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function createPrivateRouteShell({ locale, title, description, canonical, heading }) {
+  const shellPath = path.join(DIST, "index.html");
+  let html = fs.readFileSync(shellPath, "utf8");
+  const headTags = [
+    `<title data-rh="true">${escapeHtml(title)}</title>`,
+    `<meta name="description" content="${escapeHtml(description)}" data-rh="true">`,
+    `<link rel="canonical" href="${escapeHtml(canonical)}" data-rh="true">`,
+    `<meta name="robots" content="noindex, nofollow" data-rh="true">`,
+  ].join("\n    ");
+  html = html.replace(/<html\b[^>]*>/i, `<html lang="${locale}">`);
+  html = html.replace(/<\/head>/i, `    ${headTags}\n  </head>`);
+  html = html.replace(
+    /<div\s+id=["']root["']\s*>\s*<\/div>/i,
+    `<div id="root"><main class="mx-auto max-w-3xl px-6 py-12 text-center"><h1 class="text-3xl font-bold">${escapeHtml(heading)}</h1></main></div>`
+  );
+  return addPrerenderMarker(html);
+}
+
+async function writePrivateRouteShells() {
+  const adminCopy = {
+    de: { title: "Admin-Bereich | PutzELF", description: "Administrationsbereich von PutzELF.", heading: "Blog-Administration" },
+    en: { title: "Admin area | PutzELF", description: "PutzELF administration area.", heading: "Blog administration" },
+  };
+  const orderCopy = {
+    de: { title: "Buchung | PutzELF", description: "Details zu Ihrer Buchung bei PutzELF.", heading: "Buchungsdetails werden geladen" },
+    en: { title: "Booking | PutzELF", description: "Review your booking details with PutzELF.", heading: "Loading booking details" },
+  };
+
+  for (const locale of locales) {
+    const admin = adminCopy[locale];
+    const adminPath = path.join(DIST, locale, "admin", "index.html");
+    await fs.promises.mkdir(path.dirname(adminPath), { recursive: true });
+    await fs.promises.writeFile(adminPath, createPrivateRouteShell({
+      locale,
+      ...admin,
+      canonical: `${SITE_URL}/${locale}/admin`,
+    }), "utf8");
+
+    const order = orderCopy[locale];
+    const privateShellDir = path.join(DIST, "_private-routes");
+    await fs.promises.mkdir(privateShellDir, { recursive: true });
+    await fs.promises.writeFile(path.join(privateShellDir, `order-${locale}.html`), createPrivateRouteShell({
+      locale,
+      ...order,
+      // An empty href resolves to the requested order URL, including its dynamic id.
+      canonical: "",
+    }), "utf8");
+  }
+}
+
 async function inspectRenderedPage(page, route) {
   const expectedCanonical = `${SITE_URL}${route.path}`;
   const expectedEnglish = localizedPathFor(route, "en");
@@ -637,6 +730,7 @@ async function inspectRenderedPage(page, route) {
       twitter: Object.fromEntries(["twitter:card", "twitter:title", "twitter:description", "twitter:image", "twitter:image:alt"]
         .map((key) => [key, metaContent(key)])),
       rootHeading: document.querySelector("#root h1")?.textContent?.trim() || "",
+      rootHeadingCount: document.querySelectorAll("#root h1").length,
       rootTextLength: document.querySelector("#root")?.innerText?.trim().length || 0,
       jsonLd: jsonLdScripts.map((script) => {
         try { return JSON.parse(script.textContent); } catch { return null; }
@@ -649,8 +743,8 @@ async function inspectRenderedPage(page, route) {
     fail(`expected exactly one route title, received ${result.titleCount}: ${result.title}`);
   }
   const brandCount = (result.title.match(/putzelf/gi) || []).length;
-  if (brandCount !== 1 || !/\|\s*putzelf$/i.test(result.title)) {
-    fail(`expected one PutzELF brand suffix, received ${brandCount}: ${result.title}`);
+  if (brandCount > 1) {
+    fail(`expected at most one PutzELF brand occurrence, received ${brandCount}: ${result.title}`);
   }
   if (result.descriptionCount !== 1 || !result.description) fail(`expected exactly one non-empty description, received ${result.descriptionCount}`);
   if (result.canonicalCount !== 1 || result.canonical !== expectedCanonical) fail(`incorrect canonical (${result.canonical})`);
@@ -672,6 +766,7 @@ async function inspectRenderedPage(page, route) {
     if (values.length !== 1 || !values[0]) fail(`expected one Twitter ${name}, received ${values.length}`);
   }
   if (result.twitter["twitter:image"][0] !== result.og["og:image"][0]) fail("twitter:image does not match og:image");
+  if (result.rootHeadingCount !== 1) fail(`expected exactly one H1, received ${result.rootHeadingCount}`);
   if (!result.rootHeading || result.rootTextLength < 40) fail("route content is missing from #root");
   if (!result.jsonLd.length || result.jsonLd.some((item) => !item)) fail("missing or invalid JSON-LD");
   validateStructuredData(result.jsonLd, route, expectedCanonical);
@@ -680,7 +775,7 @@ async function inspectRenderedPage(page, route) {
   return renderedHtml;
 }
 
-async function verifyPlainHttpRoutes(baseUrl, routes) {
+async function verifyPlainHttpRoutes(page, baseUrl, routes) {
   for (const route of routes) {
     const response = await fetch(`${baseUrl}${route.path}`, { redirect: "manual" });
     const html = await response.text();
@@ -688,39 +783,109 @@ async function verifyPlainHttpRoutes(baseUrl, routes) {
       throw new Error(`${route.path} - plain HTTP returned ${response.status}; expected ${route.status}`);
     }
 
-    const titleCount = (html.match(/<title\b/gi) || []).length;
-    const descriptionCount = (html.match(/<meta\b[^>]*name="description"/gi) || []).length;
-    const canonicalCount = (html.match(/<link\b[^>]*rel="canonical"/gi) || []).length;
-    if (titleCount !== 1 || descriptionCount !== 1 || canonicalCount !== 1) {
-      throw new Error(`${route.path} - plain HTTP snapshot has ${titleCount} title, ${descriptionCount} description and ${canonicalCount} canonical tags`);
+    // Parse the fetched source as a document without navigating to it or running its scripts.
+    const result = await page.evaluate((source) => {
+      const doc = new DOMParser().parseFromString(source, "text/html");
+      const metaValues = (name, attribute = "name") => [...doc.head.querySelectorAll(`meta[${attribute}]`)]
+        .filter((meta) => meta.getAttribute(attribute) === name)
+        .map((meta) => meta.getAttribute("content") || "");
+      const alternateLinks = [...doc.head.querySelectorAll('link[rel="alternate"]')]
+        .map((link) => ({ lang: link.getAttribute("hreflang") || "", href: link.getAttribute("href") || "" }));
+      const root = doc.querySelector("#root");
+      const primaryHeading = root?.querySelector("h1");
+      const primaryRegion = primaryHeading?.closest("main, article, section") || root;
+      const primaryContent = primaryRegion?.cloneNode(true);
+      primaryContent?.querySelectorAll("script, style").forEach((element) => element.remove());
+      const jsonLd = [...doc.head.querySelectorAll('script[type="application/ld+json"]')].map((script) => {
+        try { return JSON.parse(script.textContent); } catch { return null; }
+      });
+
+      return {
+        titleCount: doc.head.querySelectorAll("title").length,
+        title: doc.title.trim(),
+        descriptions: metaValues("description"),
+        canonicalLinks: [...doc.head.querySelectorAll('link[rel="canonical"]')]
+          .map((link) => link.getAttribute("href") || ""),
+        lang: doc.documentElement.getAttribute("lang") || "",
+        robots: metaValues("robots"),
+        alternates: alternateLinks,
+        og: Object.fromEntries(["og:site_name", "og:locale", "og:type", "og:title", "og:description", "og:url", "og:image", "og:image:alt"]
+          .map((key) => [key, metaValues(key, "property")])),
+        twitter: Object.fromEntries(["twitter:card", "twitter:title", "twitter:description", "twitter:image", "twitter:image:alt"]
+          .map((key) => [key, metaValues(key)])),
+        rootH1Count: root?.querySelectorAll("h1").length || 0,
+        primaryHeadingCount: primaryRegion?.querySelectorAll("h1").length || 0,
+        primaryHeading: primaryHeading?.textContent?.trim() || "",
+        primaryTextLength: primaryContent?.textContent?.replace(/\s+/g, " ").trim().length || 0,
+        jsonLd,
+      };
+    }, html);
+
+    const fail = (reason) => { throw new Error(`${route.path} - plain HTTP ${reason}`); };
+    if (result.titleCount !== 1 || !result.title) {
+      fail(`expected exactly one non-empty title, received ${result.titleCount}`);
     }
-    const title = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.replace(/<[^>]*>/g, "").trim() || "";
+    const title = result.title;
     const brandCount = (title.match(/putzelf/gi) || []).length;
-    if (brandCount !== 1 || !/\|\s*putzelf$/i.test(title)) {
-      throw new Error(`${route.path} - plain HTTP title should contain one PutzELF suffix; received: ${title || "missing"}`);
+    if (brandCount > 1) {
+      fail(`title should contain at most one PutzELF brand occurrence; received: ${title}`);
     }
-    const canonical = html.match(/<link\b[^>]*rel="canonical"[^>]*href="([^"]+)"/i)?.[1];
-    const htmlLang = html.match(/<html\b[^>]*lang="([^"]+)"/i)?.[1];
-    const robots = [...html.matchAll(/<meta\b[^>]*name="robots"[^>]*content="([^"]+)"/gi)].map(([, value]) => value);
+    if (result.descriptions.length !== 1 || !result.descriptions[0].trim()) {
+      fail(`expected exactly one non-empty description, received ${result.descriptions.length}`);
+    }
+    if (result.canonicalLinks.length !== 1) fail(`expected one canonical, received ${result.canonicalLinks.length}`);
+    const canonical = result.canonicalLinks[0];
+    if (result.lang !== route.locale) fail(`expected html lang=${route.locale}, received ${result.lang || "missing"}`);
+    if (result.robots.length !== 1 || result.robots[0] !== (route.noindex ? "noindex, nofollow" : "index, follow")) {
+      fail(`robots directives are missing or incorrect (${result.robots.join("; ") || "missing"})`);
+    }
+
+    const expectedEnglish = `${SITE_URL}${localizedPathFor(route, "en")}`;
+    const expectedGerman = `${SITE_URL}${localizedPathFor(route, "de")}`;
+    if (result.alternates.length !== 3) fail(`expected de/en/x-default hreflang links, received ${result.alternates.length}`);
+    const alternates = Object.fromEntries(result.alternates.map((item) => [item.lang, item.href]));
+    if (alternates.de !== expectedGerman || alternates.en !== expectedEnglish || alternates["x-default"] !== expectedGerman
+      || new Set(result.alternates.map((item) => item.lang)).size !== 3) {
+      fail(`hreflang links are missing, duplicated, or incorrect (${JSON.stringify(alternates)})`);
+    }
+
+    for (const [property, values] of Object.entries(result.og)) {
+      if (values.length !== 1 || !values[0].trim()) fail(`expected one non-empty Open Graph ${property}, received ${values.length}`);
+    }
+    if (result.og["og:site_name"][0] !== "PutzELF"
+      || result.og["og:locale"][0] !== (route.locale === "de" ? "de_AT" : "en_US")
+      || result.og["og:title"][0] !== title
+      || result.og["og:description"][0] !== result.descriptions[0]
+      || result.og["og:url"][0] !== canonical) {
+      fail("Open Graph title, description, locale, site name, or URL does not match the route metadata");
+    }
+    if (!/^https?:\/\//i.test(result.og["og:image"][0])) fail("Open Graph image is not an absolute HTTP(S) URL");
+    for (const [name, values] of Object.entries(result.twitter)) {
+      if (values.length !== 1 || !values[0].trim()) fail(`expected one non-empty Twitter ${name}, received ${values.length}`);
+    }
+    if (result.twitter["twitter:title"][0] !== title
+      || result.twitter["twitter:description"][0] !== result.descriptions[0]
+      || result.twitter["twitter:image"][0] !== result.og["og:image"][0]) {
+      fail("Twitter title, description, or image does not match the route metadata");
+    }
+
     const xRobots = response.headers.get("x-robots-tag") || "";
     const expectedCanonical = `${SITE_URL}${route.canonicalPath || route.path}`;
-    if (canonical !== expectedCanonical) throw new Error(`${route.path} - plain HTTP canonical was ${canonical || "missing"}`);
-    if (htmlLang !== route.locale) throw new Error(`${route.path} - plain HTTP lang was ${htmlLang || "missing"}`);
-    if (robots.length !== 1 || robots[0] !== (route.noindex ? "noindex, nofollow" : "index, follow")) {
-      throw new Error(`${route.path} - plain HTTP robots rules are missing or incorrect`);
+    if (canonical !== expectedCanonical) fail(`canonical was ${canonical || "missing"}; expected ${expectedCanonical}`);
+    if (!route.noindex && /noindex|nofollow/i.test(xRobots)) {
+      fail("X-Robots-Tag unexpectedly blocks indexing or following on this indexable route");
     }
-    if (!route.noindex && /noindex/i.test(xRobots)) {
-      throw new Error(`${route.path} - plain HTTP X-Robots-Tag unexpectedly marks this indexable route noindex`);
+    if (!html.includes('name="prerender-owner"') || result.rootH1Count !== 1 || result.primaryHeadingCount !== 1
+      || !result.primaryHeading || result.primaryTextLength < 40) {
+      fail("response is missing meaningful primary content or exactly one H1 in its primary content region");
     }
-    if (!html.includes('name="prerender-owner"') || !html.includes('<div id="root">') || !/<div id="root">[\s\S]*?<h1\b/i.test(html)) {
-      throw new Error(`${route.path} - plain HTTP response does not contain the prerendered route content`);
+    if (result.jsonLd.some((item) => !item)) fail("response contains invalid JSON-LD");
+    validateStructuredData(result.jsonLd, route, expectedCanonical);
+    const webPage = result.jsonLd.flatMap((document) => Array.isArray(document?.["@graph"]) ? document["@graph"] : [document])
+      .find((node) => (Array.isArray(node?.["@type"]) ? node["@type"] : [node?.["@type"]]).includes("WebPage"));
+    if (!webPage || webPage.name !== title || webPage.description !== result.descriptions[0]) {
+      fail("WebPage structured data title or description does not match the visible page metadata");
     }
-    const jsonLd = [...html.matchAll(/<script\b(?=[^>]*\btype=["']application\/ld\+json["'])[^>]*>([\s\S]*?)<\/script>/gi)]
-      .map(([, contents]) => {
-        try { return JSON.parse(contents); } catch { return null; }
-      });
-    if (jsonLd.some((item) => !item)) throw new Error(`${route.path} - plain HTTP response contains invalid JSON-LD`);
-    validateStructuredData(jsonLd, route, expectedCanonical);
   }
 }
 
@@ -778,6 +943,16 @@ async function verifyNoindexHttpRoutes(baseUrl, robotsTxt) {
     if (response.status !== 200 || !/noindex/i.test(directive)) {
       throw new Error(`${routePath} - expected HTTP 200 with X-Robots-Tag noindex, received ${response.status} and ${directive || "no directive"}`);
     }
+    const html = await response.text();
+    const counts = {
+      title: (html.match(/<title\b/gi) || []).length,
+      description: (html.match(/<meta\b[^>]*name="description"/gi) || []).length,
+      canonical: (html.match(/<link\b[^>]*rel="canonical"/gi) || []).length,
+      h1: (html.match(/<h1\b/gi) || []).length,
+    };
+    if (Object.values(counts).some((count) => count !== 1)) {
+      throw new Error(`${routePath} - initial private HTML must have one title, description, canonical and H1; got ${JSON.stringify(counts)}`);
+    }
   }
 
   for (const locale of locales) {
@@ -802,6 +977,8 @@ async function verifyServerRouteMatrix(baseUrl, routes) {
     ["/order/seo03-check", "/de/order/seo03-check"],
     ["/de/profile", "/de/booking"],
     ["/en/profile", "/en/booking"],
+    ["/de/profile?utm_campaign=booking-test", "/de/booking?utm_campaign=booking-test"],
+    ["/en/profile?utm_source=campaign", "/en/booking?utm_source=campaign"],
   ];
 
   for (const [from, expectedLocation] of redirects) {
@@ -830,6 +1007,19 @@ async function verifyServerRouteMatrix(baseUrl, routes) {
     ["/calculator", "putzelf.com", "http", "https://putzelf.com/de/calculator"],
     ["/imprint", "www.putzelf.com", "https", "https://putzelf.com/de/impressum"],
     ["/imprint", "putzelf.com", "http", "https://putzelf.com/de/impressum"],
+    ["/de/profile", "www.putzelf.com", "https", "https://putzelf.com/de/booking"],
+    ["/en/profile", "putzelf.com", "http", "https://putzelf.com/en/booking"],
+    ["/de/kontakt", "www.putzelf.com", "https", "https://putzelf.com/de/kontakt"],
+    ["/en/services", "putzelf.com", "http", "https://putzelf.com/en/services"],
+    ["/landing-alt", "www.putzelf.com", "https", "https://putzelf.com/de/"],
+    ["/de/landing-alt", "putzelf.com", "http", "https://putzelf.com/de/"],
+    ["/en/landing-alt", "www.putzelf.com", "https", "https://putzelf.com/en/"],
+    ["/de/services/wien", "www.putzelf.com", "https", "https://putzelf.com/de/services"],
+    ["/de/services/graz", "putzelf.com", "http", "https://putzelf.com/de/services"],
+    ["/de/booking/", "putzelf.com", "https", "/de/booking"],
+    ["/en/booking/", "putzelf.com", "https", "/en/booking"],
+    ["/de/booking/?utm_source=campaign", "putzelf.com", "https", "/de/booking?utm_source=campaign"],
+    ["/en/booking/?utm_campaign=summer", "putzelf.com", "https", "/en/booking?utm_campaign=summer"],
   ];
   for (const [routePath, hostname, protocol, expectedLocation] of canonicalizationCases) {
     const response = await fetch(`${baseUrl}${routePath}`, {
@@ -894,14 +1084,6 @@ async function verifyServerRouteMatrix(baseUrl, routes) {
     throw new Error("/de/impressum/ - expected a single 301 to the canonical URL");
   }
 
-  for (const pathName of ["/de/services/wien", "/de/services/graz"]) {
-    const response = await fetch(`${baseUrl}${pathName}`, { redirect: "manual" });
-    if (response.status !== 410) throw new Error(`${pathName} - expected HTTP 410, received ${response.status}`);
-    const html = await response.text();
-    const htmlLang = html.match(/<html[^>]*lang="([^"]+)"/i)?.[1];
-    if (htmlLang !== "de") throw new Error(`${pathName} - 410 response is missing its German error page`);
-  }
-
   for (const [pathName, locale] of [["/definitely-not-a-page", "de"], ["/de/services/not-a-service", "de"], ["/en/services/not-a-service", "en"]]) {
     const response = await fetch(`${baseUrl}${pathName}`, { redirect: "manual" });
     if (response.status !== 404) throw new Error(`${pathName} - expected HTTP 404, received ${response.status}`);
@@ -933,6 +1115,31 @@ async function verifyClientRenderedRoutes(page, baseUrl, routes) {
       requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 120)));
     }));
     await inspectRenderedPage(page, route);
+  }
+}
+
+async function verifyPrivateClientRoutes(page, baseUrl) {
+  const paths = locales.flatMap((locale) => [
+    `/${locale}/admin`,
+    `/${locale}/order/seo05-check`,
+    `/${locale}/order/request`,
+  ]);
+
+  for (const routePath of paths) {
+    await page.goto(`${baseUrl}${routePath}`, { waitUntil: "domcontentloaded" });
+    await page.evaluate(() => new Promise((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 500)));
+    }));
+    const result = await page.evaluate(() => ({
+      path: location.pathname,
+      title: document.head.querySelectorAll("title").length,
+      description: document.head.querySelectorAll('meta[name="description"]').length,
+      canonical: document.head.querySelectorAll('link[rel="canonical"]').length,
+      h1: document.querySelectorAll("#root h1").length,
+    }));
+    if (Object.values(result).filter((value) => typeof value === "number").some((count) => count !== 1)) {
+      throw new Error(`${routePath} - after client rendering expected one title, description, canonical and H1; got ${JSON.stringify(result)}`);
+    }
   }
 }
 
@@ -972,9 +1179,11 @@ async function run() {
       await fs.promises.writeFile(outputPath, html, "utf8");
     }
 
+    await writePrivateRouteShells();
     await verifyClientRenderedRoutes(page, baseUrl, routes);
+    await verifyPrivateClientRoutes(page, baseUrl);
     verifyCrawlableLinkGraph();
-    await verifyPlainHttpRoutes(baseUrl, routes);
+    await verifyPlainHttpRoutes(page, baseUrl, routes);
     await verifyNoindexHttpRoutes(baseUrl, robotsTxt);
     await verifyServerRouteMatrix(baseUrl, routes);
     console.log(`Prerendered ${routes.length} localized routes; verified ${sitemapPaths.length} sitemap URLs are 200, indexable, and self-canonical, noindex routes are fetchable with directives, and redirects, 404s, and 410s over plain HTTP`);

@@ -46,10 +46,10 @@ export default function PrivacyPolicy() {
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
 
-  const seoTitle = locale === "de" ? "Datenschutzerklärung – PutzELF" : "Privacy Policy – PutzELF";
+  const seoTitle = locale === "de" ? "Datenschutzerklärung | PutzELF" : "Privacy Policy | PutzELF";
   const seoDescription = locale === "de"
-    ? "Datenschutzerklärung der PutzELF Website: Hinweise zu Cookies, personenbezogenen Daten, Tracking und Ihren Rechten."
-    : "PutzELF privacy notice explaining cookies, personal data handling, tracking and your rights.";
+    ? "Informationen zur Verarbeitung personenbezogener Daten, zu Cookies und zu Ihren Datenschutzrechten bei PutzELF."
+    : "Information about personal-data processing, cookies and privacy rights when using PutzELF services and this website.";
 
   const pageTitle = t("privacyPolicy.title");
 

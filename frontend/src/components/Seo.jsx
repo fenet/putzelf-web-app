@@ -6,14 +6,21 @@ const defaultImagePath = "/logo.png";
 const brandName = "PutzELF";
 
 function formatTitle(value) {
-  const titleWithoutBrand = String(value || "")
-    .replace(/\bPutzELF\b/gi, "")
-    .split(/\s*(?:\||–|—)\s*/)
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .join(" | ");
+  const title = String(value || "").trim();
+  if (!title) return brandName;
 
-  return titleWithoutBrand ? `${titleWithoutBrand} | ${brandName}` : brandName;
+  const firstBrand = title.match(/\bPutzELF\b/i);
+  if (!firstBrand || firstBrand.index === undefined) return `${title} | ${brandName}`;
+
+  const brandEnd = firstBrand.index + firstBrand[0].length;
+  const prefix = `${title.slice(0, firstBrand.index)}${brandName}`;
+  const suffix = title
+    .slice(brandEnd)
+    .replace(/\bPutzELF\b/gi, "")
+    .replace(/([|–—])\s*(?:[|–—]\s*)+/g, "$1 ")
+    .replace(/(?:\s*[|–—]\s*)+$/g, "");
+
+  return `${prefix}${suffix}`.trim() || brandName;
 }
 
 function absoluteHttpUrl(value, fallbackPath = defaultImagePath) {

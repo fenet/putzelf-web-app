@@ -1,0 +1,2112 @@
+{
+  "/resedential/a1.jpg": {
+    "width": 1024,
+    "height": 683,
+    "fallback": "/optimized/service-images/resedential/a1-800-9e87999d8711.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/resedential/a1-480-b6f94aab4614.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/resedential/a1-800-ef72e6d09426.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/resedential/a1-1024-b00f8b1a2426.avif",
+        "width": 1024
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/resedential/a1-480-cc2067a11181.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/resedential/a1-800-78819967962d.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/resedential/a1-1024-9fad182bda9e.webp",
+        "width": 1024
+      }
+    ]
+  },
+  "/resedential/a2.jpg": {
+    "width": 612,
+    "height": 408,
+    "fallback": "/optimized/service-images/resedential/a2-612-e3e9818cf807.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/resedential/a2-480-c69fca2e8081.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/resedential/a2-612-0beed5a732f8.avif",
+        "width": 612
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/resedential/a2-480-be15659eb742.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/resedential/a2-612-f8289462742c.webp",
+        "width": 612
+      }
+    ]
+  },
+  "/resedential/a3.jpg": {
+    "width": 467,
+    "height": 568,
+    "fallback": "/optimized/service-images/resedential/a3-467-49e69f20105c.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/resedential/a3-467-8cb81f920065.avif",
+        "width": 467
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/resedential/a3-467-a80fecfad060.webp",
+        "width": 467
+      }
+    ]
+  },
+  "/resedential/a4.jpg": {
+    "width": 1024,
+    "height": 682,
+    "fallback": "/optimized/service-images/resedential/a4-800-6eb1eeca2ce7.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/resedential/a4-480-ba6a310a5889.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/resedential/a4-800-42df60474643.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/resedential/a4-1024-0cf25606df12.avif",
+        "width": 1024
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/resedential/a4-480-aba41fd24d4a.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/resedential/a4-800-e495268b6d46.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/resedential/a4-1024-8d452ed9508b.webp",
+        "width": 1024
+      }
+    ]
+  },
+  "/resedential/a5.jpg": {
+    "width": 1000,
+    "height": 665,
+    "fallback": "/optimized/service-images/resedential/a5-800-fcded7f0257b.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/resedential/a5-480-ab19ab20d8bd.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/resedential/a5-800-3f5eaf1d3a2d.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/resedential/a5-1000-ec82b9e47df7.avif",
+        "width": 1000
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/resedential/a5-480-c07b994a6b4e.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/resedential/a5-800-f8860c3a0249.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/resedential/a5-1000-53a9b7541023.webp",
+        "width": 1000
+      }
+    ]
+  },
+  "/services/businessConstruction/bc1.png": {
+    "width": 1000,
+    "height": 768,
+    "fallback": "/optimized/service-images/services/businessConstruction/bc1-800-c8790319716d.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc1-480-3f3a04e13085.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc1-800-8b8f63deae9a.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc1-1000-fdf536555d3f.avif",
+        "width": 1000
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc1-480-6dc0c019eccb.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc1-800-35a5417aa50c.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc1-1000-59b0e0ede2b8.webp",
+        "width": 1000
+      }
+    ]
+  },
+  "/services/businessConstruction/bc2.jpeg": {
+    "width": 500,
+    "height": 374,
+    "fallback": "/optimized/service-images/services/businessConstruction/bc2-500-a475118be453.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc2-480-bb462b89a419.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc2-500-9b4ae8d54ff0.avif",
+        "width": 500
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc2-480-fd55f9f32476.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc2-500-0ad2d1ac51af.webp",
+        "width": 500
+      }
+    ]
+  },
+  "/services/businessConstruction/bc3.jpeg": {
+    "width": 239,
+    "height": 211,
+    "fallback": "/optimized/service-images/services/businessConstruction/bc3-239-a9f95cc037a6.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc3-239-ac9c5c8854e0.avif",
+        "width": 239
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc3-239-d68fb254de4e.webp",
+        "width": 239
+      }
+    ]
+  },
+  "/services/businessConstruction/bc4.jpeg": {
+    "width": 251,
+    "height": 201,
+    "fallback": "/optimized/service-images/services/businessConstruction/bc4-251-e285e2fda05c.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc4-251-41374bd80522.avif",
+        "width": 251
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc4-251-a28db046c2c4.webp",
+        "width": 251
+      }
+    ]
+  },
+  "/services/businessConstruction/bc5.jpeg": {
+    "width": 516,
+    "height": 387,
+    "fallback": "/optimized/service-images/services/businessConstruction/bc5-516-d5fd3f294b03.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc5-480-7a8b27e1ae34.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc5-516-c9d97177a2e7.avif",
+        "width": 516
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc5-480-3e6a2a0d663a.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc5-516-87d0ce364812.webp",
+        "width": 516
+      }
+    ]
+  },
+  "/services/businessConstruction/bc6.png": {
+    "width": 1920,
+    "height": 1080,
+    "fallback": "/optimized/service-images/services/businessConstruction/bc6-800-a3f0177e287c.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc6-480-c0099f7c5f12.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc6-800-5f8bbe11aab9.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc6-1200-7b40c1d0be53.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc6-480-66042d00abfb.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc6-800-ecffbe6409c7.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessConstruction/bc6-1200-c9f8684f7f75.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/businessDeep/bd1.jpg": {
+    "width": 400,
+    "height": 267,
+    "fallback": "/optimized/service-images/services/businessDeep/bd1-400-201cfd77d9e4.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd1-400-0abfa807d30b.avif",
+        "width": 400
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd1-400-2e37a619a0d4.webp",
+        "width": 400
+      }
+    ]
+  },
+  "/services/businessDeep/bd2.jpeg": {
+    "width": 633,
+    "height": 484,
+    "fallback": "/optimized/service-images/services/businessDeep/bd2-633-fd934026f9e9.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd2-480-d589a65c15a1.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd2-633-1550a7abee4e.avif",
+        "width": 633
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd2-480-a9f2366c079d.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd2-633-702ede8299bd.webp",
+        "width": 633
+      }
+    ]
+  },
+  "/services/businessDeep/bd3.jpeg": {
+    "width": 678,
+    "height": 452,
+    "fallback": "/optimized/service-images/services/businessDeep/bd3-678-4e1b255cf509.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd3-480-2102bf938a89.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd3-678-d656b8dc221f.avif",
+        "width": 678
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd3-480-ca9113c20b39.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd3-678-6d54425f45be.webp",
+        "width": 678
+      }
+    ]
+  },
+  "/services/businessDeep/bd4.jpeg": {
+    "width": 640,
+    "height": 480,
+    "fallback": "/optimized/service-images/services/businessDeep/bd4-640-e33c89d7471c.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd4-480-05b8dcac3d80.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd4-640-3a40269deabe.avif",
+        "width": 640
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd4-480-1ccf4a18626e.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd4-640-00ce87c4eb7a.webp",
+        "width": 640
+      }
+    ]
+  },
+  "/services/businessDeep/bd5.jpeg": {
+    "width": 1280,
+    "height": 650,
+    "fallback": "/optimized/service-images/services/businessDeep/bd5-800-05281aa389d4.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd5-480-c63d76e8c053.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd5-800-67a74c157ca4.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd5-1200-61d17991aa01.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd5-480-8c388d974d21.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd5-800-169ee687e412.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd5-1200-9b92ba5494a5.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/businessDeep/bd6.jpg": {
+    "width": 1500,
+    "height": 1134,
+    "fallback": "/optimized/service-images/services/businessDeep/bd6-800-3e2e588cd8da.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd6-480-299fdf2fa81b.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd6-800-35359b3e3291.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd6-1200-cd739fd992b8.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd6-480-07489c3151b3.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd6-800-fb5b2c7c36f7.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessDeep/bd6-1200-83cd4a8fe7c6.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/businessIndustrial/bi1.jpg": {
+    "width": 2000,
+    "height": 1005,
+    "fallback": "/optimized/service-images/services/businessIndustrial/bi1-800-29e320a9a7e7.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi1-480-39923f5e6c4f.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi1-800-f3ad145dc50b.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi1-1200-6481d424b6e6.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi1-480-3148d02deb0e.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi1-800-19ad72ff15e9.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi1-1200-eeddb8507c8d.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/businessIndustrial/bi2.jpg": {
+    "width": 576,
+    "height": 383,
+    "fallback": "/optimized/service-images/services/businessIndustrial/bi2-576-a9de559d534c.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi2-480-bc20cc731b99.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi2-576-911a88d6d139.avif",
+        "width": 576
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi2-480-f1c9be4bc7ef.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi2-576-bb24610f09d4.webp",
+        "width": 576
+      }
+    ]
+  },
+  "/services/businessIndustrial/bi3.jpeg": {
+    "width": 1013,
+    "height": 737,
+    "fallback": "/optimized/service-images/services/businessIndustrial/bi3-800-dc1a826a2589.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi3-480-bfe9e279a9b2.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi3-800-bfc3a336deec.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi3-1013-541a12fca006.avif",
+        "width": 1013
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi3-480-c0dd2099ef47.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi3-800-38b4f9cfd508.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi3-1013-b4f853547dc7.webp",
+        "width": 1013
+      }
+    ]
+  },
+  "/services/businessIndustrial/bi4.jpg": {
+    "width": 1000,
+    "height": 667,
+    "fallback": "/optimized/service-images/services/businessIndustrial/bi4-800-c6763c4fc5d7.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi4-480-8137ddba37ae.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi4-800-9094f3859506.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi4-1000-1d1b39293a1a.avif",
+        "width": 1000
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi4-480-9d676f6c6876.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi4-800-7c9ad32f1655.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi4-1000-c505a0c3a007.webp",
+        "width": 1000
+      }
+    ]
+  },
+  "/services/businessIndustrial/bi5.jpg": {
+    "width": 800,
+    "height": 533,
+    "fallback": "/optimized/service-images/services/businessIndustrial/bi5-800-7379d937f2f4.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi5-480-b17b4ab31811.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi5-800-353224ef52dd.avif",
+        "width": 800
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi5-480-61ef819a686b.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi5-800-6bd882a61846.webp",
+        "width": 800
+      }
+    ]
+  },
+  "/services/businessIndustrial/bi6.jpg": {
+    "width": 1920,
+    "height": 1000,
+    "fallback": "/optimized/service-images/services/businessIndustrial/bi6-800-bcf7238a5934.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi6-480-936d05681f5b.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi6-800-7b5950e65534.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi6-1200-a253879984c2.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi6-480-d9c4b8733a6a.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi6-800-b49a88249499.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessIndustrial/bi6-1200-3e0c66870dc4.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/businessMaintenance/bm1.jpg": {
+    "width": 676,
+    "height": 400,
+    "fallback": "/optimized/service-images/services/businessMaintenance/bm1-676-cc24a9aea3fb.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm1-480-3aa198795cff.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm1-676-45370465bbd0.avif",
+        "width": 676
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm1-480-275b12105a91.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm1-676-7a9e2a647535.webp",
+        "width": 676
+      }
+    ]
+  },
+  "/services/businessMaintenance/bm2.png": {
+    "width": 530,
+    "height": 430,
+    "fallback": "/optimized/service-images/services/businessMaintenance/bm2-530-8e1048e597b5.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm2-480-afe474d66036.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm2-530-9f5ef008d2ca.avif",
+        "width": 530
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm2-480-bcac965824b3.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm2-530-0e4f224b97fd.webp",
+        "width": 530
+      }
+    ]
+  },
+  "/services/businessMaintenance/bm3.jpg": {
+    "width": 236,
+    "height": 354,
+    "fallback": "/optimized/service-images/services/businessMaintenance/bm3-236-032312cddf2e.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm3-236-faef086c3b1c.avif",
+        "width": 236
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm3-236-9f40ff7f314a.webp",
+        "width": 236
+      }
+    ]
+  },
+  "/services/businessMaintenance/bm4.jpg": {
+    "width": 1344,
+    "height": 896,
+    "fallback": "/optimized/service-images/services/businessMaintenance/bm4-800-4b850c90fc7b.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm4-480-b1ba90a217c7.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm4-800-53933c20314b.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm4-1200-d5335f6fa611.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm4-480-e77ba212ace6.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm4-800-3dfffc9e0d88.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm4-1200-6e9ca26b899a.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/businessMaintenance/bm5.jpeg": {
+    "width": 679,
+    "height": 452,
+    "fallback": "/optimized/service-images/services/businessMaintenance/bm5-679-c6274b8eb81c.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm5-480-9e4c64181d8b.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm5-679-54a250a6a9b3.avif",
+        "width": 679
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm5-480-f16edbdc9a0a.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm5-679-e8568c170882.webp",
+        "width": 679
+      }
+    ]
+  },
+  "/services/businessMaintenance/bm6.jpeg": {
+    "width": 678,
+    "height": 452,
+    "fallback": "/optimized/service-images/services/businessMaintenance/bm6-678-bb4d7cb3e7f8.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm6-480-f5b5e914b489.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm6-678-9c0fae0554fd.avif",
+        "width": 678
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm6-480-72e864436d05.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm6-678-73f07f40da27.webp",
+        "width": 678
+      }
+    ]
+  },
+  "/services/businessMaintenance/bm7.jpeg": {
+    "width": 576,
+    "height": 384,
+    "fallback": "/optimized/service-images/services/businessMaintenance/bm7-576-048598f7989f.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm7-480-994f7c6d9bd7.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm7-576-1412c9bcd07c.avif",
+        "width": 576
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm7-480-6cd08eb2b929.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm7-576-fcd733ad6150.webp",
+        "width": 576
+      }
+    ]
+  },
+  "/services/businessMaintenance/bm8.jpeg": {
+    "width": 632,
+    "height": 316,
+    "fallback": "/optimized/service-images/services/businessMaintenance/bm8-632-9f39d2efbcb0.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm8-480-cce5a906aa37.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm8-632-93b519225b6c.avif",
+        "width": 632
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm8-480-bc3a85a9c475.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessMaintenance/bm8-632-dfc10e49087a.webp",
+        "width": 632
+      }
+    ]
+  },
+  "/services/businessStaircase/bs1.jpeg": {
+    "width": 608,
+    "height": 504,
+    "fallback": "/optimized/service-images/services/businessStaircase/bs1-608-08026d68f89f.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs1-480-a55839ad6e6c.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs1-608-9b203505046b.avif",
+        "width": 608
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs1-480-45ca66852ef4.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs1-608-6fd50d8652b6.webp",
+        "width": 608
+      }
+    ]
+  },
+  "/services/businessStaircase/bs2.jpeg": {
+    "width": 390,
+    "height": 280,
+    "fallback": "/optimized/service-images/services/businessStaircase/bs2-390-71eab9d45ed6.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs2-390-f6b4a9c6a8c0.avif",
+        "width": 390
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs2-390-761d8e91f1b7.webp",
+        "width": 390
+      }
+    ]
+  },
+  "/services/businessStaircase/bs3.jpeg": {
+    "width": 751,
+    "height": 408,
+    "fallback": "/optimized/service-images/services/businessStaircase/bs3-751-7e8a81268b08.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs3-480-0cb14cff20c2.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs3-751-722aa00eb64f.avif",
+        "width": 751
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs3-480-b0fdebbfa892.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs3-751-2322ea77bdcd.webp",
+        "width": 751
+      }
+    ]
+  },
+  "/services/businessStaircase/bs4.jpeg": {
+    "width": 678,
+    "height": 452,
+    "fallback": "/optimized/service-images/services/businessStaircase/bs4-678-5479ec00b3a0.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs4-480-f10e52849f25.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs4-678-3565fa69bdc2.avif",
+        "width": 678
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs4-480-4d1db2e5b0c3.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs4-678-84e0b33e2fce.webp",
+        "width": 678
+      }
+    ]
+  },
+  "/services/businessStaircase/bs5.jpg": {
+    "width": 612,
+    "height": 408,
+    "fallback": "/optimized/service-images/services/businessStaircase/bs5-612-15306042344d.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs5-480-4568bf7fcd80.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs5-612-a04658268777.avif",
+        "width": 612
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs5-480-bf994dd505d5.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs5-612-3904fc22b34f.webp",
+        "width": 612
+      }
+    ]
+  },
+  "/services/businessStaircase/bs6.jpg": {
+    "width": 1400,
+    "height": 950,
+    "fallback": "/optimized/service-images/services/businessStaircase/bs6-800-a24ffd645603.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs6-480-ca7a39480818.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs6-800-0611b98a7281.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs6-1200-794e9e2b2718.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs6-480-bd80de128a62.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs6-800-86953e3c1d33.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs6-1200-d5290c84b7ad.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/businessStaircase/bs7.jpg": {
+    "width": 472,
+    "height": 711,
+    "fallback": "/optimized/service-images/services/businessStaircase/bs7-472-73cc85938917.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs7-472-40bfdc7cffc2.avif",
+        "width": 472
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessStaircase/bs7-472-e929539e29aa.webp",
+        "width": 472
+      }
+    ]
+  },
+  "/services/businessWindow/bw1.jpeg": {
+    "width": 554,
+    "height": 554,
+    "fallback": "/optimized/service-images/services/businessWindow/bw1-554-eb78cdd3857d.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw1-480-a6f337615f2e.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw1-554-f2987816a176.avif",
+        "width": 554
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw1-480-72efe7137388.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw1-554-2e9ba05cc146.webp",
+        "width": 554
+      }
+    ]
+  },
+  "/services/businessWindow/bw2.jpeg": {
+    "width": 576,
+    "height": 384,
+    "fallback": "/optimized/service-images/services/businessWindow/bw2-576-0b9f46c95404.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw2-480-9042603b285e.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw2-576-eab4b05d0c04.avif",
+        "width": 576
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw2-480-b9cc397b4a2e.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw2-576-65c7c2257d57.webp",
+        "width": 576
+      }
+    ]
+  },
+  "/services/businessWindow/bw3.jpeg": {
+    "width": 400,
+    "height": 284,
+    "fallback": "/optimized/service-images/services/businessWindow/bw3-400-af916def7257.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw3-400-fa2077f07e15.avif",
+        "width": 400
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw3-400-b93a64602eb5.webp",
+        "width": 400
+      }
+    ]
+  },
+  "/services/businessWindow/bw4.jpeg": {
+    "width": 678,
+    "height": 452,
+    "fallback": "/optimized/service-images/services/businessWindow/bw4-678-35af02d9c343.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw4-480-1af7527b3b1d.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw4-678-2da14a861a56.avif",
+        "width": 678
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw4-480-e77f83efdef2.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw4-678-10779743e102.webp",
+        "width": 678
+      }
+    ]
+  },
+  "/services/businessWindow/bw5.jpeg": {
+    "width": 521,
+    "height": 383,
+    "fallback": "/optimized/service-images/services/businessWindow/bw5-521-1a9ec4bbafab.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw5-480-684ff7192359.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw5-521-dd658db8d5c3.avif",
+        "width": 521
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw5-480-5cb448c6c272.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw5-521-fcaca6274420.webp",
+        "width": 521
+      }
+    ]
+  },
+  "/services/businessWindow/bw6.jpg": {
+    "width": 2000,
+    "height": 1250,
+    "fallback": "/optimized/service-images/services/businessWindow/bw6-800-02d2401adf5f.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw6-480-3388c23df1c6.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw6-800-dc5797e752dc.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw6-1200-5c516d4c67f6.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw6-480-634f366921b7.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw6-800-75df212b2854.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw6-1200-fa40f09b7d19.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/businessWindow/bw7.jpg": {
+    "width": 600,
+    "height": 1000,
+    "fallback": "/optimized/service-images/services/businessWindow/bw7-600-ea3344d984b9.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw7-480-ecbbe1eade9b.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw7-600-a2c7bcf712b3.avif",
+        "width": 600
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw7-480-c24ff3e64fa0.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw7-600-ecf898a43d58.webp",
+        "width": 600
+      }
+    ]
+  },
+  "/services/businessWindow/bw8.jpg": {
+    "width": 912,
+    "height": 563,
+    "fallback": "/optimized/service-images/services/businessWindow/bw8-800-8d3310828dd5.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw8-480-6647a7a63b2e.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw8-800-887a936b36d3.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw8-912-7d32eef9d975.avif",
+        "width": 912
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw8-480-ec18513f354e.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw8-800-4cae09067820.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw8-912-afb07aa9379f.webp",
+        "width": 912
+      }
+    ]
+  },
+  "/services/businessWindow/bw9.jpg": {
+    "width": 720,
+    "height": 1080,
+    "fallback": "/optimized/service-images/services/businessWindow/bw9-720-901d330316e4.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw9-480-737e593ab298.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw9-720-c15415a62cc0.avif",
+        "width": 720
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw9-480-4bd13a4c08c3.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/businessWindow/bw9-720-96f5dc734b50.webp",
+        "width": 720
+      }
+    ]
+  },
+  "/services/privateConstruction/pc1.jpeg": {
+    "width": 724,
+    "height": 424,
+    "fallback": "/optimized/service-images/services/privateConstruction/pc1-724-bfc6f764f03d.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc1-480-2507aacc67ed.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc1-724-ca4d4e3227d9.avif",
+        "width": 724
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc1-480-05d4194fb4cc.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc1-724-2c333656a3fd.webp",
+        "width": 724
+      }
+    ]
+  },
+  "/services/privateConstruction/pc2.jpeg": {
+    "width": 739,
+    "height": 415,
+    "fallback": "/optimized/service-images/services/privateConstruction/pc2-739-857badc10d10.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc2-480-08dd24afe367.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc2-739-36b8a879290d.avif",
+        "width": 739
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc2-480-a00cf73014f9.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc2-739-d0b22d2bc5a9.webp",
+        "width": 739
+      }
+    ]
+  },
+  "/services/privateConstruction/pc3.jpeg": {
+    "width": 678,
+    "height": 452,
+    "fallback": "/optimized/service-images/services/privateConstruction/pc3-678-91c9de1a5e3f.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc3-480-52cec94095ef.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc3-678-a96420515a3e.avif",
+        "width": 678
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc3-480-5e5c7142b567.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc3-678-b6913e2e2a58.webp",
+        "width": 678
+      }
+    ]
+  },
+  "/services/privateConstruction/pc4.jpeg": {
+    "width": 650,
+    "height": 433,
+    "fallback": "/optimized/service-images/services/privateConstruction/pc4-650-69783206a032.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc4-480-1e4889b9e44a.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc4-650-3d60c4d92660.avif",
+        "width": 650
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc4-480-e162f4d2206b.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc4-650-d2e49a3f0119.webp",
+        "width": 650
+      }
+    ]
+  },
+  "/services/privateConstruction/pc5.jpg": {
+    "width": 1200,
+    "height": 900,
+    "fallback": "/optimized/service-images/services/privateConstruction/pc5-800-df98a9196bfd.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc5-480-127f5cc624d3.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc5-800-7787ed419073.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc5-1200-179a45d945fe.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc5-480-76b5ef74750e.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc5-800-cf8fb7353345.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateConstruction/pc5-1200-da2695488033.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/privateDeep/pd1.jpg": {
+    "width": 1000,
+    "height": 768,
+    "fallback": "/optimized/service-images/services/privateDeep/pd1-800-aac3ac55c598.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd1-480-64286c5edede.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd1-800-77a1400d0cea.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd1-1000-9f53e050db25.avif",
+        "width": 1000
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd1-480-5b2a68f0c87a.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd1-800-3359bebdd20e.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd1-1000-c4acfae56604.webp",
+        "width": 1000
+      }
+    ]
+  },
+  "/services/privateDeep/pd2.jpg": {
+    "width": 724,
+    "height": 483,
+    "fallback": "/optimized/service-images/services/privateDeep/pd2-724-5ec0ad36c1cc.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd2-480-68fabee26799.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd2-724-61ad9dd0f574.avif",
+        "width": 724
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd2-480-ff282d83d0f6.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd2-724-26d191495479.webp",
+        "width": 724
+      }
+    ]
+  },
+  "/services/privateDeep/pd3.jpg": {
+    "width": 2752,
+    "height": 1536,
+    "fallback": "/optimized/service-images/services/privateDeep/pd3-800-f1eeed5ee471.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd3-480-ab12f23c1bdb.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd3-800-c8d2bb7d01f7.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd3-1200-1fe80b3f86d8.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd3-480-89a2ef7cf8c1.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd3-800-f08eee66dfde.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd3-1200-539331f98765.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/privateDeep/pd4.jpeg": {
+    "width": 620,
+    "height": 494,
+    "fallback": "/optimized/service-images/services/privateDeep/pd4-620-8162bd5c271c.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd4-480-546ddaa7cf47.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd4-620-e57a826e303a.avif",
+        "width": 620
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd4-480-c34ef49be63f.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd4-620-a75df05d4735.webp",
+        "width": 620
+      }
+    ]
+  },
+  "/services/privateDeep/pd5.jpeg": {
+    "width": 739,
+    "height": 415,
+    "fallback": "/optimized/service-images/services/privateDeep/pd5-739-e7246ac58c3e.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd5-480-aedbce07e6ea.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd5-739-628bacf28089.avif",
+        "width": 739
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd5-480-488c6c012223.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd5-739-110df342c6f8.webp",
+        "width": 739
+      }
+    ]
+  },
+  "/services/privateDeep/pd6.jpg": {
+    "width": 2091,
+    "height": 1434,
+    "fallback": "/optimized/service-images/services/privateDeep/pd6-800-82c8504ea155.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd6-480-e15ebfca5bb8.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd6-800-80bda6005b6e.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd6-1200-69649d25a548.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd6-480-f8869dd2cceb.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd6-800-eb76cc161713.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateDeep/pd6-1200-52ac5c8f0828.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/privateIndustrial/pi1.avif": {
+    "width": 640,
+    "height": 802,
+    "fallback": "/optimized/service-images/services/privateIndustrial/pi1-640-adfeb8bcc302.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi1-480-58853307c9fd.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi1-640-bd95b7171545.avif",
+        "width": 640
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi1-480-1fa8dbe21bd4.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi1-640-e3ba805336d8.webp",
+        "width": 640
+      }
+    ]
+  },
+  "/services/privateIndustrial/pi2.jpg": {
+    "width": 600,
+    "height": 380,
+    "fallback": "/optimized/service-images/services/privateIndustrial/pi2-600-5818c8ba43a5.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi2-480-9d8aaf623218.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi2-600-d8728dca28da.avif",
+        "width": 600
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi2-480-213361c2f551.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi2-600-b0870954beeb.webp",
+        "width": 600
+      }
+    ]
+  },
+  "/services/privateIndustrial/pi3.jpg": {
+    "width": 768,
+    "height": 1024,
+    "fallback": "/optimized/service-images/services/privateIndustrial/pi3-768-a16895755d00.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi3-480-e246d910ca9c.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi3-768-c3750b66f894.avif",
+        "width": 768
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi3-480-5e0c99cd82d6.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi3-768-8f48ea04b179.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/services/privateIndustrial/pi4.jpeg": {
+    "width": 533,
+    "height": 375,
+    "fallback": "/optimized/service-images/services/privateIndustrial/pi4-533-2a0950a4279f.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi4-480-df7f07d20b48.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi4-533-ff1483be2ad8.avif",
+        "width": 533
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi4-480-e30f7bb6536d.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi4-533-01e23a8f2917.webp",
+        "width": 533
+      }
+    ]
+  },
+  "/services/privateIndustrial/pi5.avif": {
+    "width": 2048,
+    "height": 1365,
+    "fallback": "/optimized/service-images/services/privateIndustrial/pi5-800-86aa369a3952.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi5-480-f01074b3f0ee.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi5-800-dba65edfd831.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi5-1200-c0df2195a7c0.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi5-480-ce6e81402993.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi5-800-583ee923e665.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi5-1200-6712639651ed.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/privateIndustrial/pi6.jpg": {
+    "width": 750,
+    "height": 400,
+    "fallback": "/optimized/service-images/services/privateIndustrial/pi6-750-5bd1c311e475.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi6-480-6c3791d6f78a.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi6-750-afbba016e290.avif",
+        "width": 750
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi6-480-51a09282b66c.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi6-750-6637936c973d.webp",
+        "width": 750
+      }
+    ]
+  },
+  "/services/privateIndustrial/pi7.jpg": {
+    "width": 1000,
+    "height": 667,
+    "fallback": "/optimized/service-images/services/privateIndustrial/pi7-800-0edb81e65acd.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi7-480-fd3ef631ae18.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi7-800-67fbf905556f.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi7-1000-e6ed8bd911bb.avif",
+        "width": 1000
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi7-480-aeb8b35a810f.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi7-800-e5fafb9f03ff.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateIndustrial/pi7-1000-c52ff7bf0652.webp",
+        "width": 1000
+      }
+    ]
+  },
+  "/services/privateMaintenance/pm1.jpg": {
+    "width": 1200,
+    "height": 1200,
+    "fallback": "/optimized/service-images/services/privateMaintenance/pm1-800-cc6590d3eef6.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm1-480-5a94b8f9e792.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm1-800-0e436187df15.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm1-1200-fe05d34842a7.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm1-480-5c685bfda98b.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm1-800-90ab8587f57c.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm1-1200-04b136a294a6.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/privateMaintenance/pm2.jpg": {
+    "width": 1030,
+    "height": 687,
+    "fallback": "/optimized/service-images/services/privateMaintenance/pm2-800-5d0a65dd69ca.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm2-480-b47fdad0d6b8.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm2-800-54b8f533eb45.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm2-1030-44a11bd4cd14.avif",
+        "width": 1030
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm2-480-93bbdcd8a215.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm2-800-9e86122e5f1b.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm2-1030-b124549e6aa1.webp",
+        "width": 1030
+      }
+    ]
+  },
+  "/services/privateMaintenance/pm3.jpg": {
+    "width": 1154,
+    "height": 843,
+    "fallback": "/optimized/service-images/services/privateMaintenance/pm3-800-6511e32c503d.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm3-480-9f1f7df2784a.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm3-800-c8c059215b71.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm3-1154-736e0474e1fc.avif",
+        "width": 1154
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm3-480-518b8fbca1fe.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm3-800-cbf6e9df11df.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm3-1154-2de7885600ba.webp",
+        "width": 1154
+      }
+    ]
+  },
+  "/services/privateMaintenance/pm4.jpeg": {
+    "width": 553,
+    "height": 361,
+    "fallback": "/optimized/service-images/services/privateMaintenance/pm4-553-3405cab13161.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm4-480-b27b216d3b93.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm4-553-7a0de13e4563.avif",
+        "width": 553
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm4-480-1523dbb1501d.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm4-553-ebd5418ac6ae.webp",
+        "width": 553
+      }
+    ]
+  },
+  "/services/privateMaintenance/pm5.jpeg": {
+    "width": 548,
+    "height": 364,
+    "fallback": "/optimized/service-images/services/privateMaintenance/pm5-548-368576a2063f.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm5-480-93d9e2a44de3.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm5-548-88c0701f0ba7.avif",
+        "width": 548
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm5-480-0d365150af10.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm5-548-b7951a58acff.webp",
+        "width": 548
+      }
+    ]
+  },
+  "/services/privateMaintenance/pm6.jpg": {
+    "width": 1200,
+    "height": 630,
+    "fallback": "/optimized/service-images/services/privateMaintenance/pm6-800-5e03897e1f26.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm6-480-8c98009259fc.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm6-800-79a65e94efc1.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm6-1200-5aff398eb7b6.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm6-480-9dddcc23a8a7.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm6-800-9cf6605b6360.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm6-1200-b5774990f3c9.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/privateMaintenance/pm7.avif": {
+    "width": 1500,
+    "height": 1000,
+    "fallback": "/optimized/service-images/services/privateMaintenance/pm7-800-fb032ab9a4ff.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm7-480-b6753cc91530.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm7-800-c5398feb0d28.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm7-1200-a19c4c9ba6fd.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm7-480-a6c4a6761c86.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm7-800-a375758b5ac9.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateMaintenance/pm7-1200-e262462e9e39.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/privateWindow/pw1.jpg": {
+    "width": 2688,
+    "height": 1792,
+    "fallback": "/optimized/service-images/services/privateWindow/pw1-800-db72e5400738.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw1-480-3b205c58434b.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw1-800-f549dde1f12c.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw1-1200-b61c8654d10e.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw1-480-03391431b233.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw1-800-074854e13711.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw1-1200-240d3e00d339.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/privateWindow/pw2.jpg": {
+    "width": 2496,
+    "height": 1404,
+    "fallback": "/optimized/service-images/services/privateWindow/pw2-800-ae3c823dae78.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw2-480-0600a9370208.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw2-800-9e55d8e48557.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw2-1200-0c1360d939e2.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw2-480-2f08013c5939.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw2-800-a95c5635c902.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw2-1200-2a053e9b7c87.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/privateWindow/pw3.jpg": {
+    "width": 1536,
+    "height": 1229,
+    "fallback": "/optimized/service-images/services/privateWindow/pw3-800-bec47f013f6d.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw3-480-fd2167a24360.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw3-800-ebe0614c8670.avif",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw3-1200-8efb08c0d771.avif",
+        "width": 1200
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw3-480-959ce9379b73.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw3-800-d9e2ee45ec33.webp",
+        "width": 800
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw3-1200-ed4ffff85564.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/services/privateWindow/pw4.jpeg": {
+    "width": 680,
+    "height": 451,
+    "fallback": "/optimized/service-images/services/privateWindow/pw4-680-89dabd039156.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw4-480-7452f6e293ba.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw4-680-034c6fdf3d9c.avif",
+        "width": 680
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw4-480-409584b47480.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw4-680-9ae29b9ed0c4.webp",
+        "width": 680
+      }
+    ]
+  },
+  "/services/privateWindow/pw5.jpeg": {
+    "width": 524,
+    "height": 585,
+    "fallback": "/optimized/service-images/services/privateWindow/pw5-524-d5413b7a7785.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw5-480-c45957026ce1.avif",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw5-524-8389d5249900.avif",
+        "width": 524
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw5-480-eaeafb29de11.webp",
+        "width": 480
+      },
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw5-524-235606d5663b.webp",
+        "width": 524
+      }
+    ]
+  },
+  "/services/privateWindow/pw6.jpeg": {
+    "width": 447,
+    "height": 447,
+    "fallback": "/optimized/service-images/services/privateWindow/pw6-447-f4b9bc56160f.jpeg",
+    "avif": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw6-447-e2cca57b1570.avif",
+        "width": 447
+      }
+    ],
+    "webp": [
+      {
+        "src": "/optimized/service-images/services/privateWindow/pw6-447-1d625fe087de.webp",
+        "width": 447
+      }
+    ]
+  }
+}

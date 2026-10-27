@@ -682,7 +682,7 @@ export default function Home() {
         path={getLocalizedPath(locale, "booking")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}
-        xDefaultPath={getLocalizedPath("de", "book")}
+        xDefaultPath={getLocalizedPath("de", "booking")}
         noindex
       />
       {/* Graz CTA moved to LandingAlternative.jsx */}
@@ -759,7 +759,7 @@ export default function Home() {
           >
           {/* Step 1: Contact information */}
           <div>
-            <h3 className="text-lg font-medium mb-3">{t("home.contactTitle", { defaultValue: "Your contact details" })}</h3>
+            <h3 className="text-lg font-medium mb-3">{t("home.contactTitle")}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {/* 1. Title (optional) */}
               <div>
@@ -861,10 +861,7 @@ export default function Home() {
         </div>
 
         <p className="mt-1 text-sm text-gray-600">
-          {t("home.flow.inquiryDescription", {
-            defaultValue:
-              "Fill in the form below and we'll get back to you with a personalized offer.",
-          })}
+          {t("home.flow.inquiryDescription")}
         </p>
       </div>
     </div>
@@ -993,7 +990,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={decrementDuration}
-                aria-label="Decrease hours"
+                aria-label={t("home.decreaseHours")}
                 title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 2 Stunden." })}
                 className="px-3 rounded-l-lg border bg-gray-50 hover:bg-gray-100"
               >
@@ -1006,7 +1003,7 @@ export default function Home() {
                 inputMode="numeric"
                 step="1"
                 min="2"
-                placeholder={t("home.durationPlaceholder") || "2+"}
+                placeholder={t("home.durationPlaceholder")}
                 value={form.duration}
                 onChange={handleChange}
                 onKeyDown={handleDurationKeyDown}
@@ -1017,7 +1014,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={incrementDuration}
-                aria-label="Increase hours"
+                aria-label={t("home.increaseHours")}
                 title={t("home.durationHelp", { defaultValue: "Mindestbuchung sind 2 Stunden." })}
                 className="px-3 rounded-r-lg border bg-gray-50 hover:bg-gray-100"
               >
@@ -1087,7 +1084,7 @@ export default function Home() {
                             type="button"
                             onClick={goPrev}
                             className="px-3 py-2 rounded-lg border bg-gray-50 hover:bg-gray-100 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0097b2] focus-visible:ring-offset-2"
-                            aria-label={t("home.calendar.prev", { defaultValue: "Previous month" })}
+                            aria-label={t("home.calendar.prev")}
                           >
                             ←
                           </button>
@@ -1096,7 +1093,7 @@ export default function Home() {
                             type="button"
                             onClick={goNext}
                             className="px-3 py-2 rounded-lg border bg-gray-50 hover:bg-gray-100 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0097b2] focus-visible:ring-offset-2"
-                            aria-label={t("home.calendar.next", { defaultValue: "Next month" })}
+                            aria-label={t("home.calendar.next")}
                           >
                             →
                           </button>
@@ -1209,24 +1206,17 @@ export default function Home() {
               <div className="w-full p-3 border rounded-lg bg-white">
                 {!form.date ? (
                   <p className="text-sm text-gray-600">
-                    {t("home.slots.chooseDate", {
-                      defaultValue: "Pick a date to see available times.",
-                    })}
+                    {t("home.slots.chooseDate")}
                   </p>
                 ) : slotsLoading ? (
                   <p className="text-sm text-gray-600">
-                    {t("home.slots.loading", {
-                      defaultValue: "Loading available times…",
-                    })}
+                    {t("home.slots.loading")}
                   </p>
                 ) : slotsError ? (
                   <p className="text-sm text-red-600">{slotsError}</p>
                 ) : availableSlots.length === 0 ? (
                   <p className="text-sm text-gray-600">
-                    {t("home.slots.none", {
-                      defaultValue:
-                        "No available times for this day. Please choose another date.",
-                    })}
+                    {t("home.slots.none")}
                   </p>
                 ) : (
                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
@@ -1276,7 +1266,7 @@ export default function Home() {
           </label>
 
           <div>
-            <label htmlFor="notes" className="block text-sm font-medium mb-1">{t("order.notesLabel", { defaultValue: "Notes (optional)" })}</label>
+            <label htmlFor="notes" className="block text-sm font-medium mb-1">{t("order.notesLabel")}</label>
             <textarea id="notes" name="notes" value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full p-3 border rounded" rows={4} />
           </div>
 
@@ -1289,7 +1279,7 @@ export default function Home() {
               className="w-4 h-4 mt-1"
             />
             <span>
-              {t("order.gdprText", { defaultValue: "I agree that my data will be processed for the booking and contacted about this booking." })}
+              {t("order.gdprText")}
               {gdprError ? <div className="text-red-600 text-sm mt-1">{gdprError}</div> : null}
             </span>
           </label>

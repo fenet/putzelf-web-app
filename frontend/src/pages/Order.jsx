@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import intlTelInput from "intl-tel-input";
 import "intl-tel-input/build/css/intlTelInput.css";
 import { apiFetch } from "../lib/api";
@@ -8,6 +8,7 @@ import { trackEvent } from "../lib/analytics";
 import { Gift, PartyPopper } from "lucide-react";
 import Confetti from "react-confetti";
 import Seo from "../components/Seo";
+import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
 const COUNTRY_OPTIONS = [
   { code: "at", label: "Austria (+43)" },
@@ -35,6 +36,8 @@ const COUNTRY_OPTIONS = [
 export default function Order() {
   const { t } = useTranslation();
   const { id } = useParams();
+  const location = useLocation();
+  const locale = getLocaleFromPathname(location.pathname);
   const isQuoteRequest = id === "request";
   const pageTitle = isQuoteRequest
     ? t("order.quoteRequestTitle", { defaultValue: "Quote request" })
@@ -62,6 +65,18 @@ export default function Order() {
   const [confirmationEventId, setConfirmationEventId] = useState(null);
   const confirmationTrackedRef = useRef(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const orderSeo = (
+    <Seo
+      title={pageTitle}
+      description={pageTitle}
+      path={getLocalizedPath(locale, "order", { id: id || "" })}
+      lang={locale}
+      alternates={getLocalizedAlternates(location.pathname)}
+      xDefaultPath={getLocalizedPath("de", "order", { id: id || "" })}
+      noindex
+    />
+  );
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -349,16 +364,21 @@ export default function Order() {
     }
   };
 
-  if (!booking) return <p className="text-center mt-10">{t("order.loading")}</p>;
+  if (!booking) {
+    return (
+      <>
+        {orderSeo}
+        <section className="text-center mt-10">
+          <h1 className="text-2xl font-bold">{pageTitle}</h1>
+          <p>{t("order.loading")}</p>
+        </section>
+      </>
+    );
+  }
 
   return (
     <div className="bg-[#f9fafa] min-h-screen py-1 px-4 flex flex-col items-center relative overflow-hidden">
-      <Seo
-        title={pageTitle}
-        description={pageTitle}
-        path={`/order/${id || ""}`}
-        noindex
-      />
+      {orderSeo}
       {showPopup && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
@@ -438,7 +458,7 @@ export default function Order() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">{t("order.labels.name", { defaultValue: "Name" })}</label>
+                <label className="block text-sm font-medium mb-1">{t("order.labels.name")}</label>
                 <input
                   name="name"
                   value={customer.name}
@@ -450,7 +470,7 @@ export default function Order() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">{t("order.labels.email", { defaultValue: "E-Mail" })}</label>
+                <label className="block text-sm font-medium mb-1">{t("order.labels.email")}</label>
                 <input
                   name="email"
                   value={customer.email}
@@ -468,7 +488,7 @@ export default function Order() {
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium mb-1">{t("order.labels.address", { defaultValue: "Adresse" })}</label>
+                <label className="block text-sm font-medium mb-1">{t("order.labels.address")}</label>
                 <input
                   name="address"
                   value={customer.address}
@@ -480,7 +500,7 @@ export default function Order() {
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium mb-1">{t("order.labels.phone", { defaultValue: "Telefon" })}</label>
+                <label className="block text-sm font-medium mb-1">{t("order.labels.phone")}</label>
                 <div className="flex items-center gap-3">
                   <select
                     value={selectedCountry}
@@ -520,7 +540,7 @@ export default function Order() {
                   onClick={openDetailsIfValid}
                   className="w-full bg-[#0097b2] text-white font-semibold py-3 rounded-xl hover:bg-[#007f95] transition"
                 >
-                  {t("order.directInquiry", { defaultValue: "Direkt anfragen" })}
+                  {t("order.directInquiry")}
                 </button>
               </div>
             ) : null}
@@ -529,7 +549,7 @@ export default function Order() {
               <div className="mt-4 space-y-4">
                 <div>
                   <label htmlFor="notes" className="block text-sm font-medium mb-1 text-gray-700">
-                    {t("order.notesLabel", { defaultValue: "Anmerkungen" })}
+                    {t("order.notesLabel")}
                   </label>
                   <textarea
                     id="notes"
@@ -537,7 +557,7 @@ export default function Order() {
                     value={customer.notes}
                     onChange={handleChange}
                     rows={4}
-                    placeholder={t("order.placeholders.notes", { defaultValue: "Bitte schreiben Sie hier zusätzliche Anmerkungen oder Wünsche..." })}
+                    placeholder={t("order.placeholders.notes")}
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3] resize-y"
                   />
                 </div>
@@ -551,7 +571,7 @@ export default function Order() {
                     className="w-4 h-4 mt-1"
                   />
                   <span>
-                    {t("order.gdprFull", { defaultValue: "Ich stimme zu, dass meine Daten für die Buchung verarbeitet und ich bezüglich dieser Buchung kontaktiert werde." })}
+                    {t("order.gdprFull")}
                     <a
                       href="/privacy"
                       className="text-[#5be3e3] underline hover:text-[#000000] ml-1"
@@ -566,7 +586,7 @@ export default function Order() {
                   disabled={loadingConfirm}
                   className="w-full bg-[#5be3e3] text-black font-semibold py-3 rounded-xl hover:bg-[#48c9c9] transition disabled:opacity-60"
                 >
-                  {loadingConfirm ? t("order.confirming") : t("order.submitBtn", { defaultValue: "Jetzt anfragen" })}
+                  {loadingConfirm ? t("order.confirming") : t("order.submitBtn")}
                 </button>
 
                 {error && <p className="text-red-500 mt-2">{error}</p>}

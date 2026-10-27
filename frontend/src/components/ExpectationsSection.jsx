@@ -30,7 +30,7 @@ export default function ExpectationsSection({ tBase, locale, bookingHref }) {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="mb-6">
           
-          <h3 className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-slate-900 sm:text-3xl">{t('services.expectations.title', { defaultValue: locale === 'de' ? 'Was Sie erwartet' : 'What You Can Expect' })}</h3>
+          <h3 className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-slate-900 sm:text-3xl">{t("services.expectations.title")}</h3>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
@@ -56,7 +56,7 @@ export default function ExpectationsSection({ tBase, locale, bookingHref }) {
 
         <div className="mt-8 flex justify-center">
           <a href={bookingHref} className="inline-flex items-center justify-center rounded-full bg-[#0097b2] px-8 py-3 text-base font-semibold text-white transition hover:bg-[#007f95]">
-            {t("services.cta", { defaultValue: locale === "de" ? "Jetzt Anfragen" : "Request an Offer" })}
+            {t("services.cta")}
           </a>
         </div>
       </div>

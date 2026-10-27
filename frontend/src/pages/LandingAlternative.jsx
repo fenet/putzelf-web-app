@@ -280,11 +280,11 @@ export default function LandingAlternative() {
   const closeMenu = () => { clearTimeout(timerRef.current); timerRef.current = setTimeout(() => setOpen(false), 150); };
 
   const seoTitle = lang === "de"
-    ? "Reinigungsfirma Wien & Graz – Büroreinigung & Gebäudereinigung"
-    : "Cleaning Company Vienna & Graz – Office & Commercial Cleaning";
+    ? "Reinigungsfirma Wien & Graz – Büro- & Unterhaltsreinigung | PutzELF"
+    : "Commercial Cleaning Vienna & Graz | PutzELF";
   const seoDescription = lang === "de"
-    ? "Reinigungsfirma für Unternehmen in Wien und Graz: Büro-, Unterhalts-, Gastro- und Praxisreinigung. Flexible Zeiten und geprüfte Reinigungskräfte."
-    : "Cleaning services in Vienna and Graz for businesses: office, maintenance, restaurant and medical cleaning with flexible schedules and vetted staff.";
+    ? "Zuverlässige Büro- und Unterhaltsreinigung für Unternehmen in Wien und Graz. Klare Abläufe, feste Ansprechpartner und kostenlose Beratung."
+    : "Reliable office and maintenance cleaning for businesses in Vienna and Graz, with clear routines, consistent contacts and quality checks.";
 
   const serviceLinks = [
     { key: "servicesOverview", label: lang === "de" ? "Alle Leistungen" : "All services" },
@@ -329,7 +329,7 @@ export default function LandingAlternative() {
 
             <div className="mt-8 flex justify-center">
               <Link
-                to={getLocalizedPath(lang, "profile")}
+                to={getLocalizedPath(lang, "booking")}
                 className="rounded-xl bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-[#fb923c] px-8 py-3 text-base font-bold text-white shadow-lg hover:opacity-95 md:px-10 md:py-4 md:text-lg"
                 onClick={() => trackEvent("AltLanding_Hero_CTA_Click", { cta: "inquiry_primary" })}
               >
@@ -501,7 +501,7 @@ export default function LandingAlternative() {
 
             <div className="mt-8 flex justify-center">
               <Link
-                to={getLocalizedPath(lang, "profile")}
+                to={getLocalizedPath(lang, "booking")}
                 className="rounded-xl bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-[#fb923c] px-10 py-4 text-center text-lg font-bold text-white shadow-lg hover:opacity-95 md:px-12 md:py-5"
                 onClick={() => trackEvent("AltLanding_Process_CTA_Click", { cta: "book_cleaning_secondary" })}
               >
@@ -612,7 +612,7 @@ export default function LandingAlternative() {
             <Phone className="h-4 w-4" /> {c.callNow}
           </a>
           <Link
-            to={getLocalizedPath(lang, "profile")}
+            to={getLocalizedPath(lang, "booking")}
             className="inline-flex flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-[#0097b2] to-[#3b82f6] px-4 py-3 text-sm font-semibold text-white"
             onClick={() => trackEvent("AltLanding_Mobile_Book_Click", { cta: "sticky_mobile_book" })}
           >

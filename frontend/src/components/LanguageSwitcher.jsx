@@ -1,9 +1,11 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { getEquivalentPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
 export default function LanguageSwitcher({ className = "", compact = false }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   const locale = getLocaleFromPathname(location.pathname);
 
   const switchTo = (targetLocale) => {
@@ -19,19 +21,19 @@ export default function LanguageSwitcher({ className = "", compact = false }) {
     <div className={`flex items-center gap-2 ${className}`}>
       <button
         onClick={() => switchTo("en")}
-        title="English"
-        aria-label="Switch to English"
+        title={t("nav.switchEnglish")}
+        aria-label={t("nav.switchEnglish")}
         className={`${buttonBase} ${locale === "en" ? "ring-2 ring-[#0097b2]" : ""}`}
       >
-        {compact ? <span role="img" aria-label="English flag">🇬🇧</span> : "EN"}
+        {compact ? <span role="img" aria-label={t("nav.englishFlag")}>🇬🇧</span> : "EN"}
       </button>
       <button
         onClick={() => switchTo("de")}
-        title="Deutsch"
-        aria-label="Auf Deutsch umschalten"
+        title={t("nav.switchGerman")}
+        aria-label={t("nav.switchGerman")}
         className={`${buttonBase} ${locale === "de" ? "ring-2 ring-[#0097b2]" : ""}`}
       >
-        {compact ? <span role="img" aria-label="German flag">🇩🇪</span> : "DE"}
+        {compact ? <span role="img" aria-label={t("nav.germanFlag")}>🇩🇪</span> : "DE"}
       </button>
     </div>
   );

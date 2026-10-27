@@ -119,9 +119,9 @@ export const routeRegistry = {
     prerender: true,
     sitemap: { changefreq: "yearly", priority: 0.2 },
   },
-  booking: { de: "/booking", en: "/booking", prerender: false, noindex: true },
+  // Keep the private booking form out of search while prerendering its initial HTML.
+  booking: { de: "/booking", en: "/booking", prerender: true, noindex: true },
   order: { de: "/order/:id", en: "/order/:id", prerender: false, noindex: true },
-  profile: { de: "/profile", en: "/profile", prerender: false, noindex: true },
   calculator: { de: "/calculator", en: "/calculator", prerender: true, noindex: true },
   blog: {
     de: "/blog",

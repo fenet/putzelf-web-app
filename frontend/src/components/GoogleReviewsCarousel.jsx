@@ -16,7 +16,7 @@ const FALLBACK_REVIEWS = [
   {
     reviewId: "nhp-wien",
     reviewerName: "NHP Wien",
-    relativeDate: "a week ago",
+    relativeDateKey: "weekAgo",
     rating: 5,
     comment:
       "Für die dreiwöchige Urlaubsvertretung unserer Reinigungskraft wurde uns über Putzelf eine nette und zuverlässige Mitarbeiterin vermittelt. Sie arbeitet selbstständig und sorgfältig und versteht ihre Aufgaben schnell. Besonders positiv finden wir, dass sie mitdenkt und aufmerksam auf Dinge hinweist. Wir sind sehr zufrieden und können Putzelf absolut weiterempfehlen!",
@@ -26,7 +26,7 @@ const FALLBACK_REVIEWS = [
   {
     reviewId: "sophia-volpini",
     reviewerName: "Sophia Volpini",
-    relativeDate: "a month ago",
+    relativeDateKey: "monthAgo",
     rating: 5,
     comment:
       "Putzelf liefert sehr professionellen und zuvorkommenden Service! Ich war begeistert von Koordination, Qualität der Reinigungskraft und der einfachen Kommunikation. Preisleistungsverhältnis ist Top und man fühlt sich rundum wohl aufgehoben! Werde 100% wieder dort den Service in Anspruch nehmen.",
@@ -36,7 +36,7 @@ const FALLBACK_REVIEWS = [
   {
     reviewId: "stadtkino-buero",
     reviewerName: "Stadtkino Büro",
-    relativeDate: "2 months ago",
+    relativeDateKey: "twoMonthsAgo",
     rating: 5,
     comment:
       "Wir waren sehr zufrieden mit dem Service - freundlich, zuverlässig und gründlich. Vielen Dank und bis bald im Kino!",
@@ -60,11 +60,11 @@ function Stars({ rating = 0, label }) {
   );
 }
 
-function formatReviewDate(value, locale) {
-  if (!value) return "Recently";
+function formatReviewDate(value, locale, t) {
+  if (!value) return t("reviews.recently");
 
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Recently";
+  if (Number.isNaN(date.getTime())) return t("reviews.recently");
 
   return new Intl.DateTimeFormat(locale || "en", {
     year: "numeric",
@@ -87,18 +87,18 @@ function pickReviewText(comment, locale) {
   const original = (originalPart || "").trim();
 
   if (locale && locale.startsWith("de")) {
-    return original || translated;
+    return translated || original;
   }
 
   return translated || original;
 }
 
-function normalizeReview(review, locale) {
+function normalizeReview(review, locale, t) {
   if (!review || typeof review !== "object") {
     return null;
   }
 
-  const reviewerName = (review.reviewerName || review.reviewer?.displayName || "Google Reviewer").trim();
+  const reviewerName = (review.reviewerName || review.reviewer?.displayName || t("reviews.reviewerFallback")).trim();
   const rawRating = review.rating ?? review.starRating ?? 5;
   const ratingValue =
     typeof rawRating === "string"
@@ -113,18 +113,20 @@ function normalizeReview(review, locale) {
   return {
     reviewId: review.reviewId || review.name || `${reviewerName}-${review.createTime || "review"}`,
     reviewerName,
-    relativeDate: formatReviewDate(review.createTime, locale),
+    relativeDate: review.relativeDateKey
+      ? t(`reviews.${review.relativeDateKey}`)
+      : formatReviewDate(review.createTime, locale, t),
     rating: ratingValue,
     comment,
     reviewUrl: review.reviewUrl || review.url || GOOGLE_REVIEWS_URL,
   };
 }
 
-function getUsableReviews(rawReviews, locale) {
+function getUsableReviews(rawReviews, locale, t) {
   if (!Array.isArray(rawReviews)) return [];
 
   return rawReviews
-    .map((review) => normalizeReview(review, locale))
+    .map((review) => normalizeReview(review, locale, t))
     .filter(Boolean);
 }
 
@@ -162,7 +164,7 @@ export default function GoogleReviewsCarousel() {
           throw new Error(payload.error);
         }
 
-        const nextReviews = getUsableReviews(payload?.reviews, i18n.language);
+        const nextReviews = getUsableReviews(payload?.reviews, i18n.language, t);
 
         if (!nextReviews.length) {
           throw new Error("Google Reviews API returned no usable reviews");
@@ -173,7 +175,7 @@ export default function GoogleReviewsCarousel() {
         }
       } catch (err) {
         if (isMounted) {
-          setReviews(FALLBACK_REVIEWS);
+          setReviews(getUsableReviews(FALLBACK_REVIEWS, i18n.language, t));
           setError(err?.message || "Unable to load Google reviews.");
           if (typeof console !== "undefined" && console.warn) {
             console.warn("Google Reviews API unavailable, using fallback reviews.", err);
@@ -242,10 +244,10 @@ export default function GoogleReviewsCarousel() {
       <div className="flex items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-700/80">
-            {t("reviews.kicker", "Google")}
+            {t("reviews.kicker")}
           </p>
           <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
-            {t("reviews.sectionTitle", "Google Reviews")}
+            {t("reviews.sectionTitle")}
           </h3>
         </div>
 
@@ -253,7 +255,7 @@ export default function GoogleReviewsCarousel() {
           <div className="hidden items-center gap-2 md:flex">
             <button
               type="button"
-              aria-label={t("reviews.previous", "Previous reviews")}
+              aria-label={t("reviews.previous")}
               onClick={goToPrevious}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-sky-200 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200"
             >
@@ -261,7 +263,7 @@ export default function GoogleReviewsCarousel() {
             </button>
             <button
               type="button"
-              aria-label={t("reviews.next", "Next reviews")}
+              aria-label={t("reviews.next")}
               onClick={goToNext}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-sky-200 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200"
             >
@@ -272,7 +274,7 @@ export default function GoogleReviewsCarousel() {
       </div>
 
       <p className="mt-3 max-w-2xl text-sm text-slate-600 md:text-base">
-        {t("reviews.subtitle", "Customer reviews from satisfied clients.")}
+        {t("reviews.subtitle")}
       </p>
 
       <div
@@ -284,7 +286,7 @@ export default function GoogleReviewsCarousel() {
       >
         {isLoading && (
           <div className="rounded-[24px] border border-slate-200/70 bg-white/80 p-6 text-sm text-slate-600 shadow-[0_14px_30px_rgba(15,23,42,0.04)]">
-            {t("reviews.loading", "Loading reviews...")}
+            {t("reviews.loading")}
           </div>
         )}
 
@@ -324,7 +326,7 @@ export default function GoogleReviewsCarousel() {
                           <div>
                             <div className="text-sm font-semibold text-slate-900">{review.reviewerName}</div>
                             <div className="mt-1 text-[11px] uppercase tracking-[0.12em] text-slate-500">
-                              {t("reviews.googleBadge", "Google review")}
+                              {t("reviews.googleBadge")}
                             </div>
                           </div>
 
@@ -333,7 +335,7 @@ export default function GoogleReviewsCarousel() {
                             target="_blank"
                             rel="noreferrer"
                             className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-[11px] font-medium text-slate-600 transition hover:border-sky-200 hover:text-sky-700"
-                            aria-label={`${t("reviews.googleBadge", "Google review")} - ${review.reviewerName}`}
+                            aria-label={`${t("reviews.googleBadge")} - ${review.reviewerName}`}
                           >
                             <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                             <span>Google</span>
@@ -349,12 +351,12 @@ export default function GoogleReviewsCarousel() {
         )}
 
         {!isLoading && !error && groupedReviews.length > 1 && (
-          <div className="mt-5 flex justify-center gap-2" aria-label={t("reviews.paginationLabel", "Review carousel")}> 
+          <div className="mt-5 flex justify-center gap-2" aria-label={t("reviews.paginationLabel")}>
             {groupedReviews.map((_, index) => (
               <button
                 key={index}
                 type="button"
-                aria-label={`${t("reviews.slide", "Review slide")} ${index + 1}`}
+                aria-label={`${t("reviews.slide")} ${index + 1}`}
                 onClick={() => setActiveGroup(index)}
                 className={`h-2.5 rounded-full transition-all ${
                   activeGroup === index ? "w-8 bg-sky-700" : "w-2.5 bg-slate-300 hover:bg-slate-400"

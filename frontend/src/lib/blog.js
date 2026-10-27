@@ -8,6 +8,8 @@ const demoPosts = [
     titleEn: "How to Maintain Offices and Workspaces Effectively",
     excerpt:
       "Ein kurzer Leitfaden, wie regelmäßige Reinigung das Wohlbefinden steigert und den Eindruck Ihres Unternehmens aufwertet.",
+    metaDescription:
+      "Erfahren Sie, wie klare Zuständigkeiten, feste Intervalle und gut priorisierte Aufgaben Büros gepflegt halten und eine professionelle Atmosphäre schaffen.",
     excerptEn:
       "A short guide to how regular cleaning supports wellbeing and strengthens the impression your business makes.",
     content:
@@ -28,6 +30,8 @@ const demoPosts = [
     titleEn: "Healthier Cleaning Routines for Greener Workplaces",
     excerpt:
       "Frische Luft, weniger Staub und eine angenehmere Atmosphäre sind oft die größten Vorteile einer durchdachten Reinigung.",
+    metaDescription:
+      "Regelmäßige Reinigung kann Allergene reduzieren und die Luftqualität verbessern. Mit passenden Intervallen bleibt das Büro gepflegt und einladend.",
     excerptEn:
       "Cleaner air, less dust and a more pleasant atmosphere are among the main benefits of a thoughtful cleaning routine.",
     content:
@@ -48,6 +52,8 @@ const demoPosts = [
     titleEn: "Window Cleaning for Brighter, More Comfortable Spaces",
     excerpt:
       "Saubere Fenster machen Räume heller, professioneller und insgesamt angenehmer – auch im täglichen Arbeitsalltag.",
+    metaDescription:
+      "Professionelle Fensterreinigung entfernt Spuren, Wasserflecken und Staub. Regelmäßige Glas- und Rahmenpflege lässt Räume heller und einladender wirken.",
     excerptEn:
       "Clean windows make spaces brighter, more professional and more pleasant throughout the working day.",
     content:

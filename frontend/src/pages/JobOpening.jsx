@@ -1,62 +1,33 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Seo from "../components/Seo";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
-const copy = {
-  de: {
-    title: "Aktuelle Jobangebote",
-    description: "Offene Stellen bei PutzELF: Call Center Agents, Reinigungskräfte in Graz und mehr.",
-    roles: [
-      {
-        title: "Call Center Agents",
-        body: "Bearbeitung von Kundenanfragen, Terminvereinbarungen und Unterstützung unseres Buchungsprozesses. Gute Deutschkenntnisse und freundliches Auftreten erforderlich.",
-        subject: "Bewerbung - Call Center",
-        cta: "Bewerben / Kontakt",
-      },
-      {
-        title: "Reinigungskräfte - Graz",
-        body: "Wir suchen Reinigungskräfte in Graz. Erfahrung von Vorteil, aber nicht erforderlich. Flexible Arbeitszeiten und faire Bezahlung.",
-        subject: "Bewerbung - Reinigung Graz",
-        cta: "Bewerben / Kontakt",
-      },
-    ],
-  },
-  en: {
-    title: "Current Job Openings",
-    description: "Open roles at PutzELF: call center agents, cleaners in Graz and more.",
-    roles: [
-      {
-        title: "Call Center Agents",
-        body: "Handling customer inquiries, scheduling appointments, and supporting our booking process. Good German skills and a friendly attitude are required.",
-        subject: "Application - Call Center",
-        cta: "Apply / Contact",
-      },
-      {
-        title: "Cleaners - Graz",
-        body: "We are looking for cleaners in Graz. Experience is a plus, but not required. Flexible hours and fair pay.",
-        subject: "Application - Cleaner Graz",
-        cta: "Apply / Contact",
-      },
-    ],
-  },
-};
-
 export default function JobOpening() {
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
-  const c = copy[locale];
+  const { t } = useTranslation();
+  const title = t("jobOpening.title");
+  const description = t("jobOpening.description");
+  const seoTitle = locale === "de"
+    ? "Jobs bei PutzELF – Reinigung & Kundenservice"
+    : "Jobs at PutzELF – Cleaning & Customer Service";
+  const seoDescription = locale === "de"
+    ? "Aktuelle Stellen bei PutzELF in Wien und Graz. Aufgaben, Anforderungen und Kontakt zur Bewerbung."
+    : "Current opportunities at PutzELF in Vienna and Graz, with role details, requirements and application contact.";
+  const roles = t("jobOpening.roles", { returnObjects: true });
 
   return (
     <div className="min-h-screen bg-[#f5f7f7] text-slate-900">
       <Navbar />
       <Seo
-        title={locale === "de" ? "Jobangebote – PutzELF" : "Job Openings – PutzELF"}
-        description={c.description}
+        title={seoTitle}
+        description={seoDescription}
         path={getLocalizedPath(locale, "jobOpening")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}
@@ -74,11 +45,11 @@ export default function JobOpening() {
               </div>
 
               <h1 className="max-w-xl text-4xl font-semibold tracking-[-0.06em] text-slate-900 sm:text-5xl lg:text-[4rem] lg:leading-[0.96]">
-                {c.title}
+                {title}
               </h1>
 
               <p className="mt-5 max-w-lg text-base leading-7 text-slate-600 sm:text-lg">
-                {c.description}
+                {description}
               </p>
             </div>
 
@@ -96,7 +67,7 @@ export default function JobOpening() {
         </section>
 
         <section className="mt-12 space-y-4">
-          {c.roles.map((role, index) => (
+          {roles.map((role, index) => (
             <article
               key={role.title}
               className="group overflow-hidden rounded-[26px] border border-slate-200 bg-white/80 transition-all duration-300 hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white"

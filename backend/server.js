@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 import { sendBookingConfirmation, sendContactRequest, sendQuoteRequestConfirmation } from "./utils/mailer.js";
 import { MIN_HOURS, WINDOW_PRICE_NET, INTENSIVE_HOURLY_NET, TAX_RATE } from "./config.js";
 import { sendMetaEvent, sendMetaLeadEvent } from "./utils/metaConversions.js";
+import { sendNativeFormResponse } from "./utils/nativeFormResponse.js";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ if (!JWT_SECRET) {
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false, limit: "50kb" }));
 
 import googleRouter from "./google/oauth.js";
 app.use("/api/google", googleRouter);
@@ -244,36 +246,46 @@ app.post("/api/auth/logout", (_req, res) => {
 
 app.post("/api/contact", async (req, res) => {
   try {
-    const { name, email, phone, location, subject, message } = req.body || {};
-    const normalizedLocation = String(location || "vienna").trim().toLowerCase();
+    const body = req.body || {};
+    const name = String(body.name || "").trim();
+    const email = String(body.email || "").trim();
+    const phone = String(body.phone || "").trim();
+    const subject = String(body.subject || "").trim();
+    const message = String(body.message || "").trim();
+    const normalizedLocation = String(body.location || "vienna").trim().toLowerCase();
 
     if (!name || !email || !phone || !subject || !message) {
+      if (sendNativeFormResponse(req, res, { form: "contact", outcome: "invalid" })) return;
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email))) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      if (sendNativeFormResponse(req, res, { form: "contact", outcome: "invalid" })) return;
       return res.status(400).json({ error: "Invalid email address" });
     }
 
     if (!['vienna', 'graz'].includes(normalizedLocation)) {
+      if (sendNativeFormResponse(req, res, { form: "contact", outcome: "invalid" })) return;
       return res.status(400).json({ error: "Invalid location" });
     }
 
     const contactRequest = {
-      name: String(name).trim(),
-      email: String(email).trim(),
-      phone: String(phone).trim(),
+      name,
+      email,
+      phone,
       location: normalizedLocation,
-      subject: String(subject).trim(),
-      message: String(message).trim(),
+      subject,
+      message,
     };
 
     const recipient = normalizedLocation === "graz" ? "office.stmk@putzelf.com" : "office@putzelf.com";
     await sendContactRequest(contactRequest, recipient);
 
+    if (sendNativeFormResponse(req, res, { form: "contact", outcome: "success" })) return;
     return res.status(201).json({ ok: true, recipient });
   } catch (err) {
     console.error("Contact form error:", err && (err.stack || err.message || err));
+    if (sendNativeFormResponse(req, res, { form: "contact", outcome: "error" })) return;
     return res.status(500).json({ error: "Failed to send contact request" });
   }
 });

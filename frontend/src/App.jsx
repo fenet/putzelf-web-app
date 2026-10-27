@@ -1,36 +1,37 @@
 // App.jsx
 import { Routes, Route, useLocation, Navigate, Outlet, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect } from "react";
 import { trackPageview } from "./lib/analytics";
 import i18n from "./i18n";
-import LandingAlternative from "./pages/LandingAlternative";
-import ServicesOverview from "./pages/ServicesOverview";
-import ServiceGeneric from "./pages/ServiceGeneric";
-import Contact from "./pages/Contact";
-import JobOpening from "./pages/JobOpening";
-import GetPartners from "./pages/GetPartners";
-import Home from "./pages/Home";
-import Order from "./pages/Order";
-import Imprint from "./pages/Imprint";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-// Profile page removed; redirects will send users elsewhere
 import Footer from "./components/Footer";
 import LogoHeader from "./components/LogoHeader";
-import NotFound from "./pages/NotFound";
-import PriceCalculator from "./pages/PriceCalculator";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Admin from "./pages/Admin";
-import { BlogPage, BlogPostPage } from "./pages/Blog";
 import { AuthProvider } from "./lib/auth";
 import { AdminRoute } from "./components/ProtectedRoute";
 import { getLocalizedPath } from "./lib/localeRoutes";
 import CookieConsent from "./components/CookieConsent";
 
+const LandingAlternative = lazy(() => import("./pages/LandingAlternative"));
+const ServicesOverview = lazy(() => import("./pages/ServicesOverview"));
+const ServiceGeneric = lazy(() => import("./pages/ServiceGeneric"));
+const Contact = lazy(() => import("./pages/Contact"));
+const JobOpening = lazy(() => import("./pages/JobOpening"));
+const GetPartners = lazy(() => import("./pages/GetPartners"));
+const Home = lazy(() => import("./pages/Home"));
+const Order = lazy(() => import("./pages/Order"));
+const Imprint = lazy(() => import("./pages/Imprint"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const PriceCalculator = lazy(() => import("./pages/PriceCalculator"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const Admin = lazy(() => import("./pages/Admin"));
+const BlogPage = lazy(() => import("./pages/Blog").then((module) => ({ default: module.BlogPage })));
+const BlogPostPage = lazy(() => import("./pages/Blog").then((module) => ({ default: module.BlogPostPage })));
+
 function LocaleBoundary({ locale }) {
   const location = useLocation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     i18n.changeLanguage(locale);
     if (typeof document !== "undefined") {
       document.documentElement.lang = locale;
@@ -46,7 +47,8 @@ function LegacyOrderRedirect() {
 }
 
 function LegacyRedirect({ to }) {
-  return <Navigate to={to} replace />;
+  const location = useLocation();
+  return <Navigate to={{ pathname: to, search: location.search, hash: location.hash }} replace />;
 }
 
 function Layout({ children }) {
@@ -104,7 +106,7 @@ export default function App() {
   return (
     <AuthProvider>
       <CookieConsent />
-      <Routes>
+      <Suspense fallback={null}><Routes>
         <Route path="/" element={<LegacyRedirect to="/de/" />} />
         <Route path="/landing-alt" element={<LegacyRedirect to="/de/" />} />
         <Route path="/services" element={<LegacyRedirect to="/de/services" />} />
@@ -119,6 +121,7 @@ export default function App() {
         <Route path="/imprint" element={<LegacyRedirect to="/de/impressum" />} />
         <Route path="/book" element={<LegacyRedirect to="/de/booking" />} />
         <Route path="/search" element={<NotFound />} />
+        {/* Profile is retired and resolves to the booking route. */}
         <Route path="/profile" element={<LegacyRedirect to="/de/booking" />} />
         <Route path="/calculator" element={<LegacyRedirect to="/de/calculator" />} />
         <Route path="/blog" element={<LegacyRedirect to="/de/blog" />} />
@@ -132,6 +135,10 @@ export default function App() {
           <Route index element={<LandingAlternative />} />
           <Route path="landing-alt" element={<LegacyRedirect to="/de/" />} />
           <Route path="services" element={<ServicesOverview />} />
+          <Route path="services/wien" element={<LegacyRedirect to="/de/services" />} />
+          <Route path="services/graz" element={<LegacyRedirect to="/de/services" />} />
+          <Route path="wien/services" element={<LegacyRedirect to="/de/services" />} />
+          <Route path="graz/services" element={<LegacyRedirect to="/de/services" />} />
           {/* Removed specific service pages per request */}
           {/* new private service routes */}
           <Route path="services/unterhaltsreinigung" element={<ServiceGeneric />} />
@@ -173,6 +180,8 @@ export default function App() {
           <Route index element={<LandingAlternative />} />
           <Route path="landing-alt" element={<LegacyRedirect to="/en/" />} />
           <Route path="services" element={<ServicesOverview />} />
+          <Route path="vienna/services" element={<LegacyRedirect to="/en/services" />} />
+          <Route path="graz/services" element={<LegacyRedirect to="/en/services" />} />
           {/* Removed specific service pages per request */}
           {/* new private service routes (en) */}
           <Route path="services/maintenance-cleaning" element={<ServiceGeneric />} />
@@ -209,7 +218,7 @@ export default function App() {
         </Route>
         {/* Top-level fallback to localized 404 */}
         <Route path="*" element={<NotFound />} />
-      </Routes>
+      </Routes></Suspense>
     </AuthProvider>
   );
 }

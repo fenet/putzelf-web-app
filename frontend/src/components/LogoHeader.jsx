@@ -15,9 +15,9 @@ export default function LogoHeader() {
 
 
       {/* Bigger text */}
-      <h1 className="text-6xl font-extrabold text-black">
+      <span className="text-6xl font-extrabold text-black">
         Putz<span style={{ color: "#0097b2" }}>ELF</span>
-      </h1>
+      </span>
       <LanguageSwitcher className="mt-3" compact />
     </header>
   );

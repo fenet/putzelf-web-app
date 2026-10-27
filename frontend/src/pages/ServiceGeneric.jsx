@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import Seo from "../components/Seo";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import ResponsiveServiceImage from "../components/ResponsiveServiceImage";
 import GoogleReviewsCarousel from "../components/GoogleReviewsCarousel";
 import ExpectationsSection from "../components/ExpectationsSection";
 import { getRouteKeyFromPathname, getLocalizedPath, getLocalizedAlternates, getLocaleFromPathname } from "../lib/localeRoutes";
@@ -236,9 +237,7 @@ export default function ServiceGeneric() {
       }
     : null;
 
-  const serviceLabel = isWindowService
-    ? locale === "de" ? "Fensterreinigung" : "Window Cleaning"
-    : locale === "de" ? "Service" : "Service";
+  const serviceLabel = isWindowService ? t("services.ui.windowCleaning") : t("services.ui.service");
   const relatedServiceGroup = key?.startsWith("business")
     ? ["businessMaintenance", "businessDeep", "businessStaircase", "businessConstruction", "businessWindow", "businessIndustrial"]
     : ["privateMaintenance", "privateDeep", "privateResidential", "privateConstruction", "privateWindow", "privateIndustrial"];
@@ -265,17 +264,17 @@ export default function ServiceGeneric() {
           pageSchemas={[serviceJsonLd, ...(faqJson ? [faqJson] : [])]}
           mainEntityId={serviceJsonLd["@id"]}
           breadcrumbs={[
-            { name: locale === "de" ? "Startseite" : "Home", url: getLocalizedPath(locale, "home") },
-            { name: "Services", url: getLocalizedPath(locale, "servicesOverview") },
+            { name: t("services.ui.home"), url: getLocalizedPath(locale, "home") },
+            { name: t("nav.services"), url: getLocalizedPath(locale, "servicesOverview") },
             { name: title, url: canonical },
           ]}
         />
 
-        <nav aria-label={locale === "de" ? "Brotkrümelnavigation" : "Breadcrumb"} className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+        <nav aria-label={t("services.ui.breadcrumb")} className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
           <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
-            <li><Link to={getLocalizedPath(locale, "home")} className="hover:text-[#0097b2]">{locale === "de" ? "Startseite" : "Home"}</Link></li>
+            <li><Link to={getLocalizedPath(locale, "home")} className="hover:text-[#0097b2]">{t("services.ui.home")}</Link></li>
             <li aria-hidden="true">/</li>
-            <li><Link to={getLocalizedPath(locale, "servicesOverview")} className="hover:text-[#0097b2]">{locale === "de" ? "Services" : "Services"}</Link></li>
+            <li><Link to={getLocalizedPath(locale, "servicesOverview")} className="hover:text-[#0097b2]">{t("nav.services")}</Link></li>
             <li aria-hidden="true">/</li>
             <li aria-current="page" className="font-medium text-slate-700">{title}</li>
           </ol>
@@ -296,10 +295,24 @@ export default function ServiceGeneric() {
                 {title}
               </h1>
               {description ? <p className="mt-5 max-w-lg text-base leading-7 text-slate-600 sm:text-lg">{description}</p> : null}
+              <div className="mt-6 inline-flex max-w-lg items-start gap-3 rounded-2xl border border-cyan-900/10 bg-white/75 px-4 py-3 shadow-sm">
+                <span aria-hidden="true" className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-[#0097b2]" />
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-cyan-800">{t("services.ui.coverageLabel")}</p>
+                  <p className="mt-1 text-sm leading-6 text-slate-700">{t("services.ui.coverageText")}</p>
+                </div>
+              </div>
             </div>
 
             <div className="overflow-hidden rounded-[30px] bg-white/40 shadow-[0_30px_80px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70">
-              <img src={heroImage} alt={title} className="h-[420px] w-full object-cover sm:h-[500px]" />
+              <ResponsiveServiceImage
+                src={heroImage}
+                alt={title}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                loading="eager"
+                fetchPriority="high"
+                className="h-[420px] w-full object-cover sm:h-[500px]"
+              />
             </div>
           </div>
         </section>
@@ -307,7 +320,7 @@ export default function ServiceGeneric() {
         <section className="border-t border-slate-200 bg-white">
           <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
             <h2 className="text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
-              {t(`${tBase}.painTitle`, { defaultValue: locale === "de" ? "Die Herausforderung" : "The challenge" })}
+              {t(`${tBase}.painTitle`, { defaultValue: t("services.ui.challenge") })}
             </h2>
 
             <ol className="space-y-5">
@@ -324,13 +337,19 @@ export default function ServiceGeneric() {
         <section className="border-t border-slate-200 bg-[#eef8f8]">
           <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
             <div className="overflow-hidden rounded-[30px] ring-1 ring-slate-200/60">
-              <img src={solutionImage} alt={title} className="h-[420px] w-full object-cover sm:h-[500px]" />
+              <ResponsiveServiceImage
+                src={solutionImage}
+                alt={title}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                loading="lazy"
+                className="h-[420px] w-full object-cover sm:h-[500px]"
+              />
             </div>
 
             <div className="flex flex-col justify-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-700">{locale === "de" ? "Unsere Lösung" : "Our approach"}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-700">{t("services.ui.approach")}</p>
               <h2 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
-                {t(`${tBase}.solutionTitle`, { defaultValue: locale === "de" ? "Sauberer Ablauf. Mehr Klarheit." : "Clear process. Better results." })}
+                {t(`${tBase}.solutionTitle`)}
               </h2>
 
               <ul className="mt-8 space-y-4">
@@ -351,7 +370,7 @@ export default function ServiceGeneric() {
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="mb-8 flex items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{t("services.whatWeOffer", { defaultValue: locale === "de" ? "Leistungsumfang" : "Service scope" })}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{t("services.whatWeOffer")}</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
                   {title}
                 </h2>
@@ -363,7 +382,7 @@ export default function ServiceGeneric() {
                 <div key={feature} className="pt-1">
                   <div className="mb-4 flex items-center gap-3">
                     <span className="h-2.5 w-2.5 rounded-full bg-cyan-600" aria-hidden="true" />
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{locale === "de" ? "Leistung" : "Service"}</span>
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{t("services.ui.service")}</span>
                   </div>
                   <p className="max-w-xs text-lg leading-7 text-slate-700">{feature}</p>
                 </div>
@@ -376,9 +395,9 @@ export default function ServiceGeneric() {
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="mb-10 flex items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{locale === "de" ? "Ablauf" : "Process"}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{t("services.ui.process")}</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
-                  {t(`${tBase}.processTitle`, { defaultValue: locale === "de" ? "So funktioniert die Zusammenarbeit" : "How we work together" })}
+                  {t(`${tBase}.processTitle`)}
                 </h2>
               </div>
             </div>
@@ -418,7 +437,7 @@ export default function ServiceGeneric() {
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="mb-8 flex items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{locale === "de" ? "Bilder" : "Gallery"}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{t("services.ui.gallery")}</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">{title}</h2>
               </div>
             </div>
@@ -426,11 +445,24 @@ export default function ServiceGeneric() {
             <div className="overflow-hidden rounded-[28px] bg-slate-100 ring-1 ring-slate-200/70">
               <div className="flex gap-4 overflow-x-auto px-3 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <div className="flex min-w-max gap-4 animate-[marquee_26s_linear_infinite]">
-                  {[...galleryImages, ...galleryImages].map((image, index) => (
-                    <div key={`${image}-${index}`} className="relative h-[260px] w-[360px] shrink-0 overflow-hidden rounded-[22px] bg-slate-200 sm:h-[300px] sm:w-[430px]">
-                      <img src={image} alt={title} className="h-full w-full object-cover" />
-                    </div>
-                  ))}
+                  {[...galleryImages, ...galleryImages].map((image, index) => {
+                    const isDecorativeClone = index >= galleryImages.length;
+                    return (
+                      <div
+                        key={`${image}-${index}`}
+                        aria-hidden={isDecorativeClone ? "true" : undefined}
+                        className="relative h-[260px] w-[360px] shrink-0 overflow-hidden rounded-[22px] bg-slate-200 sm:h-[300px] sm:w-[430px]"
+                      >
+                        <ResponsiveServiceImage
+                          src={image}
+                          alt={isDecorativeClone ? "" : title}
+                          sizes="(min-width: 640px) 430px, 360px"
+                          loading="lazy"
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -449,9 +481,9 @@ export default function ServiceGeneric() {
           <section className="border-t border-slate-200 bg-white">
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
               <div className="mb-10">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{locale === "de" ? "FAQ" : "FAQ"}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{t("services.ui.faq")}</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
-                  {t(`${tBase}.faqTitle`, { defaultValue: locale === "de" ? "Häufige Fragen" : "Frequently asked questions" })}
+                  {t(`${tBase}.faqTitle`)}
                 </h2>
               </div>
 
@@ -471,7 +503,7 @@ export default function ServiceGeneric() {
           <section className="border-t border-slate-200 bg-white">
             <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-semibold tracking-[-0.04em] text-slate-900">
-                {locale === "de" ? "Weitere Services" : "Related services"}
+                {t("services.relatedTitle")}
               </h2>
               <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {relatedServices.map((service) => (
@@ -487,12 +519,12 @@ export default function ServiceGeneric() {
         <section className="bg-[#0b2f39] text-white">
           <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-16 sm:px-6 lg:flex-row lg:items-center lg:px-8">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-200">{locale === "de" ? "Kontakt" : "Get in touch"}</p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.05em] sm:text-5xl">{t("services.cta", { defaultValue: locale === "de" ? "Angebot anfordern" : "Request an Offer" })}</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-200">{t("services.ui.contact")}</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.05em] sm:text-5xl">{t("services.cta")}</h2>
             </div>
 
             <a href={getLocalizedPath(locale, "booking")} className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-cyan-50">
-              {t("services.cta", { defaultValue: locale === "de" ? "Jetzt anfragen" : "Request now" })}
+              {t("services.cta")}
             </a>
           </div>
         </section>

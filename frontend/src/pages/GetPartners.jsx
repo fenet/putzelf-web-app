@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Building2, Handshake, MapPin } from "lucide-react";
 import Seo from "../components/Seo";
 
@@ -10,9 +10,11 @@ import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from 
 const copy = {
   de: {
     title: "Partner werden",
-    description: "Partnerschaften mit PutzELF: Bewerben Sie sich als Subunternehmer oder Geschäftspartner.",
+    description: "Informationen für Reinigungsunternehmen, selbständige Reinigungskräfte und Kooperationspartner in Wien und Graz.",
     intro: "Wir freuen uns auf Partnerschaften mit Unternehmen und Subunternehmern. Bitte füllen Sie das Formular aus.",
     fields: { name: "Ansprechpartner", company: "Firmenname", address: "Adresse", email: "E-Mail", phone: "Telefon", message: "Nachricht" },
+    privacyNotice: "Wir verwenden Ihre Angaben zur Bearbeitung Ihrer Partnerschaftsanfrage. Einzelheiten finden Sie in unserer",
+    privacyPolicyLink: "Datenschutzerklärung",
     submit: "Partnerschaftsanfrage senden",
     loading: "Wird gesendet…",
     success: "Anfrage gesendet — wir melden uns bei Ihnen.",
@@ -20,9 +22,11 @@ const copy = {
   },
   en: {
     title: "Become a Partner",
-    description: "Partnerships with PutzELF: apply as a subcontractor or business partner.",
+    description: "Information for cleaning companies, independent cleaners and cooperation partners in Vienna and Graz.",
     intro: "We welcome partnerships with companies and subcontractors. Please fill out the form and we will get back to you.",
     fields: { name: "Name", company: "Company", address: "Address", email: "Email", phone: "Phone", message: "Message" },
+    privacyNotice: "We use your details to handle your partnership request. For details, see our",
+    privacyPolicyLink: "Privacy Policy",
     submit: "Send Partnership Request",
     loading: "Sending…",
     success: "Request sent — we will contact you.",
@@ -67,7 +71,7 @@ export default function GetPartners() {
     <div className="min-h-screen bg-[#f5f7f7] text-slate-900">
       <Navbar />
       <Seo
-        title={locale === "de" ? "Partner werden – PutzELF" : "Become a Partner – PutzELF"}
+        title={locale === "de" ? "Partner von PutzELF werden" : "Become a PutzELF Partner"}
         description={c.description}
         path={getLocalizedPath(locale, "getPartners")}
         lang={locale}
@@ -126,7 +130,8 @@ export default function GetPartners() {
           </section>
 
           <section className="rounded-[30px] border border-slate-200 bg-[#f8fbfc] p-5 sm:p-7 lg:p-8">
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} method="post" action="/api/partners/inquiry" className="space-y-4">
+              <input type="hidden" name="locale" value={locale} />
               <div>
                 <label className="mb-2 block text-sm font-medium text-slate-700">
                   {locale === "de" ? "Standort" : "Location"}
@@ -191,6 +196,7 @@ export default function GetPartners() {
                 <textarea
                   name="message"
                   rows={5}
+                  required
                   className="block w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                 />
               </div>
@@ -208,6 +214,13 @@ export default function GetPartners() {
                   {status === "success" && <span className="text-emerald-600">{c.success}</span>}
                   {status === "error" && <span className="text-red-600">{c.error}</span>}
                 </div>
+                <p className="mt-3 text-xs leading-5 text-slate-500">
+                  {c.privacyNotice}{" "}
+                  <Link to={getLocalizedPath(locale, "privacy")} className="text-sky-700 underline underline-offset-2">
+                    {c.privacyPolicyLink}
+                  </Link>
+                  .
+                </p>
               </div>
             </form>
           </section>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
-import Navbar, { Unternehmen, Privatkunden, copy as navCopy } from "../components/Navbar";
+import Navbar, { Unternehmen, Privatkunden } from "../components/Navbar";
 import Footer from "../components/Footer";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 import { useTranslation } from "react-i18next";
@@ -46,8 +46,8 @@ export default function ServicesOverview() {
       <Navbar />
       <main className="max-w-6xl mx-auto px-6 py-12">
       <Seo
-        title={locale === "de" ? "Unsere Services – PutzELF" : "Our Services – PutzELF"}
-        description={locale === "de" ? "Reinigungsservices für Unternehmen und Privatkunden bei PutzELF." : "Cleaning services for businesses and private customers at PutzELF."}
+        title={locale === "de" ? "Reinigungsleistungen Wien & Graz | PutzELF" : "Cleaning Services Vienna & Graz | PutzELF"}
+        description={locale === "de" ? "Unterhalts-, Grund-, Treppenhaus- sowie Glas- und Rahmenreinigung für Unternehmen in Wien und Graz." : "Maintenance, deep, staircase, glass and frame cleaning for businesses in Vienna and Graz."}
         path={getLocalizedPath(locale, "servicesOverview")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}
@@ -62,7 +62,7 @@ export default function ServicesOverview() {
             <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900">{t(`services.overview.title`)}</h1>
             <p className="mt-3 text-slate-700 max-w-2xl">{t(`services.overview.subtitle`)}</p>
             <div className="mt-4">
-              <Link to={getLocalizedPath(locale, "booking")} className="inline-block bg-[#0097b2] text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:bg-[#007f95]">{navCopy[locale]?.book || t('book') }</Link>
+              <Link to={getLocalizedPath(locale, "booking")} className="inline-block bg-[#0097b2] text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:bg-[#007f95]">{t("nav.book")}</Link>
             </div>
           </div>
           <div className="w-48 h-48 hidden md:flex items-center justify-center bg-slate-100 rounded-lg border border-slate-200">
@@ -83,7 +83,7 @@ export default function ServicesOverview() {
           >
             <div className="flex items-center gap-3">
               <Briefcase className="w-6 h-6 text-[#0097b2]" />
-              <span className="font-semibold text-slate-800">{navCopy[locale]?.company || t('company')}</span>
+              <span className="font-semibold text-slate-800">{t("nav.company")}</span>
             </div>
             <ChevronDown className={`w-5 h-5 transition-transform ${openGroup === 'business' ? 'rotate-180' : ''}`} />
           </button>
@@ -92,7 +92,7 @@ export default function ServicesOverview() {
               {Unternehmen.map((s) => {
                 const raw = t('services.overview.cards', { returnObjects: true }) || [];
                 const card = raw.find((c) => c.key === s.key) || {};
-                const title = card.title || (navCopy[locale] && navCopy[locale][s.key]) || s.key;
+                const title = card.title || t(`nav.${s.key}`);
                 const desc = card.desc || '';
                 const Icon = iconMap[s.key] || Building2;
                 return (
@@ -125,7 +125,7 @@ export default function ServicesOverview() {
           >
             <div className="flex items-center gap-3">
               <Home className="w-6 h-6 text-[#0097b2]" />
-              <span className="font-semibold text-slate-800">{navCopy[locale]?.private || t('private')}</span>
+              <span className="font-semibold text-slate-800">{t("nav.private")}</span>
             </div>
             <ChevronDown className={`w-5 h-5 transition-transform ${openGroup === 'private' ? 'rotate-180' : ''}`} />
           </button>
@@ -134,7 +134,7 @@ export default function ServicesOverview() {
               {Privatkunden.map((s) => {
                 const raw = t('services.overview.cards', { returnObjects: true }) || [];
                 const card = raw.find((c) => c.key === s.key) || {};
-                const title = card.title || (navCopy[locale] && navCopy[locale][s.key]) || s.key;
+                const title = card.title || t(`nav.${s.key}`);
                 const desc = card.desc || '';
                 const Icon = iconMap[s.key] || Home;
                 return (
