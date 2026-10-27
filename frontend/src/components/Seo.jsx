@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import StructuredData from "./StructuredData";
 import { buildSiteStructuredData, siteOrigin } from "../lib/seoStructuredData";
 
-const defaultImagePath = "/logo.png";
+const defaultImagePath = "/logo-resize.png";
 const brandName = "PutzELF";
 
 function formatTitle(value) {
@@ -39,7 +39,7 @@ export default function Seo({
   alternates,
   xDefaultPath,
   imagePath = defaultImagePath,
-  imageAlt = "PutzELF logo",
+  imageAlt = "PutzELF brand image",
   type = "website",
   noindex = false,
   pageSchemas = [],

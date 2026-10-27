@@ -591,7 +591,7 @@ function verifyCrawlableLinkGraph() {
         && serviceHrefs.includes(`/${locale}${routeRegistry.servicesOverview[locale]}`);
       if (!hasBreadcrumb) throw new Error(`${servicePath} - initial HTML is missing linked home/services breadcrumbs`);
 
-      const relatedSection = serviceHtml.match(/<h2\b[^>]*>(?:Weitere Services|Related services)<\/h2>([\s\S]*?)<\/section>/i)?.[1] || "";
+      const relatedSection = serviceHtml.match(/<h3\b[^>]*>(?:Weitere Services|Related services)<\/h3>([\s\S]*?)<\/section>/i)?.[1] || "";
       if (!extractAnchorHrefs(relatedSection).some((href) => href.startsWith(`/${locale}/services/`))) {
         throw new Error(`${servicePath} - initial HTML is missing related-service links`);
       }

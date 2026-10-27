@@ -43,6 +43,7 @@ export default function ServiceGeneric() {
   const tBase = pathSegments.join(".");
 
   const title = t(`${tBase}.title`);
+  const pageHeading = t(`${tBase}.pageHeading`, { defaultValue: title });
   const description = t(`${tBase}.description`);
   const features = t(`${tBase}.features`, { returnObjects: true }) || [];
   const painPoints = t(`${tBase}.painPoints`, { returnObjects: true }) || [];
@@ -320,7 +321,7 @@ export default function ServiceGeneric() {
         <section className="border-t border-slate-200 bg-white">
           <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
             <h2 className="text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
-              {t(`${tBase}.painTitle`, { defaultValue: t("services.ui.challenge") })}
+              {pageHeading}
             </h2>
 
             <ol className="space-y-5">
@@ -348,9 +349,9 @@ export default function ServiceGeneric() {
 
             <div className="flex flex-col justify-center">
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-700">{t("services.ui.approach")}</p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
+              <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
                 {t(`${tBase}.solutionTitle`)}
-              </h2>
+              </h3>
 
               <ul className="mt-8 space-y-4">
                 {solutionPoints.map((point) => (
@@ -370,10 +371,9 @@ export default function ServiceGeneric() {
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="mb-8 flex items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{t("services.whatWeOffer")}</p>
-                <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
-                  {title}
-                </h2>
+                <h3 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
+                  {t("services.whatWeOffer")}
+                </h3>
               </div>
             </div>
 
@@ -395,10 +395,9 @@ export default function ServiceGeneric() {
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="mb-10 flex items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{t("services.ui.process")}</p>
-                <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
+                <h3 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
                   {t(`${tBase}.processTitle`)}
-                </h2>
+                </h3>
               </div>
             </div>
 
@@ -437,8 +436,7 @@ export default function ServiceGeneric() {
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="mb-8 flex items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{t("services.ui.gallery")}</p>
-                <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">{title}</h2>
+                <h3 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">{t("services.ui.gallery")}</h3>
               </div>
             </div>
 
@@ -482,9 +480,9 @@ export default function ServiceGeneric() {
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
               <div className="mb-10">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{t("services.ui.faq")}</p>
-                <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
+                <h3 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
                   {t(`${tBase}.faqTitle`)}
-                </h2>
+                </h3>
               </div>
 
               <div className="divide-y divide-slate-200">
@@ -502,9 +500,9 @@ export default function ServiceGeneric() {
         {relatedServices.length > 0 && (
           <section className="border-t border-slate-200 bg-white">
             <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-semibold tracking-[-0.04em] text-slate-900">
+              <h3 className="text-2xl font-semibold tracking-[-0.04em] text-slate-900">
                 {t("services.relatedTitle")}
-              </h2>
+              </h3>
               <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {relatedServices.map((service) => (
                   <Link key={service.key} to={getLocalizedPath(locale, service.key)} className="rounded-xl border border-slate-200 bg-[#f7f7f5] p-4 font-medium text-slate-800 transition hover:border-cyan-300 hover:text-[#0097b2]">
@@ -520,7 +518,7 @@ export default function ServiceGeneric() {
           <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-16 sm:px-6 lg:flex-row lg:items-center lg:px-8">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-200">{t("services.ui.contact")}</p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.05em] sm:text-5xl">{t("services.cta")}</h2>
+              <h3 className="mt-3 text-3xl font-semibold tracking-[-0.05em] sm:text-5xl">{t("services.cta")}</h3>
             </div>
 
             <a href={getLocalizedPath(locale, "booking")} className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-cyan-50">

@@ -40,8 +40,8 @@ const content = {
   en: {
     navCta: "Start an Inquiry",
     heroTitle: "Professional Cleaning in Vienna and Graz",
-    heroTitleLine2: "For offices, restaurants, and retail spaces.",
-    heroSubtitle: "Reliable cleaning for offices, restaurants, and retail spaces in Vienna and Graz, with consistent quality and flexible schedules.",
+    heroTitleLine2: "For businesses of every kind.",
+    heroSubtitle: "Reliable cleaning for businesses in Vienna and Graz, with consistent quality and flexible schedules.",
     heroPrimaryCta: "Start an Inquiry",
     heroSecondaryCta: "Start an Inquiry",
     trust: ["4.9/5 Average Rating"],
@@ -50,18 +50,18 @@ const content = {
     testimonials: [
       {
         quote:
-          "Always on time, always spotless. Our office has never looked better.",
-        author: "Operations Manager, Vienna",
+          "Always on time, always spotless. Our premises have never looked better.",
+        author: "Business Client, Vienna",
       },
       {
         quote:
           "Reliable team and clear communication. Exactly what we needed.",
-        author: "Restaurant Owner, 3rd District",
+        author: "Business Client, Graz",
       },
       {
         quote:
           "Flexible scheduling and quality work every single visit.",
-        author: "Retail Store Lead, Simmering",
+        author: "Business Client, Simmering",
       },
     ],
     problemTitle: "Why Businesses Switch to PutzELF",
@@ -77,7 +77,7 @@ const content = {
     ],
     servicesTitle: "Our Business Cleaning Services",
     services: [
-      { key: "businessMaintenance", title: "Maintenance cleaning", desc: "Scheduled care for offices and commercial spaces." },
+      { key: "businessMaintenance", title: "Maintenance cleaning", desc: "Scheduled cleaning tailored to your business premises." },
       { key: "businessDeep", title: "Deep cleaning", desc: "Detailed cleaning for heavier soiling and one-time needs." },
       { key: "businessStaircase", title: "Staircase cleaning", desc: "Reliable upkeep for shared building areas." },
       { key: "businessConstruction", title: "Construction cleaning", desc: "Rough and final cleaning after building work." },
@@ -123,9 +123,9 @@ const content = {
   de: {
     navCta: "Anfrage starten",
     heroTitle: "Professionelle Reinigung in Wien und Graz:",
-    heroTitleLine2: "Für Büro, Gastro und Praxis.",
+    heroTitleLine2: "Für Unternehmen jeder Art.",
     heroSubtitle:
-      "Zuverlässige Unterhaltsreinigung für Büro, Gastro und Praxis in Wien und Graz – mit gleichbleibender Qualität und flexiblen Zeiten.",
+      "Zuverlässige Reinigung für Unternehmen in Wien und Graz – mit gleichbleibender Qualität und flexiblen Zeiten.",
     heroPrimaryCta: "Anfrage starten",
     heroSecondaryCta: "Anfrage starten",
     trust: ["4,9/5 Durchschnittsbewertung"],
@@ -133,16 +133,16 @@ const content = {
     socialSubtitle: "Echtes Feedback von Unternehmen, die wöchentlich auf uns setzen.",
     testimonials: [
       {
-        quote: "Immer pünktlich, immer sauber. Unser Büro war noch nie so gepflegt.",
-        author: "Operations Manager, Wien",
+        quote: "Immer pünktlich, immer sauber. Unsere Räumlichkeiten waren noch nie so gepflegt.",
+        author: "Geschäftskund:in, Wien",
       },
       {
         quote: "Zuverlässiges Team und klare Kommunikation. Genau das, was wir brauchten.",
-        author: "Restaurantinhaber, 3. Bezirk",
+        author: "Geschäftskund:in, Graz",
       },
       {
         quote: "Flexible Termine und konstant hohe Qualität bei jedem Einsatz.",
-        author: "Filialleitung, Simmering",
+        author: "Geschäftskund:in, Simmering",
       },
     ],
     problemTitle: "Warum Unternehmen zu PutzELF wechseln",
@@ -158,7 +158,7 @@ const content = {
     ],
     servicesTitle: "Unsere Reinigungsleistungen für Unternehmen",
     services: [
-      { key: "businessMaintenance", title: "Unterhaltsreinigung", desc: "Geplante Pflege für Büros und gewerbliche Flächen." },
+      { key: "businessMaintenance", title: "Unterhaltsreinigung", desc: "Planbare Reinigung, abgestimmt auf Ihre Unternehmensräume." },
       { key: "businessDeep", title: "Grundreinigung", desc: "Gründliche Reinigung bei stärkerer Verschmutzung und einmaligem Bedarf." },
       { key: "businessStaircase", title: "Stiegenhausreinigung", desc: "Zuverlässige Pflege gemeinschaftlicher Gebäudebereiche." },
       { key: "businessConstruction", title: "Bauendreinigung", desc: "Grob- und Feinreinigung nach Bauarbeiten." },
@@ -229,9 +229,7 @@ const navCopy = {
     private: "Privatkunden",
     businessNote: "Für Unternehmen",
     privateNote: "Für Privatkunden",
-    officeCleaning: "Büroreinigung",
     deepCleaning: "Tiefenreinigung",
-    restaurantCleaning: "Restaurantreinigung",
     /* oneTimeCleaning removed */
     permanentCleaning: "Regelmäßige Reinigung",
     wienServices: "Services in Wien",
@@ -246,9 +244,7 @@ const navCopy = {
     private: "Private Customers",
     businessNote: "For businesses",
     privateNote: "For private customers",
-    officeCleaning: "Office Cleaning",
     deepCleaning: "Deep Cleaning",
-    restaurantCleaning: "Restaurant Cleaning",
     /* oneTimeCleaning removed */
     permanentCleaning: "Permanent Cleaning",
     wienServices: "Vienna Services",
@@ -280,11 +276,11 @@ export default function LandingAlternative() {
   const closeMenu = () => { clearTimeout(timerRef.current); timerRef.current = setTimeout(() => setOpen(false), 150); };
 
   const seoTitle = lang === "de"
-    ? "Reinigungsfirma Wien & Graz – Büro- & Unterhaltsreinigung | PutzELF"
-    : "Commercial Cleaning Vienna & Graz | PutzELF";
+    ? "Reinigung für Unternehmen in Wien & Graz | PutzELF"
+    : "Business Cleaning Vienna & Graz | PutzELF";
   const seoDescription = lang === "de"
-    ? "Zuverlässige Büro- und Unterhaltsreinigung für Unternehmen in Wien und Graz. Klare Abläufe, feste Ansprechpartner und kostenlose Beratung."
-    : "Reliable office and maintenance cleaning for businesses in Vienna and Graz, with clear routines, consistent contacts and quality checks.";
+    ? "Zuverlässige Reinigung für Unternehmen in Wien und Graz. Klare Abläufe, feste Ansprechpartner und kostenlose Beratung."
+    : "Reliable cleaning for businesses in Vienna and Graz, with clear routines, consistent contacts and quality checks.";
 
   const serviceLinks = [
     { key: "servicesOverview", label: lang === "de" ? "Alle Leistungen" : "All services" },
@@ -558,7 +554,7 @@ export default function LandingAlternative() {
               <div>
                 <h4 className="text-xl font-bold">Graz</h4>
                 <p className="mt-1 text-sm font-medium text-[#0097b2]">
-                  {lang === "de" ? "Graz-Filiale" : "Graz branch"}
+                  {lang === "de" ? "Filiale" : "Branch"}
                 </p>
                 <address className="mt-2 not-italic leading-relaxed text-slate-700">
                   Waagner-Biro-Straße 47<br />

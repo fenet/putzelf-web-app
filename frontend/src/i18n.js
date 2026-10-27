@@ -205,6 +205,7 @@ const resources = {
             ],
             maintenance: {
               title: "Home Maintenance Cleaning",
+              pageHeading: "A reliable cleaning routine built around your home",
               description: "Regular, dependable cleaning for private homes — scheduled to match your rhythm and priorities.",
               features: ["Room-by-room checklists", "Kitchen & bathroom care", "Flexible appointment windows"],
               painTitle: "Typical household challenges",
@@ -229,6 +230,7 @@ const resources = {
             },
             deep: {
               title: "Deep Cleaning",
+              pageHeading: "A detailed clean for stubborn dirt and renovation residue",
               description: "Intensive cleaning for stubborn dirt, residue and areas that need extra care.",
               features: ["Thorough floor and surface cleaning", "Descaling and sanitary care", "Detailed kitchen and bathroom cleaning"],
               painTitle: "When your home needs a deeper level of care",
@@ -253,6 +255,7 @@ const resources = {
             },
             residential: {
               title: "Residential Cleaning",
+              pageHeading: "Thoughtful cleaning for apartments and family homes",
               description: "Careful cleaning for apartments, houses and family homes with a focus on comfort and cleanliness.",
               features: ["Dust removal and vacuuming", "Surface care and finishing touches", "Optional window cleaning"],
               painTitle: "When residential cleaning is useful",
@@ -315,6 +318,7 @@ const resources = {
           },
             construction: {
               title: "Post-Construction / Rough Cleaning",
+              pageHeading: "A clean, ready-to-use home after building work",
               description: "Cleaning after construction or renovation work, with a focus on debris, dust and visible residue.",
               features: ["Removal of debris and construction dust", "Fine cleaning after rough work", "Safe disposal of materials"],
               painTitle: "Why post-construction cleaning matters",
@@ -339,6 +343,7 @@ const resources = {
             },
             window: {
               title: "Window & Frame Cleaning",
+              pageHeading: "Clear windows and cared-for frames throughout your home",
               description: "Professional cleaning of glass surfaces and frames for crystal-clear views and a well-kept appearance.",
               features: ["Cleaning of interior and exterior windows", "Frame and groove cleaning", "Optional preparation for repainting or renovation"],
               painTitle: "Why professional window cleaning is worthwhile",
@@ -363,6 +368,7 @@ const resources = {
             },
             industrial: {
               title: "Industrial Cleaning & Machinery",
+              pageHeading: "Careful cleaning for machinery and industrial surfaces",
               description: "Specialised cleaning for machinery, production spaces and industrial operating areas.",
               features: ["Machine surface cleaning", "Safe working procedures", "Removal of production residue"],
               painTitle: "Typical challenges in industrial cleaning",
@@ -397,6 +403,7 @@ const resources = {
             ],
             maintenance: {
                 title: "Commercial Maintenance Cleaning",
+                pageHeading: "Consistent cleaning routines for business premises",
                 description: "Recurring cleaning for offices and commercial spaces with agreed routines, clear responsibilities and documented quality checks.",
                 features: [
                   "Workplace & communal area cleaning",
@@ -434,6 +441,7 @@ const resources = {
             },
             deep: {
               title: "Commercial Deep Cleaning",
+              pageHeading: "Intensive cleaning for busy commercial spaces",
               description: "Comprehensive deep cleaning for offices, retail spaces and commercial sites with higher upkeep needs.",
               features: ["Intensive floor and surface cleaning", "Carpet and upholstery care", "Disinfection of contact points"],
               painTitle: "When commercial deep cleaning is needed",
@@ -458,6 +466,7 @@ const resources = {
             },
             staircase: {
               title: "Staircase Cleaning",
+              pageHeading: "Scheduled care for stairwells and shared building areas",
               description: "Regular upkeep and cleaning of stairwells, corridors and shared areas.",
               features: ["Cleaning of steps and rails", "Care for common areas", "Waste room and basement areas included"],
               painTitle: "Why staircase cleaning is important",
@@ -482,6 +491,7 @@ const resources = {
             },
             construction: {
               title: "Post-Construction / Rough Cleaning (Commercial)",
+              pageHeading: "A planned clean for commercial project handovers",
               description: "Cleaning after construction or renovation work in commercial properties, with a focus on handover quality and safety.",
               features: ["Rough cleaning after construction", "Final cleaning before handover", "Removal of building residue"],
               painTitle: "When post-construction cleaning is necessary",
@@ -506,6 +516,7 @@ const resources = {
             },
             window: {
               title: "Window & Frame Cleaning (Commercial)",
+              pageHeading: "Clear glass and clean frames for business premises",
               description: "Professional cleaning of glass surfaces, facades and frames for visibility, safety and a polished appearance.",
               features: ["Facade and interior window cleaning", "Frame and joint care", "Special equipment where required"],
               painTitle: "Why professional glass cleaning matters",
@@ -530,6 +541,7 @@ const resources = {
             },
             industrial: {
               title: "Industrial Cleaning & Machinery (Commercial)",
+              pageHeading: "Documented cleaning for machinery and production areas",
               description: "Cleaning of industrial facilities and working areas, aligned with safety requirements and operational efficiency.",
               features: ["Machine cleaning", "Production area cleaning", "Safe disposal of residue"],
               painTitle: "Typical challenges in industrial cleaning",
@@ -1210,6 +1222,7 @@ const resources = {
             ],
           maintenance: {
             title: "Unterhaltsreinigung",
+            pageHeading: "Regelmäßige Reinigung passend zu Ihrem Zuhause",
             description: "Regelmäßige Reinigung für Privathaushalte, abgestimmt auf Ihre Abläufe.",
             features: ["Regelmäßige Raumreinigung", "Reinigung von Küche und Bad", "Flexible Zeitfenster"],
             painTitle: "Wann eine Unterhaltsreinigung sinnvoll ist",
@@ -1234,6 +1247,7 @@ const resources = {
           },
           deep: {
             title: "Grundreinigung",
+            pageHeading: "Gründliche Pflege bei hartnäckigem Schmutz und Rückständen",
             description: "Tiefgehende Reinigung für schwer zugängliche Bereiche und hartnäckige Verschmutzungen.",
             features: ["Grundreinigung von Böden und Oberflächen", "Entkalkung und Sanitärpflege", "Intensive Küchenreinigung"],
             painTitle: "Wann eine Grundreinigung nötig ist",
@@ -1258,6 +1272,7 @@ const resources = {
           },
           residential: {
             title: "Wohnreinigung",
+            pageHeading: "Sorgfältige Reinigung für Wohnungen und Einfamilienhäuser",
             description: "Sorgfältige Reinigung von Wohnungen und Einfamilienhäusern.",
             features: ["Staubwischen und Saugen", "Oberflächenpflege", "Fensterreinigung (optional)"],
             painTitle: "Wann Wohnungsreinigung hilft",
@@ -1282,6 +1297,7 @@ const resources = {
           },
           construction: {
             title: "Bauendreinigung / Grobreinigung",
+            pageHeading: "Ein sauberes Zuhause nach Bau- und Renovierungsarbeiten",
             description: "Reinigung nach Bau- oder Renovierungsarbeiten, Entfernen von Bauschutt und Feinstaub.",
             features: ["Bauschutt- und Feinstaubentfernung", "Feinreinigung nach Grobreinigung", "Sichere Entsorgung"],
             painTitle: "Warum Bauendreinigung wichtig ist",
@@ -1306,6 +1322,7 @@ const resources = {
           },
           window: {
             title: "Glas- & Rahmenreinigung",
+            pageHeading: "Streifenfreie Fenster und gepflegte Rahmen für Ihr Zuhause",
             description: "Reinigung von Fenstern und Rahmen für ein streifenfreies Ergebnis.",
             features: ["Fenster innen & außen", "Rahmen- und Falzreinigung", "Optionaler Rahmenanstrich-Vorbereitung"],
             painTitle: "Warum professionelle Fensterreinigung sinnvoll ist",
@@ -1330,6 +1347,7 @@ const resources = {
           },
           industrial: {
             title: "Industriereinigung & Maschinen",
+            pageHeading: "Fachgerechte Reinigung von Maschinen und technischen Flächen",
             description: "Spezialisierte Reinigung für Maschinen und industrielle Bereiche (keine Wartung).",
             features: ["Maschinenoberflächenreinigung", "Sichere Reinigungsverfahren", "Entfernung von Produktionsrückständen"],
             painTitle: "Herausforderungen in der Industriereinigung",
@@ -1364,6 +1382,7 @@ const resources = {
           ],
           maintenance: {
             title: "Unterhaltsreinigung für Unternehmen",
+            pageHeading: "Verlässliche Reinigungsabläufe für Büros und Gewerbeflächen",
             description: "Regelmäßige, strukturierte Reinigung für Büros, Praxen und gewerbliche Flächen. Wir sorgen für hygienische Arbeitsbereiche, planbare Einsätze und transparente Qualitätskontrollen.",
             features: [
               "Reinigung von Arbeitsplätzen und Gemeinschaftsflächen",
@@ -1401,6 +1420,7 @@ const resources = {
           },
           deep: {
             title: "Grundreinigung (Gewerbe)",
+            pageHeading: "Intensive Pflege stark genutzter Geschäftsräume",
             description: "Umfassende Grundreinigung für Geschäftsräume und gewerbliche Flächen.",
             features: ["Intensive Bodenreinigung", "Teppich- und Polsterpflege", "Desinfektion von Kontaktflächen"],
             painTitle: "Wann eine Grundreinigung im Gewerbe nötig ist",
@@ -1425,6 +1445,7 @@ const resources = {
           },
           staircase: {
             title: "Treppenhausreinigung",
+            pageHeading: "Saubere Stiegenhäuser und Gemeinschaftsflächen im festen Rhythmus",
             description: "Regelmäßige Pflege und Reinigung von Treppenhäusern und Gemeinschaftsbereichen.",
             features: ["Treppenstufenreinigung", "Geländerpflege", "Müllraum- und Kellerreinigung"],
             painTitle: "Warum Treppenhausreinigung wichtig ist",
@@ -1449,6 +1470,7 @@ const resources = {
           },
           construction: {
             title: "Bauendreinigung / Grobreinigung (Gewerbe)",
+            pageHeading: "Geplante Bauendreinigung bis zur Übergabe gewerblicher Objekte",
             description: "Reinigung nach Bauarbeiten in gewerblichen Objekten.",
             features: ["Grobreinigung", "Feinreinigung nach Bau", "Entfernung von Baumaterialien"],
             painTitle: "Wann Bauendreinigung nötig ist",
@@ -1473,6 +1495,7 @@ const resources = {
           },
           window: {
             title: "Glas- & Rahmenreinigung (Gewerbe)",
+            pageHeading: "Klare Glasflächen und gepflegte Rahmen für Unternehmen",
             description: "Professionelle Glas- und Rahmenreinigung für Geschäftsfassaden und Innenbereiche.",
             features: ["Fassadenfenster", "Innen- und Außenreinigung", "Sicherheits- und Hebebühnenarbeiten (falls erforderlich)"],
             painTitle: "Warum Glasreinigung im Gewerbe wichtig ist",
@@ -1497,6 +1520,7 @@ const resources = {
           },
           industrial: {
             title: "Industriereinigung & Maschinen (Gewerbe)",
+            pageHeading: "Sichere, dokumentierte Reinigung von Maschinen und Produktionsflächen",
             description: "Reinigung in industriellen Umgebungen, abgestimmt auf Sicherheitsanforderungen.",
             features: ["Maschinenreinigung", "Produktionslinienreinigung", "Sichere Entsorgung von Rückständen"],
             painTitle: "Spezifische Herausforderungen in der Industriereinigung",

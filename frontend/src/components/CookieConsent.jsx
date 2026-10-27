@@ -57,9 +57,9 @@ export default function CookieConsent() {
               </div>
 
               <div className="flex-1">
-                <h2 id="cookie-heading" className="text-lg md:text-xl font-semibold text-gray-900">
+                <p id="cookie-heading" className="text-lg md:text-xl font-semibold text-gray-900">
                   {t("cookies.heading")}
-                </h2>
+                </p>
                 <p className="mt-2 text-sm text-gray-700">
                   <Trans
                     i18nKey="cookies.msg"
