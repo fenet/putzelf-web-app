@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navbar from "../components/Navbar";
 import Seo from "../components/Seo";
 import {
@@ -8,35 +9,20 @@ import {
   getLocaleFromPathname,
 } from "../lib/localeRoutes";
 
-const copy = {
-  de: {
-    title: "Ups! Hier ist nichts zu putzen. 🧹",
-    message:
-      "Diese Seite wurde leider nicht gefunden. Wir bringen Sie zurück zur Startseite.",
-    home: "Zur Startseite",
-    back: "Oder starten Sie Ihre Suche neu",
-  },
-  en: {
-    title: "Oops! Nothing to clean here. 🧹",
-    message:
-      "Looks like this page has gone missing. Don't worry – we'll get you back on track.",
-    home: "Back to home",
-    back: "Or start your search again",
-  },
-};
-
 export default function NotFound() {
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
-  const c = copy[locale] || copy.de;
+  const { t } = useTranslation();
+  const title = t("notFound.title");
+  const message = t("notFound.message");
 
   return (
     <>
       <Navbar />
 
       <Seo
-        title={`${c.title} – PutzELF`}
-        description={c.message}
+        title={`${title} – PutzELF`}
+        description={message}
         path={getLocalizedPath(locale, "notFound")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}
@@ -82,11 +68,11 @@ export default function NotFound() {
           </div>
 
           <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
-            {c.title}
+            {title}
           </h1>
 
           <p className="text-lg text-slate-600 max-w-lg mx-auto leading-relaxed mb-8">
-            {c.message}
+            {message}
           </p>
 
           <Link
@@ -94,11 +80,11 @@ export default function NotFound() {
             className="inline-flex items-center gap-2 bg-[#0097b2] hover:bg-[#007f96] text-white font-semibold px-6 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
           >
             <span>←</span>
-            {c.home}
+            {t("notFound.home")}
           </Link>
 
           <p className="mt-6 text-sm text-slate-500">
-            {c.back}
+            {t("notFound.back")}
           </p>
 
         </div>

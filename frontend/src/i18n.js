@@ -48,6 +48,40 @@ const resources = {
         ok: "OK",
         backToHome: "Back to home"
       },
+      notFound: {
+        title: "Oops! Nothing to clean here. 🧹",
+        message: "Looks like this page has gone missing. Don't worry – we'll get you back on track.",
+        home: "Back to home",
+        back: "Or start your search again"
+      },
+      auth: {
+        login: {
+          seoTitle: "Sign in",
+          seoDescription: "Sign in to manage your bookings.",
+          title: "Sign in",
+          description: "Sign in to manage your bookings.",
+          email: "Email",
+          password: "Password",
+          loading: "Signing in…",
+          submit: "Sign in",
+          noAccount: "Don't have an account?",
+          registerLink: "Register"
+        },
+        register: {
+          seoTitle: "Register",
+          seoDescription: "Create an account to book appointments.",
+          title: "Create an account",
+          description: "Register to book and manage appointments.",
+          email: "Email",
+          password: "Password",
+          inviteCode: "Admin invitation code (optional)",
+          invitePlaceholder: "Only fill this in if you were invited as an admin",
+          loading: "Creating account…",
+          submit: "Create account",
+          hasAccount: "Already have an account?",
+          loginLink: "Sign in"
+        }
+      },
       form: {
         requiredField: "Please fill out this field."
       },
@@ -75,6 +109,7 @@ const resources = {
       },
       imprint: {
         title: "Imprint",
+        seoTitle: "Legal Notice | PutzELF",
         seoDescription: "Provider identification and contact details for PutzELF.",
         legalIntro: "Information pursuant to Section 5 of the E-Commerce Act (ECG), Section 63 of the Trade Regulation Act 1994 (GewO 1994), and disclosure pursuant to Section 25 of the Media Act.",
         providerTitle: "Media owner and service provider",
@@ -84,9 +119,9 @@ const resources = {
         businessNameValue: "PutzELF",
         businessPurposeLabel: "Business purpose",
         businessPurposeValue: "Monument, façade and building cleaning, as well as property care",
-        addressLabel: "Registered office and address",
-        serviceAreaLabel: "Service area",
-        serviceAreaValue: "Vienna and Graz and surrounding areas; there is no branch office in Graz",
+        addressLabel: "Company headquarters and address",
+        serviceAreaLabel: "Graz branch",
+        serviceAreaValue: "Waagner-Biro-Straße 47, 8020 Graz, Austria",
         vatTitle: "UID number",
         vatValue: "ATU78448967",
         gisaTitle: "GISA number",
@@ -127,9 +162,82 @@ const resources = {
         jobModalEmailCta: "Send email",
         jobModalClose: "Close"
       },
+      landingAlternative: {
+        seoTitle: "Commercial Cleaning Vienna & Graz | PutzELF",
+        seoDescription: "Reliable office and maintenance cleaning for businesses in Vienna and Graz, with clear routines, consistent contacts and quality checks.",
+        heroTitle: "Professional Cleaning in Vienna and Graz",
+        heroTitleLine2: "For businesses of every kind.",
+        heroSubtitle: "Reliable cleaning for businesses in Vienna and Graz, with consistent quality and flexible schedules.",
+        heroPrimaryCta: "Start an Inquiry",
+        heroSecondaryCta: "Start an Inquiry",
+        trust: ["Read Google reviews"],
+        problemTitle: "Why Businesses Switch to PutzELF",
+        problems: [
+          "Unreliable cleaning providers",
+          "Inconsistent quality from visit to visit",
+          "No flexibility for business schedules"
+        ],
+        solutions: [
+          "Cleaning teams for your business premises",
+          "Reliable scheduling and quality checks",
+          "Customized cleaning plans for your business"
+        ],
+        solutionTitle: "Our Solution",
+        servicesTitle: "Our Business Cleaning Services",
+        services: [
+          { key: "businessMaintenance", title: "Maintenance cleaning", desc: "Scheduled cleaning tailored to your business premises." },
+          { key: "businessDeep", title: "Deep cleaning", desc: "Detailed cleaning for heavier soiling and one-time needs." },
+          { key: "businessStaircase", title: "Staircase cleaning", desc: "Reliable upkeep for shared building areas." },
+          { key: "businessConstruction", title: "Construction cleaning", desc: "Rough and final cleaning after building work." },
+          { key: "businessWindow", title: "Window and frame cleaning", desc: "Clear glass and carefully cleaned frames." },
+          { key: "businessIndustrial", title: "Industrial cleaning", desc: "Cleaning for machinery and production spaces." }
+        ],
+        processTitle: "How It Works",
+        process: ["Inquiry", "Short call or on-site visit", "Receive a customized offer", "Cleaning service starts"],
+        faqTitle: "Frequently Asked Questions",
+        faqs: [
+          { q: "How is pricing calculated?", a: "Pricing depends on location, size, frequency, and service type. You receive a clear custom offer after the consultation." },
+          { q: "Which areas do you serve?", a: "We serve Vienna and Graz. Ask us to confirm availability for your area." },
+          { q: "Do I need a long-term contract?", a: "No. We offer flexible plans, from one-time jobs to recurring service agreements." },
+          { q: "How quickly can service start?", a: "In most cases, we can start within a few days after confirming your plan." }
+        ],
+        finalTitle: "Ready for Reliable Cleaning?",
+        finalSubtitle: "Request your free consultation or contact us directly.",
+        finalCta: "Start an Inquiry",
+        callNow: "Call now",
+        directContact: "Direct Contact",
+        freeConsultTitle: "Get a free consultation by phone now",
+        freeConsultNote: "No scheduling calendar needed — call us directly and we’ll discuss your needs right away.",
+        gdprText: "GDPR-compliant processes",
+        locations: {
+          title: "Our locations",
+          description: "PutzELF is here for you in Vienna and Graz.",
+          vienna: "Vienna",
+          headquarters: "Company headquarters",
+          viennaStreet: "Simmeringer Hauptstraße 24",
+          viennaPostal: "1110 Vienna",
+          graz: "Graz",
+          branch: "Branch",
+          grazStreet: "Waagner-Biro-Straße 47",
+          grazPostal: "8020 Graz"
+        },
+        serviceLinks: [
+          { key: "servicesOverview", label: "All services" },
+          { key: "privateMaintenance", label: "Maintenance cleaning" },
+          { key: "privateDeep", label: "Deep cleaning" },
+          { key: "privateResidential", label: "Residential cleaning" },
+          { key: "privateWindow", label: "Window cleaning" },
+          { key: "businessMaintenance", label: "Business maintenance cleaning" },
+          { key: "businessStaircase", label: "Staircase cleaning" },
+          { key: "contact", label: "Contact" },
+          { key: "blog", label: "Blog" },
+          { key: "privacy", label: "Privacy policy" },
+          { key: "imprint", label: "Imprint" }
+        ]
+      },
       profile: {
         title: "Choose your favorite worker",
-        subtitle: "Review our trusted professionals and pick the cleaner who fits your booking best.",
+        subtitle: "Review the available cleaners and choose the person who fits your booking best.",
         choose: "Choose me",
         rating: "{{rating}} rating · {{reviews}} reviews",
         workers: {
@@ -182,7 +290,7 @@ const resources = {
         deep: { title: "Deep Cleaning", desc: "Detailed cleaning for every corner." },
         office: { title: "Office Cleaning", desc: "Professional cleaning for your office spaces." },
         reliable: "Reliable",
-        reliableLine: "Our cleaners are vetted and trusted by hundreds of customers.",
+        reliableLine: "Cleaning services arranged around your needs and schedule.",
         pricing: "Transparent Pricing",
         easy: "Easy Booking",
         priceLine: "Just €36/hour, no hidden costs.",
@@ -198,7 +306,7 @@ const resources = {
             expectations: [
               { key: "analysis", title: "Individual Assessment", desc: "We assess your home and propose the right cleaning scope for lasting results." },
               { key: "fairPrice", title: "Fair Pricing", desc: "Transparent rates with no hidden fees so you know what to expect." },
-              { key: "qualifiedStaff", title: "Qualified Staff", desc: "Experienced cleaners trained to treat your home with care and respect." },
+              { key: "qualifiedStaff", title: "Cleaning Team", desc: "Cleaners treat your home with care and respect." },
               { key: "fixedTeams", title: "Consistent Teams", desc: "Familiar teams deliver steady results and understand your preferences." },
               { key: "excellentQuality", title: "Excellent Quality", desc: "High cleaning standards and checklists ensure thorough, reliable work." },
               { key: "desiredTimes", title: "Preferred Times", desc: "Flexible appointment windows to suit your daily routine and needs." }
@@ -261,7 +369,7 @@ const resources = {
               painTitle: "When residential cleaning is useful",
               painPoints: ["A busy routine leaves little time for proper care", "Moves, special occasions or regular upkeep require smooth service", "Hygiene and order matter even more with children or pets"],
               solutionTitle: "How we support your home",
-              solutionPoints: ["Tailored cleaning plans to suit your needs", "Reliable professionals with proven experience", "Optional extras such as window care"],
+              solutionPoints: ["Tailored cleaning plans to suit your needs", "Careful cleaning based on your requested scope", "Optional extras such as window care"],
               processTitle: "How residential cleaning works",
               process: [
                 { title: "Start your inquiry", desc: "You send us your preferences through the form." },
@@ -396,7 +504,7 @@ const resources = {
             expectations: [
               { key: "analysis", title: "Individual Assessment", desc: "Site assessment and tailored cleaning scope for business spaces." },
               { key: "fairPrice", title: "Fair Pricing", desc: "Transparent, contract-ready pricing with clear scope and intervals." },
-              { key: "qualifiedStaff", title: "Qualified Staff", desc: "Trained teams that follow operational rules and confidentiality requirements." },
+              { key: "qualifiedStaff", title: "Service Teams", desc: "Teams follow the operational and confidentiality requirements agreed for your site." },
               { key: "fixedTeams", title: "Consistent Teams", desc: "Stable teams ensure consistent standards and efficient handovers." },
               { key: "excellentQuality", title: "Excellent Quality", desc: "Standardised checklists and inspections for reliable results." },
               { key: "desiredTimes", title: "Preferred Times", desc: "Flexible scheduling to avoid disruption to your operations." }
@@ -588,7 +696,7 @@ const resources = {
               approach: [
                 "Clear room‑by‑room checklists and transparent scopes",
                 "Flexible appointment windows to reduce disruption",
-                "Experienced teams working with standardised routines and quality checks"
+                "Teams working with agreed routines and quality checks"
               ],
               benefitsTitle: "Why choose PutzELF",
               benefits: [
@@ -606,7 +714,7 @@ const resources = {
             },
       whatWeOffer: "What we offer",
       benefitsTitle: "Benefits",
-      benefit1: "Vetted cleaning professionals",
+      benefit1: "Cleaning matched to your needs",
       benefit2: "Flexible scheduling",
       benefit3: "Transparent pricing",
       cta: "Start an Inquiry",
@@ -690,6 +798,8 @@ const resources = {
         relatedServices: "Related services"
       },
       jobOpening: {
+        seoTitle: "Jobs at PutzELF – Cleaning & Customer Service",
+        seoDescription: "Current opportunities at PutzELF in Vienna and Graz, with role details, requirements and application contact.",
         title: "Current Job Openings",
         description: "Open roles at PutzELF: customer service representatives and cleaners in Graz.",
         roles: [
@@ -746,7 +856,7 @@ const resources = {
           email: "Email Address"
         },
         locations: {
-          vienna: "Vienna / Wien",
+          vienna: "Vienna",
           graz: "Graz"
         },
         errors: {
@@ -765,9 +875,37 @@ const resources = {
           success: "Your message has been sent successfully. We will get back to you soon."
         }
       },
+      partnerInquiryPage: {
+        seoTitle: "Become a PutzELF Partner",
+        description: "Information for cleaning companies, independent cleaners and cooperation partners in Vienna and Graz.",
+        title: "Become a Partner",
+        intro: "We welcome partnerships with companies and subcontractors. Please fill out the form and we will get back to you.",
+        partnership: "Partnership",
+        coverage: "Vienna · Graz",
+        fields: {
+          location: "Location",
+          company: "Company",
+          name: "Name",
+          address: "Address",
+          email: "Email",
+          phone: "Phone",
+          message: "Message"
+        },
+        privacyNotice: "We use your details to handle your partnership request. For details, see our",
+        privacyPolicyLink: "Privacy Policy",
+        submit: "Send Partnership Request",
+        loading: "Sending…",
+        success: "Request sent — we will contact you.",
+        error: "Failed to send — try again later.",
+        errors: {
+          phoneDigitsOnly: "Phone must contain only numbers."
+        }
+      },
       
       privacyPolicy: {
         title: "Privacy Policy",
+        seoTitle: "Privacy Policy | PutzELF",
+        seoDescription: "Information about personal-data processing, cookies and privacy rights when using PutzELF services and this website.",
         intro: "Information pursuant to Articles 13 and 14 of the General Data Protection Regulation (GDPR)",
         sections: {
           controller: {
@@ -824,12 +962,6 @@ const resources = {
             legalBasis: "The legal bases are your consent under Article 6(1)(a) GDPR and Section 165(3) TKG 2021. Google Analytics is not activated without your consent. Processing by Google LLC in the United States cannot be ruled out. Google may rely on applicable adequacy decisions, in particular the EU–US Data Privacy Framework, or standard contractual clauses. You can withdraw your consent at any time through Cookie settings.",
             moreInfo: "More information: <googlePrivacy>Google Privacy Policy</googlePrivacy> and <googlePartnerSites>Data use in embedded Google services</googlePartnerSites>.",
           },
-          metaPixel: {
-            title: "Meta Pixel",
-            service: "After you consent, we use the Meta Pixel, a service provided by Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Ireland (“Meta”). The Meta Pixel measures whether visitors reach our website through our Facebook or Instagram ads and which actions they take here (conversion measurement). Where enabled, it may also be used to create advertising audiences (Custom Audiences, remarketing). Cookies may be set, in particular “_fbp” for approximately 90 days, and information such as your IP address, device and browser information, pages visited and timestamps may be sent to Meta. The current details in Cookie settings apply.",
-            legalBasis: "We and Meta are joint controllers under Article 26 GDPR for collecting and transmitting this data; Meta is responsible for its subsequent processing. The legal bases are your consent under Article 6(1)(a) GDPR and Section 165(3) TKG 2021. The Meta Pixel is not activated without your consent. Processing by Meta Platforms, Inc. in the United States cannot be ruled out; Meta Platforms, Inc. is certified under the EU–US Data Privacy Framework. You can withdraw your consent at any time through Cookie settings.",
-            moreInfo: "More information: <metaPrivacy>Meta Privacy Policy</metaPrivacy>.",
-          },
           leadinfo: {
             title: "Leadinfo",
             service: "After you consent, we use the lead generation service of Leadinfo B.V., Rivium Quadrant 141, 2909 LC Capelle aan den IJssel, the Netherlands. Leadinfo compares a website visitor’s IP address with company data from publicly available sources to associate visits with companies, and provides us with company information and details about pages visited. Leadinfo also processes domains entered in forms to improve the matching of IP addresses to companies and the service.",
@@ -866,6 +998,8 @@ const resources = {
       },
       home: {
         title: "Request a cleaning",
+        seoTitle: "Booking",
+        seoDescription: "Book a cleaning and enter your details.",
         locationModal: {
           title: "Where would you like to request the cleaning?",
           prompt: "Select the city for your service",
@@ -943,6 +1077,8 @@ const resources = {
         }
       },
       calculator: {
+        seoTitle: "Cleaning Price Calculator Vienna",
+        seoDescription: "Cleaning price calculator for Vienna: estimate the gross cost in seconds.",
         title: "Price Calculator",
         subtitle: "Estimate the cost of your cleaning based on duration and extras.",
         typeHeading: "Choose a cleaning type",
@@ -980,6 +1116,25 @@ const resources = {
         durationUnit: "hours",
         price: "Price",
         directInquiry: "Send a direct inquiry",
+        discountTitle: "You have received a 20% discount!",
+        discountBody: "Your price will be sent to you by email once you confirm.",
+        countrySelectLabel: "Select country",
+        countries: {
+          at: "Austria",
+          de: "Germany",
+          ch: "Switzerland",
+          cz: "Czechia",
+          sk: "Slovakia",
+          hu: "Hungary",
+          pl: "Poland",
+          it: "Italy",
+          si: "Slovenia",
+          hr: "Croatia",
+          nl: "Netherlands",
+          be: "Belgium",
+          fr: "France",
+          es: "Spain"
+        },
         notesLabel: "Notes (optional)",
         labels: { name: "Name", email: "Email", address: "Address", phone: "Phone" },
         enterDetails: "Enter your details to request a cleaning",
@@ -993,7 +1148,9 @@ const resources = {
         errors: {
           invalidEmail: "Please enter a valid email address.",
           invalidEmailDoubleDot: "Email cannot contain consecutive dots.",
-          invalidPhone: "Please enter a valid phone number including country code."
+          invalidPhone: "Please enter a valid phone number including country code.",
+          createQuoteFailed: "The inquiry could not be created. Please try again.",
+          confirmFailed: "The request could not be confirmed. Please try again."
           ,requiredFirstName: "Please enter your first name.",
           requiredLastName: "Please enter your last name.",
           requiredStreet: "Please enter your street name.",
@@ -1010,7 +1167,7 @@ const resources = {
         gdprPrefix: "I agree to the processing of my personal data in accordance with the ",
         gdprText: "I agree that my data will be processed for this inquiry and that I may be contacted about it.",
         gdprFull: "I agree that my data will be processed for this inquiry and that I may be contacted about it.",
-        gdprLink: "Privacy Policy (GDPR)",
+        gdprLink: "Privacy Policy",
         confirming: "Sending request...",
         confirmBtn: "Request a Booking",
         submitBtn: "Send inquiry",
@@ -1064,6 +1221,40 @@ const resources = {
         ok: "OK",
         backToHome: "Zur Startseite"
       },
+      notFound: {
+        title: "Ups! Hier ist nichts zu putzen. 🧹",
+        message: "Diese Seite wurde leider nicht gefunden. Wir bringen Sie zurück zur Startseite.",
+        home: "Zur Startseite",
+        back: "Oder starten Sie Ihre Suche neu"
+      },
+      auth: {
+        login: {
+          seoTitle: "Anmelden",
+          seoDescription: "Melden Sie sich an, um Ihre Buchungen zu verwalten.",
+          title: "Anmelden",
+          description: "Melden Sie sich an, um Ihre Buchungen zu verwalten.",
+          email: "E-Mail",
+          password: "Passwort",
+          loading: "Anmeldung läuft…",
+          submit: "Anmelden",
+          noAccount: "Noch kein Konto?",
+          registerLink: "Registrieren"
+        },
+        register: {
+          seoTitle: "Registrieren",
+          seoDescription: "Konto erstellen, um Termine zu buchen.",
+          title: "Konto erstellen",
+          description: "Registrieren Sie sich, um Termine zu buchen und zu verwalten.",
+          email: "E-Mail",
+          password: "Passwort",
+          inviteCode: "Admin-Einladungscode (optional)",
+          invitePlaceholder: "Nur ausfüllen, wenn Sie als Admin eingeladen wurden",
+          loading: "Konto wird erstellt…",
+          submit: "Konto erstellen",
+          hasAccount: "Sie haben bereits ein Konto?",
+          loginLink: "Anmelden"
+        }
+      },
       form: {
         requiredField: "Bitte füllen Sie dieses Feld aus."
       },
@@ -1090,6 +1281,7 @@ const resources = {
       },
       imprint: {
         title: "Impressum",
+        seoTitle: "Impressum | PutzELF",
         seoDescription: "Anbieterkennzeichnung und Kontaktdaten von PutzELF.",
         legalIntro: "Informationen gemäß § 5 ECG, § 63 GewO 1994 und Offenlegung gemäß § 25 Mediengesetz",
         providerTitle: "Medieninhaber und Diensteanbieter",
@@ -1099,9 +1291,9 @@ const resources = {
         businessNameValue: "PutzELF",
         businessPurposeLabel: "Unternehmensgegenstand",
         businessPurposeValue: "Denkmal-, Fassaden- und Gebäudereinigung sowie Hausbetreuung",
-        addressLabel: "Sitz und Anschrift",
-        serviceAreaLabel: "Einsatzgebiet",
-        serviceAreaValue: "Wien und Graz samt Umgebung; in Graz besteht keine Niederlassung",
+        addressLabel: "Unternehmenssitz und Anschrift",
+        serviceAreaLabel: "Filiale Graz",
+        serviceAreaValue: "Waagner-Biro-Straße 47, 8020 Graz, Österreich",
         vatTitle: "UID-Nummer",
         vatValue: "ATU78448967",
         gisaTitle: "GISA-Zahl",
@@ -1134,7 +1326,7 @@ const resources = {
       },
       profile: {
         title: "Putzfrau in Wien gesucht?",
-        subtitle: "Überprüfen Sie unsere vertrauenswürdigen Fachkräfte und wählen Sie die Reinigungskraft, die am besten zu Ihrer Buchung passt.",
+        subtitle: "Sehen Sie sich verfügbare Reinigungskräfte an und wählen Sie die passende Person für Ihre Buchung.",
         choose: "Wählen Sie mich",
         rating: "{{rating}} Bewertung · {{reviews}} Bewertungen",
         workers: {
@@ -1168,6 +1360,79 @@ const resources = {
         jobModalEmailCta: "E-Mail senden",
         jobModalClose: "Schließen"
       },
+      landingAlternative: {
+        seoTitle: "Reinigungsfirma Wien & Graz – Büro- & Unterhaltsreinigung | PutzELF",
+        seoDescription: "Zuverlässige Büro- und Unterhaltsreinigung für Unternehmen in Wien und Graz. Klare Abläufe, feste Ansprechpartner und kostenlose Beratung.",
+        heroTitle: "Professionelle Reinigung in Wien und Graz:",
+        heroTitleLine2: "Für Unternehmen jeder Art.",
+        heroSubtitle: "Zuverlässige Reinigung für Unternehmen in Wien und Graz – mit gleichbleibender Qualität und flexiblen Zeiten.",
+        heroPrimaryCta: "Anfrage starten",
+        heroSecondaryCta: "Anfrage starten",
+        trust: ["Google-Bewertungen ansehen"],
+        problemTitle: "Warum Unternehmen zu PutzELF wechseln",
+        problems: [
+          "Unzuverlässige Reinigungsanbieter",
+          "Schwankende Qualität von Termin zu Termin",
+          "Keine Flexibilität für Geschäftszeiten"
+        ],
+        solutions: [
+          "Reinigungsteams für Ihre Unternehmensräume",
+          "Zuverlässige Planung und Qualitätskontrollen",
+          "Individuelle Reinigungspläne für Ihr Unternehmen"
+        ],
+        solutionTitle: "Unsere Lösung",
+        servicesTitle: "Unsere Reinigungsleistungen für Unternehmen",
+        services: [
+          { key: "businessMaintenance", title: "Unterhaltsreinigung", desc: "Planbare Reinigung, abgestimmt auf Ihre Unternehmensräume." },
+          { key: "businessDeep", title: "Grundreinigung", desc: "Gründliche Reinigung bei stärkerer Verschmutzung und einmaligem Bedarf." },
+          { key: "businessStaircase", title: "Stiegenhausreinigung", desc: "Zuverlässige Pflege gemeinschaftlicher Gebäudebereiche." },
+          { key: "businessConstruction", title: "Bauendreinigung", desc: "Grob- und Feinreinigung nach Bauarbeiten." },
+          { key: "businessWindow", title: "Glas- und Rahmenreinigung", desc: "Klare Glasflächen und sorgfältig gereinigte Rahmen." },
+          { key: "businessIndustrial", title: "Industriereinigung", desc: "Reinigung von Maschinen und Produktionsflächen." }
+        ],
+        processTitle: "So funktioniert es",
+        process: ["Anfrage", "Kurzer Anruf oder Vor-Ort-Termin", "Individuelles Angebot erhalten", "Reinigungsservice startet"],
+        faqTitle: "Häufig gestellte Fragen",
+        faqs: [
+          { q: "Wie wird der Preis berechnet?", a: "Der Preis richtet sich nach Standort, Größe, Häufigkeit und Leistungsumfang. Nach der Beratung erhalten Sie ein klares Angebot." },
+          { q: "Welche Gebiete bedienen Sie?", a: "Wir bieten unsere Leistungen in Wien und Graz an. Fragen Sie uns gerne nach der Verfügbarkeit in Ihrer Region." },
+          { q: "Brauche ich einen langfristigen Vertrag?", a: "Nein. Wir bieten flexible Modelle – von einmaligen Einsätzen bis zu laufenden Vereinbarungen." },
+          { q: "Wie schnell kann der Service starten?", a: "In den meisten Fällen starten wir innerhalb weniger Tage nach Bestätigung Ihres Plans." }
+        ],
+        finalTitle: "Bereit für zuverlässige Reinigung?",
+        finalSubtitle: "Fordern Sie Ihre kostenlose Beratung an oder kontaktieren Sie uns direkt.",
+        finalCta: "Anfrage starten",
+        callNow: "Jetzt anrufen",
+        directContact: "Direkter Kontakt",
+        freeConsultTitle: "Kostenlose Beratung sofort per Anruf",
+        freeConsultNote: "Kein Kalender nötig – rufen Sie uns direkt an und wir besprechen Ihren Bedarf sofort.",
+        gdprText: "DSGVO-konforme Prozesse",
+        locations: {
+          title: "Unsere Standorte",
+          description: "PutzELF ist in Wien und Graz für Sie da.",
+          vienna: "Wien",
+          headquarters: "Unternehmenssitz",
+          viennaStreet: "Simmeringer Hauptstraße 24",
+          viennaPostal: "1110 Wien",
+          graz: "Graz",
+          branch: "Filiale",
+          grazStreet: "Waagner-Biro-Straße 47",
+          grazPostal: "8020 Graz"
+        },
+        serviceLinks: [
+          { key: "servicesOverview", label: "Alle Leistungen" },
+          { key: "privateMaintenance", label: "Unterhaltsreinigung" },
+          { key: "privateDeep", label: "Grundreinigung" },
+          { key: "privateResidential", label: "Wohnreinigung" },
+          { key: "privateWindow", label: "Glas- & Rahmenreinigung" },
+          { key: "businessMaintenance", label: "Gewerbliche Unterhaltsreinigung" },
+          { key: "businessStaircase", label: "Treppenhausreinigung" },
+          { key: "contact", label: "Kontakt" },
+          { key: "blog", label: "Blog" },
+          { key: "privacy", label: "Datenschutz" },
+          { key: "imprint", label: "Impressum" }
+        ]
+      },
       contact: {
         callNow: "Rufen Sie uns an"
       },
@@ -1200,7 +1465,7 @@ const resources = {
         deep: { title: "Grundreinigung", desc: "Gründliche Reinigung bis in jede Ecke." },
         office: { title: "Büroreinigung", desc: "Professionelle Reinigung für Ihre Büroräume." },
         reliable: "Zuverlässig",
-        reliableLine: "Unsere Reinigungskräfte sind geprüft und von Hunderten Kund:innen vertrauenswürdig.",
+        reliableLine: "Reinigungsleistungen nach Ihren Anforderungen und Ihrem Zeitplan.",
         pricing: "Transparente Preise",
         easy: "Einfache Buchung",
         priceLine: "Nur €36/Stunde, keine versteckten Kosten.",
@@ -1215,7 +1480,7 @@ const resources = {
             expectations: [
               { key: "analysis", title: "Individuelle Analyse", desc: "Wir prüfen Ihre Wohnung und empfehlen den passenden Reinigungsumfang." },
               { key: "fairPrice", title: "Faire Preise", desc: "Klare Preise ohne versteckte Kosten für planbare Haushaltsreinigungen." },
-              { key: "qualifiedStaff", title: "Qualifiziertes Personal", desc: "Erfahrene Reinigungskräfte, die auf Sorgfalt und Diskretion achten." },
+              { key: "qualifiedStaff", title: "Reinigungsteam", desc: "Wir achten auf einen sorgfältigen und respektvollen Umgang mit Ihrem Zuhause." },
               { key: "fixedTeams", title: "Feste Teams", desc: "Konstante Teams sorgen für Vertrautheit und gleichbleibende Qualität." },
               { key: "excellentQuality", title: "Exzellente Qualität", desc: "Checklisten und Nachkontrollen sichern zuverlässige Ergebnisse." },
               { key: "desiredTimes", title: "Wunschzeiten", desc: "Flexible Termine, angepasst an Ihren Alltag und Ihre Bedürfnisse." }
@@ -1278,7 +1543,7 @@ const resources = {
             painTitle: "Wann Wohnungsreinigung hilft",
             painPoints: ["Enge Zeitplanung im Alltag", "Vor/ Nach Einzug", "Besondere Sauberkeitsanforderungen"],
             solutionTitle: "So unterstützen wir Ihr Zuhause",
-            solutionPoints: ["Individuelle Checklisten", "Erfahrene und geprüfte Teams", "Optionale Extras wie Fensterreinigung"],
+            solutionPoints: ["Individuelle Checklisten", "Reinigung nach Ihren Vorgaben", "Optionale Extras wie Fensterreinigung"],
             processTitle: "Vorgehen",
             process: [
               { title: "Anfrage starten", desc: "Senden Sie Ihre Wünsche über das Formular." },
@@ -1375,7 +1640,7 @@ const resources = {
           expectations: [
             { key: "analysis", title: "Individuelle Analyse" },
             { key: "fairPrice", title: "Faire Preise" },
-            { key: "qualifiedStaff", title: "Qualifiziertes Personal" },
+            { key: "qualifiedStaff", title: "Einsatzteams" },
             { key: "fixedTeams", title: "Feste Teams" },
             { key: "excellentQuality", title: "Exzellente Qualität" },
             { key: "desiredTimes", title: "Wunschzeiten" }
@@ -1547,7 +1812,7 @@ const resources = {
       },
       whatWeOffer: "Was wir anbieten",
       benefitsTitle: "Vorteile",
-      benefit1: "Geprüfte Reinigungskräfte",
+      benefit1: "Reinigung nach Ihrem Bedarf",
       benefit2: "Flexible Terminplanung",
       benefit3: "Transparente Preise",
       cta: "Anfrage starten",
@@ -1631,6 +1896,8 @@ const resources = {
         relatedServices: "Passende Services"
       },
       jobOpening: {
+        seoTitle: "Jobs bei PutzELF – Reinigung & Kundenservice",
+        seoDescription: "Aktuelle Stellen bei PutzELF in Wien und Graz. Aufgaben, Anforderungen und Kontakt zur Bewerbung.",
         title: "Aktuelle Jobangebote",
         description: "Offene Stellen bei PutzELF: Mitarbeiter:in Kundenservice und Reinigungskräfte in Graz.",
         roles: [
@@ -1714,9 +1981,37 @@ const resources = {
           success: "Ihre Nachricht wurde erfolgreich gesendet. Wir melden uns bald bei Ihnen."
         }
       },
+      partnerInquiryPage: {
+        seoTitle: "Partner von PutzELF werden",
+        description: "Informationen für Reinigungsunternehmen, selbständige Reinigungskräfte und Kooperationspartner in Wien und Graz.",
+        title: "Partner werden",
+        intro: "Wir freuen uns auf Partnerschaften mit Unternehmen und Subunternehmen. Bitte füllen Sie das Formular aus.",
+        partnership: "Partnerschaft",
+        coverage: "Wien · Graz",
+        fields: {
+          location: "Standort",
+          company: "Firmenname",
+          name: "Ansprechpartner",
+          address: "Adresse",
+          email: "E-Mail",
+          phone: "Telefon",
+          message: "Nachricht"
+        },
+        privacyNotice: "Wir verwenden Ihre Angaben zur Bearbeitung Ihrer Partnerschaftsanfrage. Einzelheiten finden Sie in unserer",
+        privacyPolicyLink: "Datenschutzerklärung",
+        submit: "Partnerschaftsanfrage senden",
+        loading: "Wird gesendet…",
+        success: "Anfrage gesendet — wir melden uns bei Ihnen.",
+        error: "Senden fehlgeschlagen — bitte später erneut versuchen.",
+        errors: {
+          phoneDigitsOnly: "Telefonnummer darf nur Ziffern enthalten."
+        }
+      },
       
       privacyPolicy: {
         title: "Datenschutzerklärung",
+        seoTitle: "Datenschutzerklärung | PutzELF",
+        seoDescription: "Informationen zur Verarbeitung personenbezogener Daten, zu Cookies und zu Ihren Datenschutzrechten bei PutzELF.",
         intro: "Informationen gemäß Art. 13 und 14 Datenschutz-Grundverordnung (DSGVO)",
         exactGerman: {
           identity: "Sebastijan-Aleksandar Kerčulj, Einzelunternehmer (PutzELF)",
@@ -1740,9 +2035,6 @@ const resources = {
           googleAnalytics: "Nach Ihrer Einwilligung setzen wir Google Analytics 4 ein, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Google Analytics wertet die Nutzung unserer Website aus, insbesondere aufgerufene Seiten, Verweildauer, ungefähre Region, verwendetes Gerät und Browser sowie Interaktionen, und hilft uns so, unser Angebot zu verbessern. Dabei können Cookies gesetzt werden (insbesondere „_ga“ und „_ga_*“, Speicherdauer bis zu zwei Jahre); maßgeblich sind die aktuellen Angaben in den Cookie-Einstellungen. IP-Adressen werden von Google Analytics 4 nach Angaben von Google nicht protokolliert oder gespeichert. Wir identifizieren einzelne Besucher dabei nicht.",
           googleAnalyticsLegalBasis: "Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Ihre Einwilligung wird Google Analytics nicht aktiviert. Eine Verarbeitung durch Google LLC in den USA kann nicht ausgeschlossen werden. Google kann hierfür anwendbare Angemessenheitsbeschlüsse, insbesondere das EU-US Data Privacy Framework, oder Standardvertragsklauseln einsetzen. Sie können Ihre Einwilligung jederzeit über die Cookie-Einstellungen widerrufen.",
           googleAnalyticsMoreInfo: "Weitere Informationen: <googlePrivacy>Datenschutzerklärung von Google</googlePrivacy> und <googlePartnerSites>Datennutzung bei eingebundenen Google-Diensten</googlePartnerSites>.",
-          metaPixel: "Nach Ihrer Einwilligung setzen wir den Meta-Pixel ein, einen Dienst der Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland („Meta“). Der Meta-Pixel misst, ob Besucher über unsere Werbeanzeigen bei Facebook oder Instagram auf unsere Website gelangen und welche Aktionen sie hier ausführen (Conversion-Messung); er kann außerdem - soweit aktiviert - zur Bildung von Zielgruppen für Werbung (Custom Audiences, Remarketing) eingesetzt werden. Dabei können Cookies gesetzt werden (insbesondere „_fbp“, Speicherdauer ca. 90 Tage) und insbesondere IP-Adresse, Geräte- und Browserinformationen, aufgerufene Seiten und Zeitstempel an Meta übermittelt werden. Maßgeblich sind die aktuellen Angaben in den Cookie-Einstellungen.",
-          metaPixelLegalBasis: "Für die Erhebung und Übermittlung dieser Daten sind wir mit Meta gemeinsam verantwortlich im Sinne des Art. 26 DSGVO; die weitere Verarbeitung durch Meta erfolgt in deren eigener Verantwortung. Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Ihre Einwilligung wird der Meta-Pixel nicht aktiviert. Eine Verarbeitung durch Meta Platforms, Inc. in den USA kann nicht ausgeschlossen werden; Meta Platforms, Inc. ist nach dem EU-US Data Privacy Framework zertifiziert. Sie können Ihre Einwilligung jederzeit über die Cookie-Einstellungen widerrufen.",
-          metaPixelMoreInfo: "Weitere Informationen: <metaPrivacy>Datenschutzrichtlinie von Meta</metaPrivacy>.",
           leadinfo: "Nach Ihrer Einwilligung nutzen wir den Lead-Generation-Dienst der Leadinfo B.V., Rivium Quadrant 141, 2909 LC Capelle aan den IJssel, Niederlande. Leadinfo gleicht die IP-Adresse eines Websitebesuchs mit Unternehmensdaten aus öffentlich zugänglichen Quellen ab, um Besuche Unternehmen zuzuordnen, und stellt uns hierzu Unternehmensinformationen und Angaben über besuchte Seiten zur Verfügung. Leadinfo verarbeitet außerdem Domains aus Formulareingaben, um die Zuordnung von IP-Adressen zu Unternehmen und den Dienst zu verbessern.",
           leadinfoCookies: "Soweit die Analysefunktion aktiviert ist, können zwei First-Party-Cookies eingesetzt werden: „_li_id.*“ zur Unterscheidung neuer und wiederkehrender Besuche für bis zu zwei Jahre und „_li_ses.*“ zur Zusammenfassung der während einer Sitzung besuchten Seiten für die Dauer der Sitzung. Maßgeblich sind die aktuellen Angaben in den Cookie-Einstellungen.",
           leadinfoLegalBasis: "Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Einwilligung wird Leadinfo auf unserer Website nicht aktiviert. Sie können die Einwilligung über die Cookie-Einstellungen widerrufen und zusätzlich die Opt-out-Möglichkeit von Leadinfo verwenden.",
@@ -1808,12 +2100,6 @@ const resources = {
             legalBasis: "Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Ihre Einwilligung wird Google Analytics nicht aktiviert. Eine Verarbeitung durch Google LLC in den USA kann nicht ausgeschlossen werden. Google kann hierfür anwendbare Angemessenheitsbeschlüsse, insbesondere das EU-US Data Privacy Framework, oder Standardvertragsklauseln einsetzen. Sie können Ihre Einwilligung jederzeit über die Cookie-Einstellungen widerrufen.",
             moreInfo: "Weitere Informationen: <googlePrivacy>Datenschutzerklärung von Google</googlePrivacy> und <googlePartnerSites>Datennutzung bei eingebundenen Google-Diensten</googlePartnerSites>.",
           },
-          metaPixel: {
-            title: "Meta-Pixel",
-            service: "Nach Ihrer Einwilligung setzen wir den Meta-Pixel ein, einen Dienst der Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland („Meta“). Der Meta-Pixel misst, ob Besucher über unsere Werbeanzeigen bei Facebook oder Instagram auf unsere Website gelangen und welche Aktionen sie hier ausführen (Conversion-Messung); er kann außerdem - soweit aktiviert - zur Bildung von Zielgruppen für Werbung (Custom Audiences, Remarketing) eingesetzt werden. Dabei können Cookies gesetzt werden (insbesondere „_fbp“, Speicherdauer ca. 90 Tage) und insbesondere IP-Adresse, Geräte- und Browserinformationen, aufgerufene Seiten und Zeitstempel an Meta übermittelt werden. Maßgeblich sind die aktuellen Angaben in den Cookie-Einstellungen.",
-            legalBasis: "Für die Erhebung und Übermittlung dieser Daten sind wir mit Meta gemeinsam verantwortlich im Sinne des Art. 26 DSGVO; die weitere Verarbeitung durch Meta erfolgt in deren eigener Verantwortung. Rechtsgrundlagen sind Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 165 Abs. 3 TKG 2021. Ohne Ihre Einwilligung wird der Meta-Pixel nicht aktiviert. Eine Verarbeitung durch Meta Platforms, Inc. in den USA kann nicht ausgeschlossen werden; Meta Platforms, Inc. ist nach dem EU-US Data Privacy Framework zertifiziert. Sie können Ihre Einwilligung jederzeit über die Cookie-Einstellungen widerrufen.",
-            moreInfo: "Weitere Informationen: <metaPrivacy>Datenschutzrichtlinie von Meta</metaPrivacy>.",
-          },
           leadinfo: {
             title: "Leadinfo",
             service: "Nach Ihrer Einwilligung nutzen wir den Lead-Generation-Dienst der Leadinfo B.V., Rivium Quadrant 141, 2909 LC Capelle aan den IJssel, Niederlande. Leadinfo gleicht die IP-Adresse eines Websitebesuchs mit Unternehmensdaten aus öffentlich zugänglichen Quellen ab, um Besuche Unternehmen zuzuordnen, und stellt uns hierzu Unternehmensinformationen und Angaben über besuchte Seiten zur Verfügung. Leadinfo verarbeitet außerdem Domains aus Formulareingaben, um die Zuordnung von IP-Adressen zu Unternehmen und den Dienst zu verbessern.",
@@ -1850,6 +2136,8 @@ const resources = {
       },
       home: {
         title: "Reinigung anfragen",
+        seoTitle: "Reinigung buchen",
+        seoDescription: "Termin auswählen und Ihre Daten eingeben.",
         locationModal: {
           title: "Wo möchten Sie die Reinigung anfragen?",
           prompt: "Wählen Sie die Stadt für Ihre Dienstleistung",
@@ -1941,6 +2229,8 @@ const resources = {
         }
       },
       calculator: {
+        seoTitle: "Preisrechner Reinigung Wien",
+        seoDescription: "Preisrechner für Reinigung in Wien: Kosten (brutto) in wenigen Sekunden berechnen.",
         title: "Preisrechner",
         subtitle: "Schätzen Sie die Kosten Ihrer Reinigung basierend auf Dauer und Extras.",
         typeHeading: "Reinigungsart wählen",
@@ -1977,6 +2267,25 @@ const resources = {
         durationUnit: "Stunden",
         price: "Preis",
         directInquiry: "Direkt anfragen",
+        discountTitle: "Sie haben 20 % Rabatt erhalten!",
+        discountBody: "Ihr Preis wird Ihnen per E-Mail gesendet, sobald Sie bestätigen.",
+        countrySelectLabel: "Land auswählen",
+        countries: {
+          at: "Österreich",
+          de: "Deutschland",
+          ch: "Schweiz",
+          cz: "Tschechien",
+          sk: "Slowakei",
+          hu: "Ungarn",
+          pl: "Polen",
+          it: "Italien",
+          si: "Slowenien",
+          hr: "Kroatien",
+          nl: "Niederlande",
+          be: "Belgien",
+          fr: "Frankreich",
+          es: "Spanien"
+        },
         notesLabel: "Anmerkungen",
         labels: { name: "Name", email: "E-Mail", address: "Adresse", phone: "Telefon" },
         enterDetails: "Daten eingeben und bestätigen",
@@ -1992,6 +2301,8 @@ const resources = {
           invalidEmail: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
           invalidEmailDoubleDot: "Die E-Mail-Adresse darf keine zwei aufeinanderfolgenden Punkte enthalten.",
           invalidPhone: "Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein.",
+          createQuoteFailed: "Die Anfrage konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
+          confirmFailed: "Die Anfrage konnte nicht bestätigt werden. Bitte versuchen Sie es erneut.",
           requiredName: "Name ist erforderlich",
           requiredAddress: "Adresse ist erforderlich",
           requiredPhone: "Telefonnummer ist erforderlich",
@@ -2007,7 +2318,7 @@ const resources = {
         gdprPrefix: "Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäß ",
         gdprText: "Ich stimme zu, dass meine Daten für die Buchung verarbeitet und ich bezüglich dieser Buchung kontaktiert werde.",
         gdprFull: "Ich stimme zu, dass meine Daten für die Buchung verarbeitet und ich bezüglich dieser Buchung kontaktiert werde.",
-        gdprLink: "Datenschutzerklärung (DSGVO)",
+        gdprLink: "Datenschutzerklärung",
         confirming: "Anfrage wird gesendet...",
         submitBtn: "Jetzt anfragen",
         confirmBtn: "Buchung anfragen",
@@ -2024,6 +2335,8 @@ const resources = {
 // This guards against accidental nesting of `overview` inside sub-objects.
 resources.en.translation.services = resources.en.translation.services || {};
 resources.en.translation.services.overview = {
+  seoTitle: "Cleaning Services Vienna & Graz | PutzELF",
+  seoDescription: "Maintenance, deep, staircase, glass and frame cleaning for businesses in Vienna and Graz.",
   title: "Cleaning Services for Homes & Businesses",
   subtitle: "Practical, reliable cleaning services for private households and commercial customers in Vienna and Graz. Select a service to see what’s included and request a quote.",
   cards: [
@@ -2046,7 +2359,7 @@ resources.en.translation.services.overview = {
   approach: [
     "Clear room‑by‑room checklists and transparent scopes",
     "Flexible appointment windows to reduce disruption",
-    "Experienced teams working with standardised routines and quality checks"
+    "Teams working with agreed routines and quality checks"
   ],
   benefitsTitle: "Why choose PutzELF",
   benefits: [
@@ -2065,6 +2378,8 @@ resources.en.translation.services.overview = {
 
 resources.de.translation.services = resources.de.translation.services || {};
 resources.de.translation.services.overview = {
+  seoTitle: "Reinigungsleistungen Wien & Graz | PutzELF",
+  seoDescription: "Unterhalts-, Grund-, Treppenhaus- sowie Glas- und Rahmenreinigung für Unternehmen in Wien und Graz.",
   title: "Unsere Services – Reinigungsleistungen für Privat und Gewerbe",
   subtitle: "Übersichtliche, verlässliche Reinigungsangebote für Haushalte und Unternehmen in Wien und Graz. Wählen Sie eine Leistung, um Details, Umfang und mögliche Termine zu sehen.",
   cards: [
@@ -2087,7 +2402,7 @@ resources.de.translation.services.overview = {
   approach: [
     "Klare Leistungsbeschreibungen und Raum-für-Raum-Checklisten",
     "Flexible Terminfenster, abgestimmt auf Ihren Tagesablauf oder Betriebszeiten",
-    "Erfahrene Teams mit standardisierten Abläufen und Qualitätskontrolle"
+    "Teams mit vereinbarten Abläufen und Qualitätskontrollen"
   ],
   benefitsTitle: "Ihre Vorteile",
   benefits: [

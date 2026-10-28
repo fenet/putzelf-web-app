@@ -6,6 +6,7 @@ let gaId = null;
 let fbId = null;
 let gtmId = null;
 let leadinfoId = null;
+const META_TRACKING_ENABLED = import.meta.env.VITE_META_TRACKING_ENABLED === "true";
 
 let consentState = {
   analytics: false,
@@ -141,7 +142,8 @@ export function initAnalytics({ gaMeasurementId, fbPixelId }) {
   initialized = true;
 
   gaId = gaMeasurementId || null;
-  fbId = fbPixelId || null;
+  // Meta remains available for later reuse, but is off unless explicitly enabled.
+  fbId = META_TRACKING_ENABLED ? fbPixelId || null : null;
   gtmId = import.meta.env.VITE_GTM_ID || null;
   leadinfoId = import.meta.env.VITE_LEADINFO_ID || "LI-6A5A69438E145";
 

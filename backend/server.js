@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { sendBookingConfirmation, sendContactRequest, sendQuoteRequestConfirmation } from "./utils/mailer.js";
 import { MIN_HOURS, WINDOW_PRICE_NET, INTENSIVE_HOURLY_NET, TAX_RATE } from "./config.js";
-import { sendMetaEvent, sendMetaLeadEvent } from "./utils/metaConversions.js";
+import { isMetaTrackingEnabled, sendMetaEvent, sendMetaLeadEvent } from "./utils/metaConversions.js";
 import { sendNativeFormResponse } from "./utils/nativeFormResponse.js";
 
 dotenv.config();
@@ -306,6 +306,8 @@ app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
       phone,
       notes,
       gdprConsent,
+      metaEventId,
+      metaEventSource,
     } = req.body;
 
     if (!date || !time || !duration || !typeOfCleaning) {
@@ -467,8 +469,6 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
       phone,
       notes,
       gdprConsent,
-      metaEventId,
-      metaEventSource,
     } = req.body;
 
     if (!name || !email || !address || !phone || gdprConsent !== true) {
@@ -548,19 +548,21 @@ app.put("/api/bookings/:id/confirm", attachUserIfPresent, async (req, res) => {
       }
     }
 
-    try {
-      await sendMetaLeadEvent({
-        booking,
-        eventId: metaEventId,
-        eventSourceUrl: metaEventSource,
-        clientIp: req.headers["x-forwarded-for"] || req.socket?.remoteAddress,
-        userAgent: req.headers["user-agent"],
-      });
-    } catch (metaErr) {
-      console.warn(
-        "Meta Conversions dispatch failed:",
-        metaErr && (metaErr.message || metaErr)
-      );
+    if (isMetaTrackingEnabled()) {
+      try {
+        await sendMetaLeadEvent({
+          booking,
+          eventId: metaEventId,
+          eventSourceUrl: metaEventSource,
+          clientIp: req.headers["x-forwarded-for"] || req.socket?.remoteAddress,
+          userAgent: req.headers["user-agent"],
+        });
+      } catch (metaErr) {
+        console.warn(
+          "Meta Conversions dispatch failed:",
+          metaErr && (metaErr.message || metaErr)
+        );
+      }
     }
 
     res.json({ message: "Booking confirmed and email sent", booking });
@@ -598,6 +600,10 @@ app.post("/api/integrations/admin/shift-updated", async (req, res) => {
 });
 
 app.post("/api/meta/event", async (req, res) => {
+  if (!isMetaTrackingEnabled()) {
+    return res.status(204).end();
+  }
+
   try {
     const { eventName, eventId, eventSourceUrl, customData } = req.body || {};
     if (!eventName) {

@@ -21,7 +21,6 @@ const policySections = [
   { key: "cookies", paragraphs: ["necessary", "optional"], germanParagraphs: ["necessaryCookies", "optionalServices"] },
   { key: "googleAds", paragraphs: ["service", "legalBasis", "moreInfo"], germanParagraphs: ["googleAds", "googleAdsLegalBasis", "googleAdsMoreInfo"] },
   { key: "analytics", paragraphs: ["service", "legalBasis", "moreInfo"], germanParagraphs: ["googleAnalytics", "googleAnalyticsLegalBasis", "googleAnalyticsMoreInfo"] },
-  { key: "metaPixel", paragraphs: ["service", "legalBasis", "moreInfo"], germanParagraphs: ["metaPixel", "metaPixelLegalBasis", "metaPixelMoreInfo"] },
   { key: "leadinfo", paragraphs: ["service", "cookies", "legalBasis", "moreInfo"], germanParagraphs: ["leadinfo", "leadinfoCookies", "leadinfoLegalBasis", "leadinfoMoreInfo"] },
   { key: "maps", paragraphs: ["body"], germanParagraphs: ["maps"] },
   { key: "socialMedia", paragraphs: ["body"], germanParagraphs: ["socialLinks"] },
@@ -34,7 +33,6 @@ const policySections = [
 const policyLinks = {
   googlePrivacy: <a href="https://policies.google.com/privacy?hl=de" className="text-[#0097b2] underline" />,
   googlePartnerSites: <a href="https://policies.google.com/technologies/partner-sites?hl=de" className="text-[#0097b2] underline" />,
-  metaPrivacy: <a href="https://www.facebook.com/privacy/policy/" className="text-[#0097b2] underline" />,
   leadinfoPrivacy: <a href="https://www.leadinfo.com/de/rechtliches/datenschutz/" className="text-[#0097b2] underline" />,
   leadinfoOptOut: <a href="https://www.leadinfo.com/de/rechtliches/opt-out/" className="text-[#0097b2] underline" />,
   maps: <a href="https://maps.google.com/" className="text-[#0097b2] underline" />,
@@ -46,10 +44,8 @@ export default function PrivacyPolicy() {
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
 
-  const seoTitle = locale === "de" ? "Datenschutzerklärung | PutzELF" : "Privacy Policy | PutzELF";
-  const seoDescription = locale === "de"
-    ? "Informationen zur Verarbeitung personenbezogener Daten, zu Cookies und zu Ihren Datenschutzrechten bei PutzELF."
-    : "Information about personal-data processing, cookies and privacy rights when using PutzELF services and this website.";
+  const seoTitle = t("privacyPolicy.seoTitle");
+  const seoDescription = t("privacyPolicy.seoDescription");
 
   const pageTitle = t("privacyPolicy.title");
 

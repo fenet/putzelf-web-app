@@ -14,12 +14,8 @@ export default function JobOpening() {
   const { t } = useTranslation();
   const title = t("jobOpening.title");
   const description = t("jobOpening.description");
-  const seoTitle = locale === "de"
-    ? "Jobs bei PutzELF – Reinigung & Kundenservice"
-    : "Jobs at PutzELF – Cleaning & Customer Service";
-  const seoDescription = locale === "de"
-    ? "Aktuelle Stellen bei PutzELF in Wien und Graz. Aufgaben, Anforderungen und Kontakt zur Bewerbung."
-    : "Current opportunities at PutzELF in Vienna and Graz, with role details, requirements and application contact.";
+  const seoTitle = t("jobOpening.seoTitle");
+  const seoDescription = t("jobOpening.seoDescription");
   const roles = t("jobOpening.roles", { returnObjects: true });
 
   return (

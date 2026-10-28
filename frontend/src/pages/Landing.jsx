@@ -21,8 +21,8 @@ export default function Landing() {
     ? "Reinigungsfirma Wien & Graz – Putzfrau & Reinigungskraft buchen"
     : "Cleaning Company Vienna & Graz – Book a Cleaner Online";
   const seoDescription = locale === "de"
-    ? "Reinigung in Wien und Graz: Putzfrau und Reinigungskraft online buchen. Geprüfte Reinigungskräfte für Haushalt und Büro."
-    : "Cleaning in Vienna and Graz: book a vetted cleaner online for home or office cleaning with flexible scheduling.";
+    ? "Reinigung in Wien und Graz: Putzfrau und Reinigungskraft online buchen – für Haushalt und Büro."
+    : "Cleaning in Vienna and Graz: book a cleaner online for home or office cleaning with flexible scheduling.";
 
   // Cookie consent is handled globally by `CookieConsent` mounted in App.jsx
 

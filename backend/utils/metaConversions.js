@@ -1,12 +1,20 @@
 import crypto from "crypto";
 
-const META_PIXEL_ID = process.env.META_PIXEL_ID || process.env.FB_PIXEL_ID;
-const META_CONVERSIONS_TOKEN =
-  process.env.META_CONVERSIONS_TOKEN || process.env.META_ACCESS_TOKEN;
-const META_DATASET_ID = process.env.META_DATASET_ID;
-const META_DATASET_TOKEN = process.env.META_DATASET_TOKEN;
-const META_API_VERSION = process.env.META_API_VERSION || "v19.0";
-const META_TEST_EVENT_CODE = process.env.META_TEST_EVENT_CODE;
+export function isMetaTrackingEnabled() {
+  return process.env.META_TRACKING_ENABLED === "true";
+}
+
+function getMetaConfig() {
+  return {
+    pixelId: process.env.META_PIXEL_ID || process.env.FB_PIXEL_ID,
+    conversionsToken:
+      process.env.META_CONVERSIONS_TOKEN || process.env.META_ACCESS_TOKEN,
+    datasetId: process.env.META_DATASET_ID,
+    datasetToken: process.env.META_DATASET_TOKEN,
+    apiVersion: process.env.META_API_VERSION || "v19.0",
+    testEventCode: process.env.META_TEST_EVENT_CODE,
+  };
+}
 
 const DATASET_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000;
 let lastDatasetCheck = 0;
@@ -53,15 +61,15 @@ function normalizeIp(ip) {
   return first.replace("::ffff:", "");
 }
 
-async function maybeLogDatasetQuality(fetchFn) {
-  if (!META_DATASET_ID || !META_DATASET_TOKEN) return;
+async function maybeLogDatasetQuality(fetchFn, config) {
+  if (!config.datasetId || !config.datasetToken) return;
   const now = Date.now();
   if (now - lastDatasetCheck < DATASET_CHECK_INTERVAL_MS) return;
   lastDatasetCheck = now;
 
   try {
-    const params = new URLSearchParams({ access_token: META_DATASET_TOKEN });
-    const url = `https://graph.facebook.com/${META_API_VERSION}/${META_DATASET_ID}/stats?${params.toString()}`;
+    const params = new URLSearchParams({ access_token: config.datasetToken });
+    const url = `https://graph.facebook.com/${config.apiVersion}/${config.datasetId}/stats?${params.toString()}`;
     const response = await fetchFn(url, { method: "GET" });
     if (!response.ok) {
       const text = await response.text();
@@ -82,7 +90,10 @@ export async function sendMetaLeadEvent({
   clientIp,
   userAgent,
 }) {
-  if (!META_PIXEL_ID || !META_CONVERSIONS_TOKEN) {
+  if (!isMetaTrackingEnabled()) return;
+
+  const config = getMetaConfig();
+  if (!config.pixelId || !config.conversionsToken) {
     console.warn(
       "Meta Conversions API disabled: missing META_PIXEL_ID or META_CONVERSIONS_TOKEN env vars."
     );
@@ -108,7 +119,7 @@ export async function sendMetaLeadEvent({
         action_source: "website",
         event_source_url: eventSourceUrl,
         data_processing_options: [],
-        data_set_id: META_DATASET_ID,
+        data_set_id: config.datasetId,
         user_data: {
           em: hashSha256(booking.email),
           ph: hashPhone(booking.phone),
@@ -127,10 +138,10 @@ export async function sendMetaLeadEvent({
     ],
   };
 
-  const params = new URLSearchParams({ access_token: META_CONVERSIONS_TOKEN });
-  if (META_TEST_EVENT_CODE) params.append("test_event_code", META_TEST_EVENT_CODE);
+  const params = new URLSearchParams({ access_token: config.conversionsToken });
+  if (config.testEventCode) params.append("test_event_code", config.testEventCode);
 
-  const url = `https://graph.facebook.com/${META_API_VERSION}/${META_PIXEL_ID}/events?${params.toString()}`;
+  const url = `https://graph.facebook.com/${config.apiVersion}/${config.pixelId}/events?${params.toString()}`;
 
   try {
     const response = await fetchFn(url, {
@@ -150,7 +161,7 @@ export async function sendMetaLeadEvent({
     console.warn("Meta Conversions API request failed:", err && err.message);
   }
 
-  await maybeLogDatasetQuality(fetchFn);
+  await maybeLogDatasetQuality(fetchFn, config);
 }
 
 export async function sendMetaEvent({
@@ -161,7 +172,10 @@ export async function sendMetaEvent({
   userAgent,
   customData,
 }) {
-  if (!META_PIXEL_ID || !META_CONVERSIONS_TOKEN) {
+  if (!isMetaTrackingEnabled()) return;
+
+  const config = getMetaConfig();
+  if (!config.pixelId || !config.conversionsToken) {
     console.warn(
       "Meta Conversions API disabled: missing META_PIXEL_ID or META_CONVERSIONS_TOKEN env vars."
     );
@@ -186,7 +200,7 @@ export async function sendMetaEvent({
         action_source: "website",
         event_source_url: eventSourceUrl,
         data_processing_options: [],
-        data_set_id: META_DATASET_ID,
+        data_set_id: config.datasetId,
         user_data: {
           client_user_agent: userAgent,
           client_ip_address: normalizeIp(clientIp),
@@ -196,10 +210,10 @@ export async function sendMetaEvent({
     ],
   };
 
-  const params = new URLSearchParams({ access_token: META_CONVERSIONS_TOKEN });
-  if (META_TEST_EVENT_CODE) params.append("test_event_code", META_TEST_EVENT_CODE);
+  const params = new URLSearchParams({ access_token: config.conversionsToken });
+  if (config.testEventCode) params.append("test_event_code", config.testEventCode);
 
-  const url = `https://graph.facebook.com/${META_API_VERSION}/${META_PIXEL_ID}/events?${params.toString()}`;
+  const url = `https://graph.facebook.com/${config.apiVersion}/${config.pixelId}/events?${params.toString()}`;
 
   try {
     const response = await fetchFn(url, {
@@ -219,5 +233,5 @@ export async function sendMetaEvent({
     console.warn("Meta Conversions API request failed:", err && err.message);
   }
 
-  await maybeLogDatasetQuality(fetchFn);
+  await maybeLogDatasetQuality(fetchFn, config);
 }

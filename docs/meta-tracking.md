@@ -1,11 +1,14 @@
 # Meta Ads Tracking Setup
 
-This project now ships with coordinated Meta Pixel and Conversions API tracking. Follow the steps below to enable it in your environments.
+Meta Pixel and Conversions API code are retained for possible future use, but tracking is disabled by default. To reactivate it, explicitly enable it in both the frontend and backend, and restore the matching consent and privacy disclosures before deployment.
+
+If Google Tag Manager is enabled, also confirm its container has no active Meta Pixel tag while tracking is disabled. The application flag does not control tags configured inside the external GTM container.
 
 ## 1. Frontend configuration
 
 1. In `frontend/.env`, supply the pixel ID that Meta created for your dataset:
    ```ini
+   VITE_META_TRACKING_ENABLED=true
    VITE_FB_PIXEL_ID=123456789012345
    ```
 2. Rebuild or restart Vite so the environment variable is injected.
@@ -21,6 +24,7 @@ The confirmation event exposes `event_id`, `value`, and `currency`, aligning the
 Set the following environment variables in `backend/.env`:
 
 ```ini
+META_TRACKING_ENABLED=true
 META_PIXEL_ID=123456789012345
 META_CONVERSIONS_TOKEN=your_conversions_api_token
 META_DATASET_ID=your_dataset_id

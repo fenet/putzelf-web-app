@@ -164,9 +164,14 @@ export async function getReviews({ location, rating, sort, limit = 10, page = 1 
     return null;
   }
 
+  const normalizeReviewerName = (value) => {
+    const name = typeof value === "string" ? value.trim() : "";
+    return !name || /^your choice$/i.test(name) ? null : name;
+  };
+
   const reviews = items.map((r) => ({
     reviewId: r.name || r.reviewId || null,
-    reviewerName: r.reviewer?.displayName || r.reviewer?.profileName || null,
+    reviewerName: normalizeReviewerName(r.reviewer?.displayName || r.reviewer?.profileName),
     rating: parseRating(r.starRating ?? r.rating ?? r.reviewRating ?? null),
     comment: r.comment || null,
     createTime: r.createTime || r.create_time || null,

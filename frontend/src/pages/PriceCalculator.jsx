@@ -182,16 +182,8 @@ export default function PriceCalculator() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Seo
-        title={
-          locale === "de"
-            ? "Preisrechner Reinigung Wien"
-            : "Cleaning Price Calculator Vienna"
-        }
-        description={
-          locale === "de"
-            ? "Preisrechner für Reinigung in Wien: Kosten (brutto) in wenigen Sekunden berechnen."
-            : "Cleaning price calculator for Vienna: estimate the gross cost in seconds."
-        }
+        title={t("calculator.seoTitle")}
+        description={t("calculator.seoDescription")}
         path={getLocalizedPath(locale, "calculator")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}

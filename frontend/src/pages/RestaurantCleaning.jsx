@@ -25,7 +25,7 @@ const copy = {
     process: [
       { title: "Anfrage", desc: "Nennen Sie Betriebszeiten und Bereiche zur Reinigung." },
       { title: "Abstimmung", desc: "Wir planen Einsätze so, dass Ihr Betrieb läuft." },
-      { title: "Durchführung", desc: "Hygienefokussierte Reinigung durch geschulte Teams." }
+      { title: "Durchführung", desc: "Reinigung gemäß den abgestimmten Hygieneanforderungen." }
     ],
     faqTitle: "Häufige Fragen",
     faqs: [
@@ -53,7 +53,7 @@ const copy = {
     process: [
       { title: "Inquiry", desc: "Tell us your operating hours and areas to clean." },
       { title: "Coordination", desc: "We plan interventions to avoid service disruption." },
-      { title: "Execution", desc: "Hygiene-focused cleaning by trained teams." }
+      { title: "Execution", desc: "Cleaning according to the agreed hygiene requirements." }
     ],
     faqTitle: "FAQs",
     faqs: [

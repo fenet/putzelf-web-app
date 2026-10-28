@@ -673,12 +673,8 @@ export default function Home() {
         </div>
       ) : null}
       <Seo
-        title={i18n.language?.startsWith("de") ? "Reinigung buchen" : "Booking"}
-        description={
-          i18n.language?.startsWith("de")
-            ? "Termin auswählen und Ihre Daten eingeben."
-            : "Book a cleaning and enter your details."
-        }
+        title={t("home.seoTitle")}
+        description={t("home.seoDescription")}
         path={getLocalizedPath(locale, "booking")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}
@@ -711,17 +707,15 @@ export default function Home() {
                   {t("home.locationModal.graz")}
                 </button>
               </div>
-              <div className="text-sm text-gray-500">
-                <button onClick={() => { setLocationModalOpen(true); }} className="underline">{t("home.locationModal.prompt")}</button>
-              </div>
             </div>
           </div>
         )}
 
         {/* show selected service location */}
         <div className="text-sm text-gray-700 mb-4">
-          <label className="font-semibold mr-2">{t("home.serviceLocationLabel")}</label>
+          <label htmlFor="service-location" className="font-semibold mr-2">{t("home.serviceLocationLabel")}</label>
           <select
+            id="service-location"
             value={serviceLocation}
             onChange={(e) => setServiceLocation(e.target.value)}
             className="ml-2 p-2 border rounded"
@@ -763,77 +757,77 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {/* 1. Title (optional) */}
               <div>
-                <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.title")}</label>
-                <input name="title" value={form.title} onChange={handleChange} placeholder={t("contact.bookingContact.title", { defaultValue: "Title (optional)" })} className="p-3 border rounded w-full" />
+                <label htmlFor="booking-title" className="block text-sm font-medium mb-1">{t("contact.bookingContact.title")}</label>
+                <input id="booking-title" name="title" value={form.title} onChange={handleChange} placeholder={t("contact.bookingContact.title", { defaultValue: "Title (optional)" })} className="p-3 border rounded w-full" />
               </div>
 
               {/* 2. First Name * */}
               <div>
-                <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.firstName")}<span className="text-red-600 ml-1">*</span></label>
-                <input name="firstName" value={form.firstName} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.firstName", { defaultValue: "First Name" })} className="p-3 border rounded w-full" />
-                {firstNameError ? <p className="text-sm text-red-600 mt-1">{firstNameError}</p> : null}
+                <label htmlFor="booking-first-name" className="block text-sm font-medium mb-1">{t("contact.bookingContact.firstName")}<span className="text-red-600 ml-1">*</span></label>
+                <input id="booking-first-name" name="firstName" value={form.firstName} onChange={handleChange} required aria-required="true" aria-invalid={Boolean(firstNameError)} aria-describedby={firstNameError ? "booking-first-name-error" : undefined} placeholder={t("contact.bookingContact.firstName", { defaultValue: "First Name" })} className="p-3 border rounded w-full" />
+                {firstNameError ? <p id="booking-first-name-error" className="text-sm text-red-600 mt-1">{firstNameError}</p> : null}
               </div>
 
               {/* 3. Last Name * */}
               <div>
-                <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.lastName")}<span className="text-red-600 ml-1">*</span></label>
-                <input name="lastName" value={form.lastName} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.lastName", { defaultValue: "Last Name" })} className="p-3 border rounded w-full" />
-                {lastNameError ? <p className="text-sm text-red-600 mt-1">{lastNameError}</p> : null}
+                <label htmlFor="booking-last-name" className="block text-sm font-medium mb-1">{t("contact.bookingContact.lastName")}<span className="text-red-600 ml-1">*</span></label>
+                <input id="booking-last-name" name="lastName" value={form.lastName} onChange={handleChange} required aria-required="true" aria-invalid={Boolean(lastNameError)} aria-describedby={lastNameError ? "booking-last-name-error" : undefined} placeholder={t("contact.bookingContact.lastName", { defaultValue: "Last Name" })} className="p-3 border rounded w-full" />
+                {lastNameError ? <p id="booking-last-name-error" className="text-sm text-red-600 mt-1">{lastNameError}</p> : null}
               </div>
 
               {/* 4. Street Name * and 5. House No. * */}
               <div className="flex gap-3">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.streetName")}<span className="text-red-600 ml-1">*</span></label>
-                  <input name="streetName" value={form.streetName} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.streetName", { defaultValue: "Street Name" })} className="p-3 border rounded w-full" />
-                  {streetError ? <p className="text-sm text-red-600 mt-1">{streetError}</p> : null}
+                  <label htmlFor="booking-street-name" className="block text-sm font-medium mb-1">{t("contact.bookingContact.streetName")}<span className="text-red-600 ml-1">*</span></label>
+                  <input id="booking-street-name" name="streetName" value={form.streetName} onChange={handleChange} required aria-required="true" aria-invalid={Boolean(streetError)} aria-describedby={streetError ? "booking-street-name-error" : undefined} placeholder={t("contact.bookingContact.streetName", { defaultValue: "Street Name" })} className="p-3 border rounded w-full" />
+                  {streetError ? <p id="booking-street-name-error" className="text-sm text-red-600 mt-1">{streetError}</p> : null}
                 </div>
                 <div className="w-32">
-                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.houseNumber")}<span className="text-red-600 ml-1">*</span></label>
-                  <input name="houseNumber" value={form.houseNumber} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.houseNumber", { defaultValue: "House No." })} className="p-3 border rounded w-full" />
-                  {houseNumberError ? <p className="text-sm text-red-600 mt-1">{houseNumberError}</p> : null}
+                  <label htmlFor="booking-house-number" className="block text-sm font-medium mb-1">{t("contact.bookingContact.houseNumber")}<span className="text-red-600 ml-1">*</span></label>
+                  <input id="booking-house-number" name="houseNumber" value={form.houseNumber} onChange={handleChange} required aria-required="true" aria-invalid={Boolean(houseNumberError)} aria-describedby={houseNumberError ? "booking-house-number-error" : undefined} placeholder={t("contact.bookingContact.houseNumber", { defaultValue: "House No." })} className="p-3 border rounded w-full" />
+                  {houseNumberError ? <p id="booking-house-number-error" className="text-sm text-red-600 mt-1">{houseNumberError}</p> : null}
                 </div>
               </div>
 
               {/* 6. Door No. * and 7. Building No. * */}
               <div className="flex gap-3">
                 <div className="w-32">
-                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.doorNumber")}<span className="text-red-600 ml-1">*</span></label>
-                  <input name="doorNumber" value={form.doorNumber} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.doorNumber", { defaultValue: "Door No." })} className="p-3 border rounded w-full" />
-                  {doorNumberError ? <p className="text-sm text-red-600 mt-1">{doorNumberError}</p> : null}
+                  <label htmlFor="booking-door-number" className="block text-sm font-medium mb-1">{t("contact.bookingContact.doorNumber")}<span className="text-red-600 ml-1">*</span></label>
+                  <input id="booking-door-number" name="doorNumber" value={form.doorNumber} onChange={handleChange} required aria-required="true" aria-invalid={Boolean(doorNumberError)} aria-describedby={doorNumberError ? "booking-door-number-error" : undefined} placeholder={t("contact.bookingContact.doorNumber", { defaultValue: "Door No." })} className="p-3 border rounded w-full" />
+                  {doorNumberError ? <p id="booking-door-number-error" className="text-sm text-red-600 mt-1">{doorNumberError}</p> : null}
                 </div>
                 <div className="flex-1">
-                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.buildingNumber")}</label>
-                    <input name="buildingNumber" value={form.buildingNumber} onChange={handleChange} placeholder={t("contact.bookingContact.buildingNumber", { defaultValue: "Building No." })} className="p-3 border rounded w-full" />
+                  <label htmlFor="booking-building-number" className="block text-sm font-medium mb-1">{t("contact.bookingContact.buildingNumber")}</label>
+                    <input id="booking-building-number" name="buildingNumber" value={form.buildingNumber} onChange={handleChange} placeholder={t("contact.bookingContact.buildingNumber", { defaultValue: "Building No." })} className="p-3 border rounded w-full" />
                 </div>
               </div>
 
               {/* 8. Postal Code * and 9. City * */}
               <div className="flex gap-3">
                 <div className="w-32">
-                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.postalCode")}<span className="text-red-600 ml-1">*</span></label>
-                  <input name="postalCode" value={form.postalCode} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.postalCode", { defaultValue: "Postal Code" })} className="p-3 border rounded w-full" />
-                  {postalError ? <p className="text-sm text-red-600 mt-1">{postalError}</p> : null}
+                  <label htmlFor="booking-postal-code" className="block text-sm font-medium mb-1">{t("contact.bookingContact.postalCode")}<span className="text-red-600 ml-1">*</span></label>
+                  <input id="booking-postal-code" name="postalCode" value={form.postalCode} onChange={handleChange} required aria-required="true" aria-invalid={Boolean(postalError)} aria-describedby={postalError ? "booking-postal-code-error" : undefined} placeholder={t("contact.bookingContact.postalCode", { defaultValue: "Postal Code" })} className="p-3 border rounded w-full" />
+                  {postalError ? <p id="booking-postal-code-error" className="text-sm text-red-600 mt-1">{postalError}</p> : null}
                 </div>
                 <div className="flex-1">
-                  <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.city")}<span className="text-red-600 ml-1">*</span></label>
-                  <input name="city" value={form.city} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.city", { defaultValue: "City" })} className="p-3 border rounded w-full" />
-                  {cityError ? <p className="text-sm text-red-600 mt-1">{cityError}</p> : null}
+                  <label htmlFor="booking-city" className="block text-sm font-medium mb-1">{t("contact.bookingContact.city")}<span className="text-red-600 ml-1">*</span></label>
+                  <input id="booking-city" name="city" value={form.city} onChange={handleChange} required aria-required="true" aria-invalid={Boolean(cityError)} aria-describedby={cityError ? "booking-city-error" : undefined} placeholder={t("contact.bookingContact.city", { defaultValue: "City" })} className="p-3 border rounded w-full" />
+                  {cityError ? <p id="booking-city-error" className="text-sm text-red-600 mt-1">{cityError}</p> : null}
                 </div>
               </div>
 
               {/* 10. Phone Number * */}
               <div>
-                <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.phone")}<span className="text-red-600 ml-1">*</span></label>
-                <input name="phone" value={form.phone} onChange={handleChange} required aria-required="true" placeholder={t("contact.bookingContact.phone", { defaultValue: "Phone number" })} className="p-3 border rounded w-full" />
-                {phoneError ? <p className="text-sm text-red-600 mt-1">{phoneError}</p> : null}
+                <label htmlFor="booking-phone" className="block text-sm font-medium mb-1">{t("contact.bookingContact.phone")}<span className="text-red-600 ml-1">*</span></label>
+                <input id="booking-phone" name="phone" value={form.phone} onChange={handleChange} required aria-required="true" aria-invalid={Boolean(phoneError)} aria-describedby={phoneError ? "booking-phone-error" : undefined} placeholder={t("contact.bookingContact.phone", { defaultValue: "Phone number" })} className="p-3 border rounded w-full" />
+                {phoneError ? <p id="booking-phone-error" className="text-sm text-red-600 mt-1">{phoneError}</p> : null}
               </div>
 
               {/* 11. Email Address * */}
               <div>
-                <label className="block text-sm font-medium mb-1">{t("contact.bookingContact.email")}<span className="text-red-600 ml-1">*</span></label>
-                <input name="email" value={form.email} onChange={handleChange} onBlur={handleEmailBlur} required aria-required="true" placeholder={t("contact.bookingContact.email", { defaultValue: "Email address" })} className="p-3 border rounded w-full" />
-                {emailError ? <p className="text-sm text-red-600 mt-1">{emailError}</p> : null}
+                <label htmlFor="booking-email" className="block text-sm font-medium mb-1">{t("contact.bookingContact.email")}<span className="text-red-600 ml-1">*</span></label>
+                <input id="booking-email" name="email" value={form.email} onChange={handleChange} onBlur={handleEmailBlur} required aria-required="true" aria-invalid={Boolean(emailError)} aria-describedby={emailError ? "booking-email-error" : undefined} placeholder={t("contact.bookingContact.email", { defaultValue: "Email address" })} className="p-3 border rounded w-full" />
+                {emailError ? <p id="booking-email-error" className="text-sm text-red-600 mt-1">{emailError}</p> : null}
               </div>
             </div>
           </div>
@@ -1270,37 +1264,27 @@ export default function Home() {
             <textarea id="notes" name="notes" value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full p-3 border rounded" rows={4} />
           </div>
 
-          <label className="flex items-start space-x-3 text-sm">
+          <div className="flex items-start space-x-3 text-sm">
             <input
+              id="booking-gdpr-consent"
               type="checkbox"
               name="gdprConsent"
               checked={gdprConsent}
               onChange={(e) => { setGdprConsent(e.target.checked); setGdprError(""); }}
               className="w-4 h-4 mt-1"
             />
-            <span>
-              {t("order.gdprText")}
+            <div>
+              <label htmlFor="booking-gdpr-consent">
+                {t("order.gdprText")}{" ("}
+              </label>
+              <Link to={getLocalizedPath(locale, "privacy")} className="text-sky-700 underline underline-offset-2">
+                {t("order.gdprLink")}
+              </Link>{")"}
               {gdprError ? <div className="text-red-600 text-sm mt-1">{gdprError}</div> : null}
-            </span>
-          </label>
+            </div>
+          </div>
 
           {/* Price estimation removed from booking page; use Price Calculator instead */}
-
-          <div className="relative">
-            <button
-              type="submit"
-              className="group w-full focus:outline-none"
-              aria-label={
-                (i18n?.language || "")
-                  .toLowerCase()
-                  .startsWith("de")
-                  ? "Belohnungsbox öffnen"
-                  : "Open reward box"
-              }
-            >
-              
-            </button>
-          </div>
 
           <button
             type="submit"

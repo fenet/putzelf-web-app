@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Building2, Handshake, MapPin } from "lucide-react";
 import Seo from "../components/Seo";
 
@@ -7,46 +8,18 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
-const copy = {
-  de: {
-    title: "Partner werden",
-    description: "Informationen für Reinigungsunternehmen, selbständige Reinigungskräfte und Kooperationspartner in Wien und Graz.",
-    intro: "Wir freuen uns auf Partnerschaften mit Unternehmen und Subunternehmern. Bitte füllen Sie das Formular aus.",
-    fields: { name: "Ansprechpartner", company: "Firmenname", address: "Adresse", email: "E-Mail", phone: "Telefon", message: "Nachricht" },
-    privacyNotice: "Wir verwenden Ihre Angaben zur Bearbeitung Ihrer Partnerschaftsanfrage. Einzelheiten finden Sie in unserer",
-    privacyPolicyLink: "Datenschutzerklärung",
-    submit: "Partnerschaftsanfrage senden",
-    loading: "Wird gesendet…",
-    success: "Anfrage gesendet — wir melden uns bei Ihnen.",
-    error: "Senden fehlgeschlagen — bitte später erneut versuchen.",
-  },
-  en: {
-    title: "Become a Partner",
-    description: "Information for cleaning companies, independent cleaners and cooperation partners in Vienna and Graz.",
-    intro: "We welcome partnerships with companies and subcontractors. Please fill out the form and we will get back to you.",
-    fields: { name: "Name", company: "Company", address: "Address", email: "Email", phone: "Phone", message: "Message" },
-    privacyNotice: "We use your details to handle your partnership request. For details, see our",
-    privacyPolicyLink: "Privacy Policy",
-    submit: "Send Partnership Request",
-    loading: "Sending…",
-    success: "Request sent — we will contact you.",
-    error: "Failed to send — try again later.",
-  },
-};
-
 export default function GetPartners() {
+  const { t } = useTranslation();
   const [status, setStatus] = useState(null);
   const [phoneError, setPhoneError] = useState(null);
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
-  const c = copy[locale];
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
     const phoneVal = (form.get("phone") || "").toString().trim();
     if (phoneVal && !/^\d+$/.test(phoneVal)) {
-      setPhoneError(locale === "de" ? "Telefonnummer darf nur Ziffern enthalten." : "Phone must contain only numbers.");
+      setPhoneError(t("partnerInquiryPage.errors.phoneDigitsOnly"));
       return;
     }
     setPhoneError(null);
@@ -71,8 +44,8 @@ export default function GetPartners() {
     <div className="min-h-screen bg-[#f5f7f7] text-slate-900">
       <Navbar />
       <Seo
-        title={locale === "de" ? "Partner von PutzELF werden" : "Become a PutzELF Partner"}
-        description={c.description}
+        title={t("partnerInquiryPage.seoTitle")}
+        description={t("partnerInquiryPage.description")}
         path={getLocalizedPath(locale, "getPartners")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}
@@ -90,10 +63,10 @@ export default function GetPartners() {
                 PutzELF
               </p>
               <h1 className="mt-4 text-4xl font-semibold tracking-[-0.06em] text-slate-900 sm:text-5xl">
-                {c.title}
+                {t("partnerInquiryPage.title")}
               </h1>
               <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
-                {c.intro}
+                {t("partnerInquiryPage.intro")}
               </p>
 
               <div className="mt-8 rounded-[24px] border border-slate-200 bg-slate-50 p-5">
@@ -103,10 +76,10 @@ export default function GetPartners() {
                       <Handshake className="h-5 w-5" />
                     </span>
                     <span className="text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
-                      {locale === "de" ? "Partnerschaft" : "Partnership"}
+                      {t("partnerInquiryPage.partnership")}
                     </span>
                   </div>
-                  <span className="text-sm font-medium text-slate-500">{locale === "de" ? "Wien · Graz" : "Vienna · Graz"}</span>
+                  <span className="text-sm font-medium text-slate-500">{t("partnerInquiryPage.coverage")}</span>
                 </div>
                 <div className="mt-6 grid gap-4 sm:grid-cols-3">
                   <div className="rounded-2xl border border-slate-200 bg-white p-3">
@@ -133,30 +106,33 @@ export default function GetPartners() {
             <form onSubmit={handleSubmit} method="post" action="/api/partners/inquiry" className="space-y-4">
               <input type="hidden" name="locale" value={locale} />
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700">
-                  {locale === "de" ? "Standort" : "Location"}
+                <label htmlFor="partner-location" className="mb-2 block text-sm font-medium text-slate-700">
+                  {t("partnerInquiryPage.fields.location")}
                 </label>
                 <select
+                  id="partner-location"
                   name="location"
                   defaultValue="vienna"
                   className="block w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                 >
-                  <option value="vienna">{locale === "de" ? "Wien" : "Vienna"}</option>
-                  <option value="graz">{locale === "de" ? "Graz" : "Graz"}</option>
+                  <option value="vienna">{t("contact.locations.vienna")}</option>
+                  <option value="graz">{t("contact.locations.graz")}</option>
                 </select>
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700">{c.fields.company}</label>
+                <label htmlFor="partner-company" className="mb-2 block text-sm font-medium text-slate-700">{t("partnerInquiryPage.fields.company")}</label>
                 <input
+                  id="partner-company"
                   name="company"
                   className="block w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700">{c.fields.name}</label>
+                <label htmlFor="partner-name" className="mb-2 block text-sm font-medium text-slate-700">{t("partnerInquiryPage.fields.name")}</label>
                 <input
+                  id="partner-name"
                   name="name"
                   required
                   className="block w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
@@ -164,8 +140,9 @@ export default function GetPartners() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700">{c.fields.address}</label>
+                <label htmlFor="partner-address" className="mb-2 block text-sm font-medium text-slate-700">{t("partnerInquiryPage.fields.address")}</label>
                 <input
+                  id="partner-address"
                   name="address"
                   className="block w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                 />
@@ -173,8 +150,9 @@ export default function GetPartners() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">{c.fields.email}</label>
+                  <label htmlFor="partner-email" className="mb-2 block text-sm font-medium text-slate-700">{t("partnerInquiryPage.fields.email")}</label>
                   <input
+                    id="partner-email"
                     name="email"
                     type="email"
                     required
@@ -182,8 +160,9 @@ export default function GetPartners() {
                   />
                 </div>
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">{c.fields.phone}</label>
+                  <label htmlFor="partner-phone" className="mb-2 block text-sm font-medium text-slate-700">{t("partnerInquiryPage.fields.phone")}</label>
                   <input
+                    id="partner-phone"
                     name="phone"
                     className="block w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                   />
@@ -192,8 +171,9 @@ export default function GetPartners() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700">{c.fields.message}</label>
+                <label htmlFor="partner-message" className="mb-2 block text-sm font-medium text-slate-700">{t("partnerInquiryPage.fields.message")}</label>
                 <textarea
+                  id="partner-message"
                   name="message"
                   rows={5}
                   required
@@ -206,18 +186,18 @@ export default function GetPartners() {
                   type="submit"
                   className="inline-flex w-full items-center justify-center rounded-full bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200"
                 >
-                  {c.submit}
+                  {t("partnerInquiryPage.submit")}
                 </button>
 
                 <div className="mt-3 min-h-[24px] text-sm">
-                  {status === "loading" && <span className="text-slate-600">{c.loading}</span>}
-                  {status === "success" && <span className="text-emerald-600">{c.success}</span>}
-                  {status === "error" && <span className="text-red-600">{c.error}</span>}
+                  {status === "loading" && <span className="text-slate-600">{t("partnerInquiryPage.loading")}</span>}
+                  {status === "success" && <span className="text-emerald-600">{t("partnerInquiryPage.success")}</span>}
+                  {status === "error" && <span className="text-red-600">{t("partnerInquiryPage.error")}</span>}
                 </div>
                 <p className="mt-3 text-xs leading-5 text-slate-500">
-                  {c.privacyNotice}{" "}
+                  {t("partnerInquiryPage.privacyNotice")}{" "}
                   <Link to={getLocalizedPath(locale, "privacy")} className="text-sky-700 underline underline-offset-2">
-                    {c.privacyPolicyLink}
+                    {t("partnerInquiryPage.privacyPolicyLink")}
                   </Link>
                   .
                 </p>

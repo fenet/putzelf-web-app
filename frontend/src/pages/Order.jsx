@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import intlTelInput from "intl-tel-input";
 import "intl-tel-input/build/css/intlTelInput.css";
 import { apiFetch } from "../lib/api";
@@ -11,27 +11,25 @@ import Seo from "../components/Seo";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
 const COUNTRY_OPTIONS = [
-  { code: "at", label: "Austria (+43)" },
-  { code: "de", label: "Germany (+49)" },
-  { code: "ch", label: "Switzerland (+41)" },
-  { code: "cz", label: "Czechia (+420)" },
-  { code: "sk", label: "Slovakia (+421)" },
-  { code: "hu", label: "Hungary (+36)" },
-  { code: "pl", label: "Poland (+48)" },
-  { code: "it", label: "Italy (+39)" },
-  { code: "si", label: "Slovenia (+386)" },
-  { code: "hr", label: "Croatia (+385)" },
+  { code: "at", dialCode: "43" },
+  { code: "de", dialCode: "49" },
+  { code: "ch", dialCode: "41" },
+  { code: "cz", dialCode: "420" },
+  { code: "sk", dialCode: "421" },
+  { code: "hu", dialCode: "36" },
+  { code: "pl", dialCode: "48" },
+  { code: "it", dialCode: "39" },
+  { code: "si", dialCode: "386" },
+  { code: "hr", dialCode: "385" },
 ];
 
-  // add more European countries
-  const EXTRA_COUNTRIES = [
-    { code: "nl", label: "Netherlands (+31)" },
-    { code: "be", label: "Belgium (+32)" },
-    { code: "fr", label: "France (+33)" },
-    { code: "it", label: "Italy (+39)" },
-    { code: "es", label: "Spain (+34)" },
-  ];
-  const ALL_COUNTRIES = [...COUNTRY_OPTIONS, ...EXTRA_COUNTRIES];
+const EXTRA_COUNTRIES = [
+  { code: "nl", dialCode: "31" },
+  { code: "be", dialCode: "32" },
+  { code: "fr", dialCode: "33" },
+  { code: "es", dialCode: "34" },
+];
+const ALL_COUNTRIES = [...COUNTRY_OPTIONS, ...EXTRA_COUNTRIES];
 
 export default function Order() {
   const { t } = useTranslation();
@@ -40,8 +38,8 @@ export default function Order() {
   const locale = getLocaleFromPathname(location.pathname);
   const isQuoteRequest = id === "request";
   const pageTitle = isQuoteRequest
-    ? t("order.quoteRequestTitle", { defaultValue: "Quote request" })
-    : t("order.title", { defaultValue: "Order" });
+    ? t("order.quoteRequestTitle")
+    : t("order.title");
   const [booking, setBooking] = useState(null);
   const [customer, setCustomer] = useState({
     name: "",
@@ -332,7 +330,7 @@ export default function Order() {
 
         const created = await createRes.json();
         if (!createRes.ok || !created?.id) {
-          throw new Error(created?.error || "Failed to create quote request");
+          throw new Error(created?.error || t("order.errors.createQuoteFailed"));
         }
         bookingIdToConfirm = created.id;
       }
@@ -344,7 +342,7 @@ export default function Order() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to confirm booking");
+      if (!res.ok) throw new Error(data.error || t("order.errors.confirmFailed"));
 
       const confirmedBooking = data.booking || booking;
 
@@ -390,16 +388,16 @@ export default function Order() {
             </div>
             <div className="text-4xl mb-3 animate-bounce">🎉🥳🎁</div>
             <h3 className="text-2xl font-extrabold text-[#0097b2] mb-2">
-              Sie haben 20 % Rabatt erhalten!
+              {t("order.discountTitle")}
             </h3>
             <p className="text-gray-700 text-sm leading-relaxed">
-              Ihr Preis wird Ihnen per E-Mail gesendet, sobald Sie bestätigen.
+              {t("order.discountBody")}
             </p>
             <button
               onClick={() => setShowPopup(false)}
               className="mt-6 px-6 py-2 bg-[#5be3e3] text-black font-semibold rounded-full hover:bg-[#48c9c9] transition"
             >
-              OK
+              {t("common.ok")}
             </button>
             <div className="absolute bottom-2 right-2 opacity-70">
               <PartyPopper className="h-6 w-6 text-[#00b3c1]" />
@@ -463,7 +461,7 @@ export default function Order() {
                   name="name"
                   value={customer.name}
                   onChange={handleChange}
-                  placeholder={t("order.placeholders.name", { defaultValue: "Vor- und Nachname" })}
+                  placeholder={t("order.placeholders.name")}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
                   required
                 />
@@ -475,7 +473,7 @@ export default function Order() {
                   name="email"
                   value={customer.email}
                   onChange={handleChange}
-                  placeholder={t("order.placeholders.email", { defaultValue: "E-Mail-Adresse" })}
+                  placeholder={t("order.placeholders.email")}
                   type="email"
                   className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#5be3e3] ${
                     emailError ? "border-red-500" : "border-gray-300"
@@ -493,7 +491,7 @@ export default function Order() {
                   name="address"
                   value={customer.address}
                   onChange={handleChange}
-                  placeholder={t("order.placeholders.address", { defaultValue: "Straßenname, Hausnr., Türnr." })}
+                  placeholder={t("order.placeholders.address")}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
                   required
                 />
@@ -506,11 +504,11 @@ export default function Order() {
                     value={selectedCountry}
                     onChange={handleCountryChange}
                     className="w-40 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
-                    aria-label="Select country"
+                    aria-label={t("order.countrySelectLabel")}
                   >
                     {ALL_COUNTRIES.map((country) => (
                       <option key={country.code} value={country.code}>
-                        {country.label}
+                        {t(`order.countries.${country.code}`)} (+{country.dialCode})
                       </option>
                     ))}
                   </select>
@@ -520,7 +518,7 @@ export default function Order() {
                     name="phone"
                     value={customer.phone}
                     onChange={handleChange}
-                    placeholder={t("order.placeholders.phone", { defaultValue: "Telefonnummer" })}
+                    placeholder={t("order.placeholders.phone")}
                     className={`flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-[#5be3e3] ${
                       phoneError ? "border-red-500" : "border-gray-300"
                     }`}
@@ -562,24 +560,25 @@ export default function Order() {
                   />
                 </div>
 
-                <label className="flex items-start space-x-2 text-sm text-gray-600">
+                <div className="flex items-start space-x-2 text-sm text-gray-600">
                   <input
+                    id="order-gdpr-consent"
                     type="checkbox"
                     name="gdprConsent"
                     checked={customer.gdprConsent}
                     onChange={handleChange}
                     className="w-4 h-4 mt-1"
                   />
-                  <span>
-                    {t("order.gdprFull")}
-                    <a
-                      href="/privacy"
+                  <div>
+                    <label htmlFor="order-gdpr-consent">{t("order.gdprFull")}{" ("}</label>
+                    <Link
+                      to={getLocalizedPath(locale, "privacy")}
                       className="text-[#5be3e3] underline hover:text-[#000000] ml-1"
                     >
                       {t("order.gdprLink")}
-                    </a>
-                  </span>
-                </label>
+                    </Link>{")"}
+                  </div>
+                </div>
 
                 <button
                   onClick={handleConfirm}

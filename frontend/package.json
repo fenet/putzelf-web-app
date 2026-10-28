@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "check:i18n": "node ./scripts/check-i18n-keys.mjs",
     "generate:seo": "node ./scripts/generate-seo.mjs",
     "optimize:service-images": "python3 ./scripts/optimize-service-images.py",
     "build": "npm run generate:seo && vite build && npm run prerender",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.0",
+    "@babel/parser": "^7.28.4",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.3",

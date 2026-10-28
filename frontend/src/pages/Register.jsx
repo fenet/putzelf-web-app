@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/auth";
+import { useTranslation } from "react-i18next";
 import Seo from "../components/Seo";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
@@ -8,6 +9,7 @@ export default function Register() {
   const { register } = useAuth();
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
+  const { t } = useTranslation();
   const [form, setForm] = useState({ email: "", password: "", inviteCode: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,17 +40,17 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <Seo title={locale === "de" ? "Registrieren" : "Register"} description={locale === "de" ? "Konto erstellen, um Termine zu buchen." : "Create an account to book appointments."} path={getLocalizedPath(locale, "register")} lang={locale} alternates={getLocalizedAlternates(location.pathname)} xDefaultPath={getLocalizedPath("de", "register")} noindex />
+      <Seo title={t("auth.register.seoTitle")} description={t("auth.register.seoDescription")} path={getLocalizedPath(locale, "register")} lang={locale} alternates={getLocalizedAlternates(location.pathname)} xDefaultPath={getLocalizedPath("de", "register")} noindex />
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-6">
         <header className="text-center space-y-2">
-          <h1 className="text-3xl font-semibold text-gray-900">Konto erstellen</h1>
-          <p className="text-sm text-gray-600">Registrieren Sie sich, um Termine zu buchen und zu verwalten.</p>
+          <h1 className="text-3xl font-semibold text-gray-900">{t("auth.register.title")}</h1>
+          <p className="text-sm text-gray-600">{t("auth.register.description")}</p>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              E-Mail
+              {t("auth.register.email")}
             </label>
             <input
               id="email"
@@ -64,7 +66,7 @@ export default function Register() {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Passwort
+              {t("auth.register.password")}
             </label>
             <input
               id="password"
@@ -80,7 +82,7 @@ export default function Register() {
 
           <div>
             <label htmlFor="inviteCode" className="block text-sm font-medium text-gray-700">
-              Admin-Einladungscode (optional)
+              {t("auth.register.inviteCode")}
             </label>
             <input
               id="inviteCode"
@@ -89,7 +91,7 @@ export default function Register() {
               value={form.inviteCode}
               onChange={handleChange}
               className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-[#5be3e3]"
-              placeholder="Nur ausfüllen, wenn Sie als Admin eingeladen wurden"
+              placeholder={t("auth.register.invitePlaceholder")}
             />
           </div>
 
@@ -100,14 +102,14 @@ export default function Register() {
             disabled={loading}
             className="w-full rounded-lg bg-[#0097b2] py-2 text-white font-semibold shadow hover:bg-[#00819a] transition disabled:opacity-60"
           >
-            {loading ? "Creating account…" : "Create account"}
+            {loading ? t("auth.register.loading") : t("auth.register.submit")}
           </button>
         </form>
 
         <div className="text-center text-sm text-gray-600">
-          Already have an account?{" "}
+          {t("auth.register.hasAccount")}{" "}
           <Link to={getLocalizedPath(locale, "login")} className="text-[#0097b2] font-semibold hover:underline">
-            {locale === "de" ? "Anmelden" : "Sign in"}
+            {t("auth.register.loginLink")}
           </Link>
         </div>
       </div>

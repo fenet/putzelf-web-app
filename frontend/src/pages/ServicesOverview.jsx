@@ -46,8 +46,8 @@ export default function ServicesOverview() {
       <Navbar />
       <main className="max-w-6xl mx-auto px-6 py-12">
       <Seo
-        title={locale === "de" ? "Reinigungsleistungen Wien & Graz | PutzELF" : "Cleaning Services Vienna & Graz | PutzELF"}
-        description={locale === "de" ? "Unterhalts-, Grund-, Treppenhaus- sowie Glas- und Rahmenreinigung für Unternehmen in Wien und Graz." : "Maintenance, deep, staircase, glass and frame cleaning for businesses in Vienna and Graz."}
+        title={t("services.overview.seoTitle")}
+        description={t("services.overview.seoDescription")}
         path={getLocalizedPath(locale, "servicesOverview")}
         lang={locale}
         alternates={getLocalizedAlternates(location.pathname)}

@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { apiFetch } from "../lib/api";
+import { GOOGLE_BUSINESS_PROFILE_URL } from "../lib/googleBusinessProfile";
 
-const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=PutzELF%20Reviews";
 const GOOGLE_RATING_MAP = {
   ONE: 1,
   TWO: 2,
@@ -20,8 +20,6 @@ const FALLBACK_REVIEWS = [
     rating: 5,
     comment:
       "Für die dreiwöchige Urlaubsvertretung unserer Reinigungskraft wurde uns über Putzelf eine nette und zuverlässige Mitarbeiterin vermittelt. Sie arbeitet selbstständig und sorgfältig und versteht ihre Aufgaben schnell. Besonders positiv finden wir, dass sie mitdenkt und aufmerksam auf Dinge hinweist. Wir sind sehr zufrieden und können Putzelf absolut weiterempfehlen!",
-    reviewUrl:
-      "https://www.google.com/search?sa=X&sca_esv=c01d00c7c27b7017&hl=en-GB&authuser=0&biw=1296&bih=654&sxsrf=APpeQnuDl8aLAKyatGWp4_khekMJspvlxQ:1787480182109&q=PutzELF%20Reviews&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxK2NDQzszAGkoaWZiamRqdGxhYbGBlfMfIHlJZUufq4KQSllmWmlhcvYkUXAQCg_bs7PgAAAA&rldimm=9166839161964525238&tbm=lcl&ved=0CA4Q5foLahcKEwiYwL_LwraWAxUAAAAAHQAAAAAQBQ#lkt=LocalPoiReviews&arid=Ci9DQUlRQUNvZENodHljRjlvT2w4elNuTmZTVk5FWjJzNVEyc3RhV1EwYTFoWFZrRRAB",
   },
   {
     reviewId: "sophia-volpini",
@@ -30,8 +28,6 @@ const FALLBACK_REVIEWS = [
     rating: 5,
     comment:
       "Putzelf liefert sehr professionellen und zuvorkommenden Service! Ich war begeistert von Koordination, Qualität der Reinigungskraft und der einfachen Kommunikation. Preisleistungsverhältnis ist Top und man fühlt sich rundum wohl aufgehoben! Werde 100% wieder dort den Service in Anspruch nehmen.",
-    reviewUrl:
-      "https://www.google.com/search?sa=X&sca_esv=c01d00c7c27b7017&hl=en-GB&authuser=0&biw=1296&bih=654&sxsrf=APpeQnuDl8aLAKyatGWp4_khekMJspvlxQ:1787480182109&q=PutzELF%20Reviews&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxK2NDQzszAGkoaWZiamRqdGxhYbGBlfMfIHlJZUufq4KQSllmWmlhcvYkUXAQCg_bs7PgAAAA&rldimm=9166839161964525238&tbm=lcl&ved=0CA4Q5foLahcKEwiYwL_LwraWAxUAAAAAHQAAAAAQBQ#lkt=LocalPoiReviews&arid=Ci9DQUlRQUNvZENodHljRjlvT2w4elNuTmZTVk5FWjJzNVEyc3RhV1EwYTFoWFZrRRAB",
   },
   {
     reviewId: "stadtkino-buero",
@@ -40,8 +36,6 @@ const FALLBACK_REVIEWS = [
     rating: 5,
     comment:
       "Wir waren sehr zufrieden mit dem Service - freundlich, zuverlässig und gründlich. Vielen Dank und bis bald im Kino!",
-    reviewUrl:
-      "https://www.google.com/search?sa=X&sca_esv=c01d00c7c27b7017&hl=en-GB&authuser=0&biw=1296&bih=654&sxsrf=APpeQnuDl8aLAKyatGWp4_khekMJspvlxQ:1787480182109&q=PutzELF%20Reviews&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxK2NDQzszAGkoaWZiamRqdGxhYbGBlfMfIHlJZUufq4KQSllmWmlhcvYkUXAQCg_bs7PgAAAA&rldimm=9166839161964525238&tbm=lcl&ved=0CA4Q5foLahcKEwiYwL_LwraWAxUAAAAAHQAAAAAQBQ#lkt=LocalPoiReviews&arid=Ci9DQUlRQUNvZENodHljRjlvT2w4elNuTmZTVk5FWjJzNVEyc3RhV1EwYTFoWFZrRRAB",
   },
 ];
 
@@ -98,7 +92,11 @@ function normalizeReview(review, locale, t) {
     return null;
   }
 
-  const reviewerName = (review.reviewerName || review.reviewer?.displayName || t("reviews.reviewerFallback")).trim();
+  const rawReviewerName = review.reviewerName || review.reviewer?.displayName;
+  const normalizedReviewerName = typeof rawReviewerName === "string" ? rawReviewerName.trim() : "";
+  const reviewerName = /^your choice$/i.test(normalizedReviewerName)
+    ? t("reviews.reviewerFallback")
+    : normalizedReviewerName || t("reviews.reviewerFallback");
   const rawRating = review.rating ?? review.starRating ?? 5;
   const ratingValue =
     typeof rawRating === "string"
@@ -118,7 +116,7 @@ function normalizeReview(review, locale, t) {
       : formatReviewDate(review.createTime, locale, t),
     rating: ratingValue,
     comment,
-    reviewUrl: review.reviewUrl || review.url || GOOGLE_REVIEWS_URL,
+    reviewUrl: GOOGLE_BUSINESS_PROFILE_URL,
   };
 }
 

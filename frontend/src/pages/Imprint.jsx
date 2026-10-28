@@ -44,7 +44,7 @@ export default function Imprint() {
           SEO
       ========================================================== */}
       <Seo
-        title={locale === "en" ? "Legal Notice | PutzELF" : t("imprint.title")}
+        title={t("imprint.seoTitle")}
         description={t("imprint.seoDescription")}
         path={getLocalizedPath(locale, "imprint")}
         lang={locale}
