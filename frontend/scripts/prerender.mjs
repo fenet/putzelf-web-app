@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer from "puppeteer";
 import { loadEnv } from "vite";
-import { blogPostSlugs, locales, routeRegistry } from "../src/data/routeRegistry.mjs";
+import { blogPostSlugs, locales, routeRegistry, retiredConsumerServiceRoutes } from "../src/data/routeRegistry.mjs";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(SCRIPT_DIR, "..");
@@ -124,7 +124,6 @@ function validateNoindexServerHeaders() {
   const noindexPaths = locales.flatMap((locale) => [
     `/${locale}/booking`,
     `/${locale}/profile`,
-    `/${locale}/calculator`,
     `/${locale}/login`,
     `/${locale}/register`,
     `/${locale}/admin`,
@@ -194,13 +193,24 @@ function validateLegacyServerRules() {
     "RewriteCond %{REQUEST_URI} ^/(?:de|en)/booking/+$ [NC]",
     "RewriteRule ^((?:de|en)/booking)/+$ /$1 [R=301,L,NE]",
     "RewriteRule ^imprint/?$ https://putzelf.com/de/impressum [R=301,L]",
-    "RewriteRule ^calculator/?$ https://putzelf.com/de/calculator [R=301,L]",
+    "RewriteRule ^calculator/?$ https://putzelf.com/de/booking [R=301,L,NC]",
+    "RewriteRule ^(de|en)/calculator/?$ https://putzelf.com/$1/booking [R=301,L,NC]",
     "RewriteRule ^login/?$ https://putzelf.com/de/login [R=301,L]",
     "RewriteRule ^book/?$ https://putzelf.com/de/booking [R=301,L]",
     "RewriteRule ^profile/?$ https://putzelf.com/de/booking [R=301,L]",
   ]) {
     if (!apacheLines.includes(expectedRule)) {
       throw new Error(`.htaccess is missing a direct canonical redirect: ${expectedRule}`);
+    }
+  }
+
+  for (const route of retiredConsumerServiceRoutes) {
+    const apachePath = `${route.locale}${route.from}`;
+    const expectedRule = route.status === 410
+      ? `RewriteRule ^${apachePath}/?$ - [G,NC,L]`
+      : `RewriteRule ^${apachePath}/?$ https://putzelf.com/${route.locale}${route.to} [R=301,L,NC]`;
+    if (!apacheLines.includes(expectedRule)) {
+      throw new Error(`.htaccess is missing the retired consumer URL rule: ${route.from}`);
     }
   }
 }
@@ -263,12 +273,20 @@ const permanentRedirects = [
   ["/imprint", "/de/impressum"],
   ["/book", "/de/booking"],
   ["/profile", "/de/booking"],
-  ["/calculator", "/de/calculator"],
+  ["/calculator", "/de/booking"],
+  ["/de/calculator", "/de/booking"],
+  ["/en/calculator", "/en/booking"],
   ["/blog", "/de/blog"],
   ["/login", "/de/login"],
   ["/register", "/de/register"],
   ["/admin", "/de/admin"],
+  ...retiredConsumerServiceRoutes
+    .filter((route) => route.status === 301)
+    .map((route) => [`/${route.locale}${route.from}`, `/${route.locale}${route.to}`]),
 ];
+const retiredConsumerGonePaths = retiredConsumerServiceRoutes
+  .filter((route) => route.status === 410)
+  .map((route) => `/${route.locale}${route.from}`);
 const retiredLegacyFilePathSet = new Set(retiredLegacyFilePaths.map((filePath) => filePath.toLowerCase()));
 
 function cleanServerPath(pathname) {
@@ -302,6 +320,11 @@ function startStaticServer(routes) {
       const url = new URL(request.url || "/", "http://localhost");
       const pathname = url.pathname;
       const normalizedPath = cleanServerPath(pathname);
+      if (retiredConsumerGonePaths.includes(normalizedPath)) {
+        response.writeHead(410, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-cache" });
+        response.end("Gone");
+        return;
+      }
       if (retiredLegacyFilePathSet.has(normalizedPath.toLowerCase())) {
         response.writeHead(410, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-cache" });
         response.end("Gone");
@@ -327,7 +350,9 @@ function startStaticServer(routes) {
         "/en/vienna/services": "/en/services",
         "/en/graz/services": "/en/services",
         "/imprint": "/de/impressum",
-        "/calculator": "/de/calculator",
+        "/calculator": "/de/booking",
+        "/de/calculator": "/de/booking",
+        "/en/calculator": "/en/booking",
         "/login": "/de/login",
         "/book": "/de/booking",
         "/profile": "/de/booking",
@@ -335,6 +360,9 @@ function startStaticServer(routes) {
         "/en/profile": "/en/booking",
         "/de/booking": "/de/booking",
         "/en/booking": "/en/booking",
+        ...Object.fromEntries(retiredConsumerServiceRoutes
+          .filter((route) => route.status === 301)
+          .map((route) => [`/${route.locale}${route.from}`, `/${route.locale}${route.to}`])),
       };
       if (isNoncanonicalOrigin) {
         const targetPath = directAliasTargets[normalizedPath] || pathname;
@@ -342,7 +370,7 @@ function startStaticServer(routes) {
         response.end();
         return;
       }
-      if (/^\/(?:de|en)\/(?:booking|profile|calculator|login|register|admin|order)(?:\/|$)/i.test(normalizedPath)) {
+      if (/^\/(?:de|en)\/(?:booking|profile|login|register|admin|order)(?:\/|$)/i.test(normalizedPath)) {
         response.setHeader("X-Robots-Tag", "noindex, nofollow");
       }
       const redirectTarget = getPermanentRedirect(pathname);
@@ -358,7 +386,7 @@ function startStaticServer(routes) {
         return;
       }
 
-      const isGone = /^\/de\/services\/(?:wien|graz)$/i.test(normalizedPath);
+      const isGone = /^\/de\/services\/(?:wien|graz)$/i.test(normalizedPath) || retiredConsumerGonePaths.includes(normalizedPath);
       const route = routeByPath.get(normalizedPath);
       const isNotFoundRoute = route?.status === 404 || /^\/(?:de|en)\/404$/.test(normalizedPath);
       const dynamicOrder = normalizedPath.match(/^\/(de|en)\/order\/[^/]+$/);
@@ -899,6 +927,7 @@ async function verifyNoindexHttpRoutes(baseUrl, robotsTxt) {
   const legacyPrivateAliases = [
     ["/book?type=Deep", "/de/booking?type=Deep"],
     ["/profile", "/de/booking"],
+    ["/calculator", "/de/booking"],
     ["/login", "/de/login"],
   ];
   for (const [aliasPath, expectedTarget] of legacyPrivateAliases) {
@@ -998,13 +1027,20 @@ async function verifyServerRouteMatrix(baseUrl, routes) {
     if (response.status !== 410) throw new Error(`${retiredPath} - expected HTTP 410, received ${response.status}`);
   }
 
+  for (const retiredPath of retiredConsumerGonePaths) {
+    const response = await fetch(`${baseUrl}${retiredPath}`, { redirect: "manual" });
+    if (response.status !== 410) throw new Error(`${retiredPath} - expected HTTP 410, received ${response.status}`);
+  }
+
   const canonicalizationCases = [
     ["/", "www.putzelf.com", "http", "https://putzelf.com/de/"],
     ["/", "www.putzelf.com", "https", "https://putzelf.com/de/"],
     ["/", "putzelf.com", "http", "https://putzelf.com/de/"],
     ["/", "putzelf.com", "https", "/de/"],
-    ["/calculator", "www.putzelf.com", "https", "https://putzelf.com/de/calculator"],
-    ["/calculator", "putzelf.com", "http", "https://putzelf.com/de/calculator"],
+    ["/calculator", "www.putzelf.com", "https", "https://putzelf.com/de/booking"],
+    ["/calculator", "putzelf.com", "http", "https://putzelf.com/de/booking"],
+    ["/de/calculator", "www.putzelf.com", "https", "https://putzelf.com/de/booking"],
+    ["/en/calculator", "putzelf.com", "http", "https://putzelf.com/en/booking"],
     ["/imprint", "www.putzelf.com", "https", "https://putzelf.com/de/impressum"],
     ["/imprint", "putzelf.com", "http", "https://putzelf.com/de/impressum"],
     ["/de/profile", "www.putzelf.com", "https", "https://putzelf.com/de/booking"],

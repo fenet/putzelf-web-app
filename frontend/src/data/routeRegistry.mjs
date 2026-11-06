@@ -17,42 +17,6 @@ export const routeRegistry = {
     prerender: true,
     sitemap: { changefreq: "monthly", priority: 0.8 },
   },
-  privateMaintenance: {
-    de: "/services/unterhaltsreinigung",
-    en: "/services/maintenance-cleaning",
-    prerender: true,
-    sitemap: { changefreq: "monthly", priority: 0.7 },
-  },
-  privateDeep: {
-    de: "/services/grundreinigung",
-    en: "/services/deep-cleaning-private",
-    prerender: true,
-    sitemap: { changefreq: "monthly", priority: 0.7 },
-  },
-  privateResidential: {
-    de: "/services/wohnreinigung",
-    en: "/services/residential-cleaning",
-    prerender: true,
-    sitemap: { changefreq: "monthly", priority: 0.7 },
-  },
-  privateConstruction: {
-    de: "/services/bauendreinigung-grobreinigung",
-    en: "/services/construction-cleaning",
-    prerender: true,
-    sitemap: { changefreq: "monthly", priority: 0.7 },
-  },
-  privateWindow: {
-    de: "/services/glas-rahmenreinigung",
-    en: "/services/window-cleaning",
-    prerender: true,
-    sitemap: { changefreq: "monthly", priority: 0.7 },
-  },
-  privateIndustrial: {
-    de: "/services/industriereinigung-maschinen",
-    en: "/services/industrial-cleaning",
-    prerender: true,
-    sitemap: { changefreq: "monthly", priority: 0.7 },
-  },
   businessMaintenance: {
     de: "/services/unterhaltsreinigung-gewerbe",
     en: "/services/maintenance-cleaning-business",
@@ -119,10 +83,9 @@ export const routeRegistry = {
     prerender: true,
     sitemap: { changefreq: "yearly", priority: 0.2 },
   },
-  // Keep the private booking form out of search while prerendering its initial HTML.
+  // Keep the commercial service inquiry out of search while prerendering its initial HTML.
   booking: { de: "/booking", en: "/booking", prerender: true, noindex: true },
   order: { de: "/order/:id", en: "/order/:id", prerender: false, noindex: true },
-  calculator: { de: "/calculator", en: "/calculator", prerender: true, noindex: true },
   blog: {
     de: "/blog",
     en: "/blog",
@@ -140,6 +103,23 @@ export const routeRegistry = {
   admin: { de: "/admin", en: "/admin", prerender: false, noindex: true },
   notFound: { de: "/404", en: "/404", prerender: true, noindex: true, status: 404 },
 };
+
+// Retired consumer service URLs: redirect only when a matching commercial
+// service exists; residential cleaning has no equivalent and returns 410.
+export const retiredConsumerServiceRoutes = [
+  { locale: "de", from: "/services/unterhaltsreinigung", to: "/services/unterhaltsreinigung-gewerbe", status: 301 },
+  { locale: "de", from: "/services/grundreinigung", to: "/services/grundreinigung-gewerbe", status: 301 },
+  { locale: "de", from: "/services/bauendreinigung-grobreinigung", to: "/services/bauendreinigung-grobreinigung-gewerbe", status: 301 },
+  { locale: "de", from: "/services/glas-rahmenreinigung", to: "/services/glas-rahmenreinigung-gewerbe", status: 301 },
+  { locale: "de", from: "/services/industriereinigung-maschinen", to: "/services/industriereinigung-maschinen-gewerbe", status: 301 },
+  { locale: "de", from: "/services/wohnreinigung", status: 410 },
+  { locale: "en", from: "/services/maintenance-cleaning", to: "/services/maintenance-cleaning-business", status: 301 },
+  { locale: "en", from: "/services/deep-cleaning-private", to: "/services/deep-cleaning-business", status: 301 },
+  { locale: "en", from: "/services/construction-cleaning", to: "/services/construction-cleaning-business", status: 301 },
+  { locale: "en", from: "/services/window-cleaning", to: "/services/window-cleaning-business", status: 301 },
+  { locale: "en", from: "/services/industrial-cleaning", to: "/services/industrial-cleaning-business", status: 301 },
+  { locale: "en", from: "/services/residential-cleaning", status: 410 },
+];
 
 export const blogPostSlugs = [
   "so-pflegen-sie-buero-und-arbeitsraeume-effektiv",

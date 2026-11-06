@@ -25,12 +25,6 @@ export default function ServiceGeneric() {
   const key = match?.key || null;
 
   const translationMap = {
-    privateMaintenance: ["services", "private", "maintenance"],
-    privateDeep: ["services", "private", "deep"],
-    privateResidential: ["services", "private", "residential"],
-    privateConstruction: ["services", "private", "construction"],
-    privateWindow: ["services", "private", "window"],
-    privateIndustrial: ["services", "private", "industrial"],
     businessMaintenance: ["services", "business", "maintenance"],
     businessDeep: ["services", "business", "deep"],
     businessStaircase: ["services", "business", "staircase"],
@@ -39,7 +33,7 @@ export default function ServiceGeneric() {
     businessIndustrial: ["services", "business", "industrial"],
   };
 
-  const pathSegments = translationMap[key] || ["services", "private", "maintenance"];
+  const pathSegments = translationMap[key] || ["services", "business", "maintenance"];
   const tBase = pathSegments.join(".");
 
   const title = t(`${tBase}.title`);
@@ -71,71 +65,9 @@ export default function ServiceGeneric() {
     inLanguage: locale,
   };
 
-  const isWindowService = key === "privateWindow" || key === "businessWindow";
-  // Use special residential images from the public folder for the private residential page
-  const residentialImages = [
-    "/resedential/a1.jpg",
-    "/resedential/a2.jpg",
-    "/resedential/a3.jpg",
-    "/resedential/a4.jpg",
-    "/resedential/a5.jpg"
-  ];
-
-  const isResidential = key === "privateResidential" || key === "businessResidential";
-  // Per-service image mapping for non-residential services.
-  // Keep residential behavior unchanged above.
+  const isWindowService = key === "businessWindow";
+  // Per-service image mapping for commercial services.
   const serviceImages = {
-    privateMaintenance: {
-      hero: "/services/privateMaintenance/pm1.jpg",
-      solution: "/services/privateMaintenance/pm2.jpg",
-      gallery: [
-        "/services/privateMaintenance/pm3.jpg",
-        "/services/privateMaintenance/pm4.jpeg",
-        "/services/privateMaintenance/pm5.jpeg",
-        "/services/privateMaintenance/pm6.jpg",
-        "/services/privateMaintenance/pm7.avif",
-      ],
-    },
-    privateDeep: {
-      hero: "/services/privateDeep/pd1.jpg",
-      solution: "/services/privateDeep/pd2.jpg",
-      gallery: [
-        "/services/privateDeep/pd3.jpg",
-        "/services/privateDeep/pd4.jpeg",
-        "/services/privateDeep/pd5.jpeg",
-        "/services/privateDeep/pd6.jpg",
-      ],
-    },
-    privateConstruction: {
-      hero: "/services/privateConstruction/pc1.jpeg",
-      solution: "/services/privateConstruction/pc2.jpeg",
-      gallery: [
-        "/services/privateConstruction/pc3.jpeg",
-        "/services/privateConstruction/pc4.jpeg",
-        "/services/privateConstruction/pc5.jpg",
-      ],
-    },
-    privateWindow: {
-      hero: "/services/privateWindow/pw1.jpg",
-      solution: "/services/privateWindow/pw2.jpg",
-      gallery: [
-        "/services/privateWindow/pw3.jpg",
-        "/services/privateWindow/pw4.jpeg",
-        "/services/privateWindow/pw5.jpeg",
-        "/services/privateWindow/pw6.jpeg",
-      ],
-    },
-    privateIndustrial: {
-      hero: "/services/privateIndustrial/pi1.avif",
-      solution: "/services/privateIndustrial/pi2.jpg",
-      gallery: [
-        "/services/privateIndustrial/pi3.jpg",
-        "/services/privateIndustrial/pi4.jpeg",
-        "/services/privateIndustrial/pi5.avif",
-        "/services/privateIndustrial/pi6.jpg",
-        "/services/privateIndustrial/pi7.jpg",
-      ],
-    },
     businessMaintenance: {
       hero: "/services/businessMaintenance/bm1.jpg",
       solution: "/services/businessMaintenance/bm2.png",
@@ -208,23 +140,17 @@ export default function ServiceGeneric() {
 
   const heroImage = isWindowService
     ? (mapped?.hero || "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80")
-    : isResidential
-    ? residentialImages[0]
     : (mapped?.hero || "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1200&q=80");
 
   const solutionImage = isWindowService
     ? (mapped?.solution || "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80")
-    : isResidential
-    ? residentialImages[1]
     : (mapped?.solution || "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80");
 
-  const galleryImages = isResidential
-    ? residentialImages
-    : (mapped?.gallery || [
+  const galleryImages = mapped?.gallery || [
         "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=900&q=80",
         "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80",
-      ]);
+      ];
 
   const faqJson = faqs.length
     ? {
@@ -239,9 +165,14 @@ export default function ServiceGeneric() {
     : null;
 
   const serviceLabel = isWindowService ? t("services.ui.windowCleaning") : t("services.ui.service");
-  const relatedServiceGroup = key?.startsWith("business")
-    ? ["businessMaintenance", "businessDeep", "businessStaircase", "businessConstruction", "businessWindow", "businessIndustrial"]
-    : ["privateMaintenance", "privateDeep", "privateResidential", "privateConstruction", "privateWindow", "privateIndustrial"];
+  const relatedServiceGroup = [
+    "businessMaintenance",
+    "businessDeep",
+    "businessStaircase",
+    "businessConstruction",
+    "businessWindow",
+    "businessIndustrial",
+  ];
   const relatedServices = relatedServiceGroup
     .filter((relatedKey) => relatedKey !== key)
     .slice(0, 3)
@@ -305,11 +236,11 @@ export default function ServiceGeneric() {
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-[30px] bg-white/40 shadow-[0_30px_80px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70">
+            <div className={`overflow-hidden rounded-[30px] bg-white/40 shadow-[0_30px_80px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 ${key === "businessStaircase" ? "lg:w-[92%] lg:justify-self-end" : ""}`}>
               <ResponsiveServiceImage
                 src={heroImage}
                 alt={title}
-                sizes="(min-width: 1024px) 50vw, 100vw"
+                sizes={key === "businessStaircase" ? "(min-width: 1024px) 46vw, 100vw" : "(min-width: 1024px) 50vw, 100vw"}
                 loading="eager"
                 fetchPriority="high"
                 className="h-[420px] w-full object-cover sm:h-[500px]"

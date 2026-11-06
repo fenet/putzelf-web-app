@@ -1,22 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
-import Navbar, { Unternehmen, Privatkunden } from "../components/Navbar";
+import Navbar, { Unternehmen } from "../components/Navbar";
 import Footer from "../components/Footer";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import {
   Briefcase,
-  Home,
   ChevronRight,
-  ChevronDown,
   Building2,
-  UtensilsCrossed,
   Store,
-  Stethoscope,
   Sparkles,
   CheckCircle2,
+  Hammer,
 } from "lucide-react";
 
 
@@ -25,20 +22,13 @@ export default function ServicesOverview() {
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
   const { t } = useTranslation();
-  const [openGroup, setOpenGroup] = useState("business");
-
   const iconMap = {
     businessMaintenance: Building2,
     businessDeep: CheckCircle2,
     businessStaircase: Briefcase,
+    businessConstruction: Hammer,
     businessWindow: Sparkles,
     businessIndustrial: Store,
-    privateMaintenance: Home,
-    privateDeep: CheckCircle2,
-    privateResidential: Home,
-    privateConstruction: UtensilsCrossed,
-    privateWindow: Sparkles,
-    privateIndustrial: Stethoscope,
   };
 
   return (
@@ -72,90 +62,30 @@ export default function ServicesOverview() {
         </div>
       </header>
 
-      <section className="mt-8">
-        {/* Business Accordion */}
-        <div className="mb-4">
-          <button
-            type="button"
-            aria-expanded={openGroup === 'business'}
-            onClick={() => setOpenGroup((v) => (v === 'business' ? null : 'business'))}
-            className={`w-full flex items-center justify-between p-4 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0097b2]`}
-          >
-            <div className="flex items-center gap-3">
-              <Briefcase className="w-6 h-6 text-[#0097b2]" />
-              <span className="font-semibold text-slate-800">{t("nav.company")}</span>
-            </div>
-            <ChevronDown className={`w-5 h-5 transition-transform ${openGroup === 'business' ? 'rotate-180' : ''}`} />
-          </button>
-
-            <div className={`mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 ${openGroup === "business" ? "" : "hidden"}`}>
-              {Unternehmen.map((s) => {
-                const raw = t('services.overview.cards', { returnObjects: true }) || [];
-                const card = raw.find((c) => c.key === s.key) || {};
-                const title = card.title || t(`nav.${s.key}`);
-                const desc = card.desc || '';
-                const Icon = iconMap[s.key] || Building2;
-                return (
-                  <Link key={s.key} to={getLocalizedPath(locale, s.key)} className="group block rounded-xl border border-slate-200 bg-white p-4 hover:shadow-lg focus:ring-2 focus:ring-[#0097b2] focus:outline-none transition-transform transform hover:-translate-y-1">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 mt-1 h-12 w-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-[#0097b2]">
-                        <Icon className="w-6 h-6" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-lg font-semibold text-slate-800">{title}</h4>
-                        <p className="mt-1 text-sm text-slate-600">{desc}</p>
-                      </div>
-                      <div className="ml-3 flex items-center">
-                        <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-[#0097b2]" />
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-        </div>
-
-        {/* Private Accordion */}
-        <div className="mb-6">
-          <button
-            type="button"
-            aria-expanded={openGroup === 'private'}
-            onClick={() => setOpenGroup((v) => (v === 'private' ? null : 'private'))}
-            className={`w-full flex items-center justify-between p-4 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0097b2]`}
-          >
-            <div className="flex items-center gap-3">
-              <Home className="w-6 h-6 text-[#0097b2]" />
-              <span className="font-semibold text-slate-800">{t("nav.private")}</span>
-            </div>
-            <ChevronDown className={`w-5 h-5 transition-transform ${openGroup === 'private' ? 'rotate-180' : ''}`} />
-          </button>
-
-            <div className={`mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 ${openGroup === "private" ? "" : "hidden"}`}>
-              {Privatkunden.map((s) => {
-                const raw = t('services.overview.cards', { returnObjects: true }) || [];
-                const card = raw.find((c) => c.key === s.key) || {};
-                const title = card.title || t(`nav.${s.key}`);
-                const desc = card.desc || '';
-                const Icon = iconMap[s.key] || Home;
-                return (
-                  <Link key={s.key} to={getLocalizedPath(locale, s.key)} className="group block rounded-xl border border-slate-200 bg-white p-4 hover:shadow-lg focus:ring-2 focus:ring-[#0097b2] focus:outline-none transition-transform transform hover:-translate-y-1">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 mt-1 h-12 w-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-[#0097b2]">
-                        <Icon className="w-6 h-6" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-lg font-semibold text-slate-800">{title}</h4>
-                        <p className="mt-1 text-sm text-slate-600">{desc}</p>
-                      </div>
-                      <div className="ml-3 flex items-center">
-                        <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-[#0097b2]" />
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-        </div>
+      <section className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+        {Unternehmen.map((service) => {
+          const raw = t("services.overview.cards", { returnObjects: true }) || [];
+          const card = raw.find((item) => item.key === service.key) || {};
+          const Icon = iconMap[service.key] || Briefcase;
+          return (
+            <Link
+              key={service.key}
+              to={getLocalizedPath(locale, service.key)}
+              className="group block rounded-xl border border-slate-200 bg-white p-5 transition-transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#0097b2]"
+            >
+              <div className="flex items-start gap-4">
+                <div className="mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-[#0097b2]">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-lg font-semibold text-slate-800">{card.title || t(`nav.${service.key}`)}</h2>
+                  <p className="mt-1 text-sm text-slate-600">{card.desc || ""}</p>
+                </div>
+                <ChevronRight className="mt-1 h-5 w-5 text-slate-400 transition group-hover:text-[#0097b2]" />
+              </div>
+            </Link>
+          );
+        })}
       </section>
 
       <section className="mt-12">

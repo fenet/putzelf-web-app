@@ -4,6 +4,7 @@ import { trackEvent } from "../lib/analytics";
 import { apiFetch, parseJsonSafe } from "../lib/api";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Unternehmen } from "../components/Navbar";
 import { Gift } from "lucide-react";
 import Seo from "../components/Seo";
 import Confetti from "react-confetti";
@@ -20,6 +21,7 @@ export default function Home() {
     title: "",
     firstName: "",
     lastName: "",
+    companyName: "",
     streetName: "",
     houseNumber: "",
     doorNumber: "",
@@ -36,7 +38,8 @@ export default function Home() {
     time: "",
     duration: MIN_HOURS,
     windows: 0,
-    typeOfCleaning: "Standard Cleaning",
+    serviceKey: "",
+    typeOfCleaning: "",
     subcategories: [],
     renegotiate: false,
   });
@@ -197,7 +200,7 @@ export default function Home() {
     return true;
   };
 
-  // Persist/restore contact fields when navigating to calculator
+  // Persist/restore contact fields while moving through the inquiry journey.
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem("booking_contact");
@@ -214,6 +217,7 @@ export default function Home() {
         title: form.title || "",
         firstName: form.firstName || "",
         lastName: form.lastName || "",
+        companyName: form.companyName || "",
         streetName: form.streetName || "",
         houseNumber: form.houseNumber || "",
         doorNumber: form.doorNumber || "",
@@ -342,13 +346,8 @@ export default function Home() {
     return () => controller.abort();
   }, [form.duration, form.location, monthCursor]);
 
-  const getHourlyRate = (typeOfCleaning, subcategories) => {
-    const isHouseCleaning = typeOfCleaning === t("home.types.standard");
-    const isApartmentHotel = typeOfCleaning === t("home.types.apartmentHotel");
-    const isEligible = isHouseCleaning || isApartmentHotel;
+  const getHourlyRate = (_typeOfCleaning, subcategories) => {
     const subs = Array.isArray(subcategories) ? subcategories : [];
-
-    if (!isEligible || subs.length === 0) return 30;
     if (subs.includes("intensive")) return INTENSIVE_HOURLY_NET;
     // windows are charged per-window, not by hourly rate
     return 30;
@@ -358,32 +357,31 @@ export default function Home() {
     getHourlyRate(form.typeOfCleaning, []) * MIN_HOURS
   );
 
+  const businessServiceOptions = Unternehmen.map(({ key }) => ({
+    key,
+    emoji: {
+      businessMaintenance: "🔁",
+      businessDeep: "✨",
+      businessStaircase: "🪜",
+      businessConstruction: "🏗️",
+      businessWindow: "🪟",
+      businessIndustrial: "⚙️",
+    }[key] || "🧹",
+  }));
   const cleaningTypes = [
-    { key: "standard", emoji: "✨" },
-    { key: "office", emoji: "🏢" },
+    ...businessServiceOptions,
+    { key: "homeCleaning", emoji: "🏠" },
+    { key: "officeCleaning", emoji: "🏢" },
     { key: "apartmentHotel", emoji: "🏨" },
-  ];
-
-  const premiumSubcategories = [
-    { key: "intensive", emoji: "🧹" },
-    { key: "window", emoji: "🪟" },
-  ];
-
-  const shouldShowSubcategories = (() => {
-    const selectedType = form.typeOfCleaning;
-    return (
-      selectedType === t("home.types.standard") ||
-      selectedType === t("home.types.apartmentHotel")
-    );
-  })();
-
-  const getDisplayRate = () => {
-    const hasPremium =
-      shouldShowSubcategories &&
-      Array.isArray(form.subcategories) &&
-      form.subcategories.length > 0;
-    return hasPremium ? 35 : 25;
-  };
+  ].map(({ key, emoji }) => ({
+    key,
+    emoji,
+    label: t(`home.types.${key}`),
+    description: t(`home.descriptions.${key}`, { defaultValue: "" }),
+  }));
+  const selectedCleaningType = cleaningTypes.find(
+    ({ key }) => key === form.serviceKey
+  );
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -507,47 +505,28 @@ export default function Home() {
     }
   };
 
-  const chooseType = (label) => {
+  const chooseType = (service) => {
+    const { key, label } = service;
+    const isWindowService = key === "businessWindow";
     setForm((prev) => {
-      const nextSubs = [];
-      const rate = getHourlyRate(label, nextSubs);
-      setCalculatedPrice(prev.duration * rate);
-      return { ...prev, typeOfCleaning: label, subcategories: nextSubs };
+      const windows = isWindowService
+        ? (prev.serviceKey === key ? Math.max(1, Number(prev.windows) || 1) : 1)
+        : 0;
+      const rate = getHourlyRate(label, []);
+      setCalculatedPrice(Number(prev.duration || MIN_HOURS) * rate + windows * WINDOW_PRICE_NET);
+      return {
+        ...prev,
+        serviceKey: key,
+        typeOfCleaning: label,
+        subcategories: [],
+        windows,
+      };
     });
+    setShowWindowModal(isWindowService);
     try {
       trackEvent("Service_Type_Selected", {
         service_type: label,
-        source: "booking_form",
-      });
-    } catch (_) {}
-  };
-
-  const chooseSubcategory = (subKey) => {
-    setForm((prev) => {
-      const current = Array.isArray(prev.subcategories)
-        ? prev.subcategories
-        : [];
-      const exists = current.includes(subKey);
-      const nextSubs = exists
-        ? current.filter((k) => k !== subKey)
-        : [...current, subKey];
-      const rate = getHourlyRate(prev.typeOfCleaning, nextSubs);
-      const windowsNet = Number(prev.windows || 0) * WINDOW_PRICE_NET;
-      // if enabling window, ensure at least 1
-      if (!exists && subKey === "window") {
-        const w = prev.windows && prev.windows > 0 ? prev.windows : 1;
-        setShowWindowModal(true);
-        setCalculatedPrice(prev.duration * rate + w * WINDOW_PRICE_NET);
-        return { ...prev, subcategories: nextSubs, windows: w };
-      }
-
-      setCalculatedPrice(prev.duration * rate + windowsNet);
-      return { ...prev, subcategories: nextSubs };
-    });
-    try {
-      trackEvent("Service_Subcategory_Toggled", {
-        subcategory: subKey,
-        service_type: form.typeOfCleaning,
+        service_key: key,
         source: "booking_form",
       });
     } catch (_) {}
@@ -561,9 +540,13 @@ export default function Home() {
       return;
     }
 
-    // worker is optional now
-    if (!form.typeOfCleaning) {
+    // The inquiry keeps its existing preferred-slot requirements.
+    if (!form.serviceKey || !form.date || !form.time || !form.duration) {
       alert(t("home.alerts.missing"));
+      return;
+    }
+    if (form.serviceKey === "businessWindow" && Number(form.windows) < 1) {
+      setShowWindowModal(true);
       return;
     }
 
@@ -603,9 +586,12 @@ export default function Home() {
       const canonicalAddress = (form.streetName || form.houseNumber || form.postalCode || form.city)
         ? `${form.streetName || ""} ${form.houseNumber || ""}${form.doorNumber ? ", Tür " + form.doorNumber : ""}, ${form.postalCode || ""} ${form.city || ""}`.trim()
         : form.location;
+      const { companyName, ...bookingFields } = form;
 
       const payload = {
-        ...form,
+        ...bookingFields,
+        typeOfCleaning: selectedCleaningType?.label || form.typeOfCleaning,
+        serviceKey: form.serviceKey,
         preferredWorker: null,
         // legacy compatibility
         name: canonicalName,
@@ -613,7 +599,10 @@ export default function Home() {
         address: canonicalAddress,
         location: serviceLocation || "vienna",
         phone: form.phone,
-        notes,
+        notes: [
+          companyName.trim() ? `${t("home.companyNameLabel")}: ${companyName.trim()}` : "",
+          notes.trim(),
+        ].filter(Boolean).join("\n\n"),
         gdprConsent,
       };
 
@@ -650,23 +639,32 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center py-1 px-4">
       {showWindowModal ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="mx-4 max-w-lg rounded-lg bg-white p-6 shadow-lg">
-            <h3 className="mb-3 text-lg font-semibold">{t("windowModal.title", { defaultValue: "How many windows would you like cleaned?" })}</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" role="presentation">
+          <div className="mx-4 max-w-lg rounded-lg bg-white p-6 shadow-lg" role="dialog" aria-modal="true" aria-labelledby="booking-window-modal-title">
+            <h3 id="booking-window-modal-title" className="mb-3 text-lg font-semibold">{t("windowModal.title", { defaultValue: "How many windows would you like cleaned?" })}</h3>
             <div className="flex items-center gap-3">
+              <label className="sr-only" htmlFor="booking-window-count">{t("windowModal.countLabel", { defaultValue: "Number of windows" })}</label>
               <input
+                id="booking-window-count"
                 type="number"
                 min={1}
+                step={1}
+                required
                 value={form.windows || 1}
-                onChange={(e) => setForm((prev) => ({ ...prev, windows: Math.max(1, Number(e.target.value) || 1) }))}
+                onChange={(e) => {
+                  const windows = Math.max(1, Math.floor(Number(e.target.value) || 1));
+                  setForm((prev) => ({ ...prev, windows }));
+                  setCalculatedPrice(Number(form.duration || MIN_HOURS) * getHourlyRate(form.typeOfCleaning, []) + windows * WINDOW_PRICE_NET);
+                }}
                 className="w-24 rounded-md border px-2 py-1"
               />
               <div className="ml-auto flex gap-2">
-                <button className="rounded bg-gray-100 px-3 py-1" onClick={() => {
-                  setForm((prev) => ({ ...prev, subcategories: (prev.subcategories || []).filter(s => s !== 'window'), windows: 0 }));
+                <button type="button" className="rounded bg-gray-100 px-3 py-1" onClick={() => {
+                  setForm((prev) => ({ ...prev, serviceKey: "", typeOfCleaning: "", subcategories: [], windows: 0 }));
+                  setCalculatedPrice(Number(form.duration || MIN_HOURS) * getHourlyRate("", []));
                   setShowWindowModal(false);
                 }}>{t("common.cancel", { defaultValue: "Cancel" })}</button>
-                <button className="rounded bg-[#0097b2] px-3 py-1 text-white" onClick={() => setShowWindowModal(false)}>{t("common.ok", { defaultValue: "OK" })}</button>
+                <button type="button" className="rounded bg-[#0097b2] px-3 py-1 text-white" onClick={() => setShowWindowModal(false)}>{t("common.ok", { defaultValue: "OK" })}</button>
               </div>
             </div>
           </div>
@@ -766,6 +764,12 @@ export default function Home() {
                 <label htmlFor="booking-first-name" className="block text-sm font-medium mb-1">{t("contact.bookingContact.firstName")}<span className="text-red-600 ml-1">*</span></label>
                 <input id="booking-first-name" name="firstName" value={form.firstName} onChange={handleChange} required aria-required="true" aria-invalid={Boolean(firstNameError)} aria-describedby={firstNameError ? "booking-first-name-error" : undefined} placeholder={t("contact.bookingContact.firstName", { defaultValue: "First Name" })} className="p-3 border rounded w-full" />
                 {firstNameError ? <p id="booking-first-name-error" className="text-sm text-red-600 mt-1">{firstNameError}</p> : null}
+              </div>
+
+              {/* Company name (optional) */}
+              <div>
+                <label htmlFor="booking-company-name" className="block text-sm font-medium mb-1">{t("home.companyNameLabel")}</label>
+                <input id="booking-company-name" name="companyName" value={form.companyName} onChange={handleChange} placeholder={t("home.companyNameLabel")} className="p-3 border rounded w-full" />
               </div>
 
               {/* 3. Last Name * */}
@@ -892,14 +896,14 @@ export default function Home() {
               {t("home.selectType")}
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {cleaningTypes.map(({ key, emoji }) => {
-                const label = t(`home.types.${key}`);
-                const selected = form.typeOfCleaning === label;
+              {cleaningTypes.map((service) => {
+                const { key, label, emoji } = service;
+                const selected = form.serviceKey === key;
                 return (
                   <button
                     key={key}
                     type="button"
-                    onClick={() => chooseType(label)}
+                    onClick={() => chooseType(service)}
                     className={`flex flex-col items-center justify-center p-5 rounded-xl border transition-shadow ${
                       selected
                         ? "bg-[#5be3e3] shadow-lg"
@@ -913,65 +917,17 @@ export default function Home() {
                         selected ? "text-black" : "text-gray-800"
                       }`}
                     >
-                      {label}
+                      {label}{key === "businessWindow" && selected && form.windows > 0 ? ` (${form.windows})` : ""}
                     </div>
                   </button>
                 );
               })}
             </div>
             {(() => {
-              const selectedEntry = cleaningTypes.find(
-                ({ key }) =>
-                  t(`home.types.${key}`) === form.typeOfCleaning
-              );
-              if (!selectedEntry) return null;
-              const description = t(
-                `home.descriptions.${selectedEntry.key}`
-              );
-              return (
-                <p className="mt-3 text-sm text-gray-700">{description}</p>
-              );
+              if (!selectedCleaningType?.description) return null;
+              return <p className="mt-3 text-sm text-gray-700">{selectedCleaningType.description}</p>;
             })()}
           </div>
-
-          {shouldShowSubcategories && (
-            <div>
-              <h4 className="text-md font-medium mb-2">
-                {t("home.subcategories.title")}
-              </h4>
-              <div className="grid grid-cols-2 gap-3">
-                {premiumSubcategories.map(({ key, emoji }) => {
-                  const selected =
-                    Array.isArray(form.subcategories) &&
-                    form.subcategories.includes(key);
-                  return (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => chooseSubcategory(key)}
-                      className={`flex items-center justify-center p-3 rounded-lg border transition-shadow ${
-                        selected
-                          ? "bg-[#5be3e3] shadow-lg"
-                          : "bg-gray-50 hover:shadow"
-                      }`}
-                      aria-pressed={selected}
-                    >
-                      <span className="mr-2" aria-hidden>
-                        {emoji}
-                      </span>
-                      <span
-                        className={`text-sm font-medium ${
-                          selected ? "text-black" : "text-gray-800"
-                        }`}
-                      >
-                        {t(`home.subcategories.${key}`)}{key === 'window' && form.windows > 0 ? ` (${form.windows})` : ''}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
 
           <div>
             <label
@@ -1260,8 +1216,8 @@ export default function Home() {
           </label>
 
           <div>
-            <label htmlFor="notes" className="block text-sm font-medium mb-1">{t("order.notesLabel")}</label>
-            <textarea id="notes" name="notes" value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full p-3 border rounded" rows={4} />
+            <label htmlFor="notes" className="block text-sm font-medium mb-1">{t("home.siteDetailsLabel")}</label>
+            <textarea id="notes" name="notes" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t("home.siteDetailsPlaceholder")} className="w-full p-3 border rounded" rows={4} />
           </div>
 
           <div className="flex items-start space-x-3 text-sm">

@@ -4,7 +4,6 @@ import logo from "../assets/logo.png";
 import {
   Briefcase,
   ChevronRight,
-  Home,
   ChevronDown,
   Phone,
   Mail,
@@ -21,15 +20,6 @@ const Unternehmen = [
   { key: "businessConstruction" },
   { key: "businessWindow" },
   { key: "businessIndustrial" },
-];
-
-const Privatkunden = [
-  { key: "privateMaintenance" },
-  { key: "privateDeep" },
-  { key: "privateResidential" },
-  { key: "privateConstruction" },
-  { key: "privateWindow" },
-  { key: "privateIndustrial" },
 ];
 
 const Navbar = () => {
@@ -217,50 +207,6 @@ const Navbar = () => {
                           }}
                         >
                           {Unternehmen.map((s) => (
-                            <NavLink
-                              key={s.key}
-                              to={getLocalizedPath(locale, s.key)}
-                              className={dropdownItemClass}
-                            >
-                              {c[s.key]}
-                            </NavLink>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* =========================
-                        PRIVATE CUSTOMERS
-                    ========================== */}
-                    <div
-                      className="relative mt-1"
-                      onMouseEnter={() => {
-                        clearTimeout(timerRef.current);
-                        setActiveGroup("private");
-                      }}
-                    >
-                      <button
-                        type="button"
-                        className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 rounded ${
-                          activeGroup === "private"
-                            ? "bg-slate-50"
-                            : ""
-                        }`}
-                      >
-                        <span>{c.private}</span>
-
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-
-                      {activeGroup === "private" && (
-                        <div
-                          className="absolute left-full top-0 w-48 bg-white border border-slate-200 rounded-lg shadow-lg p-2 z-50"
-                          onMouseEnter={() => {
-                            clearTimeout(timerRef.current);
-                            setOpen(true);
-                          }}
-                        >
-                          {Privatkunden.map((s) => (
                             <NavLink
                               key={s.key}
                               to={getLocalizedPath(locale, s.key)}
@@ -507,48 +453,6 @@ const Navbar = () => {
           )}
 
           {/* =========================
-              PRIVATE CUSTOMERS
-          ========================== */}
-          <button
-            type="button"
-            onClick={() =>
-              setMobileGroup((current) =>
-                current === "private" ? null : "private"
-              )
-            }
-            className="mt-2 flex w-full items-center justify-between rounded-xl px-4 py-3 text-left font-semibold text-slate-800 hover:bg-slate-50"
-          >
-            <span className="inline-flex items-center gap-2">
-              <Home className="h-4 w-4 text-[#0097b2]" />
-              {c.private}
-            </span>
-
-            <ChevronDown
-              className={`h-4 w-4 transition ${
-                mobileGroup === "private"
-                  ? "rotate-180"
-                  : ""
-              }`}
-            />
-          </button>
-
-          {mobileGroup === "private" && (
-            <ul className="mt-2 space-y-2 pl-4">
-              {Privatkunden.map((s) => (
-                <li key={s.key}>
-                  <NavLink
-                    to={getLocalizedPath(locale, s.key)}
-                    className={dropdownItemClass}
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {c[s.key]}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {/* =========================
               BLOG
           ========================== */}
           <NavLink
@@ -682,4 +586,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
-export { Unternehmen, Privatkunden };
+export { Unternehmen };

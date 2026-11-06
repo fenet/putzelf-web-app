@@ -12,7 +12,7 @@ const PAGE_SIZE = 6;
 const relatedServicesByPost = {
   "so-pflegen-sie-buero-und-arbeitsraeume-effektiv": ["businessMaintenance"],
   "gruenere-arbeitsplaetze-dank-gesunder-reinigungsroutine": ["businessMaintenance"],
-  "fensterreinigung-fuer-mehr-licht-und-wohlfuehlen": ["businessWindow", "privateWindow"],
+  "fensterreinigung-fuer-mehr-licht-und-wohlfuehlen": ["businessWindow"],
 };
 
 function formatDate(dateValue, locale) {

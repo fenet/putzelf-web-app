@@ -19,6 +19,17 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const ADMIN_INVITE_CODE = process.env.ADMIN_INVITE_CODE;
 
 const INTEGRATION_KEY = (process.env.INTEGRATION_KEY || "").trim();
+const BOOKABLE_SERVICE_KEYS = new Set([
+  "businessMaintenance",
+  "businessDeep",
+  "businessStaircase",
+  "businessConstruction",
+  "businessWindow",
+  "businessIndustrial",
+  "homeCleaning",
+  "officeCleaning",
+  "apartmentHotel",
+]);
 
 if (!JWT_SECRET) {
   console.warn("JWT_SECRET is missing in environment variables.");
@@ -315,7 +326,17 @@ app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
     }
 
     const subcategories = Array.isArray(req.body.subcategories) ? req.body.subcategories : [];
-    const windowsCount = Number(req.body.windows || 0) || 0;
+    const serviceKey = String(req.body.serviceKey || "").trim();
+    const requestedWindowsCount = Math.max(0, Math.floor(Number(req.body.windows || 0) || 0));
+    const windowsCount = serviceKey
+      ? (serviceKey === "businessWindow" ? requestedWindowsCount : 0)
+      : requestedWindowsCount;
+    if (serviceKey && !BOOKABLE_SERVICE_KEYS.has(serviceKey)) {
+      return res.status(400).json({ error: "Invalid service selection" });
+    }
+    if (serviceKey === "businessWindow" && windowsCount < 1) {
+      return res.status(400).json({ error: "Window cleaning requires a window count" });
+    }
     const hourlyRate = getHourlyRate(typeOfCleaning, subcategories);
 
     const windowsNet = windowsCount * WINDOW_PRICE_NET;
@@ -359,6 +380,7 @@ app.post("/api/bookings", attachUserIfPresent, async (req, res) => {
           ...booking,
           notes: typeof notes === "string" ? notes : "",
           windows: windowsCount,
+          serviceKey,
           subcategories,
           // include structured contact/address fields from the original request so mailers can use them
           firstName: req.body.firstName || booking.firstName || null,

@@ -21,66 +21,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://putzelf.com/de/services/unterhaltsreinigung</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/en/services/maintenance-cleaning</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/de/services/grundreinigung</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/en/services/deep-cleaning-private</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/de/services/wohnreinigung</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/en/services/residential-cleaning</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/de/services/bauendreinigung-grobreinigung</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/en/services/construction-cleaning</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/de/services/glas-rahmenreinigung</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/en/services/window-cleaning</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/de/services/industriereinigung-maschinen</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://putzelf.com/en/services/industrial-cleaning</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://putzelf.com/de/services/unterhaltsreinigung-gewerbe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

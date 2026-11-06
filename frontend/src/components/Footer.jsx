@@ -4,10 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
-const privateServiceKeys = [
-  "privateMaintenance", "privateDeep", "privateResidential",
-  "privateConstruction", "privateWindow", "privateIndustrial",
-];
 const businessServiceKeys = [
   "businessMaintenance", "businessDeep", "businessStaircase",
   "businessConstruction", "businessWindow", "businessIndustrial",
@@ -27,23 +23,10 @@ export default function Footer() {
             <Link to={getLocalizedPath(locale, "servicesOverview")} className="inline-block mb-5 font-semibold text-[#0097b2] underline underline-offset-4 hover:text-[#007f95]">
               {t("footer.allServices")}
             </Link>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div className="grid grid-cols-1 gap-3 text-sm">
               <details className="group">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 font-semibold text-gray-900 transition hover:text-[#0097b2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0097b2] focus-visible:ring-offset-2 [&::-webkit-details-marker]:hidden">
-                  <span>{t("nav.private")}</span>
-                  <ChevronDown className="h-4 w-4 shrink-0 text-gray-500 transition-transform group-open:rotate-180" aria-hidden="true" />
-                </summary>
-                <ul className="space-y-2 px-4 pb-4 text-gray-600">
-                  {privateServiceKeys.map((key) => (
-                    <li key={key}>
-                      <Link to={getLocalizedPath(locale, key)} className="hover:text-[#0097b2] transition-colors">{t(`nav.${key}`)}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-              <details className="group">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 font-semibold text-gray-900 transition hover:text-[#0097b2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0097b2] focus-visible:ring-offset-2 [&::-webkit-details-marker]:hidden">
-                  <span>{t("nav.company")}</span>
+                  <span>{t("nav.commercialServices")}</span>
                   <ChevronDown className="h-4 w-4 shrink-0 text-gray-500 transition-transform group-open:rotate-180" aria-hidden="true" />
                 </summary>
                 <ul className="space-y-2 px-4 pb-4 text-gray-600">
@@ -86,7 +69,7 @@ export default function Footer() {
               <ul className="space-y-2 text-sm">
                 <li><Link to={getLocalizedPath(locale, "contact")} className="hover:text-gray-900 transition-colors">{t("nav.contact")}</Link></li>
                 <li><Link to={getLocalizedPath(locale, "blog")} className="hover:text-gray-900 transition-colors">{t("nav.blog")}</Link></li>
-                <li><Link to={getLocalizedPath(locale, "calculator")} className="hover:text-gray-900 transition-colors">{t("footer.connect.links.calculator")}</Link></li>
+                <li><Link to={getLocalizedPath(locale, "booking")} className="hover:text-gray-900 transition-colors">{t("nav.book")}</Link></li>
                 <li><Link to={getLocalizedPath(locale, "jobOpening")} className="hover:text-gray-900 transition-colors">{t("nav.jobOpening")}</Link></li>
                 <li><Link to={getLocalizedPath(locale, "getPartners")} className="hover:text-gray-900 transition-colors">{t("nav.getPartners")}</Link></li>
                 <li>

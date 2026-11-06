@@ -85,7 +85,7 @@ export default function JobOpening() {
 
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <a
-                      href={`mailto:office@putzelf.com?subject=${encodeURIComponent(role.subject)}`}
+                      href={`mailto:jobs@putzelf.com?subject=${encodeURIComponent(role.subject)}&body=${encodeURIComponent(t("jobOpening.applicationEmailBody", { role: role.title }))}`}
                       className="inline-flex w-fit items-center gap-2 rounded-full bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition-transform duration-200 hover:-translate-y-0.5 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-offset-2"
                     >
                       <span>{role.cta}</span>

@@ -43,6 +43,25 @@ RewriteRule ^ - [G,L]
 # Retired legacy PDFs were removed from the public files directory.
 RewriteRule ^files/(?:Contract|Datenschutzbestimmungen|Datenschutzblat|Dienstleistungsvertrag|Dienstliste|Partnerantrag|Pricelist|Stammdatenblatt|Subvertrag|Urlaubsschein_Zeitausgleich)\.pdf$ - [G,NC,L]
 
+# Retire household-service URLs. Keep equivalent commercial pages on their
+# existing URLs and permanently redirect matching legacy paths in one hop.
+RewriteRule ^de/services/unterhaltsreinigung/?$ https://putzelf.com/de/services/unterhaltsreinigung-gewerbe [R=301,L,NC]
+RewriteRule ^de/services/grundreinigung/?$ https://putzelf.com/de/services/grundreinigung-gewerbe [R=301,L,NC]
+RewriteRule ^de/services/bauendreinigung-grobreinigung/?$ https://putzelf.com/de/services/bauendreinigung-grobreinigung-gewerbe [R=301,L,NC]
+RewriteRule ^de/services/glas-rahmenreinigung/?$ https://putzelf.com/de/services/glas-rahmenreinigung-gewerbe [R=301,L,NC]
+RewriteRule ^de/services/industriereinigung-maschinen/?$ https://putzelf.com/de/services/industriereinigung-maschinen-gewerbe [R=301,L,NC]
+RewriteRule ^de/services/wohnreinigung/?$ - [G,NC,L]
+RewriteRule ^en/services/maintenance-cleaning/?$ https://putzelf.com/en/services/maintenance-cleaning-business [R=301,L,NC]
+RewriteRule ^en/services/deep-cleaning-private/?$ https://putzelf.com/en/services/deep-cleaning-business [R=301,L,NC]
+RewriteRule ^en/services/construction-cleaning/?$ https://putzelf.com/en/services/construction-cleaning-business [R=301,L,NC]
+RewriteRule ^en/services/window-cleaning/?$ https://putzelf.com/en/services/window-cleaning-business [R=301,L,NC]
+RewriteRule ^en/services/industrial-cleaning/?$ https://putzelf.com/en/services/industrial-cleaning-business [R=301,L,NC]
+RewriteRule ^en/services/residential-cleaning/?$ - [G,NC,L]
+
+# Retire the public calculator route in favour of the existing inquiry flow.
+RewriteRule ^(de|en)/calculator/?$ https://putzelf.com/$1/booking [R=301,L,NC]
+RewriteRule ^calculator/?$ https://putzelf.com/de/booking [R=301,L,NC]
+
 # Retire the old city landing URLs in favor of the localized services hubs.
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^de/services/(?:wien|graz)/?$ https://putzelf.com/de/services [R=301,L,NC]
@@ -62,11 +81,6 @@ RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{HTTP_HOST} ^www\.putzelf\.com(?::\d+)?$ [NC,OR]
 RewriteCond %{HTTPS} !=on
 RewriteRule ^imprint/?$ https://putzelf.com/de/impressum [R=301,L]
-
-RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteCond %{HTTP_HOST} ^www\.putzelf\.com(?::\d+)?$ [NC,OR]
-RewriteCond %{HTTPS} !=on
-RewriteRule ^calculator/?$ https://putzelf.com/de/calculator [R=301,L]
 
 # Retired landing aliases must reach their approved locale homepage in one hop,
 # including when the request also needs HTTPS or www canonicalization.
@@ -118,9 +132,9 @@ RewriteCond %{HTTP_HOST} ^www\.putzelf\.com(?::\d+)?$ [NC,OR]
 RewriteCond %{HTTPS} !=on
 RewriteRule ^ https://putzelf.com%{REQUEST_URI} [R=301,L,NE]
 
-# Keep private and transactional routes fetchable so crawlers can see noindex.
+# Keep booking and transactional routes fetchable so crawlers can see noindex.
 <IfModule mod_setenvif.c>
-  SetEnvIfNoCase Request_URI "^/(?:de|en)/(?:booking|profile|calculator|login|register|admin|order)(?:/|$)" PutzELFNoIndex=1
+  SetEnvIfNoCase Request_URI "^/(?:de|en)/(?:booking|profile|login|register|admin|order)(?:/|$)" PutzELFNoIndex=1
 </IfModule>
 <IfModule mod_headers.c>
   Header always set X-Robots-Tag "noindex, nofollow" env=PutzELFNoIndex
@@ -157,7 +171,6 @@ RewriteRule ^datenschutz/?$ /de/datenschutz [R=301,L]
 RewriteRule ^imprint/?$ /de/impressum [R=301,L]
 RewriteRule ^book/?$ /de/booking [R=301,L]
 RewriteRule ^profile/?$ /de/booking [R=301,L]
-RewriteRule ^calculator/?$ /de/calculator [R=301,L]
 RewriteRule ^blog/?$ /de/blog [R=301,L]
 RewriteRule ^blog/(.+?)/?$ /de/blog/$1 [R=301,L,NE]
 RewriteRule ^login/?$ /de/login [R=301,L]
@@ -168,6 +181,7 @@ RewriteRule ^order/([^/]+)/?$ /de/order/$1 [R=301,L,NE]
 # Localized profile aliases are duplicates of the booking form.
 RewriteRule ^de/profile/?$ /de/booking [R=301,L]
 RewriteRule ^en/profile/?$ /en/booking [R=301,L]
+
 
 # Serve route-specific initial documents for the private app routes. Order IDs
 # remain dynamic; their lightweight shell uses a self-relative canonical.

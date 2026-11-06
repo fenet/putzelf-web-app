@@ -1,4 +1,3 @@
-import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Phone,
@@ -9,20 +8,13 @@ import {
   FileText,
   Sparkles,
   Building2,
-  UtensilsCrossed,
-  Store,
-  Stethoscope,
   CheckCircle2,
   AlertTriangle,
   Star,
-  House,
   Hammer,
   Factory,
   GlassWater,
   MapPin,
-  Briefcase,
-  Home,
-  ChevronDown,
 } from "lucide-react";
 import { trackEvent } from "../lib/analytics";
 import { useTranslation } from "react-i18next";
@@ -40,41 +32,17 @@ import { GOOGLE_BUSINESS_PROFILE_URL } from "../lib/googleBusinessProfile";
 const serviceIcons = {
   businessMaintenance: Building2,
   businessDeep: Sparkles,
-  businessStaircase: House,
+  businessStaircase: Building2,
   businessConstruction: Hammer,
   businessWindow: GlassWater,
   businessIndustrial: Factory,
 };
-
-const Unternehmen = [
-  { key: "businessMaintenance" },
-  { key: "businessStaircase" },
-];
-
-const Privatkunden = [
-  { key: "privateMaintenance" },
-];
 
 export default function LandingAlternative() {
   const location = useLocation();
   const lang = getLocaleFromPathname(location.pathname);
   const { t } = useTranslation();
   const c = t("landingAlternative", { returnObjects: true });
-
-  // controlled services menu (desktop + mobile)
-  const [open, setOpen] = useState(false);
-  const [openCompany, setOpenCompany] = useState(false);
-  const [openPrivate, setOpenPrivate] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [openContact, setOpenContact] = useState(false);
-  const [mobileGroup, setMobileGroup] = useState(null);
-  const [mobileContactOpen, setMobileContactOpen] = useState(false);
-  const timerRef = useRef(null);
-  useEffect(() => () => clearTimeout(timerRef.current), []);
-  const openMenu = () => { clearTimeout(timerRef.current); setOpen(true); };
-  const closeMenu = () => { clearTimeout(timerRef.current); timerRef.current = setTimeout(() => setOpen(false), 150); };
-
-  const serviceLinks = c.serviceLinks;
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">

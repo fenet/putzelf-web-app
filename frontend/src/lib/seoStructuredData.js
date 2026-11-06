@@ -17,8 +17,8 @@ const officialProfiles = [
 ];
 
 const businessDescriptions = {
-  de: "PutzELF bietet Reinigungsdienstleistungen für Privatkunden und Unternehmen in Wien und Graz samt Umgebung.",
-  en: "PutzELF provides cleaning services for private customers and businesses in Vienna and Graz and surrounding areas.",
+  de: "PutzELF bietet gewerbliche Reinigungsdienstleistungen für Unternehmen in Wien und Graz samt Umgebung.",
+  en: "PutzELF provides commercial cleaning services for businesses in Vienna and Graz and surrounding areas.",
 };
 
 export function buildSiteStructuredData({

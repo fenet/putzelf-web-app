@@ -5,8 +5,6 @@ import { Link, useLocation } from "react-router-dom";
 import { Phone, Mail, Instagram, Facebook, Linkedin, UserCheck, DollarSign, CalendarDays } from "lucide-react";
 import logo from "../assets/logo.png";
 import cover from "../assets/cover.svg";
-import homeImg from "../assets/home.jpg";
-import officeImg from "../assets/office.jpg";
 import Seo from "../components/Seo";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import Footer from "../components/Footer";
@@ -14,15 +12,15 @@ import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from 
 // Cookie consent is centralized in CookieConsent component / lib/consent
 
 export default function Landing() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const location = useLocation();
   const locale = getLocaleFromPathname(location.pathname);
   const seoTitle = locale === "de"
-    ? "Reinigungsfirma Wien & Graz – Putzfrau & Reinigungskraft buchen"
-    : "Cleaning Company Vienna & Graz – Book a Cleaner Online";
+    ? "Gewerbliche Reinigung Wien & Graz | PutzELF"
+    : "Commercial Cleaning Vienna & Graz | PutzELF";
   const seoDescription = locale === "de"
-    ? "Reinigung in Wien und Graz: Putzfrau und Reinigungskraft online buchen – für Haushalt und Büro."
-    : "Cleaning in Vienna and Graz: book a cleaner online for home or office cleaning with flexible scheduling.";
+    ? "Gewerbliche Reinigungsleistungen für Unternehmen in Wien und Graz. Fragen Sie ein individuelles Angebot für Ihre Betriebsräume an."
+    : "Commercial cleaning services for businesses in Vienna and Graz. Request a tailored proposal for your premises.";
 
   // Cookie consent is handled globally by `CookieConsent` mounted in App.jsx
 
@@ -32,10 +30,10 @@ export default function Landing() {
               title={seoTitle}
               to={getLocalizedPath(locale, "booking")}
               description={seoDescription}
-              path={getLocalizedPath(locale, "landingAlt")}
+              path={getLocalizedPath(locale, "home")}
               lang={locale}
               alternates={getLocalizedAlternates(location.pathname)}
-              xDefaultPath={getLocalizedPath("de", "landingAlt")}
+              xDefaultPath={getLocalizedPath("de", "home")}
             />
       <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex flex-wrap justify-between items-center gap-2">
@@ -86,15 +84,7 @@ export default function Landing() {
 
       <section className="flex flex-col items-center justify-center text-center px-6 pt-32 md:pt-40 pb-24 bg-gray-50">
         <h1 className="text-4xl md:text-6xl font-bold text-[#000000] mb-6">
-          {i18n.language?.startsWith("de") ? (
-            <>
-              Professionelle Reinigung:
-              <br />
-              Putzfrau in Wien oder Graz gesucht? PutzELF gefunden
-            </>
-          ) : (
-            t("hero.title")
-          )}
+          {t("hero.title")}
         </h1>
         <p className="text-lg text-gray-700 max-w-2xl mb-8">{t("hero.subtitle")}</p>
         <div className="flex flex-col items-center justify-center gap-3">
@@ -127,28 +117,28 @@ export default function Landing() {
       <section className="max-w-6xl mx-auto px-6 py-16 space-y-12">
         <div className="grid sm:grid-cols-3 gap-8">
           <Link
-            to={getLocalizedPath(locale, "privateMaintenance")}
+            to={getLocalizedPath(locale, "businessMaintenance")}
             className="bg-gradient-to-r from-[#5be3e3] to-[#0097b2] text-black font-semibold rounded-2xl p-8 text-center hover:scale-105 hover:shadow-xl transition"
             onClick={() => trackEvent("Service_Standard_Click", { service_type: "Standard", source: "landing_grid" })}
           >
-            <h4 className="text-2xl font-bold mb-2">{t("services.standard.title")}</h4>
-            <p>{t("services.standard.desc")}</p>
+            <h4 className="text-2xl font-bold mb-2">{t("nav.businessMaintenance")}</h4>
+            <p>{t("services.business.maintenance.description")}</p>
           </Link>
           <Link
-            to={getLocalizedPath(locale, "privateDeep")}
+            to={getLocalizedPath(locale, "businessDeep")}
             className="bg-gradient-to-r from-[#48c6ef] to-[#006994] text-white font-semibold rounded-2xl p-8 text-center hover:scale-105 hover:shadow-xl transition"
             onClick={() => trackEvent("Service_Deep_Click", { service_type: "Deep", source: "landing_grid" })}
           >
-            <h4 className="text-2xl font-bold mb-2">{t("services.deep.title")}</h4>
-            <p>{t("services.deep.desc")}</p>
+            <h4 className="text-2xl font-bold mb-2">{t("nav.businessDeep")}</h4>
+            <p>{t("services.business.deep.description")}</p>
           </Link>
           <Link
-            to={getLocalizedPath(locale, "businessMaintenance")}
+            to={getLocalizedPath(locale, "businessStaircase")}
             className="bg-gradient-to-r from-[#3acfd5] to-[#3a7bd5] text-black font-semibold rounded-2xl p-8 text-center hover:scale-105 hover:shadow-xl transition"
-            onClick={() => trackEvent("Service_Office_Click", { service_type: "Office", source: "landing_grid" })}
+            onClick={() => trackEvent("Service_Staircase_Click", { service_type: "Staircase", source: "landing_grid" })}
           >
-            <h4 className="text-2xl font-bold mb-2">{t("services.office.title")}</h4>
-            <p>{t("services.office.desc")}</p>
+            <h4 className="text-2xl font-bold mb-2">{t("nav.businessStaircase")}</h4>
+            <p>{t("services.business.staircase.description")}</p>
           </Link>
         </div>
 

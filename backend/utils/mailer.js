@@ -194,7 +194,7 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>⏳ Dauer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.duration || 0} Stunden</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefon</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.phone || "N/A"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📧 E-Mail</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${customerEmail}</td></tr>
-          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🪟 Fenster</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.windows ? booking.windows : '—'}</td></tr>
+          <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🪟 Anzahl der Fenster</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.windows ? booking.windows : '—'}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📝 Anmerkungen</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking.notes || "").toString().trim() ? (booking.notes || "").toString().trim().replace(/\n/g, "<br />") : "Keine"}</td></tr>
           <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🔄 Verlängerung möglich</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${formatYesNo(booking.renegotiate)}</td></tr>
         </table>
@@ -244,7 +244,11 @@ export async function sendBookingConfirmation(toOrBooking, maybeBooking) {
       from: `"PutzELF" <${SMTP_FROM}>`,
       to: resolvedTo,
       subject: "Anfragebestätigung – PutzELF",
-      text: "Vielen Dank für Ihre Anfrage. Wir haben Ihre Anfrage erhalten. Unser Team meldet sich telefonisch bei Ihnen, um den Termin zu besprechen und zu bestätigen.",
+      text: [
+        "Vielen Dank für Ihre Anfrage. Wir haben Ihre Anfrage erhalten. Unser Team meldet sich telefonisch bei Ihnen, um den Termin zu besprechen und zu bestätigen.",
+        `Reinigungsart: ${booking.typeOfCleaning || "N/A"}`,
+        `Anzahl der Fenster: ${Number(booking.windows || 0) > 0 ? Number(booking.windows) : "—"}`,
+      ].join("\n"),
       html: htmlContent,
     });
 
@@ -354,6 +358,8 @@ export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📮 Postleitzahl</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${bookingCustomerFields.postalCode}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Ort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${bookingCustomerFields.city}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📍 Standort</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking?.location || 'vienna').toLowerCase() === 'graz' ? 'Graz' : 'Wien'}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🧹 Reinigungsart</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${booking?.typeOfCleaning || "—"}</td></tr>
+            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>🪟 Anzahl der Fenster</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${Number(booking?.windows || 0) > 0 ? Number(booking.windows) : "—"}</td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📞 Telefonnummer</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="tel:${bookingCustomerFields.phone}">${bookingCustomerFields.phone}</a></td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>📧 E-Mail-Adresse</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="mailto:${bookingCustomerFields.email}">${bookingCustomerFields.email}</a></td></tr>
             <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>💬 Nachricht</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${(booking?.message || "").toString().trim().replace(/\n/g, "<br />") || "—"}</td></tr>
@@ -381,7 +387,18 @@ export async function sendQuoteRequestConfirmation(toOrBooking, maybeBooking) {
     from: `"PutzELF" <${SMTP_FROM}>`,
     to: resolvedTo,
     subject: "Ihre Anfrage bei PutzELF",
-    text: `Vielen Dank für Ihre Anfrage. Name: ${booking?.name || "N/A"}, Firma: ${booking?.company || "—"}, Standort: ${(booking?.location || 'vienna')}, Adresse: ${booking?.address || "—"}, E-Mail: ${booking?.email || "N/A"}, Telefon: ${booking?.phone || "N/A"}, Nachricht: ${booking?.message || "—"}`,
+    text: [
+      "Vielen Dank für Ihre Anfrage. Wir melden uns so schnell wie möglich bei Ihnen.",
+      `Reinigungsart: ${booking?.typeOfCleaning || "—"}`,
+      `Anzahl der Fenster: ${Number(booking?.windows || 0) > 0 ? Number(booking.windows) : "—"}`,
+      `Name: ${booking?.name || "N/A"}`,
+      `Firma: ${booking?.company || "—"}`,
+      `Standort: ${booking?.location || "vienna"}`,
+      `Adresse: ${booking?.address || "—"}`,
+      `E-Mail: ${booking?.email || "N/A"}`,
+      `Telefon: ${booking?.phone || "N/A"}`,
+      `Nachricht: ${booking?.message || booking?.notes || "—"}`,
+    ].join("\n"),
     html: htmlContent,
   });
 

@@ -9,6 +9,7 @@ import { apiFetch } from "../lib/api";
 import { getLocalizedAlternates, getLocalizedPath, getLocaleFromPathname } from "../lib/localeRoutes";
 
 const initialForm = {
+  companyName: "",
   name: "",
   email: "",
   phone: "",
@@ -59,11 +60,16 @@ export default function Contact() {
     setStatus({ type: "loading", message: t("contact.submit.loading") });
 
     try {
+      const { companyName, ...contactPayload } = form;
       const response = await apiFetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...form,
+          ...contactPayload,
+          message: [
+            companyName.trim() ? `${t("contact.fields.companyName")}: ${companyName.trim()}` : "",
+            form.message.trim(),
+          ].filter(Boolean).join("\n\n"),
           location: form.location
         })
       });
@@ -183,6 +189,19 @@ export default function Contact() {
               <input type="hidden" name="locale" value={locale} />
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
+                  <label htmlFor="companyName" className="mb-2 block text-sm font-medium text-slate-700">
+                    {t("contact.fields.companyName")}
+                  </label>
+                  <input
+                    id="companyName"
+                    name="companyName"
+                    type="text"
+                    value={form.companyName}
+                    onChange={handleChange}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-slate-900 outline-none transition focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-100"
+                  />
+                </div>
+                <div>
                   <label htmlFor="name" className="mb-2 block text-sm font-medium text-slate-700">
                     {t("contact.fields.name")}
                   </label>
@@ -199,7 +218,9 @@ export default function Contact() {
                   />
                   {errors.name && <p id="name-error" className="mt-1 text-sm text-red-600">{errors.name}</p>}
                 </div>
+              </div>
 
+              <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="email" className="mb-2 block text-sm font-medium text-slate-700">
                     {t("contact.fields.email")}

@@ -42,6 +42,7 @@ export default function Order() {
     : t("order.title");
   const [booking, setBooking] = useState(null);
   const [customer, setCustomer] = useState({
+    companyName: "",
     name: "",
     email: "",
     address: "",
@@ -290,10 +291,15 @@ export default function Order() {
       return;
     }
 
+    const { companyName, ...customerPayload } = customer;
     const payload = {
-      ...customer,
+      ...customerPayload,
       email: trimmedEmail,
       phone: normalizedPhone,
+      notes: [
+        companyName.trim() ? `${t("order.companyNameLabel")}: ${companyName.trim()}` : "",
+        customer.notes.trim(),
+      ].filter(Boolean).join("\n\n"),
       metaEventId: eventId,
       metaEventSource: typeof window !== "undefined" ? window.location.href : undefined,
     };
@@ -415,7 +421,7 @@ export default function Order() {
 
       <div className="text-center mb-10">
         <h1 className="text-3xl font-bold text-[#000000] mt-4">
-          {t("order.confirmTitle")}
+          {isQuoteRequest ? t("order.quoteConfirmTitle") : t("order.confirmTitle")}
         </h1>
       </div>
 
@@ -451,10 +457,23 @@ export default function Order() {
         {!confirmed ? (
           <div className="bg-white p-8 rounded-2xl shadow-lg border border-[#e0f7f7] space-y-4">
             <h3 className="text-xl font-semibold text-[#5be3e3]">
-              {t("order.enterDetails")}
+              {isQuoteRequest ? t("order.quoteEnterDetails") : t("order.enterDetails")}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {isQuoteRequest && (
+                <div className="sm:col-span-2">
+                  <label htmlFor="quote-company-name" className="block text-sm font-medium mb-1">{t("order.companyNameLabel")}</label>
+                  <input
+                    id="quote-company-name"
+                    name="companyName"
+                    value={customer.companyName}
+                    onChange={handleChange}
+                    placeholder={t("order.companyNameLabel")}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
+                  />
+                </div>
+              )}
               <div>
                 <label className="block text-sm font-medium mb-1">{t("order.labels.name")}</label>
                 <input
@@ -486,12 +505,13 @@ export default function Order() {
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium mb-1">{t("order.labels.address")}</label>
+                <label htmlFor="order-address" className="block text-sm font-medium mb-1">{isQuoteRequest ? t("order.quoteAddressLabel") : t("order.labels.address")}</label>
                 <input
+                  id="order-address"
                   name="address"
                   value={customer.address}
                   onChange={handleChange}
-                  placeholder={t("order.placeholders.address")}
+                  placeholder={isQuoteRequest ? t("order.quoteAddressPlaceholder") : t("order.placeholders.address")}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3]"
                   required
                 />
@@ -547,7 +567,7 @@ export default function Order() {
               <div className="mt-4 space-y-4">
                 <div>
                   <label htmlFor="notes" className="block text-sm font-medium mb-1 text-gray-700">
-                    {t("order.notesLabel")}
+                    {isQuoteRequest ? t("order.quoteNotesLabel") : t("order.notesLabel")}
                   </label>
                   <textarea
                     id="notes"
@@ -555,7 +575,7 @@ export default function Order() {
                     value={customer.notes}
                     onChange={handleChange}
                     rows={4}
-                    placeholder={t("order.placeholders.notes")}
+                    placeholder={isQuoteRequest ? t("order.quoteNotesPlaceholder") : t("order.placeholders.notes")}
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5be3e3] resize-y"
                   />
                 </div>
@@ -585,7 +605,7 @@ export default function Order() {
                   disabled={loadingConfirm}
                   className="w-full bg-[#5be3e3] text-black font-semibold py-3 rounded-xl hover:bg-[#48c9c9] transition disabled:opacity-60"
                 >
-                  {loadingConfirm ? t("order.confirming") : t("order.submitBtn")}
+                  {loadingConfirm ? t("order.confirming") : isQuoteRequest ? t("order.quoteSubmitBtn") : t("order.submitBtn")}
                 </button>
 
                 {error && <p className="text-red-500 mt-2">{error}</p>}
@@ -601,9 +621,9 @@ export default function Order() {
               {t("order.confirmedTitle")}
             </h4>
             <p className="mt-2 text-gray-700">
-              {t("order.confirmedMsg", {
-                email: customer.email || booking.email,
-              })}
+              {isQuoteRequest
+                ? t("order.quoteConfirmedMsg")
+                : t("order.confirmedMsg", { email: customer.email || booking.email })}
             </p>
             {booking?.id && (
               <p className="mt-2 text-sm text-gray-600">{t("order.bookingId", { id: booking.id })}</p>

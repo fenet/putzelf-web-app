@@ -21,7 +21,6 @@ const Order = lazy(() => import("./pages/Order"));
 const Imprint = lazy(() => import("./pages/Imprint"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const PriceCalculator = lazy(() => import("./pages/PriceCalculator"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -123,7 +122,7 @@ export default function App() {
         <Route path="/search" element={<NotFound />} />
         {/* Profile is retired and resolves to the booking route. */}
         <Route path="/profile" element={<LegacyRedirect to="/de/booking" />} />
-        <Route path="/calculator" element={<LegacyRedirect to="/de/calculator" />} />
+        <Route path="/calculator" element={<LegacyRedirect to="/de/booking" />} />
         <Route path="/blog" element={<LegacyRedirect to="/de/blog" />} />
         <Route path="/blog/:slug" element={<LegacyRedirect to={location.pathname.replace(/^\//, "/de/")} />} />
         <Route path="/login" element={<LegacyRedirect to="/de/login" />} />
@@ -140,16 +139,15 @@ export default function App() {
           <Route path="wien/services" element={<LegacyRedirect to="/de/services" />} />
           <Route path="graz/services" element={<LegacyRedirect to="/de/services" />} />
           {/* Removed specific service pages per request */}
-          {/* new private service routes */}
-          <Route path="services/unterhaltsreinigung" element={<ServiceGeneric />} />
-          <Route path="services/grundreinigung" element={<ServiceGeneric />} />
-          <Route path="services/wohnreinigung" element={<ServiceGeneric />} />
-          <Route path="services/bauendreinigung-grobreinigung" element={<ServiceGeneric />} />
-          <Route path="services/glas-rahmenreinigung" element={<ServiceGeneric />} />
-          <Route path="services/industriereinigung-maschinen" element={<ServiceGeneric />} />
-          {/* one-time private removed */}
-          
-          {/* new business service routes */}
+          {/* Retired consumer URLs keep a client-side fallback; servers also issue permanent redirects. */}
+          <Route path="services/unterhaltsreinigung" element={<LegacyRedirect to="/de/services/unterhaltsreinigung-gewerbe" />} />
+          <Route path="services/grundreinigung" element={<LegacyRedirect to="/de/services/grundreinigung-gewerbe" />} />
+          <Route path="services/bauendreinigung-grobreinigung" element={<LegacyRedirect to="/de/services/bauendreinigung-grobreinigung-gewerbe" />} />
+          <Route path="services/glas-rahmenreinigung" element={<LegacyRedirect to="/de/services/glas-rahmenreinigung-gewerbe" />} />
+          <Route path="services/industriereinigung-maschinen" element={<LegacyRedirect to="/de/services/industriereinigung-maschinen-gewerbe" />} />
+          <Route path="services/wohnreinigung" element={<NotFound />} />
+
+          {/* Commercial service routes */}
           <Route path="services/unterhaltsreinigung-gewerbe" element={<ServiceGeneric />} />
           <Route path="services/grundreinigung-gewerbe" element={<ServiceGeneric />} />
           <Route path="services/treppenhausreinigung" element={<ServiceGeneric />} />
@@ -166,7 +164,7 @@ export default function App() {
           <Route path="booking" element={<Layout><Home /></Layout>} />
           <Route path="order/:id" element={<Layout><Order /></Layout>} />
           <Route path="profile" element={<LegacyRedirect to="/de/booking" />} />
-          <Route path="calculator" element={<PriceCalculator />} />
+          <Route path="calculator" element={<LegacyRedirect to="/de/booking" />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:slug" element={<BlogPostPage />} />
           <Route path="login" element={<Login />} />
@@ -183,15 +181,15 @@ export default function App() {
           <Route path="vienna/services" element={<LegacyRedirect to="/en/services" />} />
           <Route path="graz/services" element={<LegacyRedirect to="/en/services" />} />
           {/* Removed specific service pages per request */}
-          {/* new private service routes (en) */}
-          <Route path="services/maintenance-cleaning" element={<ServiceGeneric />} />
-          <Route path="services/deep-cleaning-private" element={<ServiceGeneric />} />
-          <Route path="services/residential-cleaning" element={<ServiceGeneric />} />
-          <Route path="services/construction-cleaning" element={<ServiceGeneric />} />
-          <Route path="services/window-cleaning" element={<ServiceGeneric />} />
-          <Route path="services/industrial-cleaning" element={<ServiceGeneric />} />
-          {/* one-time private removed (en) */}
-          {/* new business service routes (en) */}
+          {/* Retired consumer URLs keep a client-side fallback; servers also issue permanent redirects. */}
+          <Route path="services/maintenance-cleaning" element={<LegacyRedirect to="/en/services/maintenance-cleaning-business" />} />
+          <Route path="services/deep-cleaning-private" element={<LegacyRedirect to="/en/services/deep-cleaning-business" />} />
+          <Route path="services/construction-cleaning" element={<LegacyRedirect to="/en/services/construction-cleaning-business" />} />
+          <Route path="services/window-cleaning" element={<LegacyRedirect to="/en/services/window-cleaning-business" />} />
+          <Route path="services/industrial-cleaning" element={<LegacyRedirect to="/en/services/industrial-cleaning-business" />} />
+          <Route path="services/residential-cleaning" element={<NotFound />} />
+
+          {/* Commercial service routes (English) */}
           <Route path="services/maintenance-cleaning-business" element={<ServiceGeneric />} />
           <Route path="services/deep-cleaning-business" element={<ServiceGeneric />} />
           <Route path="services/staircase-cleaning" element={<ServiceGeneric />} />
@@ -207,7 +205,7 @@ export default function App() {
           <Route path="booking" element={<Layout><Home /></Layout>} />
           <Route path="order/:id" element={<Layout><Order /></Layout>} />
           <Route path="profile" element={<LegacyRedirect to="/en/booking" />} />
-          <Route path="calculator" element={<PriceCalculator />} />
+          <Route path="calculator" element={<LegacyRedirect to="/en/booking" />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:slug" element={<BlogPostPage />} />
           <Route path="login" element={<Login />} />
